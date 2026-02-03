@@ -19,6 +19,7 @@ document.documentElement.style.setProperty(
 
 const SCENES = [
   { id: "visitor", label: "Visitor", module: () => import("./scenes/visitor.js"), skipSwitcher: true },
+  { id: "system", label: "System", module: () => import("./scenes/system.js") },
   { id: "planetary", label: "Planetary", module: () => import("./scenes/planetary.js") },
   { id: "mono", label: "Mono Graph", module: () => import("./scenes/mono-graph.js") },
   { id: "universe", label: "Universe Map", module: () => import("./scenes/universe-map.js") },
