@@ -1454,6 +1454,7 @@ function updateStoryWithDomainWidgets(panel, data) {
   content.innerHTML = html;
   bindTagPills(content);
   bindWidgetLever(content);
+  bindEmblemSwap(content);
 
   // Initialize mini cube
   const cubeContainer = document.getElementById("mini-cube-container");
@@ -1515,6 +1516,7 @@ function updateStoryWithPracticeWidgets(panel, data) {
   content.innerHTML = html;
   bindTagPills(content);
   bindWidgetLever(content);
+  bindEmblemSwap(content);
 
   const cubeContainer = document.getElementById("mini-cube-container");
   if (cubeContainer) {
@@ -1572,6 +1574,7 @@ function updateStoryWithCharacterWidgets(panel, data) {
   content.innerHTML = html;
   bindTagPills(content);
   bindWidgetLever(content);
+  bindEmblemSwap(content);
 
   const cubeContainer = document.getElementById("mini-cube-container");
   if (cubeContainer) {
