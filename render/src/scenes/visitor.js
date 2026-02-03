@@ -1112,14 +1112,14 @@ function updatePanels() {
     updateStoryWithCharacterWidgets(storyPanel, currentStep.story);
   } else if (EXPERIMENTAL_RULES.potentialInStory && isCharacterNode(currentStep)) {
     updateStoryWithPotential(storyPanel, currentStep);
-    updatePanel(systemPanel, { text: "Рабочее окно" });
-    updateServicePanel(servicePanel, { text: "Рабочее окно", actions: [] });
+    updatePanel(systemPanel, { text: "" });
+    updateServicePanel(servicePanel, { text: "", actions: [] });
     updateContextStrip();
     return;
   } else if (isWorkbenchNode(currentStep)) {
     updateStoryWithWorkbench(storyPanel, currentStep);
-    updatePanel(systemPanel, { text: "Рабочее окно" });
-    updateServicePanel(servicePanel, { text: "Рабочее окно", actions: [] });
+    updatePanel(systemPanel, { text: "" });
+    updateServicePanel(servicePanel, { text: "", actions: [] });
     updateContextStrip();
     return;
   } else if (isDomainNode(currentStep)) {
@@ -2683,14 +2683,17 @@ function createUI() {
   panelsContainer.id = "panels-container";
   panelsContainer.innerHTML = `
     <div id="story-panel" class="panel-3s">
+      <div class="panel-header">Story</div>
       <div class="panel-content"></div>
     </div>
     <div class="graph-spacer"></div>
     <div id="right-column">
       <div id="system-panel" class="panel-3s">
+        <div class="panel-header">System</div>
         <div class="panel-content"></div>
       </div>
       <div id="service-panel" class="panel-3s">
+        <div class="panel-header">Service</div>
         <div class="panel-content"></div>
       </div>
     </div>
