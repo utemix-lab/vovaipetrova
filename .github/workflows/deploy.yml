@@ -37,6 +37,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Copy data into build
+        run: |
+          rm -rf render/dist/data
+          cp -R data render/dist/data
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -26,7 +26,7 @@ const SCENES = [
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
-const requestedScene = urlParams.get("scene") || "planetary";
+const requestedScene = urlParams.get("scene") || "visitor";
 const scene = SCENES.find((entry) => entry.id === requestedScene) || SCENES[0];
 
 scene.module();
