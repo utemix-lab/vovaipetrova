@@ -1168,7 +1168,7 @@ function updateStoryWithPotential(panel, node) {
       <div class="node-toc">
         <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
           <div class="widget-frame">
-            ${getWidgetImageHtml(widgetIcon, "widget")}
+            ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
           </div>
         </div>
       </div>`;
@@ -1278,7 +1278,7 @@ function updateStoryWithWorkbench(panel, node) {
       <div class="node-toc-row">
         <div class="node-widget node-widget--static node-widget--root${sharedClass}" title="${escapeHtml(workbenchLabel)}">
           <div class="widget-frame">
-            ${getWidgetImageHtml(workbenchIcon, "workbench")}
+            ${getWidgetImageHtml(workbenchIcon, "workbench", { isRoot: true })}
           </div>
         </div>
         ${relatedCharacters.map((nodeId) => {
@@ -1286,7 +1286,7 @@ function updateStoryWithWorkbench(panel, node) {
           return `
             <div class="node-widget node-widget--static node-widget--root node-widget--lever" title="${escapeHtml(label)}">
               <div class="widget-frame">
-                ${getWidgetImageHtml(characterIcon, "character")}
+                ${getWidgetImageHtml(characterIcon, "character", { isRoot: true })}
               </div>
             </div>`;
         }).join("")}
@@ -1366,7 +1366,7 @@ function updateStoryWithDomainFocus(panel, node) {
       <div class="node-toc">
         <div class="node-widget node-widget--static node-widget--root" title="${escapeHtml(node.label || node.id)}">
           <div class="widget-frame">
-            ${getWidgetImageHtml(widgetIcon, "widget")}
+            ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
           </div>
         </div>
       </div>`;
@@ -1618,7 +1618,7 @@ function updateStoryWithNodeWidget(panel, data, node) {
       <div class="node-toc">
         <div class="node-widget node-widget--static node-widget--root" title="${escapeHtml(node.label || node.id)}">
           <div class="widget-frame">
-            ${getWidgetImageHtml(widgetIcon, "widget")}
+            ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
           </div>
         </div>
       </div>`;
@@ -1672,8 +1672,16 @@ function getWorkbenchWidgetIcon(nodeId) {
   return `${CONFIG.contractsPath}/assets/workbenches/workbench-plug.png`;
 }
 
-function getWidgetImageHtml(defaultSrc, alt = "icon") {
+function getWidgetImageHtml(defaultSrc, alt = "icon", options = {}) {
   const safeAlt = escapeHtml(alt);
+  const { isRoot = false } = options;
+  
+  if (isRoot) {
+    // Root-виджет: сразу авторский лого, без подмены
+    return `<img src="${AUTHOR_PLUG_ICON}" alt="${safeAlt}" />`;
+  }
+  
+  // Lever/static-виджет: групповой лого, подмена на авторский при hover
   return `<img src="${defaultSrc}" data-default-src="${defaultSrc}" data-hover-src="${AUTHOR_PLUG_ICON}" alt="${safeAlt}" />`;
 }
 
