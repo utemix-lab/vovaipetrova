@@ -908,6 +908,11 @@ body.focus-service #service-panel::before {
   filter: none;
 }
 
+/* Корневые виджеты показывают цветной лого сразу (без hover) */
+.node-widget--root .widget-frame img {
+  filter: none;
+}
+
 /* Node TOC widget (non-clickable) */
 .node-toc {
   display: flex;
