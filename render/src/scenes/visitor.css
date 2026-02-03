@@ -974,6 +974,7 @@ body.focus-service #service-panel::before {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  --widget-frame-border-color: rgba(34, 211, 238, 0.2);
 }
 
 .domain-widget:hover .widget-frame,
@@ -985,6 +986,12 @@ body.focus-service #service-panel::before {
 .domain-widget.widget-scope-highlighted .widget-frame {
   background: transparent;
   border-color: var(--color-active);
+}
+
+.domain-widget:hover,
+.domain-widget.widget-highlighted,
+.domain-widget.widget-scope-highlighted {
+  --widget-frame-border-color: var(--color-active);
 }
 
 .domain-widget--shared,
@@ -1063,6 +1070,7 @@ body.focus-service #service-panel::before {
   border-radius: 12px;
   background: transparent;
   position: relative;
+  --widget-frame-border-color: rgba(34, 211, 238, 0.2);
 }
 
 .widget-frame {
@@ -1070,15 +1078,34 @@ body.focus-service #service-panel::before {
   align-items: center;
   justify-content: center;
   padding: 6px;
-  border: 1px solid rgba(34, 211, 238, 0.2);
+  --widget-frame-border-color: rgba(34, 211, 238, 0.2);
+  border: 1px solid var(--widget-frame-border-color);
   border-radius: 12px;
-  background: rgba(8, 12, 20, 0.35);
+  background: transparent;
   transition: transform 0.16s ease, border-color 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+
+.widget-frame::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -6px;
+  height: 6px;
+  border-top: 1px solid var(--widget-frame-border-color);
+  border-left: 1px solid var(--widget-frame-border-color);
+  border-right: 1px solid var(--widget-frame-border-color);
+  border-radius: 12px 12px 0 0;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .widget-frame img {
   pointer-events: none;
   user-select: none;
+  position: relative;
+  z-index: 1;
 }
 
 .node-widget--static {
@@ -1116,10 +1143,11 @@ body.focus-service #service-panel::before {
 
 .node-widget--lever,
 .widget--lever {
-  border: 1px solid rgba(34, 211, 238, 0.35);
+  border: none;
   border-radius: 10px;
-  background: rgba(8, 12, 20, 0.85);
-  padding: 4px 10px;
+  background: transparent;
+  padding: 6px 10px 10px;
+  position: relative;
 }
 
 .node-widget--lever .widget-frame,
