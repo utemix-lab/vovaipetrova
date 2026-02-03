@@ -2,27 +2,27 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 
 export default defineConfig({
-  base: "/dream-graph/",
+  base: "/vovaipetrova/",
   build: {
     target: "esnext",
     rollupOptions: {
       input: {
-        system: resolve(__dirname, "system.html"),
-        constructor: resolve(__dirname, "constructor.html")
+        visitor: resolve(__dirname, "public/visitor.html"),
+        lab: resolve(__dirname, "public/lab.html")
       }
     }
   },
   server: {
-    // Проксировать contracts из соседней папки
+    // Проксировать data из соседней папки
     proxy: {
-      "/contracts": {
+      "/data": {
         target: "http://localhost:5173",
-        rewrite: (path) => path.replace(/^\/contracts/, "/../contracts")
+        rewrite: (path) => path.replace(/^\/data/, "/../data")
       }
     },
     fs: {
-      // Разрешить доступ к contracts
-      allow: [".", "../contracts"]
+      // Разрешить доступ к data
+      allow: [".", "../data"]
     }
   }
 });
