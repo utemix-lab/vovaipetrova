@@ -7,9 +7,9 @@ export default defineConfig({
     target: "esnext",
     rollupOptions: {
       input: {
-        index: resolve(__dirname, "public/index.html"),
-        visitor: resolve(__dirname, "public/visitor.html"),
-        lab: resolve(__dirname, "public/lab.html")
+        index: resolve(__dirname, "index.html"),
+        visitor: resolve(__dirname, "visitor.html"),
+        lab: resolve(__dirname, "lab.html")
       }
     }
   },
