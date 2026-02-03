@@ -5,22 +5,22 @@
 
 export const PATHS = {
   // Базовые пути
-  DATA_ROOT: "/vovaipetrova/data",
-  GRAPH_ROOT: "/vovaipetrova/data/graph",
-  ASSETS_ROOT: "/vovaipetrova/data/assets",
+  DATA_ROOT: "/data",
+  GRAPH_ROOT: "/data/graph",
+  ASSETS_ROOT: "/data/assets",
   
   // Конкретные файлы
-  UNIVERSE_JSON: "/vovaipetrova/data/graph/universe.json",
-  EDITOR_HTML: "/vovaipetrova/data/graph/editor.html",
+  UNIVERSE_JSON: "/data/graph/universe.json",
+  EDITOR_HTML: "/data/graph/editor.html",
   
   // Ассеты
-  LOGOS: "/vovaipetrova/data/assets/logos",
-  BACKGROUNDS: "/vovaipetrova/data/assets/backgrounds",
-  AVATARS: "/vovaipetrova/data/assets/avatars",
-  FLAGS: "/vovaipetrova/data/assets/flags",
+  LOGOS: "/data/assets/logos",
+  BACKGROUNDS: "/data/assets/backgrounds",
+  AVATARS: "/data/assets/avatars",
+  FLAGS: "/data/assets/flags",
   
   // Экспорты
-  EXPORTS: "/vovaipetrova/data/exports"
+  EXPORTS: "/data/exports"
 };
 
 // Функция для построения URL
