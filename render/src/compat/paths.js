@@ -3,24 +3,29 @@
  * Централизованные пути для всего render
  */
 
+const BASE_URL = import.meta.env.BASE_URL || "/";
+const BASE_ROOT = BASE_URL.endsWith("/") ? BASE_URL.slice(0, -1) : BASE_URL;
+
+const withBase = (path) => `${BASE_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+
 export const PATHS = {
   // Базовые пути
-  DATA_ROOT: "/data",
-  GRAPH_ROOT: "/data/graph",
-  ASSETS_ROOT: "/data/assets",
+  DATA_ROOT: withBase("/data"),
+  GRAPH_ROOT: withBase("/data/graph"),
+  ASSETS_ROOT: withBase("/data/assets"),
   
   // Конкретные файлы
-  UNIVERSE_JSON: "/data/graph/universe.json",
-  EDITOR_HTML: "/data/graph/editor.html",
+  UNIVERSE_JSON: withBase("/data/graph/universe.json"),
+  EDITOR_HTML: withBase("/data/graph/editor.html"),
   
   // Ассеты
-  LOGOS: "/data/assets/logos",
-  BACKGROUNDS: "/data/assets/backgrounds",
-  AVATARS: "/data/assets/avatars",
-  FLAGS: "/data/assets/flags",
+  LOGOS: withBase("/data/assets/logos"),
+  BACKGROUNDS: withBase("/data/assets/backgrounds"),
+  AVATARS: withBase("/data/assets/avatars"),
+  FLAGS: withBase("/data/assets/flags"),
   
   // Экспорты
-  EXPORTS: "/data/exports"
+  EXPORTS: withBase("/data/exports")
 };
 
 // Функция для построения URL

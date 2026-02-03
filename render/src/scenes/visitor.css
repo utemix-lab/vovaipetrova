@@ -95,7 +95,7 @@ body.visitor-mode {
   margin-left: -16px;
   margin-top: -12px;
   background:
-    url('/vovaipetrova/data/assets/backgrounds/panel-story.png') center/cover no-repeat,
+    var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
 }
 
@@ -103,7 +103,7 @@ body.visitor-mode {
   flex: 1;
   margin-top: -12px;
   background:
-    url('/vovaipetrova/data/assets/backgrounds/panel-system.png') center/cover no-repeat,
+    var(--panel-system-url) center/cover no-repeat,
     var(--panel-bg);
 }
 
@@ -111,7 +111,7 @@ body.visitor-mode {
   flex: 1;
   margin-bottom: -12px;
   background:
-    url('/vovaipetrova/data/assets/backgrounds/panel-service.png') center/cover no-repeat,
+    var(--panel-service-url) center/cover no-repeat,
     var(--panel-bg);
 }
 
