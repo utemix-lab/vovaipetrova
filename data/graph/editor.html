@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universe Graph Editor</title>
+  <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --panel: rgba(18, 18, 22, 0.95);
+      --border: #2a2a2e;
+      --text: #e8e6e3;
+      --muted: #888;
+      --accent: #7ee787;
+      --node-default: #58a6ff;
+      --node-selected: #facc15;
+      --edge-default: #7ee787;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Header */
+    #header {
+      padding: 12px 20px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* Main content */
+    #main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Graph */
+    #graph {
+      flex: 1;
+      background: var(--bg);
+    }
+
+    /* Side panel */
+    #side-panel {
+      width: 320px;
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .panel-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .field-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 20px 0 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Footer */
+    #footer {
+      padding: 8px 20px;
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Toolbar */
+    #toolbar {
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .btn.primary:hover {
+      background: #9ef3a0;
+    }
+
+    .btn.active {
+      background: var(--node-selected);
+      color: #000;
+      border-color: var(--node-selected);
+    }
+
+    .btn.small {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    #no-selection {
+      color: var(--muted);
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    #node-editor {
+      display: none;
+    }
+
+    .neighbors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .neighbor-tag {
+      padding: 4px 10px;
+      background: rgba(88, 166, 255, 0.2);
+      border: 1px solid var(--node-default);
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .neighbor-tag:hover {
+      background: rgba(88, 166, 255, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <header id="header">
+      <h1>Universe Graph Editor</h1>
+      <div>
+        <button class="btn" onclick="loadFromFile()">Import</button>
+        <button class="btn primary" onclick="saveToFile()">Save JSON</button>
+      </div>
+    </header>
+
+    <div id="main">
+      <div id="graph"></div>
+
+      <div id="side-panel">
+        <div class="panel-header">Node Properties</div>
+
+        <div id="toolbar">
+          <button class="btn small" onclick="addNode()">+ Node</button>
+          <button class="btn small" id="add-edge-btn" onclick="startAddEdge()">+ Edge</button>
+          <button class="btn small" onclick="deleteSelected()">Delete</button>
+        </div>
+
+        <div class="panel-content">
+          <div id="no-selection">
+            <p>Select a node to edit</p>
+            <p style="margin-top: 8px; font-size: 12px;">Click node • Drag to move</p>
+          </div>
+
+          <div id="node-editor">
+            <div class="field-group">
+              <label>ID</label>
+              <input type="text" id="node-id" readonly style="opacity: 0.6;">
+            </div>
+
+            <div class="field-group">
+              <label>Label</label>
+              <input type="text" id="node-label" placeholder="Node name..." onchange="updateNode()">
+            </div>
+
+            <div class="section-title">Node Contract</div>
+
+            <div class="field-group">
+              <label>Type</label>
+              <select id="node-type" onchange="updateNode()">
+                <option value="root">root</option>
+                <option value="hub">hub</option>
+                <option value="domain">domain</option>
+                <option value="concept">concept</option>
+                <option value="character">character</option>
+                <option value="module">module</option>
+                <option value="spec">spec</option>
+                <option value="process">process</option>
+                <option value="policy">policy</option>
+                <option value="artifact">artifact</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Visibility</label>
+              <select id="node-visibility" onchange="updateNode()">
+                <option value="public">public</option>
+                <option value="internal">internal</option>
+                <option value="hidden">hidden</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Status</label>
+              <select id="node-status" onchange="updateNode()">
+                <option value="core">core</option>
+                <option value="expandable">expandable</option>
+                <option value="frozen">frozen</option>
+                <option value="deprecated">deprecated</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Semantics Role</label>
+              <select id="node-semantics-role" onchange="updateNode()">
+                <option value="description">description</option>
+                <option value="container">container</option>
+                <option value="mediator">mediator</option>
+                <option value="content">content</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>Semantics Abstraction</label>
+              <select id="node-semantics-abstraction" onchange="updateNode()">
+                <option value="high">high</option>
+                <option value="medium">medium</option>
+                <option value="low">low</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label>RAG Index</label>
+              <input type="checkbox" id="node-rag-index" onchange="updateNode()">
+            </div>
+
+            <div class="field-group">
+              <label>RAG Priority (0.0–1.0)</label>
+              <input type="number" id="node-rag-priority" min="0" max="1" step="0.05" onchange="updateNode()">
+            </div>
+
+            <div class="section-title">3S Content</div>
+
+            <div class="field-group">
+              <label>Story</label>
+              <textarea id="node-story" placeholder="Narrative content for Story panel..." onchange="updateNode()"></textarea>
+            </div>
+
+            <div class="field-group">
+              <label>System</label>
+              <textarea id="node-system" placeholder="Technical/structural description..." onchange="updateNode()"></textarea>
+            </div>
+
+            <div class="field-group">
+              <label>Service</label>
+              <textarea id="node-service" placeholder="Actions and affordances..." onchange="updateNode()"></textarea>
+            </div>
+
+            <div class="section-title">Connections</div>
+            <div class="field-group">
+              <label>Neighbors (click to navigate)</label>
+              <div id="neighbors" class="neighbors-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer id="footer">
+      <span id="stats">Nodes: 0 | Edges: 0</span>
+      <span id="status">Universe Graph — Source of Truth</span>
+    </footer>
+  </div>
+
+  <script>
+    let cy = null;
+    let selectedNode = null;
+    let addingEdge = false;
+    let edgeSource = null;
+
+    const NODE_DEFAULTS = {
+      type: "concept",
+      visibility: "public",
+      status: "expandable",
+      semantics: {
+        role: "content",
+        abstraction: "medium"
+      },
+      rag: {
+        index: true,
+        priority: 0.5
+      }
+    };
+
+    // Graph data
+    let graphData = {
+      meta: {
+        version: '1.0',
+        description: 'Universe Graph'
+      },
+      nodes: [],
+      edges: []
+    };
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      cy = cytoscape({
+        container: document.getElementById('graph'),
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'label': 'data(label)',
+              'text-valign': 'center',
+              'text-halign': 'center',
+              'background-color': 'var(--node-default)',
+              'color': '#fff',
+              'font-size': '14px',
+              'width': 80,
+              'height': 80,
+              'border-width': 3,
+              'border-color': '#3a7bd5'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': 4,
+              'border-color': 'var(--node-selected)'
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 2,
+              'line-color': 'var(--edge-default)',
+              'target-arrow-color': 'var(--edge-default)',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier'
+            }
+          }
+        ],
+        layout: { name: 'preset' }
+      });
+
+      cy.on('tap', 'node', onNodeTap);
+      cy.on('tap', function (e) {
+        if (e.target === cy) {
+          clearSelection();
+        }
+      });
+      cy.on('dragfree', 'node', save);
+
+      // Load from localStorage
+      const saved = localStorage.getItem('universe-graph');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.nodes) {
+            graphData = parsed;
+            graphData.nodes = graphData.nodes.map(applyNodeDefaults);
+            renderGraph();
+          }
+        } catch (e) {
+          console.error('Failed to load:', e);
+        }
+      }
+
+      // If empty, add initial node
+      if (graphData.nodes.length === 0) {
+        addInitialNode();
+      }
+
+      updateStats();
+    }
+
+    function addInitialNode() {
+      const node = {
+        id: 'universe',
+        label: 'Universe',
+        position: { x: 400, y: 300 },
+        story: 'Добро пожаловать в Universe — единое пространство знаний.',
+        system: 'Корневой узел графа. От него расходятся все понятия системы.',
+        service: 'Выберите направление для исследования.'
+      };
+      graphData.nodes.push(applyNodeDefaults(node));
+      cy.add({
+        group: 'nodes',
+        data: { id: node.id, label: node.label },
+        position: node.position
+      });
+      save();
+    }
+
+    function renderGraph() {
+      cy.elements().remove();
+
+      graphData.nodes.forEach(node => {
+        cy.add({
+          group: 'nodes',
+          data: { id: node.id, label: node.label },
+          position: node.position || { x: Math.random() * 600 + 100, y: Math.random() * 400 + 100 }
+        });
+      });
+
+      graphData.edges.forEach(edge => {
+        cy.add({
+          group: 'edges',
+          data: { id: edge.id, source: edge.source, target: edge.target }
+        });
+      });
+    }
+
+    function addNode() {
+      const id = 'node-' + Date.now();
+      const num = graphData.nodes.length + 1;
+      const label = 'Node ' + num;
+      const position = { x: 200 + Math.random() * 400, y: 150 + Math.random() * 300 };
+
+      const node = {
+        id,
+        label,
+        position,
+        story: '',
+        system: '',
+        service: ''
+      };
+      graphData.nodes.push(applyNodeDefaults(node));
+
+      cy.add({
+        group: 'nodes',
+        data: { id, label },
+        position
+      });
+
+      save();
+      updateStats();
+
+      // Select new node
+      cy.$('#' + id).select();
+      onNodeTap({ target: cy.$('#' + id) });
+    }
+
+    function onNodeTap(e) {
+      if (addingEdge) {
+        if (!edgeSource) {
+          edgeSource = e.target.id();
+          setStatus('Select target node...');
+        } else {
+          const targetId = e.target.id();
+          if (targetId !== edgeSource) {
+            addEdge(edgeSource, targetId);
+          }
+          cancelAddEdge();
+        }
+        return;
+      }
+
+      selectedNode = e.target.id();
+      const nodeData = graphData.nodes.find(n => n.id === selectedNode);
+      if (nodeData) {
+        showNodeEditor(nodeData);
+      }
+      setStatus('Selected: ' + (nodeData?.label || selectedNode));
+    }
+
+    function showNodeEditor(node) {
+      document.getElementById('no-selection').style.display = 'none';
+      document.getElementById('node-editor').style.display = 'block';
+
+      const normalized = applyNodeDefaults(node);
+      document.getElementById('node-id').value = node.id;
+      document.getElementById('node-label').value = node.label || '';
+      document.getElementById('node-type').value = normalized.type;
+      document.getElementById('node-visibility').value = normalized.visibility;
+      document.getElementById('node-status').value = normalized.status;
+      document.getElementById('node-semantics-role').value = normalized.semantics.role;
+      document.getElementById('node-semantics-abstraction').value = normalized.semantics.abstraction;
+      document.getElementById('node-rag-index').checked = Boolean(normalized.rag.index);
+      document.getElementById('node-rag-priority').value = String(normalized.rag.priority);
+      document.getElementById('node-story').value = node.story || '';
+      document.getElementById('node-system').value = node.system || '';
+      document.getElementById('node-service').value = node.service || '';
+
+      // Show neighbors
+      const neighbors = getNeighbors(node.id);
+      const neighborsDiv = document.getElementById('neighbors');
+      neighborsDiv.innerHTML = '';
+
+      if (neighbors.length === 0) {
+        neighborsDiv.innerHTML = '<span style="color: var(--muted); font-size: 12px;">No connections</span>';
+      } else {
+        neighbors.forEach(n => {
+          const tag = document.createElement('span');
+          tag.className = 'neighbor-tag';
+          tag.textContent = n.label;
+          tag.onclick = () => navigateToNode(n.id);
+          neighborsDiv.appendChild(tag);
+        });
+      }
+    }
+
+    function getNeighbors(nodeId) {
+      const neighborIds = new Set();
+
+      graphData.edges.forEach(e => {
+        if (e.source === nodeId) neighborIds.add(e.target);
+        if (e.target === nodeId) neighborIds.add(e.source);
+      });
+
+      return graphData.nodes.filter(n => neighborIds.has(n.id));
+    }
+
+    function navigateToNode(nodeId) {
+      cy.$(':selected').unselect();
+      cy.$('#' + nodeId).select();
+      onNodeTap({ target: cy.$('#' + nodeId) });
+
+      // Center on node
+      cy.animate({
+        center: { eles: cy.$('#' + nodeId) },
+        duration: 300
+      });
+    }
+
+    function hideNodeEditor() {
+      document.getElementById('no-selection').style.display = 'block';
+      document.getElementById('node-editor').style.display = 'none';
+    }
+
+    function updateNode() {
+      if (!selectedNode) return;
+
+      const nodeData = graphData.nodes.find(n => n.id === selectedNode);
+      if (!nodeData) return;
+
+      const newLabel = document.getElementById('node-label').value;
+      nodeData.label = newLabel;
+      nodeData.type = document.getElementById('node-type').value || NODE_DEFAULTS.type;
+      nodeData.visibility = document.getElementById('node-visibility').value || NODE_DEFAULTS.visibility;
+      nodeData.status = document.getElementById('node-status').value || NODE_DEFAULTS.status;
+      nodeData.semantics = {
+        role: document.getElementById('node-semantics-role').value || NODE_DEFAULTS.semantics.role,
+        abstraction: document.getElementById('node-semantics-abstraction').value || NODE_DEFAULTS.semantics.abstraction
+      };
+      nodeData.rag = {
+        index: document.getElementById('node-rag-index').checked,
+        priority: Number(document.getElementById('node-rag-priority').value || NODE_DEFAULTS.rag.priority)
+      };
+      nodeData.story = document.getElementById('node-story').value;
+      nodeData.system = document.getElementById('node-system').value;
+      nodeData.service = document.getElementById('node-service').value;
+
+      cy.$('#' + selectedNode).data('label', newLabel);
+      save();
+    }
+
+    function clearSelection() {
+      selectedNode = null;
+      cy.$(':selected').unselect();
+      hideNodeEditor();
+      setStatus('Click to select, drag to move');
+    }
+
+    function startAddEdge() {
+      addingEdge = true;
+      edgeSource = null;
+      document.getElementById('add-edge-btn').classList.add('active');
+      setStatus('Select source node...');
+    }
+
+    function cancelAddEdge() {
+      addingEdge = false;
+      edgeSource = null;
+      document.getElementById('add-edge-btn').classList.remove('active');
+      setStatus('Click to select, drag to move');
+    }
+
+    function addEdge(source, target) {
+      const exists = graphData.edges.some(e =>
+        (e.source === source && e.target === target) ||
+        (e.source === target && e.target === source)
+      );
+      if (exists) return;
+
+      const id = 'edge-' + Date.now();
+      const edge = { id, source, target };
+      graphData.edges.push(edge);
+
+      cy.add({
+        group: 'edges',
+        data: { id, source, target }
+      });
+
+      save();
+      updateStats();
+
+      // Update neighbors display
+      if (selectedNode) {
+        const nodeData = graphData.nodes.find(n => n.id === selectedNode);
+        if (nodeData) showNodeEditor(nodeData);
+      }
+    }
+
+    function deleteSelected() {
+      if (!selectedNode) return;
+
+      graphData.nodes = graphData.nodes.filter(n => n.id !== selectedNode);
+      graphData.edges = graphData.edges.filter(e => e.source !== selectedNode && e.target !== selectedNode);
+
+      cy.$('#' + selectedNode).remove();
+      clearSelection();
+      save();
+      updateStats();
+    }
+
+    function saveToFile() {
+      // Update positions
+      graphData.nodes.forEach(node => {
+        const cyNode = cy.$('#' + node.id);
+        if (cyNode.length) {
+          node.position = cyNode.position();
+        }
+      });
+
+      const json = JSON.stringify(graphData, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'universe.json';
+      a.click();
+
+      URL.revokeObjectURL(url);
+      setStatus('Saved! Put file in contracts/public/graph/');
+    }
+
+    function loadFromFile() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            graphData = data;
+            graphData.nodes = (graphData.nodes || []).map(applyNodeDefaults);
+            renderGraph();
+            updateStats();
+            save();
+            clearSelection();
+            setStatus('Loaded: ' + data.nodes.length + ' nodes');
+          } catch (err) {
+            setStatus('Error: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    function save() {
+      graphData.nodes.forEach(node => {
+        const cyNode = cy.$('#' + node.id);
+        if (cyNode.length) {
+          node.position = cyNode.position();
+        }
+      });
+      localStorage.setItem('universe-graph', JSON.stringify(graphData));
+    }
+
+    function applyNodeDefaults(node) {
+      const semantics = Object.assign({}, NODE_DEFAULTS.semantics, node.semantics || {});
+      const rag = Object.assign({}, NODE_DEFAULTS.rag, node.rag || {});
+      return Object.assign({}, node, {
+        type: node.type || NODE_DEFAULTS.type,
+        visibility: node.visibility || NODE_DEFAULTS.visibility,
+        status: node.status || NODE_DEFAULTS.status,
+        semantics,
+        rag
+      });
+    }
+
+    function updateStats() {
+      document.getElementById('stats').textContent =
+        `Nodes: ${graphData.nodes.length} | Edges: ${graphData.edges.length}`;
+    }
+
+    function setStatus(text) {
+      document.getElementById('status').textContent = text;
+    }
+  </script>
+</body>
+
+</html>

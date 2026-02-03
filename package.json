@@ -1,0 +1,27 @@
+{
+  "name": "vovaipetrova",
+  "version": "1.0.0-alpha",
+  "description": "Единая система знаний на основе онтологического графа",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:render\" \"npm run dev:editor\"",
+    "dev:render": "cd render && npm run dev",
+    "dev:editor": "python -m http.server 8080 --directory data/graph",
+    "validate": "node core/validate.js",
+    "build": "cd render && npm run build",
+    "deploy": "npm run build && gh-pages -d render/dist",
+    "clean": "rm -rf node_modules render/node_modules render/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "gh-pages": "^6.1.1"
+  },
+  "keywords": [
+    "ontology",
+    "graph",
+    "knowledge",
+    "3d-visualization"
+  ],
+  "author": "utemix-lab",
+  "license": "MIT"
+}

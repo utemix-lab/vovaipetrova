@@ -1,0 +1,48 @@
+:root {
+  color-scheme: dark;
+  --bg: #07070a;
+  --text: #e7e9ee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#graph {
+  position: fixed;
+  inset: 0;
+}
+
+#sceneSwitcher {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.scene-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(8, 12, 18, 0.6);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.scene-btn.active {
+  border-color: rgba(125, 211, 252, 0.7);
+  background: rgba(30, 64, 175, 0.55);
+}
