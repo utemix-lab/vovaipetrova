@@ -1,0 +1,9 @@
+{
+  "version": "0.1",
+  "kind": "country_registry",
+  "countries": [
+    { "iso2": "us", "name_en": "United States", "name_ru": "США", "flag": "assets/flags/us.png" },
+    { "iso2": "ru", "name_en": "Russia", "name_ru": "Россия", "flag": "assets/flags/ru.png" },
+    { "iso2": "fr", "name_en": "France", "name_ru": "Франция", "flag": "assets/flags/fr.png" }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://utemix-lab.github.io/schemas/bindings.schema.json",
+  "version": "0.1.0",
+  "id": "visitor-bindings",
+  "title": "Visitor Mode Bindings",
+  "description": "Maps element IDs to assets and content references",
+  "bindings": [
+    {
+      "elementId": "panel-story",
+      "assets": {
+        "background": "assets/ui/backgrounds/panel-default.webp",
+        "frame": "assets/ui/frames/panel-story.svg"
+      },
+      "style": {
+        "accentColor": "#facc15"
+      }
+    },
+    {
+      "elementId": "panel-system",
+      "assets": {
+        "background": "assets/ui/backgrounds/panel-default.webp",
+        "frame": "assets/ui/frames/panel-system.svg"
+      },
+      "style": {
+        "accentColor": "#58a6ff"
+      }
+    },
+    {
+      "elementId": "panel-service",
+      "assets": {
+        "background": "assets/ui/backgrounds/panel-default.webp",
+        "frame": "assets/ui/frames/panel-service.svg"
+      },
+      "style": {
+        "accentColor": "#22c55e"
+      }
+    },
+    {
+      "elementId": "action-navigate",
+      "assets": {
+        "icon": "assets/icons/actions/navigate.svg"
+      },
+      "contentRef": "texts/service/action-navigate.md"
+    },
+    {
+      "elementId": "action-export",
+      "assets": {
+        "icon": "assets/icons/actions/export.svg"
+      },
+      "contentRef": "texts/service/action-export.md"
+    },
+    {
+      "elementId": "action-generate",
+      "assets": {
+        "icon": "assets/icons/actions/generate.svg"
+      },
+      "contentRef": "texts/service/action-generate.md"
+    },
+    {
+      "elementId": "nav-prev",
+      "assets": {
+        "icon": "assets/icons/navigation/arrow-left.svg"
+      }
+    },
+    {
+      "elementId": "nav-next",
+      "assets": {
+        "icon": "assets/icons/navigation/arrow-right.svg"
+      }
+    },
+    {
+      "elementId": "nav-progress",
+      "assets": {
+        "dotActive": "assets/icons/navigation/dot-active.svg",
+        "dotInactive": "assets/icons/navigation/dot-inactive.svg"
+      }
+    }
+  ],
+  "defaults": {
+    "missingAsset": "assets/icons/system/placeholder.svg",
+    "missingText": "texts/system/missing-content.md"
+  }
+}

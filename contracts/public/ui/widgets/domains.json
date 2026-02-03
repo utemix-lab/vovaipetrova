@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Visual Anchors v1 — виджеты доменов для Story-панели"
+  },
+  "config": {
+    "panel": "story",
+    "triggerNode": "domains",
+    "style": "monochrome",
+    "iconSize": 48
+  },
+  "widgets": [
+    {
+      "nodeId": "domain-ai",
+      "label": "AI & Computational Models",
+      "icon": "assets/icons/domains/ai.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-music",
+      "label": "Music & Sound Culture",
+      "icon": "assets/icons/domains/music.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-visual",
+      "label": "Visual & Media Arts",
+      "icon": "assets/icons/domains/visual.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-knowledge",
+      "label": "Knowledge & Cognitive Systems",
+      "icon": "assets/icons/domains/knowledge.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-dev",
+      "label": "Software & Digital Tools",
+      "icon": "assets/icons/domains/dev.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-design",
+      "label": "Design & Aesthetic Systems",
+      "icon": "assets/icons/domains/design.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-physical",
+      "label": "Physical & Fabrication",
+      "icon": "assets/icons/domains/physical.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    },
+    {
+      "nodeId": "domain-interactive",
+      "label": "Interactive & Game Culture",
+      "icon": "assets/icons/domains/interactive.png",
+      "interactions": {
+        "hover": "highlightNode",
+        "click": "focusNode"
+      }
+    }
+  ]
+}
