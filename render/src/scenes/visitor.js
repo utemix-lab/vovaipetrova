@@ -16,7 +16,7 @@ const CONFIG = {
   defaultRoute: "demo/visitor.demo.route.json",
   defaultGraphUrl: PATHS.UNIVERSE_JSON
 };
-const AUTHOR_PLUG_ICON = `${PATHS.AVATARS}/author-plug.png`;
+const AUTHOR_PLUG_ICON = `${PATHS.WIDGETS}/author-plug.png`;
 
 const BASE_NODE_RADIUS = VISUAL_CONFIG.node.minRadius;
 const NODE_PULSE_AMPLITUDE = 0.07;
@@ -1645,34 +1645,34 @@ function getNodeWidgetIcon(node) {
       const exists = domainWidgets.widgets.some((widget) => widget.nodeId === node.id);
       if (!exists) return null;
     }
-    return `${CONFIG.contractsPath}/assets/icons/domains/plug.png`;
+    return `${CONFIG.contractsPath}/assets/widgets/domain-plug.png`;
   }
   if (node.type === "practice") {
-    return `${CONFIG.contractsPath}/assets/practices/practice-plug.png`;
+    return `${CONFIG.contractsPath}/assets/widgets/practice-plug.png`;
   }
   if (node.type === "character") {
-    return `${CONFIG.contractsPath}/assets/avatars/characters/character-plug.png`;
+    return `${CONFIG.contractsPath}/assets/widgets/character-plug.png`;
   }
   if (node.type === "workbench") {
-    return `${CONFIG.contractsPath}/assets/workbenches/workbench-plug.png`;
+    return `${CONFIG.contractsPath}/assets/widgets/workbench-plug.png`;
   }
   return null;
 }
 
 function getDomainWidgetIcon(nodeId) {
-  return `${CONFIG.contractsPath}/assets/icons/domains/plug.png`;
+  return `${CONFIG.contractsPath}/assets/widgets/domain-plug.png`;
 }
 
 function getPracticeWidgetIcon(nodeId) {
-  return `${CONFIG.contractsPath}/assets/practices/practice-plug.png`;
+  return `${CONFIG.contractsPath}/assets/widgets/practice-plug.png`;
 }
 
 function getCharacterWidgetIcon() {
-  return `${CONFIG.contractsPath}/assets/avatars/characters/character-plug.png`;
+  return `${CONFIG.contractsPath}/assets/widgets/character-plug.png`;
 }
 
 function getWorkbenchWidgetIcon(nodeId) {
-  return `${CONFIG.contractsPath}/assets/workbenches/workbench-plug.png`;
+  return `${CONFIG.contractsPath}/assets/widgets/workbench-plug.png`;
 }
 
 function getWidgetImageHtml(defaultSrc, alt = "icon", options = {}) {

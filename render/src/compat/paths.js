@@ -21,7 +21,7 @@ export const PATHS = {
   // Ассеты
   LOGOS: withBase("/assets/logos"),
   BACKGROUNDS: withBase("/assets/backgrounds"),
-  AVATARS: withBase("/assets/avatars"),
+  WIDGETS: withBase("/assets/widgets"),
   FLAGS: withBase("/assets/flags"),
   
   // Экспорты
