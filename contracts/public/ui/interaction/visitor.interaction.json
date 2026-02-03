@@ -1,0 +1,126 @@
+{
+  "$schema": "https://utemix-lab.github.io/schemas/interaction.schema.json",
+  "version": "0.1.0",
+  "id": "visitor-interaction",
+  "title": "Visitor Mode Interactions",
+  "description": "Interaction rules for Visitor mode",
+  "rules": [
+    {
+      "id": "tag-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "tag" }
+      },
+      "effects": [
+        { "type": "highlight", "target": "panel:story", "duration": 500 },
+        { "type": "log", "message": "Tag clicked: {{target.label}}" }
+      ]
+    },
+    {
+      "id": "action-icon-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "action-icon" }
+      },
+      "effects": [
+        { "type": "highlight", "target": "panel:service", "duration": 500 },
+        { "type": "execute", "action": "{{target.action}}" },
+        { "type": "log", "message": "Action executed: {{target.action}}" }
+      ]
+    },
+    {
+      "id": "actor-avatar-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "actor-avatar" }
+      },
+      "effects": [
+        { "type": "navigate", "to": "actor:{{target.actorId}}" },
+        { "type": "log", "message": "Actor selected: {{target.label}}" }
+      ]
+    },
+    {
+      "id": "graph-node-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "graph-node" }
+      },
+      "effects": [
+        { "type": "select", "target": "step:{{target.stepId}}" },
+        { "type": "update", "panel": "story", "content": "{{target.story}}" },
+        { "type": "update", "panel": "system", "content": "{{target.system}}" },
+        { "type": "update", "panel": "service", "content": "{{target.service}}" }
+      ]
+    },
+    {
+      "id": "navigation-point-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "navigation-point" }
+      },
+      "effects": [
+        { "type": "navigate", "to": "step:{{target.stepId}}" },
+        { "type": "log", "message": "Navigating to step: {{target.stepId}}" }
+      ]
+    },
+    {
+      "id": "external-ref-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "external-ref" }
+      },
+      "effects": [
+        { "type": "open-external", "url": "{{target.url}}" },
+        { "type": "log", "message": "Opening external: {{target.url}}" }
+      ]
+    },
+    {
+      "id": "pointer-tag-hover",
+      "trigger": {
+        "event": "hover",
+        "target": { "type": "pointer-tag" }
+      },
+      "effects": [
+        { "type": "tooltip", "content": "{{target.description}}", "position": "above" }
+      ]
+    },
+    {
+      "id": "pointer-tag-click",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "pointer-tag" }
+      },
+      "effects": [
+        { "type": "highlight", "target": "panel:system", "duration": 300 },
+        { "type": "focus", "target": "{{target.pointsTo}}" },
+        { "type": "log", "message": "Pointer activated: {{target.id}}" }
+      ]
+    },
+    {
+      "id": "content-block-expand",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "content-block", "expandable": true }
+      },
+      "effects": [
+        { "type": "toggle-expand", "target": "{{target.id}}" }
+      ]
+    },
+    {
+      "id": "panel-collapse",
+      "trigger": {
+        "event": "click",
+        "target": { "type": "panel-collapse-btn" }
+      },
+      "effects": [
+        { "type": "toggle-collapse", "panel": "{{target.panel}}" }
+      ]
+    }
+  ],
+  "globalBindings": {
+    "escape": { "action": "deselect-all" },
+    "space": { "action": "toggle-pause" },
+    "arrowRight": { "action": "next-step" },
+    "arrowLeft": { "action": "prev-step" }
+  }
+}

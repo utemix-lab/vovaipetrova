@@ -1,0 +1,3 @@
+{"practice_id":"practice-direction","item_external_id":"https://www.krea.ai/","match":{"required":["cap:image_to_image"],"optional":["cap:lipsync"]},"notes":"Подходит для визуальной сценографии и стилизации персонажей.","updated_at":"2026-01-28"}
+{"practice_id":"practice-direction","item_external_id":"https://runwayml.com/","match":{"required":["cap:image_to_image"],"optional":["cap:lipsync"]},"notes":"Подходит для визуальных сцен и прототипов подачи.","updated_at":"2026-01-28"}
+{"practice_id":"practice-direction","item_external_id":"model:sdxl","match":{"required":["method:diffusion"],"optional":["cap:image_to_image"]},"notes":"Базовый метод генерации образов для сценографии.","updated_at":"2026-01-28"}

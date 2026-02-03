@@ -1,0 +1,67 @@
+{
+  "$schema": "https://utemix-lab.github.io/schemas/assets-manifest.schema.json",
+  "version": "0.1.0",
+  "id": "assets-manifest",
+  "title": "Assets Manifest",
+  "description": "Registry of all assets available in the workspace",
+  "generated_at": "2026-01-20T12:00:00Z",
+  "assets": {
+    "ui": {
+      "frames": [],
+      "backgrounds": [],
+      "typography": []
+    },
+    "icons": {
+      "actions": [],
+      "navigation": [],
+      "system": []
+    },
+    "avatars": {
+      "characters": []
+    },
+    "logos": {
+      "brands": [],
+      "software": []
+    },
+    "flags": [
+      "assets/flags/us.png",
+      "assets/flags/ru.png",
+      "assets/flags/fr.png"
+    ],
+    "images": {
+      "story": [],
+      "system": [
+        "assets/practices/practice-plug.png"
+      ],
+      "service": []
+    },
+    "audio": [],
+    "video": []
+  },
+  "exports": {
+    "version": "1.0",
+    "catalogs": [
+      "exports/ai_catalog.jsonl",
+      "exports/curated_sets.jsonl",
+      "exports/signals.jsonl",
+      "exports/practice_participation.jsonl"
+    ],
+    "registries": [
+      "exports/pointer_tags_registry.json",
+      "exports/country_registry.json"
+    ]
+  },
+  "stats": {
+    "totalAssets": 0,
+    "byType": {
+      "svg": 0,
+      "png": 0,
+      "webp": 0,
+      "jpg": 0,
+      "mp4": 0,
+      "webm": 0,
+      "mp3": 0,
+      "ogg": 0
+    }
+  }
+}

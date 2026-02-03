@@ -1,0 +1,27 @@
+{
+  "$schema": "https://utemix-lab.github.io/schemas/session.schema.json",
+  "version": "0.1.0",
+  "id": "visitor-demo-session",
+  "title": "Visitor Demo Session",
+  "description": "Demo session for testing Visitor mode",
+  "created_at": "2026-01-20T12:00:00Z",
+  "mode": "visitor",
+  "routeRef": "routes/demo/visitor.demo.route.json",
+  "state": {
+    "currentStepId": null,
+    "visitedSteps": [],
+    "selectedActors": [],
+    "expandedBlocks": [],
+    "panelStates": {
+      "story": { "collapsed": false, "scrollPosition": 0 },
+      "system": { "collapsed": false, "scrollPosition": 0 },
+      "service": { "collapsed": false, "scrollPosition": 0 }
+    }
+  },
+  "history": [],
+  "flags": {
+    "autoAdvance": false,
+    "showHints": true,
+    "soundEnabled": false
+  }
+}

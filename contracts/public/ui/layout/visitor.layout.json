@@ -1,0 +1,57 @@
+{
+  "$schema": "https://utemix-lab.github.io/schemas/layout.schema.json",
+  "version": "0.1.0",
+  "id": "visitor-layout",
+  "title": "Visitor Mode Layout",
+  "description": "Default layout for Visitor mode - three panels + central graph view",
+  "layout": {
+    "desktop": {
+      "panels": {
+        "story": {
+          "position": "left",
+          "width": "280px",
+          "minWidth": "200px",
+          "maxWidth": "400px",
+          "collapsible": true
+        },
+        "system": {
+          "position": "right-top",
+          "width": "320px",
+          "height": "50%",
+          "minWidth": "240px",
+          "collapsible": true
+        },
+        "service": {
+          "position": "right-bottom",
+          "width": "320px",
+          "height": "50%",
+          "minWidth": "240px",
+          "collapsible": true
+        },
+        "graph": {
+          "position": "center",
+          "flex": 1
+        }
+      },
+      "order": ["story", "graph", "system", "service"]
+    },
+    "mobile": {
+      "panels": {
+        "story": { "position": "bottom", "height": "40%" },
+        "system": { "position": "bottom", "height": "40%" },
+        "service": { "position": "bottom", "height": "40%" },
+        "graph": { "position": "top", "height": "60%" }
+      },
+      "order": ["graph", "story"],
+      "defaultPanel": "story",
+      "swipeable": true
+    }
+  },
+  "theme": {
+    "background": "#0a0a0c",
+    "panelBackground": "rgba(18, 18, 22, 0.95)",
+    "border": "#2a2a2e",
+    "text": "#e8e6e3",
+    "accent": "#7ee787"
+  }
+}
