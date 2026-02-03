@@ -9,23 +9,23 @@ const BASE_ROOT = BASE_URL.endsWith("/") ? BASE_URL.slice(0, -1) : BASE_URL;
 const withBase = (path) => `${BASE_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
 
 export const PATHS = {
-  // Базовые пути
-  DATA_ROOT: withBase("/data"),
-  GRAPH_ROOT: withBase("/data/graph"),
-  ASSETS_ROOT: withBase("/data/assets"),
+  // Базовые пути (всё лежит в public/, без вложенной data/)
+  DATA_ROOT: withBase(""),
+  GRAPH_ROOT: withBase("/graph"),
+  ASSETS_ROOT: withBase("/assets"),
   
   // Конкретные файлы
-  UNIVERSE_JSON: withBase("/data/graph/universe.json"),
-  EDITOR_HTML: withBase("/data/graph/editor.html"),
+  UNIVERSE_JSON: withBase("/graph/universe.json"),
+  EDITOR_HTML: withBase("/graph/editor.html"),
   
   // Ассеты
-  LOGOS: withBase("/data/assets/logos"),
-  BACKGROUNDS: withBase("/data/assets/backgrounds"),
-  AVATARS: withBase("/data/assets/avatars"),
-  FLAGS: withBase("/data/assets/flags"),
+  LOGOS: withBase("/assets/logos"),
+  BACKGROUNDS: withBase("/assets/backgrounds"),
+  AVATARS: withBase("/assets/avatars"),
+  FLAGS: withBase("/assets/flags"),
   
   // Экспорты
-  EXPORTS: withBase("/data/exports")
+  EXPORTS: withBase("/exports")
 };
 
 // Функция для построения URL

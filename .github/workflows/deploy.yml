@@ -37,12 +37,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Copy data and contracts into build
-        run: |
-          rm -rf render/dist/data render/dist/contracts
-          cp -R data render/dist/data
-          cp -R contracts render/dist/contracts
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -6,15 +6,15 @@ const baseRoot = normalizedBase || "";
 document.documentElement.style.setProperty("--base-url", baseRoot);
 document.documentElement.style.setProperty(
   "--panel-story-url",
-  `url("${baseRoot}/data/assets/backgrounds/panel-story.png")`
+  `url("${baseRoot}/assets/backgrounds/panel-story.png")`
 );
 document.documentElement.style.setProperty(
   "--panel-system-url",
-  `url("${baseRoot}/data/assets/backgrounds/panel-system.png")`
+  `url("${baseRoot}/assets/backgrounds/panel-system.png")`
 );
 document.documentElement.style.setProperty(
   "--panel-service-url",
-  `url("${baseRoot}/data/assets/backgrounds/panel-service.png")`
+  `url("${baseRoot}/assets/backgrounds/panel-service.png")`
 );
 
 const SCENES = [

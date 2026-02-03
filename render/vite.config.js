@@ -13,18 +13,5 @@ export default defineConfig({
         system: resolve(__dirname, "system.html")
       }
     }
-  },
-  server: {
-    // Проксировать data из соседней папки
-    proxy: {
-      "/data": {
-        target: "http://localhost:5173",
-        rewrite: (path) => path.replace(/^\/data/, "/../data")
-      }
-    },
-    fs: {
-      // Разрешить доступ к data
-      allow: [".", "../data"]
-    }
   }
 });
