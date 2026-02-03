@@ -1,57 +1,22 @@
-# Vovaipetrova
+# Vovaipetrova System Graph
 
-> Единая система знаний на основе онтологического графа
+3D visualization of system architecture.
 
-**Статус:** В разработке  
-**Версия:** 1.0.0-alpha
+## Live Demo
+https://utemix-lab.github.io/vovaipetrova/system.html
 
----
-
-## Быстрый старт
-
+## Development
 ```bash
 npm install
 npm run dev
 ```
 
-- Редактор графа: http://localhost:8080/editor.html
-- 3D визуализация: http://localhost:5173/visitor.html
-
----
-
-## Архитектура
-
-```
-vovaipetrova/
-├── core/           # Ядро системы и документация
-├── data/           # Данные графа и нарратив
-└── render/         # 3D визуализация
-```
-
-**Единый источник истины:** `data/graph/universe.json`
-
----
-
-## Разработка
-
+## Build
 ```bash
-npm run dev:render    # Запустить 3D визуализацию
-npm run dev:editor    # Запустить редактор графа
-npm test              # Запустить тесты
-npm run validate      # Проверить структуру графа
+npm run build
 ```
 
----
-
-## Деплой
-
-```bash
-npm run build         # Собрать render
-npm run deploy        # Деплой на GitHub Pages
-```
-
----
-
-## Лицензия
-
-MIT © utemix-lab
+## Structure
+- `data/graph/universe.json` - Graph data
+- `render/src/` - Source code
+- `system.html` - Main visualization
