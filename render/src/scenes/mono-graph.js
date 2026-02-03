@@ -2,7 +2,7 @@ import ForceGraph3D from "3d-force-graph";
 import * as THREE from "three";
 import { loadCosmosMap } from "../cosmos/adapter.js";
 import { loadGraphConfig, GraphSource } from "../graph/loadGraphConfig.js";
-import "./legacy-v0-1.css";
+import "./_archive/legacy-v0-1.css";
 import { VISUAL_CONFIG } from "../visual/config.js";
 
 ensureLegacyUi();
