@@ -2401,50 +2401,7 @@ function getOwnerContextTag() {
 }
 
 function updateContextStrip() {
-  const strip = document.getElementById("context-strip");
-  if (!strip) return;
-  const responseType = getResponseType();
-  const orderedContext = sortContextEntries(activeContext);
-  const pills = orderedContext.map((entry) => {
-    const label = `${entry.type}:${entry.value}`;
-    const canClose = entry.type !== "owner";
-    return `
-      <span class="context-pill context-pill--${entry.type}" data-context-type="${entry.type}" data-context-value="${entry.value}">
-        <span class="context-label">${escapeHtml(label)}</span>
-        ${entry.source ? `<span class="context-source">${escapeHtml(entry.source)}</span>` : ""}
-        ${entry.locked ? `<span class="context-lock">🔒</span>` : ""}
-        ${canClose ? `<button class="context-close" data-action="remove-context">×</button>` : ""}
-      </span>`;
-  }).join("");
-
-  const activeClass = (name) => (responseType === name ? " legend-active" : "");
-  strip.innerHTML = `
-    <div class="context-strip-row">
-      <div class="context-response">${escapeHtml(responseType)}</div>
-      <div class="context-pills">${pills || `<span class="context-empty">no context</span>`}</div>
-      <div class="context-legend">
-        <span class="legend-item legend-results${activeClass("Results")}">Results</span>
-        <span class="legend-item legend-actions${activeClass("Actions")}">Actions</span>
-        <span class="legend-item legend-steps${activeClass("Steps")}">Steps</span>
-        <span class="legend-item legend-info${activeClass("Info")}">Info</span>
-      </div>
-    </div>
-  `;
-
-  strip.querySelectorAll("[data-action='remove-context']").forEach((btn) => {
-    btn.addEventListener("click", (event) => {
-      event.preventDefault();
-      const pill = btn.closest(".context-pill");
-      if (!pill) return;
-      const type = pill.dataset.contextType;
-      const value = pill.dataset.contextValue;
-      if (type === "projection" && value === activeQueryTag) {
-        clearQueryTag();
-      } else if (type === "entity") {
-        setSelectedServiceItem(null);
-      }
-    });
-  });
+  // Context strip UI removed, but internal context logic preserved
 }
 
 function sortContextEntries(entries) {
@@ -2730,7 +2687,6 @@ function createUI() {
     </div>
     <div class="graph-spacer"></div>
     <div id="right-column">
-      <div id="context-strip" class="context-strip"></div>
       <div id="system-panel" class="panel-3s">
         <div class="panel-content"></div>
       </div>
