@@ -909,8 +909,9 @@ body.focus-service #service-panel::before {
 }
 
 /* Корневые виджеты показывают цветной лого сразу (без hover) */
-.node-widget--root .widget-frame img {
-  filter: none;
+.node-widget.node-widget--root .widget-frame img,
+.node-widget--root.vova-scope-widget .widget-frame img {
+  filter: none !important;
 }
 
 /* Node TOC widget (non-clickable) */
