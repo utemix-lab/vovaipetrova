@@ -1,9 +1,13 @@
 {
   "$schema": "https://utemix-lab.github.io/schemas/bindings.schema.json",
-  "version": "0.1.0",
   "id": "visitor-bindings",
+  "version": "0.1.0",
   "title": "Visitor Mode Bindings",
   "description": "Maps element IDs to assets and content references",
+  "meta": {
+    "mode": "visitor",
+    "contract": "bindings"
+  },
   "bindings": [
     {
       "elementId": "panel-story",

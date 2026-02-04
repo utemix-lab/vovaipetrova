@@ -33,6 +33,9 @@ jobs:
         run: npm install
         working-directory: render
 
+      - name: Validate UI contracts
+        run: npm run validate:ui
+
       - name: Build
         run: npm run build
 
