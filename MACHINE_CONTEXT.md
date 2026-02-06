@@ -34,7 +34,10 @@ Do:
 - Read `render/public/ui/UI_RULES.md` before changing UI behavior.
 - Keep UI contracts in `render/public/ui/**` aligned with `UI_CONTRACT_STYLE.md`.
 - Use `npm run validate:ui` after editing UI contracts.
+- Use `npm run pr:draft` to generate a PR summary from git changes.
+- Use `npm run pr:create` to open a PR with an auto-generated description.
 
 Don't:
 - Add new UI rules outside `UI_RULES.md`.
 - Add visual catalogs or turn Query Mode into a standalone page.
+- Auto-merge PRs. Always review before merge.
