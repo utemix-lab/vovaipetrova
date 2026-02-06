@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "3d-force-graph": "^1.74.0",
+    "3d-force-graph": "^1.79.0",
+    "dream-graph": "file:",
+    "three": "^0.182.0",
     "troika-three-text": "^0.52.4"
   },
   "devDependencies": {

@@ -6,9 +6,11 @@
 
 import ForceGraph3D from "3d-force-graph";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import "./visitor.css";
 import { VISUAL_CONFIG } from "../visual/config.js";
-import { PATHS } from "../compat/paths.js";
+import { PATHS, buildAssetPath } from "../compat/paths.js";
 
 // === Константы ===
 const CONFIG = {
@@ -19,6 +21,12 @@ const CONFIG = {
 const AUTHOR_PLUG_ICON = `${PATHS.WIDGETS}/author-plug.png`;
 
 const BASE_NODE_RADIUS = VISUAL_CONFIG.node.minRadius;
+const SYSTEM_NODE_SCALE = 3;
+const SYSTEM_NODE_ID = "system";
+// Системный светлый цвет — используем голубой для системного шара
+const SYSTEM_COLOR_LIGHT = "#22d3ee"; // system-blue (matches nodeStart)
+const SYSTEM_COLOR_DARK = "#050505";
+const SYSTEM_SPLIT_NORMAL = new THREE.Vector3(0.65, 0.2, -0.73).normalize();
 const NODE_PULSE_AMPLITUDE = 0.07;
 const NODE_PULSE_SPEED = 0.0016;
 const LINK_PULSE_AMPLITUDE = 0.08;
@@ -112,6 +120,66 @@ let scopeHighlightActive = false;
 let scopeHighlightNodeIds = new Set();
 let activeRootLever = null;
 
+// Visitor scene interaction state (new, per design)
+let activeLeverWidgetId = null; // string | null — nodeId of active lever
+let hoveredWidgetId = null;     // string | null
+let hoveredWindow = null;       // 1 | 2 | 3 | null
+let sceneStack = [];            // array of scene refs (node ids)
+let episodeStack = null;       // optional for 16x9 episodes
+let preactiveResponse = null;  // computed preview when lever active
+
+// If the scene dots initializer was defined earlier inside createUI, call it now
+if (window.__initSceneDotsUI) {
+  try {
+    window.__initSceneDotsUI();
+  } catch (e) {
+    console.warn('initSceneDotsUI failed', e);
+  }
+  delete window.__initSceneDotsUI;
+}
+
+function computePreactiveResponse() {
+  if (!activeLeverWidgetId) {
+    preactiveResponse = null;
+    return;
+  }
+  // Simple heuristic: gather related nodes as preview items
+  const related = getRelatedNodeIdsByType(activeLeverWidgetId, 'practice')
+    .slice(0, 3)
+    .map((id) => ({ id, label: nodesById.get(id)?.label || id }));
+  preactiveResponse = {
+    type: related.length ? 'Results' : 'Info',
+    groups: ['Services', 'Models', 'Methods'],
+    previewItems: related
+  };
+}
+
+function updateWindowDimming() {
+  const storyEl = document.getElementById('story-panel');
+  const systemEl = document.getElementById('system-panel');
+  const serviceEl = document.getElementById('service-panel');
+  const hasLever = !!activeLeverWidgetId || !!activeRootLever;
+  const dimClass = 'panel-dimmed';
+  if (storyEl) storyEl.classList.toggle(dimClass, hasLever && hoveredWindow !== 1);
+  if (systemEl) systemEl.classList.toggle(dimClass, hasLever && hoveredWindow !== 2);
+  if (serviceEl) serviceEl.classList.toggle(dimClass, hasLever && hoveredWindow !== 3);
+}
+
+function pushSceneStack(nodeId) {
+  if (!nodeId) return;
+  // ensure we limit stack to 4
+  if (sceneStack.length && sceneStack[sceneStack.length - 1] === nodeId) return;
+  sceneStack.push(nodeId);
+  if (sceneStack.length > 4) sceneStack.shift();
+  renderSceneStack();
+}
+
+function renderSceneStack() {
+  const el = document.getElementById('scene-stack');
+  if (!el) return;
+  el.innerHTML = sceneStack.map((id, idx) => `<span class="scene-dot" data-node-id="${id}" data-index="${idx}"></span>`).join('');
+}
+
 // Experimental UI rule (non-canon): keep potential in Story panel
 const EXPERIMENTAL_RULES = {
   potentialInStory: true
@@ -133,11 +201,57 @@ let isDragging = false;
 const highlightNodes = new Set();
 const highlightLinks = new Set();
 const nodeGeometry = new THREE.SphereGeometry(1, 48, 48);
+const systemNodeGeometry = new THREE.SphereGeometry(1, 96, 96);
 const nodeMaterialCache = new Map();
 const nodeMeshes = new Map();
 const nodeBaseRadius = new Map();
 const nodePulsePhase = new Map();
 const linkPulsePhase = new Map();
+const SYSTEM_MODEL_URL = buildAssetPath("model/Шар.glb");
+const gltfLoader = new GLTFLoader();
+const SYSTEM_BAKE_SEGMENTS = 256;
+const SYSTEM_RAYCAST_MARGIN = 1.5;
+const defaultSystemLightColor = new THREE.Color(SYSTEM_COLOR_LIGHT);
+const defaultSystemDarkColor = new THREE.Color(SYSTEM_COLOR_DARK);
+const systemSubdivisionModifier = { modify: (geometry) => geometry };
+let systemModelScene = null;
+let nodeThreeObjectFactory = null;
+
+gltfLoader.load(
+  SYSTEM_MODEL_URL,
+  (gltf) => {
+    systemModelScene = gltf.scene;
+    systemModelScene.traverse((child) => {
+      if (child.isMesh) {
+        child.material = child.material.clone();
+        child.material.colorWrite = true;
+        child.material.toneMapped = true;
+        child.material.metalness = 0.1;
+        child.material.roughness = 0.4;
+        child.castShadow = false;
+        child.receiveShadow = false;
+        if (child.geometry && child.geometry.isBufferGeometry) {
+          let refinedGeometry = child.geometry.clone();
+          refinedGeometry = systemSubdivisionModifier.modify(refinedGeometry);
+          refinedGeometry.computeVertexNormals();
+          child.geometry = refinedGeometry;
+        }
+      }
+    });
+    console.info("[SystemModel] loaded", SYSTEM_MODEL_URL);
+    refreshSystemMesh();
+    // Note: experimental painting helper archived.
+    // See `render/src/scenes/_archive/paint-system-variant.js` for the paintSystemModel experiment
+    // and variants of createOrUpdateSystemMesh. The shipped app uses the default system model appearance.
+    if (nodeThreeObjectFactory) {
+      graph.nodeThreeObject(nodeThreeObjectFactory);
+    }
+  },
+  undefined,
+  (error) => {
+    console.error("[SystemModel] failed", SYSTEM_MODEL_URL, error);
+  }
+);
 
 // === Граф ===
 const graph = ForceGraph3D()(graphEl)
@@ -208,6 +322,10 @@ function getNodeCategory(node) {
   return null;
 }
 
+function isSystemNode(node) {
+  return node?.id === SYSTEM_NODE_ID;
+}
+
 function getNodeRadius(node) {
   if (node.visualRadius && Number.isFinite(node.visualRadius)) {
     return node.visualRadius;
@@ -215,8 +333,8 @@ function getNodeRadius(node) {
   if (node.size && Number.isFinite(node.size)) {
     return Math.min(VISUAL_CONFIG.node.maxRadius, Math.max(VISUAL_CONFIG.node.minRadius, node.size));
   }
-  if (node.type === "hub" || node.type === "root") {
-    return BASE_NODE_RADIUS * 10;
+  if (isSystemNode(node)) {
+    return BASE_NODE_RADIUS * 10 * SYSTEM_NODE_SCALE;
   }
   return BASE_NODE_RADIUS;
 }
@@ -258,17 +376,95 @@ function getRimMaterial(colorHex) {
   return material;
 }
 
-function createNodeMesh(node) {
-  const mesh = new THREE.Mesh(nodeGeometry, getRimMaterial(getNodeColor(node)));
+let systemSphereMaterial = null;
+let systemNodeBaseGeometry = systemNodeGeometry;
+let systemModelRoot = null;
+// NOTE: эксперимент по покраске шара заархивирован в
+// `render/src/scenes/_archive/paint-system-variant.js` (Вариант 1).
+// Переменная paintedSystemNodeId и helper paintSystemModel удалены
+// из основного кода — см. архив, если потребуется восстановить.
+
+function refreshSystemMesh() {
+  nodesById.forEach((node, nodeId) => {
+    if (isSystemNode(node) && nodeMeshes.has(nodeId)) {
+      createOrUpdateSystemMesh(node, true);
+    }
+  });
+}
+
+// Robust helper to (re)paint the loaded system model.
+// Usage:
+//  paintSystemModel('#ffffff')                -> tries to preserve maps but sets color
+//  paintSystemModel('#ffffff', { basic: true }) -> replace with MeshBasicMaterial for debug/visibility
+// paintSystemModel helper moved to archive: render/src/scenes/_archive/paint-system-variant.js
+
+function createOrUpdateSystemMesh(node, isRefresh = false) {
+  let mesh = nodeMeshes.get(node.id);
+
+  if (!mesh) {
+    mesh = new THREE.Mesh(systemNodeBaseGeometry, getSystemMaterial());
+    mesh.userData = { hasSystemModel: false };
+    mesh.frustumCulled = false;
+    nodeMeshes.set(node.id, mesh);
+  }
+
+  // Attach system model scene if available (no special painting applied here).
+  if (systemModelScene && !mesh.userData.hasSystemModel) {
+    try {
+      const systemChild = systemModelScene.clone(true);
+      systemChild.name = 'systemModelChild';
+      systemChild.traverse((child) => { if (child.isMesh) child.frustumCulled = false; });
+      mesh.add(systemChild);
+      mesh.userData.hasSystemModel = true;
+    } catch (err) {
+      console.warn('[SystemMesh] attach failed for node', node.id, err);
+    }
+  }
+
+  mesh.frustumCulled = false;
   const baseRadius = getNodeRadius(node);
   mesh.scale.setScalar(baseRadius);
-  nodeMeshes.set(node.id, mesh);
   nodeBaseRadius.set(node.id, baseRadius);
   if (!nodePulsePhase.has(node.id)) {
     const phaseSeed = hashId(String(node.id)) % 1000;
     nodePulsePhase.set(node.id, (phaseSeed / 1000) * Math.PI * 2);
   }
   return mesh;
+}
+
+function createSystemNodeMesh(node) {
+  return createOrUpdateSystemMesh(node);
+}
+
+function createNodeMesh(node) {
+  if (isSystemNode(node)) {
+    console.log('[Visitor] createNodeMesh: system node requested ->', node.id);
+    const sysMesh = createSystemNodeMesh(node);
+    console.log('[Visitor] createNodeMesh: system mesh created for', node.id, sysMesh);
+    return sysMesh;
+  }
+  const mesh = new THREE.Mesh(nodeGeometry, getRimMaterial(getNodeColor(node)));
+  const baseRadius = getNodeRadius(node);
+  mesh.scale.setScalar(baseRadius);
+  nodeMeshes.set(node.id, mesh);
+  console.log('[Visitor] createNodeMesh: created mesh for', node.id, 'radius=', baseRadius);
+  nodeBaseRadius.set(node.id, baseRadius);
+  if (!nodePulsePhase.has(node.id)) {
+    const phaseSeed = hashId(String(node.id)) % 1000;
+    nodePulsePhase.set(node.id, (phaseSeed / 1000) * Math.PI * 2);
+  }
+  return mesh;
+}
+
+function applyNodeMaterial(nodeId) {
+  const node = nodesById.get(nodeId);
+  const mesh = nodeMeshes.get(nodeId);
+  if (!node || !mesh) return;
+  if (isSystemNode(node)) {
+    // GLB already содержит нужные материалы; не трогаем
+    return;
+  }
+  mesh.material = getRimMaterial(getNodeColor(node));
 }
 
 // === Рёбра (конусные смычки) ===
@@ -485,10 +681,33 @@ function applyViewFilter(nodes, edges, view) {
   return { nodes: filteredNodes, edges: filteredEdges };
 }
 
+function bakeSystemSphereGeometry() {
+  // TODO: sample исходный GLB и перенести цвета на сглаженную сферу.
+  // Пока возвращаем null, чтобы оставить модель без изменений.
+  return null;
+}
+
+function getSystemMaterial() {
+  if (systemSphereMaterial) return systemSphereMaterial;
+  systemSphereMaterial = new THREE.MeshStandardMaterial({
+    color: SYSTEM_COLOR_LIGHT,
+    metalness: 0.2,
+    roughness: 0.35
+  });
+  return systemSphereMaterial;
+}
+
 // === Настройка графа ===
 graph.nodeLabel((node) => node.label || node.id);
 graph.nodeColor((node) => getNodeColor(node));
-graph.nodeThreeObject((node) => createNodeMesh(node));
+nodeThreeObjectFactory = (node) => createNodeMesh(node);
+// Wrap the factory to log creation/attachment for lifecycle diagnostics.
+graph.nodeThreeObject((node) => {
+  console.log('[Graph] nodeThreeObject invoked for', node.id);
+  const obj = nodeThreeObjectFactory(node);
+  console.log('[Graph] nodeThreeObject returned for', node.id, obj);
+  return obj;
+});
 graph.nodeThreeObjectExtend(false);
 
 graph.nodeVal((node) => {
@@ -1008,6 +1227,7 @@ function setRoute(route) {
     }))
   };
 
+  console.log('[Visitor] Clearing nodeMeshes due to route change');
   nodeMeshes.clear();
   nodeBaseRadius.clear();
   nodePulsePhase.clear();
@@ -1044,15 +1264,16 @@ function goToStepById(stepId) {
   currentStepIndex = currentRoute.nodes.findIndex((n) => n.id === stepId);
 
   nodeMaterialCache.clear();
-  nodeMeshes.forEach((mesh, nodeId) => {
-    const n = nodesById.get(nodeId);
-    if (n) mesh.material = getRimMaterial(getNodeColor(n));
-  });
+  nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
 
   updatePanels();
   updateNavigation();
   refreshHighlights(currentStep);
   graph.refresh();
+  // Push to scene stack for lightweight presence tracking when navigation is explicit
+  try {
+    if (!activeLeverWidgetId) pushSceneStack(stepId);
+  } catch (e) {}
 }
 
 function goToNextStep() {
@@ -1142,8 +1363,15 @@ function updatePanels() {
     updateSystemWithQueryTags(systemPanel, serviceText);
     updateServicePanel(servicePanel, { text: "" });
   } else {
-    updatePanel(systemPanel, currentStep.system);
-    updateServicePanel(servicePanel, currentStep.service);
+    // If a lever is active, show a lightweight preactive preview in System/Service panels
+    if (activeLeverWidgetId && preactiveResponse) {
+      const items = (preactiveResponse.previewItems || []).map(i => i.label || i.id).join(', ');
+      updatePanel(systemPanel, { text: `Preview: ${preactiveResponse.type} — ${items}` });
+      updateServicePanel(servicePanel, { text: `Preview: ${preactiveResponse.type} — ${items}`, actions: [] });
+    } else {
+      updatePanel(systemPanel, currentStep.system);
+      updateServicePanel(servicePanel, currentStep.service);
+    }
   }
 
   updateContextStrip();
@@ -1466,6 +1694,9 @@ function updateStoryWithDomainWidgets(panel, data) {
   content.querySelectorAll(".domain-widget").forEach((el) => {
     el.addEventListener("mouseenter", () => {
       const nodeId = el.dataset.nodeId;
+      hoveredWidgetId = nodeId;
+      hoveredWindow = 1;
+      updateWindowDimming();
       const node = nodesById.get(nodeId);
       highlightNodeById(nodeId, true);
       highlightMiniShapeNode(nodeId, true);
@@ -1477,6 +1708,9 @@ function updateStoryWithDomainWidgets(panel, data) {
     });
     el.addEventListener("mouseleave", () => {
       const nodeId = el.dataset.nodeId;
+      hoveredWidgetId = null;
+      hoveredWindow = null;
+      updateWindowDimming();
       highlightNodeById(nodeId, false);
       highlightMiniShapeNode(nodeId, false);
       // Снять подсветку связей
@@ -1486,6 +1720,12 @@ function updateStoryWithDomainWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
+      // If a lever is active, switch lever instead of navigating
+      if (activeRootLever) {
+        try { setRootLeverState(activeRootLever, false); } catch (e) {}
+        try { setRootLeverState(el, true); } catch (e) {}
+        return;
+      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -1544,6 +1784,11 @@ function updateStoryWithPracticeWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
+      if (activeRootLever) {
+        try { setRootLeverState(activeRootLever, false); } catch (e) {}
+        try { setRootLeverState(el, true); } catch (e) {}
+        return;
+      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -1602,6 +1847,11 @@ function updateStoryWithCharacterWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
+      if (activeRootLever) {
+        try { setRootLeverState(activeRootLever, false); } catch (e) {}
+        try { setRootLeverState(el, true); } catch (e) {}
+        return;
+      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -1702,10 +1952,7 @@ function highlightNodeById(nodeId, highlight) {
   }
 
   // Обновить материал узла
-  const mesh = nodeMeshes.get(nodeId);
-  if (mesh) {
-    mesh.material = getRimMaterial(getNodeColor(node));
-  }
+  applyNodeMaterial(nodeId);
 }
 
 
@@ -2076,6 +2323,10 @@ function setRootLeverState(widget, isActive) {
     widget.classList.add("widget--shifted");
     widget.style.setProperty("--lever-offset", `${-ROOT_LEVER_CONFIG.maxShift}px`);
     document.body.classList.add("scene-lever-active");
+    // Track active lever id for scene logic
+    try { activeLeverWidgetId = widget.dataset && widget.dataset.nodeId ? widget.dataset.nodeId : null; } catch(e){ activeLeverWidgetId = null; }
+    computePreactiveResponse();
+    updateWindowDimming();
   } else {
     if (activeRootLever === widget) {
       activeRootLever = null;
@@ -2085,6 +2336,10 @@ function setRootLeverState(widget, isActive) {
     if (!activeRootLever) {
       document.body.classList.remove("scene-lever-active");
     }
+    // clear active lever id if this widget was active
+    try { if (!activeRootLever) activeLeverWidgetId = null; } catch(e) { activeLeverWidgetId = null; }
+    computePreactiveResponse();
+    updateWindowDimming();
   }
 }
 
@@ -2226,12 +2481,7 @@ function clearScopeHighlight() {
 }
 
 function updateScopeNodeMaterials() {
-  nodeMeshes.forEach((mesh, nodeId) => {
-    const node = nodesById.get(nodeId);
-    if (node) {
-      mesh.material = getRimMaterial(getNodeColor(node));
-    }
-  });
+  nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
 }
 
 function getRelatedNodeIdsByType(nodeId, type) {
@@ -2544,6 +2794,25 @@ function bindQueryControls(container) {
 function updatePanel(panel, data) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
+  // If preview data is provided (preactive), render a lightweight preview UI
+  if (data && data.preactive) {
+    const p = data.preactive;
+    let html = `<div class="preview-header">Preview — ${escapeHtml(p.type || 'Info')}</div>`;
+    if (p.groups && p.groups.length) {
+      html += `<div class="preview-groups">${p.groups.slice(0,3).map(g => `<span class="preview-group">${escapeHtml(g)}</span>`).join(' ')}</div>`;
+    }
+    if (p.previewItems && p.previewItems.length) {
+      html += `<ul class="preview-items">` + p.previewItems.slice(0,3).map(it => `
+        <li class="preview-item" data-item-id="${escapeHtml(it.id)}">${escapeHtml(it.label || it.id)}</li>
+      `).join('') + `</ul>`;
+    } else {
+      html += `<div class="preview-skeleton">` +
+        `<div class="skel skel-line"></div><div class="skel skel-line short"></div>` +
+        `</div>`;
+    }
+    content.innerHTML = html;
+    return bindTagPills(content);
+  }
 
   let html = `<div class="text">${renderTextWithTags(data?.text || "")}</div>`;
 
@@ -2569,6 +2838,23 @@ function updateServicePanel(panel, data) {
   if (activeQueryTag && queryModeActive) {
     content.innerHTML = renderQueryMode(activeQueryTag);
     bindQueryControls(content);
+    return;
+  }
+
+  // handle preactive preview similarly to updatePanel
+  if (data && data.preactive) {
+    const p = data.preactive;
+    let html = `<div class="preview-header">Preview — ${escapeHtml(p.type || 'Info')}</div>`;
+    if (p.previewItems && p.previewItems.length) {
+      html += `<div class="preview-list">` + p.previewItems.slice(0,3).map(it => `
+        <div class="preview-service-item" data-item-id="${escapeHtml(it.id)}">${escapeHtml(it.label || it.id)}</div>
+      `).join('') + `</div>`;
+    } else {
+      html += `<div class="preview-skeleton">` +
+        `<div class="skel skel-line"></div><div class="skel skel-line short"></div>` +
+        `</div>`;
+    }
+    content.innerHTML = html;
     return;
   }
 
@@ -2694,7 +2980,7 @@ function createUI() {
   panelsContainer.id = "panels-container";
   panelsContainer.innerHTML = `
     <div id="story-panel" class="panel-3s">
-      <div class="panel-header">Story</div>
+      <div class="panel-header"><span class="panel-title-text">Story</span><span id="scene-stack" aria-hidden="true"></span></div>
       <div class="panel-content"></div>
     </div>
     <div class="graph-spacer"></div>
@@ -2710,6 +2996,60 @@ function createUI() {
     </div>
   `;
   document.body.appendChild(panelsContainer);
+
+  // Initialize scene stack UI and interactions (SceneFocusDots)
+  function initSceneDotsUI() {
+    // Render initial single root dot
+    if (!sceneStack || !sceneStack.length) {
+      sceneStack = ['root'];
+    }
+    renderSceneStack();
+
+    // Delegate clicks on widgets to push a new scene dot when navigating into a widget
+    document.body.addEventListener('click', (ev) => {
+      try {
+        const host = ev.target.closest && ev.target.closest('[data-node-id], .node-widget, .domain-widget, .widget--lever');
+        if (!host) return;
+        const nodeId = host.dataset?.nodeId || host.getAttribute('data-node-id') || host.dataset?.nodeIdRaw || null;
+        if (!nodeId) return;
+        // Only push a new scene point when there is no active lever (rule: clicks navigate only when no lever active)
+        if (activeLeverWidgetId) return;
+        // Push as navigation (EnterWidget)
+        pushSceneStack(nodeId);
+      } catch (e) {
+        // ignore
+      }
+    }, { capture: true });
+
+    // Click on scene dots to return to that moment
+    const stackEl = document.getElementById('scene-stack');
+    if (stackEl) {
+      stackEl.addEventListener('click', (ev) => {
+        const dot = ev.target.closest && ev.target.closest('.scene-dot');
+        if (!dot) return;
+        const idx = Number(dot.dataset.index || 0);
+        // Clamp
+        if (!Number.isFinite(idx)) return;
+        // Slice stack to idx (inclusive)
+        sceneStack = sceneStack.slice(0, idx + 1);
+        renderSceneStack();
+        // Try to route to that node if navigation API exists
+        const nodeId = dot.dataset.nodeId;
+        if (typeof goToStepById === 'function') {
+          try { goToStepById(nodeId); } catch (err) { console.warn('goToStepById failed', err); }
+        } else if (typeof window.goToStepById === 'function') {
+          try { window.goToStepById(nodeId); } catch (err) { console.warn('window.goToStepById failed', err); }
+        } else {
+          // emit custom event for other code to handle
+          const evt = new CustomEvent('scene-back', { detail: { nodeId } });
+          window.dispatchEvent(evt);
+        }
+      });
+    }
+  }
+
+  // expose initializer to be invoked after global state is ready
+  window.__initSceneDotsUI = initSceneDotsUI;
 
   // Panel focus behavior (hover to focus, default Story)
   const storyPanel = document.getElementById("story-panel");
