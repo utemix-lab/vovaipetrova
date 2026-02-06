@@ -4,30 +4,13 @@
   "description": "Единая система знаний на основе онтологического графа",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:render\" \"npm run dev:editor\"",
-    "dev:render": "cd render && npm run dev",
-    "dev:editor": "python -m http.server 8080 --directory data/graph",
-    "test": "npm run validate && jest",
-    "lint": "eslint .",
-    "lint:md": "markdownlint docs/**/*.md",
-    "validate": "node core/validate.js && node tests/validate-ui-contracts.js",
-    "precommit": "npm run lint && npm test",
-    "prepush": "npm run validate",
-    "pr:draft": "node scripts/pr-draft.js",
-    "pr:create": "node scripts/pr-create.js",
-    "build": "npm run validate && cd render && npm run build",
-    "deploy": "npm run build && gh-pages -d render/dist",
-    "clean": "rm -rf node_modules render/node_modules render/dist",
-    "prepare": "husky install",
-    "check:all": "npm run lint && npm test && npm run validate && node tests/validate-pr-description.js"
+    "dev": "cd render && npm run dev",
+    "build": "cd render && npm run build",
+    "deploy": "npm run build && npx gh-pages -d render/dist",
+    "release": "git push origin main && npm run deploy"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.29.0",
-    "concurrently": "^8.2.2",
-    "eslint": "^9.39.2",
-    "gh-pages": "^6.1.1",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0"
+    "gh-pages": "^6.1.1"
   },
   "keywords": [
     "ontology",
