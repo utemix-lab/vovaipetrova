@@ -79,6 +79,9 @@ body.visitor-mode {
 
 /* Заголовки панелей 3S */
 .panel-3s .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-family: var(--font-tech);
   font-size: 11px;
   text-transform: uppercase;

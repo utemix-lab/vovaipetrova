@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "description": "Sample universe graph",
+    "version": "1.0"
+  },
+  "nodes": [
+    { "id": 1, "label": "Node 1" },
+    { "id": 2, "label": "Node 2" }
+  ],
+  "edges": [
+    { "source": 1, "target": 2 }
+  ]
+}

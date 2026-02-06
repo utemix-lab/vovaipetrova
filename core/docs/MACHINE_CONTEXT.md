@@ -36,6 +36,8 @@ Do:
 - Use `npm run validate:ui` after editing UI contracts.
 - Use `npm run pr:draft` to generate a PR summary from git changes.
 - Use `npm run pr:create` to open a PR with an auto-generated description.
+- For significant shifts, open a PR with the full 4-section narrative description.
+- For minor fixes, direct commits are allowed.
 
 Don't:
 - Add new UI rules outside `UI_RULES.md`.

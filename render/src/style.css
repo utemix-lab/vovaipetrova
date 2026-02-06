@@ -46,3 +46,26 @@ body {
   border-color: rgba(125, 211, 252, 0.7);
   background: rgba(30, 64, 175, 0.55);
 }
+
+/* Panel dimming for lever mode */
+.panel-dimmed {
+  opacity: 0.85;
+  transform: scale(0.995);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+/* Scene stack dots */
+#scene-stack { display: inline-flex; gap: 6px; align-items: center; }
+.scene-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.12); display:inline-block }
+.scene-dot[data-index="0"] { background: rgba(125,211,252,0.95); }
+
+/* preview skeleton */
+.preview-skeleton { display:flex; flex-direction:column; gap:6px; padding:6px 0 }
+.skel { height:12px; background: rgba(255,255,255,0.06); border-radius:4px }
+.skel.short { width: 60% }
+.preview-header { font-weight:600; margin-bottom:6px }
+.preview-groups { margin-bottom:6px }
+.preview-group { background: rgba(255,255,255,0.04); padding:2px 6px; border-radius:4px; margin-right:6px }
+.preview-items { list-style:none; padding:0; margin:0; display:block }
+.preview-item { padding:4px 0 }
+.preview-service-item { padding:4px 0 }
