@@ -1,7 +1,11 @@
 {
+  "id": "visitor-widgets-domains",
+  "version": "1.0",
+  "title": "Visitor Widgets: Domains",
+  "description": "Visual Anchors v1 — виджеты доменов для Story-панели",
   "meta": {
-    "version": "1.0",
-    "description": "Visual Anchors v1 — виджеты доменов для Story-панели"
+    "mode": "visitor",
+    "contract": "widgets"
   },
   "config": {
     "panel": "story",
