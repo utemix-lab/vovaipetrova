@@ -17,7 +17,7 @@
     {
       "nodeId": "domain-ai",
       "label": "AI & Computational Models",
-      "icon": "assets/icons/domains/ai.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -26,7 +26,7 @@
     {
       "nodeId": "domain-music",
       "label": "Music & Sound Culture",
-      "icon": "assets/icons/domains/music.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -35,7 +35,7 @@
     {
       "nodeId": "domain-visual",
       "label": "Visual & Media Arts",
-      "icon": "assets/icons/domains/visual.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -44,7 +44,7 @@
     {
       "nodeId": "domain-knowledge",
       "label": "Knowledge & Cognitive Systems",
-      "icon": "assets/icons/domains/knowledge.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -53,7 +53,7 @@
     {
       "nodeId": "domain-dev",
       "label": "Software & Digital Tools",
-      "icon": "assets/icons/domains/dev.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -62,7 +62,7 @@
     {
       "nodeId": "domain-design",
       "label": "Design & Aesthetic Systems",
-      "icon": "assets/icons/domains/design.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -71,7 +71,7 @@
     {
       "nodeId": "domain-physical",
       "label": "Physical & Fabrication",
-      "icon": "assets/icons/domains/physical.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"
@@ -80,7 +80,7 @@
     {
       "nodeId": "domain-interactive",
       "label": "Interactive & Game Culture",
-      "icon": "assets/icons/domains/interactive.png",
+  "icon": "assets/widgets/domain-plug.png",
       "interactions": {
         "hover": "highlightNode",
         "click": "focusNode"

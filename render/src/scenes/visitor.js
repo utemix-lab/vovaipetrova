@@ -996,6 +996,13 @@ async function loadRoute(path) {
     setRoute(route);
   } catch (error) {
     console.error("[Visitor] Failed to load route:", error);
+    if (currentSource === "demo") {
+      try {
+        await loadUniverseGraph();
+      } catch (fallbackError) {
+        console.error("[Visitor] Demo route fallback failed:", fallbackError);
+      }
+    }
   }
 }
 
@@ -1024,10 +1031,19 @@ async function loadDomainWidgets() {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     domainWidgets = await response.json();
+    if (!domainWidgets?.widgets?.length) {
+      throw new Error("Empty widgets list");
+    }
     console.log("[Visitor] Loaded domain widgets:", domainWidgets.widgets?.length);
   } catch (error) {
     console.warn("[Visitor] Domain widgets not available:", error.message);
-    domainWidgets = null;
+    domainWidgets = {
+      id: "fallback-widgets",
+      version: "1.0",
+      title: "Fallback widgets",
+      config: { panel: "story", triggerNode: "domains", style: "monochrome", iconSize: 48 },
+      widgets: []
+    };
   }
 }
 
@@ -1059,19 +1075,37 @@ function normalizeExportKey(path, type) {
   return base;
 }
 
+function normalizeContractPath(rawPath) {
+  if (!rawPath) return rawPath;
+  if (rawPath.startsWith("http") || rawPath.startsWith("/")) return rawPath;
+  return `${CONFIG.contractsPath}/${rawPath}`;
+}
+
 async function loadJson(path) {
-  const url = `${CONFIG.contractsPath}/${path}`;
+  const url = normalizeContractPath(path);
   const response = await fetch(withCacheBust(url));
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
 
 async function loadJsonl(path) {
-  const url = `${CONFIG.contractsPath}/${path}`;
+  const url = normalizeContractPath(path);
   const response = await fetch(withCacheBust(url));
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const text = await response.text();
   return parseJsonl(text);
+}
+
+async function verifyAsset(path) {
+  try {
+    const url = normalizeContractPath(path);
+    const response = await fetch(withCacheBust(url), { method: "HEAD" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return true;
+  } catch (error) {
+    console.warn("[Visitor] Asset check failed:", path, error.message);
+    return false;
+  }
 }
 
 function applyExports(exportsData) {
@@ -1132,11 +1166,19 @@ async function loadExports() {
   }
 }
 
+async function verifyCriticalAssets() {
+  await Promise.all([
+    verifyAsset("assets/widgets/domain-plug.png"),
+    verifyAsset("assets/widgets/practice-plug.png"),
+    verifyAsset("assets/widgets/workbench-plug.png"),
+    verifyAsset("exports/pointer_tags_registry.json"),
+    verifyAsset("exports/ai_catalog.jsonl"),
+    verifyAsset("exports/practice_participation.jsonl")
+  ]);
+}
+
 async function reloadRoute() {
   console.log("[Visitor] Reloading...");
-
-  const indicator = document.getElementById("step-indicator");
-  if (indicator) indicator.textContent = "Reloading...";
 
   if (currentSource === "demo") {
     await loadRoute(CONFIG.defaultRoute);
@@ -1236,7 +1278,6 @@ function setRoute(route) {
 
   graph.graphData(graphData);
   buildIndex(graphData);
-  updateGraphStats(graphData.nodes.length, graphData.links.length);
 
   const startId = route.start_node_id || route.nodes[0]?.id;
   goToStepById(startId);
@@ -1246,13 +1287,6 @@ function setRoute(route) {
   }, 200);
 
   console.log("[Visitor] Route loaded:", route.title);
-}
-
-function updateGraphStats(nodesCount, edgesCount) {
-  const el = document.getElementById("graph-stats");
-  if (el) {
-    el.textContent = `${nodesCount} nodes | ${edgesCount} edges`;
-  }
 }
 
 // === Навигация ===
@@ -1267,7 +1301,6 @@ function goToStepById(stepId) {
   nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
 
   updatePanels();
-  updateNavigation();
   refreshHighlights(currentStep);
   graph.refresh();
   // Push to scene stack for lightweight presence tracking when navigation is explicit
@@ -1309,6 +1342,7 @@ function updatePanels() {
   const storyPanel = document.getElementById("story-panel");
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
+  if (storyPanel) storyPanel.classList.remove("panel-no-dim");
 
   const serviceText = currentStep.service?.text || "";
   const hasQueryHints = extractTags(serviceText).length > 0;
@@ -1385,6 +1419,7 @@ function updateStoryWithPotential(panel, node) {
   content.classList.remove("story-compact");
 
   const widgetIcon = getNodeWidgetIcon(node);
+  const isVova = node?.id === "character-vova";
   const descriptionText = "Описательный блок";
   const domainNodeIds = getRelatedNodeIdsByType(node?.id, "domain");
   const practiceNodeIds = getRelatedNodeIdsByType(node?.id, "practice");
@@ -1401,7 +1436,11 @@ function updateStoryWithPotential(panel, node) {
         </div>
       </div>`;
   }
-  html += `<div class="text">${escapeHtml(descriptionText)}</div>`;
+  if (isVova) {
+    html += renderNarrativeScreen();
+  } else {
+    html += `<div class="text">${escapeHtml(descriptionText)}</div>`;
+  }
 
   html += `<div class="section-title">Континенты</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
@@ -1446,8 +1485,93 @@ function updateStoryWithPotential(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
+  bindNarrativeScreen(content);
   bindWidgetLever(content);
   bindEmblemSwap(content);
+}
+
+function renderNarrativeScreen() {
+  return `
+    <div class="narrative-screen" data-expanded="false">
+      <div class="narrative-screen__hud">
+        <div class="narrative-screen__dots" aria-hidden="true">
+          <span class="narrative-dot"></span>
+          <span class="narrative-dot"></span>
+          <span class="narrative-dot"></span>
+          <span class="narrative-dot"></span>
+          <span class="narrative-dot"></span>
+        </div>
+        <button class="narrative-dot narrative-dot--toggle" type="button" aria-label="Развернуть"></button>
+      </div>
+      <div class="narrative-screen__viewport" aria-hidden="true"></div>
+    </div>
+  `;
+}
+
+function bindNarrativeScreen(container) {
+  const screen = container.querySelector(".narrative-screen");
+  if (!screen) return;
+  const toggle = screen.querySelector(".narrative-dot--toggle");
+  if (!toggle || toggle.dataset.bound) return;
+  toggle.dataset.bound = "true";
+
+  function syncExpandedBounds() {
+    if (!screen.classList.contains("narrative-screen--expanded")) return;
+    const overlay = document.getElementById("scene-overlay");
+    const panels = document.getElementById("panels-container");
+    if (!overlay || !panels) return;
+    const sceneStage = document.getElementById("scene-stage");
+    const scaleValue = sceneStage
+      ? parseFloat(getComputedStyle(sceneStage).getPropertyValue("--scene-scale"))
+      : 1;
+    const scale = Number.isFinite(scaleValue) && scaleValue > 0 ? scaleValue : 1;
+    const overlayRect = overlay.getBoundingClientRect();
+    const panelsRect = panels.getBoundingClientRect();
+    const left = (panelsRect.left - overlayRect.left) / scale;
+    const top = (panelsRect.top - overlayRect.top) / scale;
+    const width = panelsRect.width / scale;
+    const height = panelsRect.height / scale;
+    screen.style.left = `${left}px`;
+    screen.style.top = `${top}px`;
+    screen.style.width = `${width}px`;
+    screen.style.height = `${height}px`;
+  }
+
+  toggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const overlay = document.getElementById("scene-overlay");
+    if (!overlay) return;
+    const expanded = screen.classList.toggle("narrative-screen--expanded");
+    screen.dataset.expanded = expanded ? "true" : "false";
+    toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
+    if (expanded) {
+      document.body.classList.add("narrative-expanded");
+      document.body.classList.remove("focus-story", "focus-system", "focus-service");
+      overlay.classList.add("scene-overlay--active");
+      const placeholder = document.createElement("div");
+      placeholder.className = "narrative-screen-placeholder";
+      screen.dataset.placeholderId = "narrative-placeholder";
+      screen.parentElement?.insertBefore(placeholder, screen);
+      overlay.appendChild(screen);
+      syncExpandedBounds();
+    } else {
+      document.body.classList.remove("narrative-expanded");
+      overlay.classList.remove("scene-overlay--active");
+      const placeholder = document.querySelector(".narrative-screen-placeholder");
+      if (placeholder && placeholder.parentElement) {
+        placeholder.parentElement.insertBefore(screen, placeholder);
+        placeholder.remove();
+      }
+      screen.style.left = "";
+      screen.style.top = "";
+      screen.style.width = "";
+      screen.style.height = "";
+    }
+  });
+
+  window.addEventListener("resize", syncExpandedBounds);
+  document.addEventListener("fullscreenchange", syncExpandedBounds);
 }
 
 function isCharacterNode(node) {
@@ -1910,6 +2034,13 @@ function getNodeWidgetIcon(node) {
 }
 
 function getDomainWidgetIcon(nodeId) {
+  const widget = domainWidgets?.widgets?.find((entry) => entry.nodeId === nodeId);
+  if (widget?.icon) {
+    if (widget.icon.startsWith("http") || widget.icon.startsWith("/")) {
+      return widget.icon;
+    }
+    return `${CONFIG.contractsPath}/${widget.icon}`;
+  }
   return `${CONFIG.contractsPath}/assets/widgets/domain-plug.png`;
 }
 
@@ -2908,18 +3039,6 @@ function handleAction(type) {
   }
 }
 
-function updateNavigation() {
-  const prevBtn = document.getElementById("prev-btn");
-  const nextBtn = document.getElementById("next-btn");
-  const stepIndicator = document.getElementById("step-indicator");
-
-  if (prevBtn) prevBtn.disabled = !hasPrevStep();
-  if (nextBtn) nextBtn.disabled = !hasNextStep();
-  if (stepIndicator && currentRoute) {
-    stepIndicator.textContent = `${currentStep?.label || ""} (${currentStepIndex + 1}/${currentRoute.nodes.length})`;
-  }
-}
-
 // === Утилиты UI ===
 function escapeHtml(text) {
   const div = document.createElement("div");
@@ -2965,7 +3084,7 @@ function createUI() {
       </div>
     </div>
     <div class="header-right">
-      <button class="header-btn" title="Coming soon">Donate</button>
+      <button class="header-btn" id="fullscreen-toggle" title="Fullscreen">⛶</button>
       <button class="header-btn" title="Coming soon">Sign in</button>
       <button class="header-btn" title="Coming soon">RU</button>
     </div>
@@ -2976,26 +3095,80 @@ function createUI() {
   graphDiv.id = "graph";
   document.body.appendChild(graphDiv);
 
+  const sceneLayer = document.createElement("div");
+  sceneLayer.id = "scene-layer";
+
+  const sceneStage = document.createElement("div");
+  sceneStage.id = "scene-stage";
+
+  const sceneOverlay = document.createElement("div");
+  sceneOverlay.id = "scene-overlay";
+  sceneStage.appendChild(sceneOverlay);
+
   const panelsContainer = document.createElement("div");
   panelsContainer.id = "panels-container";
   panelsContainer.innerHTML = `
     <div id="story-panel" class="panel-3s">
-      <div class="panel-header"><span class="panel-title-text">Story</span><span id="scene-stack" aria-hidden="true"></span></div>
-      <div class="panel-content"></div>
+      <div class="panel-inner">
+        <div class="panel-header"><span class="panel-title-text">Story</span><span id="scene-stack" aria-hidden="true"></span></div>
+        <div class="panel-content"></div>
+      </div>
     </div>
     <div class="graph-spacer"></div>
     <div id="right-column">
       <div id="system-panel" class="panel-3s">
-        <div class="panel-header">System</div>
-        <div class="panel-content"></div>
+        <div class="panel-inner">
+          <div class="panel-header">System</div>
+          <div class="panel-content"></div>
+        </div>
       </div>
       <div id="service-panel" class="panel-3s">
-        <div class="panel-header">Service</div>
-        <div class="panel-content"></div>
+        <div class="panel-inner">
+          <div class="panel-header">Service</div>
+          <div class="panel-content"></div>
+        </div>
       </div>
     </div>
   `;
-  document.body.appendChild(panelsContainer);
+  sceneStage.appendChild(panelsContainer);
+  sceneLayer.appendChild(sceneStage);
+  document.body.appendChild(sceneLayer);
+
+  function updateSceneScale() {
+    const baseWidth = 1400;
+    const baseHeight = 788;
+    const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight, 1);
+    sceneStage.style.setProperty("--scene-scale", scale.toFixed(4));
+  }
+
+  updateSceneScale();
+  window.addEventListener("resize", updateSceneScale);
+
+  const fullscreenButton = headerBar.querySelector("#fullscreen-toggle");
+  const fullscreenContainer = document.documentElement;
+  function updateFullscreenButton() {
+    if (!fullscreenButton) return;
+    const active = document.fullscreenElement != null;
+    fullscreenButton.textContent = active ? "✕" : "⛶";
+    fullscreenButton.title = active ? "Exit fullscreen" : "Fullscreen";
+  }
+
+  if (fullscreenButton && fullscreenContainer?.requestFullscreen) {
+    fullscreenButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (document.fullscreenElement) {
+        document.exitFullscreen?.();
+      } else {
+        fullscreenContainer.requestFullscreen();
+      }
+    });
+  }
+
+  document.addEventListener("fullscreenchange", () => {
+    updateFullscreenButton();
+    updateSceneScale();
+  });
+  updateFullscreenButton();
 
   // Initialize scene stack UI and interactions (SceneFocusDots)
   function initSceneDotsUI() {
@@ -3068,44 +3241,6 @@ function createUI() {
   systemPanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
   servicePanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
 
-  const navBar = document.createElement("div");
-  navBar.id = "nav-bar";
-  navBar.innerHTML = `
-    <button id="prev-btn" class="nav-button">← Prev</button>
-    <span id="step-indicator">Loading...</span>
-    <button id="next-btn" class="nav-button">Next →</button>
-    <div id="view-switcher" class="view-switcher">
-      <button class="nav-button view-button" data-view="knowledge">Knowledge</button>
-      <button class="nav-button view-button" data-view="system">System</button>
-      <button class="nav-button view-button" data-view="all">All</button>
-    </div>
-    <button id="reload-btn" class="nav-button reload-button" title="Reload route from contracts">🔄</button>
-    <span id="graph-stats" class="graph-stats"></span>
-  `;
-  document.body.appendChild(navBar);
-
-  document.getElementById("prev-btn")?.addEventListener("click", () => {
-    registerInteraction();
-    motionSound.resumeIfNeeded();
-    goToPrevStep();
-  });
-  document.getElementById("next-btn")?.addEventListener("click", () => {
-    registerInteraction();
-    motionSound.resumeIfNeeded();
-    goToNextStep();
-  });
-  document.getElementById("reload-btn")?.addEventListener("click", () => {
-    registerInteraction();
-    reloadRoute();
-  });
-
-  document.querySelectorAll(".view-button").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (currentSource !== "canon") return;
-      const view = btn.dataset.view || "all";
-      setView(view);
-    });
-  });
 }
 
 // === Анимация ===
@@ -3156,6 +3291,7 @@ currentView = viewParam || "all";
 // Загрузить виджеты при старте
 loadDomainWidgets();
 loadExports();
+verifyCriticalAssets();
 
 // По умолчанию загружать Universe Graph
 if (currentSource === "demo" && routePath) {

@@ -6,11 +6,17 @@
 const BASE_URL = import.meta.env.BASE_URL || "/";
 const BASE_ROOT = BASE_URL.endsWith("/") ? BASE_URL.slice(0, -1) : BASE_URL;
 
-const withBase = (path) => `${BASE_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+const withBase = (path) => {
+  if (!BASE_ROOT) {
+    if (!path) return "";
+    return path.startsWith("/") ? path : `/${path}`;
+  }
+  return `${BASE_ROOT}${path.startsWith("/") ? "" : "/"}${path}`;
+};
 
 export const PATHS = {
   // Базовые пути (всё лежит в public/, без вложенной data/)
-  DATA_ROOT: withBase(""),
+  DATA_ROOT: BASE_ROOT || "",
   GRAPH_ROOT: withBase("/graph"),
   ASSETS_ROOT: withBase("/assets"),
   

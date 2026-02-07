@@ -3,6 +3,11 @@ import { resolve } from "path";
 
 export default defineConfig({
   base: "/vovaipetrova/",
+  server: {
+    host: "localhost",
+    port: 5173,
+    strictPort: true
+  },
   build: {
     target: "esnext",
     rollupOptions: {

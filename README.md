@@ -3,25 +3,57 @@
 Интерактивная 3D-визуализация онтологического графа с pointer-tags навигацией.
 
 ## Важно: облегчённый рендер
+
 Этот репозиторий — облегчённая и пересобранная версия рендера из:
+
 - r:\dream-graph (рендер и визуальный стиль)
 - r:\contracts (UI-контракты + правила UI)
 - r:\extended-mind (архитектурные и нарративные основания)
+
 Если чего-то не хватает для работы или понимания — сначала смотрим в эти репозитории.
 Важное переносим в этот репо и поддерживаем инженерный порядок.
 
 ## Live Demo
-https://utemix-lab.github.io/vovaipetrova/
+
+<https://utemix-lab.github.io/vovaipetrova/>
 
 ## Development
+
 ```bash
 npm install
 cd render && npm install
-npm run dev:render
+npm run dev
 ```
-Открыть: http://localhost:5173/vovaipetrova/
+
+Фоновый запуск (не падает при запуске других команд в терминале):
+
+```bash
+npm run dev:daemon
+```
+
+Остановить фоновый процесс:
+
+```bash
+npm run dev:stop
+```
+
+Служба Windows (автозапуск и автоперезапуск):
+
+```bash
+npm run service:install
+```
+
+Удаление службы:
+
+```bash
+npm run service:remove
+```
+
+Открыть: <http://localhost:5173/vovaipetrova/>
+Диагностика самовосстановления: `logs/diagnostics.log`.
 
 ## Build & Deploy
+
 ```bash
 npm run build      # Сборка в render/dist/
 git push origin main  # Автодеплой на GitHub Pages
@@ -29,7 +61,7 @@ git push origin main  # Автодеплой на GitHub Pages
 
 ## Структура репо
 
-```
+```text
 vovaipetrova/
 ├── core/                   # Валидация схем (невебовая логика)
 │   └── validate.js
@@ -54,6 +86,7 @@ vovaipetrova/
 ```
 
 ## Машинный ориентир (быстрое понимание)
+
 - `render/public/ui/UI_RULES.md` — единый канон механики UI.
 - `render/public/ui/**` — контрактные данные UI (layout/bindings/interaction/widgets).
 - `render/src/**` — реализация рендера и визуальных правил.

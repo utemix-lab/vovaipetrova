@@ -4,12 +4,23 @@
   "description": "Единая система знаний на основе онтологического графа",
   "type": "module",
   "scripts": {
-    "dev": "cd render && npm run dev",
-    "build": "cd render && npm run build",
+    "predev": "node scripts/kill-port.js 5173 5174",
+    "dev:raw": "npm run dev --prefix render",
+    "dev": "node scripts/dev-supervisor.js",
+  "dev:daemon": "node scripts/dev-daemon.js",
+  "dev:stop": "node scripts/dev-stop.js",
+    "autostart:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/register-autostart.ps1",
+    "autostart:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/unregister-autostart.ps1",
+    "service:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/register-service.ps1",
+    "service:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/unregister-service.ps1",
+    "check:local": "node scripts/checks.js",
+    "check:ci": "node scripts/checks.js",
+    "build": "npm run build --prefix render",
     "deploy": "npm run build && npx gh-pages -d render/dist",
     "release": "git push origin main && npm run deploy"
   },
   "devDependencies": {
+    "chokidar": "^3.6.0",
     "gh-pages": "^6.1.1"
   },
   "keywords": [

@@ -1,0 +1,18 @@
+{
+  "id": "visitor-demo-route",
+  "title": "Visitor Demo Route",
+  "start_node_id": "root",
+  "nodes": [
+    {
+      "id": "root",
+      "label": "Root",
+      "type": "root",
+      "visibility": "public",
+      "status": "expandable",
+      "story": { "text": "Demo root node.", "refs": [] },
+      "system": { "text": "System overview.", "refs": [] },
+      "service": { "text": "Service description.", "actions": [] }
+    }
+  ],
+  "edges": []
+}
