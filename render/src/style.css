@@ -56,8 +56,29 @@ body {
 
 /* Scene stack dots */
 #scene-stack { display: inline-flex; gap: 6px; align-items: center; }
-.scene-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.12); display:inline-block }
-.scene-dot[data-index="0"] { background: rgba(125,211,252,0.95); }
+.scene-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #0b1220;
+  font-family: var(--font-tech);
+  font-size: 11px;
+  line-height: 1;
+}
+.scene-dot--control { cursor: pointer; }
+.scene-dot--disabled { background: #9ca3af; color: #1f2937; cursor: default; }
+.scene-dot .icon {
+  width: 8px;
+  height: 8px;
+  display: block;
+}
 
 /* preview skeleton */
 .preview-skeleton { display:flex; flex-direction:column; gap:6px; padding:6px 0 }

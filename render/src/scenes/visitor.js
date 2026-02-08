@@ -115,6 +115,38 @@ let selectedServiceItem = null;
 const PRACTICE_HINTS = {
   "domain-ai": { id: "practice-direction", label: "Режиссура" }
 };
+const NARRATIVE_SLIDES = [
+  {
+    id: "vova-01",
+    title: "Заголовок 1",
+    detail: "Расширенный текст 1",
+    src: buildAssetPath("story/narrative/vova-01.jpg")
+  },
+  {
+    id: "vova-02",
+    title: "Заголовок 2",
+    detail: "Расширенный текст 2",
+    src: buildAssetPath("story/narrative/vova-02.jpg")
+  },
+  {
+    id: "vova-03",
+    title: "Заголовок 3",
+    detail: "Расширенный текст 3",
+    src: buildAssetPath("story/narrative/vova-03.jpg")
+  },
+  {
+    id: "vova-04",
+    title: "Заголовок 4",
+    detail: "Расширенный текст 4",
+    src: buildAssetPath("story/narrative/vova-04.jpg")
+  },
+  {
+    id: "vova-05",
+    title: "Заголовок 5",
+    detail: "Расширенный текст 5",
+    src: buildAssetPath("story/narrative/vova-05.jpg")
+  }
+];
 let hoverNode = null;
 let scopeHighlightActive = false;
 let scopeHighlightNodeIds = new Set();
@@ -125,6 +157,7 @@ let activeLeverWidgetId = null; // string | null — nodeId of active lever
 let hoveredWidgetId = null;     // string | null
 let hoveredWindow = null;       // 1 | 2 | 3 | null
 let sceneStack = [];            // array of scene refs (node ids)
+let sceneStackIndex = 0;
 let episodeStack = null;       // optional for 16x9 episodes
 let preactiveResponse = null;  // computed preview when lever active
 
@@ -167,17 +200,95 @@ function updateWindowDimming() {
 
 function pushSceneStack(nodeId) {
   if (!nodeId) return;
-  // ensure we limit stack to 4
   if (sceneStack.length && sceneStack[sceneStack.length - 1] === nodeId) return;
+  if (sceneStackIndex < sceneStack.length - 1) {
+    sceneStack = sceneStack.slice(0, sceneStackIndex + 1);
+  }
   sceneStack.push(nodeId);
-  if (sceneStack.length > 4) sceneStack.shift();
+  if (sceneStack.length > 5) {
+    sceneStack = sceneStack.slice(-5);
+  }
+  sceneStackIndex = sceneStack.length - 1;
   renderSceneStack();
+}
+
+function navigateToSceneNode(nodeId) {
+  if (!nodeId) return;
+  if (typeof goToStepById === "function") {
+    try {
+      goToStepById(nodeId);
+      return;
+    } catch (err) {
+      console.warn("goToStepById failed", err);
+    }
+  }
+  if (typeof window.goToStepById === "function") {
+    try {
+      window.goToStepById(nodeId);
+      return;
+    } catch (err) {
+      console.warn("window.goToStepById failed", err);
+    }
+  }
+  const evt = new CustomEvent("scene-back", { detail: { nodeId } });
+  window.dispatchEvent(evt);
+}
+
+function stepSceneStack(direction) {
+  if (!sceneStack.length) return;
+  const nextIndex = Math.max(0, Math.min(sceneStack.length - 1, sceneStackIndex + direction));
+  if (nextIndex === sceneStackIndex) return;
+  sceneStackIndex = nextIndex;
+  renderSceneStack();
+  navigateToSceneNode(sceneStack[sceneStackIndex]);
 }
 
 function renderSceneStack() {
   const el = document.getElementById('scene-stack');
   if (!el) return;
-  el.innerHTML = sceneStack.map((id, idx) => `<span class="scene-dot" data-node-id="${id}" data-index="${idx}"></span>`).join('');
+  const canGoBack = sceneStackIndex > 0;
+  const canGoForward = sceneStackIndex < sceneStack.length - 1;
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconNext = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconPlus = `
+    <svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
+  el.innerHTML = [
+    {
+      label: iconPrev,
+      action: "prev",
+      disabled: !canGoBack,
+      title: "Назад",
+    },
+    {
+      label: iconNext,
+      action: "next",
+      disabled: !canGoForward,
+      title: "Вперед",
+    },
+    {
+      label: iconPlus,
+      action: "placeholder",
+      disabled: true,
+      title: "",
+    },
+  ]
+    .map(({ label, action, disabled, title }) => {
+      const disabledClass = disabled ? " scene-dot--disabled" : "";
+      const titleAttr = title ? ` title="${title}"` : "";
+      return `<button class="scene-dot scene-dot--control${disabledClass}" type="button" data-action="${action}"${titleAttr}>${label}</button>`;
+    })
+    .join('');
 }
 
 // Experimental UI rule (non-canon): keep potential in Story panel
@@ -1491,19 +1602,35 @@ function updateStoryWithPotential(panel, node) {
 }
 
 function renderNarrativeScreen() {
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconNext = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconPlus = `
+    <svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
   return `
-    <div class="narrative-screen" data-expanded="false">
+    <div class="narrative-screen" data-expanded="false" data-index="0">
       <div class="narrative-screen__hud">
         <div class="narrative-screen__dots" aria-hidden="true">
-          <span class="narrative-dot"></span>
-          <span class="narrative-dot"></span>
-          <span class="narrative-dot"></span>
-          <span class="narrative-dot"></span>
-          <span class="narrative-dot"></span>
+          <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад">${iconPrev}</button>
+          <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед">${iconNext}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle" type="button" data-action="toggle" aria-label="Развернуть">${iconPlus}</button>
         </div>
-        <button class="narrative-dot narrative-dot--toggle" type="button" aria-label="Развернуть"></button>
       </div>
       <div class="narrative-screen__viewport" aria-hidden="true"></div>
+      <div class="narrative-screen__text" aria-live="polite">
+        <div class="narrative-screen__title"></div>
+        <div class="narrative-screen__detail"></div>
+      </div>
     </div>
   `;
 }
@@ -1512,8 +1639,43 @@ function bindNarrativeScreen(container) {
   const screen = container.querySelector(".narrative-screen");
   if (!screen) return;
   const toggle = screen.querySelector(".narrative-dot--toggle");
+  const prevButton = screen.querySelector(".narrative-dot[data-action='prev']");
+  const nextButton = screen.querySelector(".narrative-dot[data-action='next']");
+  const titleEl = screen.querySelector(".narrative-screen__title");
+  const detailEl = screen.querySelector(".narrative-screen__detail");
+  const viewport = screen.querySelector(".narrative-screen__viewport");
   if (!toggle || toggle.dataset.bound) return;
   toggle.dataset.bound = "true";
+
+  function updateControlsState(index) {
+    const canGoBack = index > 0;
+    const canGoForward = index < NARRATIVE_SLIDES.length - 1;
+    if (prevButton) {
+      prevButton.classList.toggle("narrative-dot--disabled", !canGoBack);
+      prevButton.disabled = !canGoBack;
+    }
+    if (nextButton) {
+      nextButton.classList.toggle("narrative-dot--disabled", !canGoForward);
+      nextButton.disabled = !canGoForward;
+    }
+  }
+
+  function setSlide(index) {
+    const safeIndex = Math.max(0, Math.min(NARRATIVE_SLIDES.length - 1, index));
+    const slide = NARRATIVE_SLIDES[safeIndex];
+    screen.dataset.index = String(safeIndex);
+    if (viewport) {
+      viewport.style.backgroundImage = slide ? `url('${slide.src}')` : "";
+      viewport.style.backgroundSize = "cover";
+      viewport.style.backgroundPosition = "center";
+    }
+    if (titleEl) titleEl.textContent = slide?.title || "";
+    if (detailEl) {
+      const expanded = screen.classList.contains("narrative-screen--expanded");
+      detailEl.textContent = expanded ? slide?.detail || "" : "";
+    }
+    updateControlsState(safeIndex);
+  }
 
   function syncExpandedBounds() {
     if (!screen.classList.contains("narrative-screen--expanded")) return;
@@ -1568,7 +1730,24 @@ function bindNarrativeScreen(container) {
       screen.style.width = "";
       screen.style.height = "";
     }
+    setSlide(Number(screen.dataset.index || 0));
   });
+
+  prevButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const current = Number(screen.dataset.index || 0);
+    setSlide(current - 1);
+  });
+
+  nextButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const current = Number(screen.dataset.index || 0);
+    setSlide(current + 1);
+  });
+
+  setSlide(0);
 
   window.addEventListener("resize", syncExpandedBounds);
   document.addEventListener("fullscreenchange", syncExpandedBounds);
@@ -3172,9 +3351,10 @@ function createUI() {
 
   // Initialize scene stack UI and interactions (SceneFocusDots)
   function initSceneDotsUI() {
-    // Render initial single root dot
+    // Render dots only when stack is populated by navigation
     if (!sceneStack || !sceneStack.length) {
-      sceneStack = ['root'];
+      sceneStack = [];
+      sceneStackIndex = 0;
     }
     renderSceneStack();
 
@@ -3194,28 +3374,17 @@ function createUI() {
       }
     }, { capture: true });
 
-    // Click on scene dots to return to that moment
-    const stackEl = document.getElementById('scene-stack');
+    // Click on scene dots to navigate back/forward
+    const stackEl = document.getElementById("scene-stack");
     if (stackEl) {
-      stackEl.addEventListener('click', (ev) => {
-        const dot = ev.target.closest && ev.target.closest('.scene-dot');
-        if (!dot) return;
-        const idx = Number(dot.dataset.index || 0);
-        // Clamp
-        if (!Number.isFinite(idx)) return;
-        // Slice stack to idx (inclusive)
-        sceneStack = sceneStack.slice(0, idx + 1);
-        renderSceneStack();
-        // Try to route to that node if navigation API exists
-        const nodeId = dot.dataset.nodeId;
-        if (typeof goToStepById === 'function') {
-          try { goToStepById(nodeId); } catch (err) { console.warn('goToStepById failed', err); }
-        } else if (typeof window.goToStepById === 'function') {
-          try { window.goToStepById(nodeId); } catch (err) { console.warn('window.goToStepById failed', err); }
-        } else {
-          // emit custom event for other code to handle
-          const evt = new CustomEvent('scene-back', { detail: { nodeId } });
-          window.dispatchEvent(evt);
+      stackEl.addEventListener("click", (ev) => {
+        const dot = ev.target.closest && ev.target.closest(".scene-dot");
+        if (!dot || dot.classList.contains("scene-dot--disabled")) return;
+        if (dot.dataset.action === "prev") {
+          stepSceneStack(-1);
+        }
+        if (dot.dataset.action === "next") {
+          stepSceneStack(1);
         }
       });
     }
