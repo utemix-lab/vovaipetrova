@@ -60,23 +60,23 @@ body {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.35);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
   padding: 0;
   margin: 0;
-  color: #0b1220;
+  color: #ffffff;
   font-family: var(--font-tech);
   font-size: 11px;
   line-height: 1;
 }
 .scene-dot--control { cursor: pointer; }
-.scene-dot--disabled { background: #9ca3af; color: #1f2937; cursor: default; }
+.scene-dot--disabled { background: rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.45); cursor: default; }
 .scene-dot .icon {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   display: block;
 }
 

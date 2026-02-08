@@ -1,0 +1,73 @@
+{
+  "version": "0.1.0",
+  "title": "Visitor UI invariants",
+  "description": "Machine-readable invariants for fast UI smoke validation.",
+  "checks": {
+    "files": [
+      "render/public/ui/UI_RULES.md",
+      "render/public/ui/UI_CONTRACT_STYLE.md",
+      "render/src/scenes/visitor.js",
+      "render/src/scenes/visitor.css",
+      "render/src/style.css",
+      "render/public/graph/universe.json"
+    ],
+    "mustContain": [
+      {
+        "id": "scene-stage-16x9",
+        "file": "render/src/scenes/visitor.css",
+        "patterns": [
+          "#scene-stage",
+          "width: 1400px",
+          "height: 788px",
+          "--scene-scale"
+        ]
+      },
+      {
+        "id": "narrative-expanded-all-panels",
+        "file": "render/src/scenes/visitor.css",
+        "patterns": [
+          "body.narrative-expanded #story-panel",
+          "body.narrative-expanded #system-panel",
+          "body.narrative-expanded #service-panel"
+        ]
+      },
+      {
+        "id": "scene-dots-controls",
+        "file": "render/src/style.css",
+        "patterns": [
+          "#scene-stack",
+          ".scene-dot--control",
+          ".scene-dot--disabled",
+          ".scene-dot .icon"
+        ]
+      },
+      {
+        "id": "collab-type-category",
+        "file": "render/src/scenes/visitor.js",
+        "patterns": [
+          "collab: \"collabs\""
+        ]
+      }
+    ],
+    "mustNotContain": [
+      {
+        "id": "no-forward-scene-control",
+        "file": "render/src/scenes/visitor.js",
+        "patterns": [
+          "scene-forward",
+          "scene-next"
+        ]
+      }
+    ],
+    "jsonRules": [
+      {
+        "id": "workbench-as-if-collab",
+        "file": "render/public/graph/universe.json",
+        "nodeId": "workbench-as-if",
+        "expect": {
+          "type": "collab"
+        }
+      }
+    ]
+  }
+}

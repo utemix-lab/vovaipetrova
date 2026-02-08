@@ -43,31 +43,23 @@ body.visitor-mode {
   z-index: 0;
 }
 
-/* Scene layer (16:9 composition) */
 #scene-layer {
-  position: absolute;
+  position: fixed;
   inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
   z-index: 10;
 }
 
 #scene-stage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   width: 1400px;
   height: 788px;
   --scene-scale: 1;
-  transform: translate(-50%, -50%) scale(var(--scene-scale));
+  transform: scale(var(--scene-scale));
   transform-origin: center;
   pointer-events: none;
-}
-
-.panel-inner {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
 }
 
 #scene-overlay {
@@ -75,6 +67,13 @@ body.visitor-mode {
   inset: 0;
   pointer-events: none;
   z-index: 20;
+}
+
+.panel-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 #scene-overlay.scene-overlay--active {
@@ -385,14 +384,14 @@ body.focus-service #service-panel::before {
   height: 14px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.78);
+  background: #5b6573;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  color: rgba(11, 18, 32, 0.9);
+  color: #ffffff;
   font-family: var(--font-tech);
   font-size: 11px;
   line-height: 1;
@@ -403,8 +402,8 @@ body.focus-service #service-panel::before {
 }
 
 .narrative-dot--disabled {
-  background: rgba(156, 163, 175, 0.78);
-  color: rgba(31, 41, 55, 0.9);
+  background: #4a525c;
+  color: rgba(255, 255, 255, 0.45);
   cursor: default;
 }
 
@@ -412,7 +411,7 @@ body.focus-service #service-panel::before {
   position: relative;
   outline: none;
   border: none;
-  background: rgba(255, 255, 255, 0.78);
+  background: #5b6573;
   transition: transform 0.25s ease;
   font-weight: 700;
   font-size: 11px;
@@ -420,8 +419,8 @@ body.focus-service #service-panel::before {
 }
 
 .narrative-dot .icon {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   display: block;
 }
 
@@ -458,7 +457,7 @@ body.focus-service #service-panel::before {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--accent-cyan);
+  color: rgba(224, 232, 240, 0.75);
 }
 
 .narrative-screen__detail {
@@ -1113,6 +1112,19 @@ body.focus-service #service-panel::before {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.vova-root-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  max-height: var(--widget-frame-size, 52px);
+  margin-left: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.25;
+  color: rgba(224, 232, 240, 0.75);
 }
 
 .node-toc-row {

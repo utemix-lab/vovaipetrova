@@ -59,6 +59,7 @@ const TYPE_CATEGORY = {
   character: "characters",
   domain: "domains",
   practice: "practices",
+  collab: "collabs",
   module: "system",
   policy: "system",
   process: "system",
@@ -247,20 +248,14 @@ function renderSceneStack() {
   const el = document.getElementById('scene-stack');
   if (!el) return;
   const canGoBack = sceneStackIndex > 0;
-  const canGoForward = sceneStackIndex < sceneStack.length - 1;
   const iconPrev = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
       <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   `;
-  const iconNext = `
-    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
-      <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  `;
-  const iconPlus = `
-    <svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
-      <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+  const iconDot = `
+    <svg class="icon icon--dot" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <circle cx="6" cy="6" r="2" fill="currentColor" />
     </svg>
   `;
   el.innerHTML = [
@@ -271,13 +266,7 @@ function renderSceneStack() {
       title: "Назад",
     },
     {
-      label: iconNext,
-      action: "next",
-      disabled: !canGoForward,
-      title: "Вперед",
-    },
-    {
-      label: iconPlus,
+      label: iconDot,
       action: "placeholder",
       disabled: true,
       title: "",
@@ -1281,6 +1270,7 @@ async function verifyCriticalAssets() {
   await Promise.all([
     verifyAsset("assets/widgets/domain-plug.png"),
     verifyAsset("assets/widgets/practice-plug.png"),
+    verifyAsset("assets/widgets/collab-plug.png"),
     verifyAsset("assets/widgets/workbench-plug.png"),
     verifyAsset("exports/pointer_tags_registry.json"),
     verifyAsset("exports/ai_catalog.jsonl"),
@@ -1469,6 +1459,29 @@ function updatePanels() {
     }
   }
 
+  const appendPracticesToSystem = () => {
+    const systemContent = systemPanel?.querySelector(".panel-content");
+    if (!systemContent) return;
+    const practiceNodeIds = getRelatedNodeIdsByType(currentStep?.id, "practice");
+    if (!practiceNodeIds.length) return;
+    let systemHtml = "";
+    systemHtml += `<div class="section-title">Практики</div>`;
+    systemHtml += `<div class="domain-widgets inline-widgets">`;
+    systemHtml += practiceNodeIds.map((nodeId) => {
+      const label = nodesById.get(nodeId)?.label || nodeId;
+      return `
+        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
+          </div>
+        </div>`;
+    }).join("");
+    systemHtml += `</div>`;
+    systemContent.innerHTML += systemHtml;
+    bindHighlightWidgets(systemContent);
+    bindWidgetLever(systemContent);
+  };
+
   // Story панель: домены, практики и персонажи имеют спец. виджеты
   if (currentStep.id === "domains" && domainWidgets?.widgets?.length) {
     updateStoryWithDomainWidgets(storyPanel, currentStep.story);
@@ -1480,12 +1493,14 @@ function updatePanels() {
     updateStoryWithPotential(storyPanel, currentStep);
     updatePanel(systemPanel, { text: "" });
     updateServicePanel(servicePanel, { text: "", actions: [] });
+    appendPracticesToSystem();
     updateContextStrip();
     return;
-  } else if (isWorkbenchNode(currentStep)) {
+  } else if (isWorkbenchNode(currentStep) || isCollabNode(currentStep)) {
     updateStoryWithWorkbench(storyPanel, currentStep);
     updatePanel(systemPanel, { text: "" });
     updateServicePanel(servicePanel, { text: "", actions: [] });
+    appendPracticesToSystem();
     updateContextStrip();
     return;
   } else if (isDomainNode(currentStep)) {
@@ -1517,6 +1532,7 @@ function updatePanels() {
       updatePanel(systemPanel, currentStep.system);
       updateServicePanel(servicePanel, currentStep.service);
     }
+    appendPracticesToSystem();
   }
 
   updateContextStrip();
@@ -1535,9 +1551,18 @@ function updateStoryWithPotential(panel, node) {
   const domainNodeIds = getRelatedNodeIdsByType(node?.id, "domain");
   const practiceNodeIds = getRelatedNodeIdsByType(node?.id, "practice");
   const workbenchNodeIds = getRelatedNodeIdsByType(node?.id, "workbench");
+  const collabNodeIds = getRelatedNodeIdsByType(node?.id, "collab");
 
   let html = "";
   if (widgetIcon) {
+    const vovaInfo = isVova
+      ? `
+        <div class="vova-root-info">
+          <div>Вова - персонаж</div>
+          <div>Роль в системе - ...</div>
+          <div>Технический профиль - ...</div>
+        </div>`
+      : "";
     html += `
       <div class="node-toc">
         <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
@@ -1545,6 +1570,7 @@ function updateStoryWithPotential(panel, node) {
             ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
           </div>
         </div>
+        ${vovaInfo}
       </div>`;
   }
   if (isVova) {
@@ -1566,19 +1592,6 @@ function updateStoryWithPotential(panel, node) {
   }).join("");
   html += `</div>`;
 
-  html += `<div class="section-title">Практики</div>`;
-  html += `<div class="domain-widgets inline-widgets">`;
-  html += practiceNodeIds.map((nodeId) => {
-    const label = nodesById.get(nodeId)?.label || nodeId;
-    return `
-      <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
-        </div>
-      </div>`;
-  }).join("");
-  html += `</div>`;
-
   html += `<div class="section-title">Воркбенчи</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += workbenchNodeIds.map((nodeId) => {
@@ -1588,6 +1601,19 @@ function updateStoryWithPotential(panel, node) {
       <div class="domain-widget highlight-widget widget--lever${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
+        </div>
+      </div>`;
+  }).join("");
+  html += `</div>`;
+
+  html += `<div class="section-title">Коллабы</div>`;
+  html += `<div class="domain-widgets inline-widgets">`;
+  html += collabNodeIds.map((nodeId) => {
+    const label = nodesById.get(nodeId)?.label || nodeId;
+    return `
+      <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="widget-frame">
+          ${getWidgetImageHtml(getCollabWidgetIcon(nodeId), "collab")}
         </div>
       </div>`;
   }).join("");
@@ -1680,19 +1706,19 @@ function bindNarrativeScreen(container) {
   function syncExpandedBounds() {
     if (!screen.classList.contains("narrative-screen--expanded")) return;
     const overlay = document.getElementById("scene-overlay");
-    const panels = document.getElementById("panels-container");
-    if (!overlay || !panels) return;
+  const panels = document.getElementById("panels-container");
+  if (!overlay || !panels) return;
     const sceneStage = document.getElementById("scene-stage");
     const scaleValue = sceneStage
       ? parseFloat(getComputedStyle(sceneStage).getPropertyValue("--scene-scale"))
       : 1;
     const scale = Number.isFinite(scaleValue) && scaleValue > 0 ? scaleValue : 1;
     const overlayRect = overlay.getBoundingClientRect();
-    const panelsRect = panels.getBoundingClientRect();
-    const left = (panelsRect.left - overlayRect.left) / scale;
-    const top = (panelsRect.top - overlayRect.top) / scale;
-    const width = panelsRect.width / scale;
-    const height = panelsRect.height / scale;
+  const panelsRect = panels.getBoundingClientRect();
+  const left = (panelsRect.left - overlayRect.left) / scale;
+  const top = (panelsRect.top - overlayRect.top) / scale;
+  const width = panelsRect.width / scale;
+  const height = panelsRect.height / scale;
     screen.style.left = `${left}px`;
     screen.style.top = `${top}px`;
     screen.style.width = `${width}px`;
@@ -1794,9 +1820,9 @@ function updateStoryWithWorkbench(panel, node) {
   content.classList.remove("story-compact");
 
   const workbenchLabel = node.label || node.id;
-  const workbenchIcon = getWorkbenchWidgetIcon(node.id);
+  const workbenchIcon = node.type === "collab" ? getCollabWidgetIcon(node.id) : getWorkbenchWidgetIcon(node.id);
   const characterIcon = getCharacterWidgetIcon();
-  const sharedClass = isWorkbenchShared(node.id) ? " node-widget--shared" : "";
+  const sharedClass = node.type === "collab" ? "" : (isWorkbenchShared(node.id) ? " node-widget--shared" : "");
 
   const relatedCharacters = sortCharacterIds(getRelatedNodeIdsByType(node.id, "character"));
   const relatedDomains = getRelatedNodeIdsByType(node.id, "domain");
@@ -2188,7 +2214,11 @@ function updateStoryWithNodeWidget(panel, data, node) {
 }
 
 function isWidgetNode(node) {
-  return node && ["domain", "practice", "character", "workbench"].includes(node.type);
+  return node && ["domain", "practice", "character", "workbench", "collab"].includes(node.type);
+}
+
+function isCollabNode(node) {
+  return node && node.type === "collab";
 }
 
 function getNodeWidgetIcon(node) {
@@ -2208,6 +2238,9 @@ function getNodeWidgetIcon(node) {
   }
   if (node.type === "workbench") {
     return `${CONFIG.contractsPath}/assets/widgets/workbench-plug.png`;
+  }
+  if (node.type === "collab") {
+    return `${CONFIG.contractsPath}/assets/widgets/collab-plug.png`;
   }
   return null;
 }
@@ -2233,6 +2266,10 @@ function getCharacterWidgetIcon() {
 
 function getWorkbenchWidgetIcon(nodeId) {
   return `${CONFIG.contractsPath}/assets/widgets/workbench-plug.png`;
+}
+
+function getCollabWidgetIcon(nodeId) {
+  return `${CONFIG.contractsPath}/assets/widgets/collab-plug.png`;
 }
 
 function getWidgetImageHtml(defaultSrc, alt = "icon", options = {}) {
@@ -3382,9 +3419,6 @@ function createUI() {
         if (!dot || dot.classList.contains("scene-dot--disabled")) return;
         if (dot.dataset.action === "prev") {
           stepSceneStack(-1);
-        }
-        if (dot.dataset.action === "next") {
-          stepSceneStack(1);
         }
       });
     }

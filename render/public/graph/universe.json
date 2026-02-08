@@ -688,7 +688,7 @@
       "story": "Воркбенч: совместная лаборатория для режимов «как если бы».",
       "system": "Линия работы: эксперименты с фреймами, симуляциями и допущениями.",
       "service": "Входы: сценарии, эксперименты, протоколы наблюдения.",
-      "type": "workbench",
+  "type": "collab",
       "visibility": "public",
       "status": "expandable",
       "semantics": { "role": "tooling", "abstraction": "low" },
