@@ -11,10 +11,14 @@
   "dependencies": {
     "3d-force-graph": "^1.79.0",
     "dream-graph": "file:",
+    "framer-motion": "^11.0.25",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "three": "^0.182.0",
     "troika-three-text": "^0.52.4"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.0"
   }
 }

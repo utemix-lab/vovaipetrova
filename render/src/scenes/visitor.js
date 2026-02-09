@@ -34,12 +34,12 @@
  * └── БУДУЩЕЕ: Станут интерфейсом для LLM-агента
  */
 
-import ForceGraph3D from "3d-force-graph";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import "./visitor.css";
 import { ARCHITECTURE } from "../architecture/dna.ts";
+import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
 
@@ -386,40 +386,16 @@ gltfLoader.load(
 );
 
 // === Граф ===
-const graph = ForceGraph3D()(graphEl)
-  .backgroundColor(VISUAL_CONFIG.colors.background)
-  .showNavInfo(false)
-  .nodeRelSize(BASE_NODE_RADIUS)
-  .linkOpacity(0.35)
-  .linkWidth(0.6)
-  .linkDirectionalParticles(0);
-
-// Физика — плавное "устаканивание"
-graph.d3Force("link").distance((link) => getLinkDistance(link));
-graph.d3VelocityDecay(0.08);  // Медленное затухание (было 0.2)
-graph.d3AlphaDecay(0.008);    // Долго "живёт" (было 0.02)
-
-// Освещение
-graph.scene().add(new THREE.AmbientLight(0xffffff, 0.7));
-const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
-keyLight.position.set(40, 60, 120);
-graph.scene().add(keyLight);
-
-// Камера
-const camera = graph.camera();
-camera.fov = VISUAL_CONFIG.camera.fov;
-camera.updateProjectionMatrix();
-
-// Контроллы
+const graphEngine = new ThreeGraphEngine({
+  container: graphEl,
+  three: THREE,
+  baseNodeRadius: BASE_NODE_RADIUS,
+  autoRotateSpeed: AUTO_ROTATE_SPEED,
+  visualConfig: VISUAL_CONFIG,
+  getLinkDistance
+});
+const graph = graphEngine.initialize();
 const controls = graph.controls();
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.rotateSpeed = 0.6;
-controls.zoomSpeed = 0.8;
-controls.autoRotate = true;
-controls.autoRotateSpeed = AUTO_ROTATE_SPEED;
-controls.minDistance = 80;   // Не ближе 80 — граф всегда видим
-controls.maxDistance = 600;  // Не дальше 600 — не уменьшается до точки
 
 // === Утилиты ===
 function getId(value) {
@@ -1067,6 +1043,7 @@ graph.onNodeHover((node) => {
 graph.onNodeClick((node) => {
   registerInteraction();
   motionSound.resumeIfNeeded();
+  window.dispatchEvent(new CustomEvent("graph-node-selected", { detail: { node } }));
   goToStepById(node.id);
 });
 

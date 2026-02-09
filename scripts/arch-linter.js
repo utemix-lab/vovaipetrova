@@ -6,6 +6,7 @@ const REQUIRED_FILES = [
   "render/src/architecture/dna.ts",
   ".agent/context.yml",
   "render/src/main.js",
+  "render/src/main.jsx",
   "render/src/scenes/visitor.js",
   "render/src/visual/config.js",
   "render/src/visual/widget-rules.js"
@@ -26,7 +27,7 @@ function ensureFiles() {
 }
 
 function checkDnaImports() {
-  const filesToCheck = REQUIRED_FILES.filter((filePath) => filePath.endsWith(".js"));
+  const filesToCheck = REQUIRED_FILES.filter((filePath) => filePath.endsWith(".js") || filePath.endsWith(".jsx"));
   filesToCheck.forEach((filePath) => {
     const fullPath = path.join(ROOT, filePath);
     const content = fs.readFileSync(fullPath, "utf8");

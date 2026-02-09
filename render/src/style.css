@@ -47,6 +47,50 @@ body {
   background: rgba(30, 64, 175, 0.55);
 }
 
+.react-inspector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(8, 12, 18, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: rgba(224, 232, 240, 0.85);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.react-inspector__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.35), transparent 65%);
+  pointer-events: none;
+}
+
+.react-inspector__title {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.react-inspector__row {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.react-inspector__meta {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
 /* Panel dimming for lever mode */
 .panel-dimmed {
   opacity: 0.85;
