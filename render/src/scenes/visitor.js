@@ -138,7 +138,9 @@ let currentView = "all";
 let currentSource = "canon";
 let currentGraphUrl = CONFIG.defaultGraphUrl;
 let nodesById = new Map();
+let allNodesById = new Map();  // Полный список узлов (включая отключённые) для виджетов
 let neighborsById = new Map();
+let allNeighborsById = new Map();  // Полный индекс соседей (включая отключённые) для виджетов
 let domainWidgets = null; // Visual Anchors v1
 let pointerTagsRegistry = null;
 let pointerTagsByTag = new Map();
@@ -1340,6 +1342,19 @@ function buildRouteFromUniverse(universe, view) {
     ...edge,
     type: edge.type || "relates"
   }));
+  
+  // Сохраняем полный список узлов и соседей (включая отключённые) для виджетов
+  allNodesById = new Map(normalizedNodes.map((node) => [node.id, node]));
+  allNeighborsById = new Map();
+  normalizedEdges.forEach((edge) => {
+    const sourceId = typeof edge.source === "object" ? edge.source.id : edge.source;
+    const targetId = typeof edge.target === "object" ? edge.target.id : edge.target;
+    if (!allNeighborsById.has(sourceId)) allNeighborsById.set(sourceId, new Set());
+    if (!allNeighborsById.has(targetId)) allNeighborsById.set(targetId, new Set());
+    allNeighborsById.get(sourceId).add(targetId);
+    allNeighborsById.get(targetId).add(sourceId);
+  });
+  
   const filtered = applyViewFilter(normalizedNodes, normalizedEdges, view);
 
   return {
@@ -1526,9 +1541,10 @@ function updatePanels() {
     systemHtml += `<div class="section-title">Практики</div>`;
     systemHtml += `<div class="domain-widgets inline-widgets">`;
     systemHtml += practiceNodeIds.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
+      // Используем allNodesById для отключённых узлов (практики)
+      const label = (allNodesById.get(nodeId) || nodesById.get(nodeId))?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
           <div class="widget-frame">
             ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
           </div>
@@ -1537,7 +1553,6 @@ function updatePanels() {
     systemHtml += `</div>`;
     systemContent.innerHTML += systemHtml;
     bindHighlightWidgets(systemContent);
-    bindWidgetLever(systemContent);
   };
 
   if (!hasReactStory) {
@@ -1683,7 +1698,7 @@ function updateStoryWithPotential(panel, node) {
   html += domainNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
     return `
-      <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+      <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
         </div>
@@ -1697,7 +1712,7 @@ function updateStoryWithPotential(panel, node) {
     const label = nodesById.get(nodeId)?.label || nodeId;
     const sharedClass = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
     return `
-      <div class="domain-widget highlight-widget widget--lever${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+      <div class="domain-widget highlight-widget ${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
         </div>
@@ -1710,7 +1725,7 @@ function updateStoryWithPotential(panel, node) {
   html += collabNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
     return `
-      <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+      <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getCollabWidgetIcon(nodeId), "collab")}
         </div>
@@ -1722,7 +1737,6 @@ function updateStoryWithPotential(panel, node) {
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 }
 
@@ -1940,7 +1954,7 @@ function updateStoryWithWorkbench(panel, node) {
         ${relatedCharacters.map((nodeId) => {
           const label = nodesById.get(nodeId)?.label || nodeId;
           return `
-            <div class="node-widget node-widget--static node-widget--root node-widget--lever" title="${escapeHtml(label)}">
+            <div class="node-widget node-widget--static node-widget--root node-" title="${escapeHtml(label)}">
               <div class="widget-frame">
                 ${getWidgetImageHtml(characterIcon, "character", { isRoot: true })}
               </div>
@@ -1957,7 +1971,7 @@ function updateStoryWithWorkbench(panel, node) {
     html += relatedDomains.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
         </div>
@@ -1972,7 +1986,7 @@ function updateStoryWithWorkbench(panel, node) {
     html += relatedPractices.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
         </div>
@@ -1988,7 +2002,7 @@ function updateStoryWithWorkbench(panel, node) {
       const label = nodesById.get(nodeId)?.label || nodeId;
       const shared = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
       return `
-        <div class="domain-widget highlight-widget widget--lever${shared}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget ${shared}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
         </div>
@@ -1999,7 +2013,6 @@ function updateStoryWithWorkbench(panel, node) {
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 }
 
@@ -2038,7 +2051,7 @@ function updateStoryWithDomainFocus(panel, node) {
     html += relatedCharacters.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getCharacterWidgetIcon(), "character")}
         </div>
@@ -2053,7 +2066,7 @@ function updateStoryWithDomainFocus(panel, node) {
     html += relatedPractices.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget widget--lever" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
         </div>
@@ -2073,13 +2086,8 @@ function updateStoryWithDomainFocus(panel, node) {
 
   content.innerHTML = html;
   bindTagPills(content);
-  bindWidgetLever(content);
-  bindEmblemSwap(content);
-  bindEmblemSwap(content);
-  bindEmblemSwap(content);
   bindEmblemSwap(content);
   bindHighlightWidgets(content);
-  bindEmblemSwap(content);
 }
 
 function updateStoryWithDomainWidgets(panel, data) {
@@ -2099,7 +2107,7 @@ function updateStoryWithDomainWidgets(panel, data) {
   html += `<div class="domain-widgets domain-grid">`;
   for (const widget of domainWidgets.widgets) {
     html += `
-      <div class="domain-widget widget--lever" data-node-id="${widget.nodeId}" title="${widget.label}">
+      <div class="domain-widget " data-node-id="${widget.nodeId}" title="${widget.label}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getDomainWidgetIcon(widget.nodeId), "domain")}
         </div>
@@ -2109,7 +2117,6 @@ function updateStoryWithDomainWidgets(panel, data) {
 
   content.innerHTML = html;
   bindTagPills(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 
   // Initialize mini cube
@@ -2148,12 +2155,6 @@ function updateStoryWithDomainWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
-      // If a lever is active, switch lever instead of navigating
-      if (activeRootLever) {
-        try { setRootLeverState(activeRootLever, false); } catch (e) {}
-        try { setRootLeverState(el, true); } catch (e) {}
-        return;
-      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -2173,7 +2174,7 @@ function updateStoryWithPracticeWidgets(panel, data) {
   html += `<div class="domain-widgets practice-grid">`;
   for (const node of practiceNodes) {
     html += `
-      <div class="domain-widget widget--lever" data-node-id="${node.id}" title="${node.label}">
+      <div class="domain-widget " data-node-id="${node.id}" title="${node.label}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getPracticeWidgetIcon(node.id), "practice")}
         </div>
@@ -2183,7 +2184,6 @@ function updateStoryWithPracticeWidgets(panel, data) {
 
   content.innerHTML = html;
   bindTagPills(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 
   const cubeContainer = document.getElementById("mini-cube-container");
@@ -2212,11 +2212,6 @@ function updateStoryWithPracticeWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
-      if (activeRootLever) {
-        try { setRootLeverState(activeRootLever, false); } catch (e) {}
-        try { setRootLeverState(el, true); } catch (e) {}
-        return;
-      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -2236,7 +2231,7 @@ function updateStoryWithCharacterWidgets(panel, data) {
   html += `<div class="domain-widgets character-grid">`;
   for (const node of characterNodes) {
     html += `
-      <div class="domain-widget widget--lever" data-node-id="${node.id}" title="${node.label}">
+      <div class="domain-widget " data-node-id="${node.id}" title="${node.label}">
         <div class="widget-frame">
           ${getWidgetImageHtml(getCharacterWidgetIcon(), "character")}
         </div>
@@ -2246,7 +2241,6 @@ function updateStoryWithCharacterWidgets(panel, data) {
 
   content.innerHTML = html;
   bindTagPills(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 
   const cubeContainer = document.getElementById("mini-cube-container");
@@ -2275,11 +2269,6 @@ function updateStoryWithCharacterWidgets(panel, data) {
     el.addEventListener("click", () => {
       registerInteraction();
       motionSound.resumeIfNeeded();
-      if (activeRootLever) {
-        try { setRootLeverState(activeRootLever, false); } catch (e) {}
-        try { setRootLeverState(el, true); } catch (e) {}
-        return;
-      }
       goToStepById(el.dataset.nodeId);
     });
   });
@@ -2308,7 +2297,6 @@ function updateStoryWithNodeWidget(panel, data, node) {
 
   content.innerHTML = html;
   bindTagPills(content);
-  bindWidgetLever(content);
   bindEmblemSwap(content);
 }
 
@@ -2801,76 +2789,8 @@ function setRootLeverState(widget, isActive) {
   }
 }
 
-function bindWidgetLever(container) {
-  container.querySelectorAll(".widget--lever, .node-widget--lever").forEach((widget) => {
-    if (widget.dataset.leverBound) return;
-    widget.dataset.leverBound = "true";
-
-    let holdTimer = null;
-    let leverActive = false;
-    let startY = 0;
-    let startOffset = 0;
-    let currentShift = 0;
-    let pointerId = null;
-
-    const clearHold = () => {
-      if (holdTimer) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-      }
-    };
-
-    const onPointerMove = (event) => {
-      if (!leverActive) return;
-      const delta = event.clientY - startY;
-      const nextShift = Math.max(-ROOT_LEVER_CONFIG.maxShift, Math.min(0, startOffset + delta));
-      currentShift = nextShift;
-      widget.style.setProperty("--lever-offset", `${nextShift}px`);
-    };
-
-    const finishLever = () => {
-      if (leverActive) {
-        const shouldActivate = currentShift <= -ROOT_LEVER_CONFIG.threshold;
-        setRootLeverState(widget, shouldActivate);
-      }
-      widget.classList.remove("lever-dragging");
-      leverActive = false;
-      clearHold();
-      if (pointerId !== null && widget.hasPointerCapture(pointerId)) {
-        widget.releasePointerCapture(pointerId);
-      }
-      pointerId = null;
-    };
-
-    widget.addEventListener("pointerdown", (event) => {
-      if (event.button && event.button !== 0) return;
-      startY = event.clientY;
-      startOffset = widget.classList.contains("node-widget--shifted")
-        ? -ROOT_LEVER_CONFIG.maxShift
-        : 0;
-      currentShift = startOffset;
-      pointerId = event.pointerId;
-      if (widget.setPointerCapture) {
-        widget.setPointerCapture(pointerId);
-      }
-      holdTimer = setTimeout(() => {
-        leverActive = true;
-        widget.classList.add("lever-dragging");
-      }, ROOT_LEVER_CONFIG.holdMs);
-    });
-
-    widget.addEventListener("pointermove", onPointerMove);
-    widget.addEventListener("pointerup", finishLever);
-    widget.addEventListener("pointercancel", finishLever);
-
-    widget.addEventListener("click", (event) => {
-      if (widget.classList.contains("node-widget--shifted") || leverActive) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    });
-  });
-}
+// @future: Lever механика удалена — виджеты теперь только подпрыгивают и подсвечиваются
+// function bindWidgetLever удалена
 
 function bindEmblemSwap(container) {
   container.querySelectorAll(".widget-frame img[data-hover-src]").forEach((img) => {
@@ -2943,10 +2863,12 @@ function updateScopeNodeMaterials() {
 }
 
 function getRelatedNodeIdsByType(nodeId, type) {
-  if (!nodeId || !neighborsById.has(nodeId)) return [];
+  // Используем полный индекс соседей для виджетов отключённых узлов (практики)
+  const neighbors = allNeighborsById.get(nodeId) || neighborsById.get(nodeId);
+  if (!nodeId || !neighbors) return [];
   const related = [];
-  neighborsById.get(nodeId).forEach((neighborId) => {
-    const node = nodesById.get(neighborId);
+  neighbors.forEach((neighborId) => {
+    const node = allNodesById.get(neighborId) || nodesById.get(neighborId);
     if (node?.type === type) {
       related.push(neighborId);
     }
@@ -3618,7 +3540,7 @@ function createUI() {
     // Delegate clicks on widgets to push a new scene dot when navigating into a widget
     document.body.addEventListener('click', (ev) => {
       try {
-        const host = ev.target.closest && ev.target.closest('[data-node-id], .node-widget, .domain-widget, .widget--lever');
+        const host = ev.target.closest && ev.target.closest('[data-node-id], .node-widget, .domain-widget, .');
         if (!host) return;
         const nodeId = host.dataset?.nodeId || host.getAttribute('data-node-id') || host.dataset?.nodeIdRaw || null;
         if (!nodeId) return;
@@ -3752,7 +3674,7 @@ window.addEventListener("graph-widget-lever", (event) => {
   if (!proxy) {
     proxy = document.createElement("div");
     proxy.dataset.nodeId = nodeId;
-    proxy.className = "react-lever-proxy widget--lever";
+    proxy.className = "react-lever-proxy ";
     reactLeverProxies.set(nodeId, proxy);
   }
   if (activeRootLever && activeRootLever.dataset?.nodeId === nodeId) {

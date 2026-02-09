@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "0.1.0",
+  "description": "Design tokens для UI v0.1 — размеры и отклик виджетов",
+  
+  "widget": {
+    "frame": {
+      "size": "52px",
+      "sizeCompact": "44px",
+      "borderRadius": "12px",
+      "borderColor": "rgba(34, 211, 238, 0.2)",
+      "borderColorActive": "var(--color-active)"
+    },
+    "bounce": {
+      "duration": "0.28s",
+      "offset": "-6px",
+      "easing": "ease-out"
+    },
+    "hover": {
+      "scale": "0.97",
+      "transitionDuration": "0.2s"
+    },
+    "highlight": {
+      "background": "var(--color-active-soft)",
+      "borderColor": "var(--color-active)"
+    }
+  },
+  
+  "grid": {
+    "widgets": {
+      "columns": 4,
+      "gap": "6px",
+      "gapCompact": "4px"
+    },
+    "inlineWidgets": {
+      "gap": "4px"
+    }
+  },
+  
+  "animation": {
+    "widgetBounce": {
+      "keyframes": {
+        "0%": { "translateY": "0" },
+        "55%": { "translateY": "-6px" },
+        "100%": { "translateY": "0" }
+      }
+    }
+  }
+}

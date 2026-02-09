@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "0.1.0",
+  "description": "Инварианты viewport и композиции панелей — НЕ ДОЛЖНЫ НАРУШАТЬСЯ",
+  
+  "viewport": {
+    "aspectRatio": "16:9",
+    "baseWidth": 1400,
+    "baseHeight": 788,
+    "note": "Композиция из трёх окон всегда 16:9. Масштабируется через --scene-scale."
+  },
+  
+  "adaptation": {
+    "graphBackground": {
+      "adapts": true,
+      "description": "Фон с графом адаптируется под размер браузера"
+    },
+    "panelsContainer": {
+      "adapts": false,
+      "description": "Контейнер панелей НЕ адаптируется — сохраняет 16:9, масштабируется целиком"
+    }
+  },
+  
+  "panels": {
+    "story": {
+      "position": "left",
+      "id": "story-panel"
+    },
+    "system": {
+      "position": "top-right",
+      "id": "system-panel"
+    },
+    "service": {
+      "position": "bottom-right",
+      "id": "service-panel"
+    }
+  },
+  
+  "narrativeScreen": {
+    "aspectRatio": "16:9",
+    "collapsed": {
+      "location": "inside story-panel",
+      "size": "fits within panel"
+    },
+    "expanded": {
+      "location": "overlays all three panels",
+      "size": "matches panels-container bounds",
+      "zIndex": "above panels",
+      "note": "При расширении перекрывает все три панели, сохраняя 16:9"
+    }
+  },
+  
+  "cssInvariants": {
+    "sceneStage": {
+      "selector": "#scene-stage",
+      "required": ["width: 1400px", "height: 788px", "--scene-scale"]
+    },
+    "panelsContainer": {
+      "selector": "#panels-container",
+      "required": ["position: absolute"]
+    },
+    "narrativeExpanded": {
+      "selector": "body.narrative-expanded",
+      "required": ["#story-panel", "#system-panel", "#service-panel visibility rules"]
+    }
+  },
+  
+  "warnings": [
+    "НЕ менять базовые размеры 1400x788 без обновления всех зависимых стилей",
+    "НЕ делать панели адаптивными по отдельности — только масштабирование всего контейнера",
+    "НЕ нарушать 16:9 для narrative-screen в expanded режиме"
+  ]
+}

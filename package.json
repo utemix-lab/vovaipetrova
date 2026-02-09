@@ -1,6 +1,6 @@
 {
   "name": "vovaipetrova",
-  "version": "1.0.0-alpha",
+  "version": "0.1.0",
   "description": "Единая система знаний на основе онтологического графа",
   "type": "module",
   "scripts": {

@@ -6,6 +6,7 @@
     "files": [
       "render/public/ui/UI_RULES.md",
       "render/public/ui/UI_CONTRACT_STYLE.md",
+      "render/public/ui/layouts/viewport.layout.json",
       "render/src/scenes/visitor.js",
       "render/src/scenes/visitor.css",
       "render/src/style.css",
@@ -15,11 +16,33 @@
       {
         "id": "scene-stage-16x9",
         "file": "render/src/scenes/visitor.css",
+        "severity": "error",
+        "description": "Композиция панелей должна быть 16:9 (1400x788)",
         "patterns": [
           "#scene-stage",
           "width: 1400px",
           "height: 788px",
           "--scene-scale"
+        ]
+      },
+      {
+        "id": "panels-container-absolute",
+        "file": "render/src/scenes/visitor.css",
+        "severity": "error",
+        "description": "Контейнер панелей должен быть абсолютно позиционирован",
+        "patterns": [
+          "#panels-container",
+          "position: absolute"
+        ]
+      },
+      {
+        "id": "narrative-screen-expanded-overlay",
+        "file": "render/src/scenes/visitor.css",
+        "severity": "error",
+        "description": "Narrative screen в expanded режиме должен перекрывать панели",
+        "patterns": [
+          ".narrative-screen--expanded",
+          "position: absolute"
         ]
       },
       {

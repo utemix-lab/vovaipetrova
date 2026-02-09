@@ -1253,14 +1253,15 @@ body.focus-service #service-panel::before {
 }
 
 .node-widget--lever:hover .widget-frame,
-.widget--lever:hover .widget-frame {
-  animation: lever-bounce 0.28s ease-out;
+.widget--lever:hover .widget-frame,
+.domain-widget:hover .widget-frame {
+  animation: widget-bounce 0.28s ease-out;
 }
 
-@keyframes lever-bounce {
-  0% { transform: translateY(var(--lever-offset)); }
-  55% { transform: translateY(calc(var(--lever-offset) - 6px)); }
-  100% { transform: translateY(var(--lever-offset)); }
+@keyframes widget-bounce {
+  0% { transform: translateY(0); }
+  55% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
 }
 
 .section-title {

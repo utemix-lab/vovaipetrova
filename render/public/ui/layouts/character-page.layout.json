@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "0.1.0",
+  "description": "Базовая композиция страницы персонажа (Вова) — эталон для всех узлов кроме хабов",
+  
+  "appliesTo": {
+    "nodeTypes": ["character", "domain", "workbench", "collab", "practice"],
+    "excludeNodeTypes": ["hub", "root"]
+  },
+  
+  "storyPanel": {
+    "sections": [
+      {
+        "id": "node-toc",
+        "description": "Корневой виджет узла + связанные персонажи",
+        "components": ["node-widget--root", "related-characters"]
+      },
+      {
+        "id": "narrative-screen",
+        "description": "Нарративный экран (если есть слайды)",
+        "optional": true
+      },
+      {
+        "id": "description",
+        "description": "Описательный блок",
+        "component": "text"
+      },
+      {
+        "id": "domains",
+        "description": "Континенты (связанные домены)",
+        "component": "inline-widgets",
+        "widgetType": "domain"
+      },
+      {
+        "id": "workbenches",
+        "description": "Воркбенчи",
+        "component": "inline-widgets",
+        "widgetType": "workbench"
+      },
+      {
+        "id": "collabs",
+        "description": "Коллабы",
+        "component": "inline-widgets",
+        "widgetType": "collab"
+      }
+    ]
+  },
+  
+  "systemPanel": {
+    "sections": [
+      {
+        "id": "practices",
+        "description": "Практики (виджеты без навигации к узлу)",
+        "component": "inline-widgets",
+        "widgetType": "practice"
+      }
+    ]
+  },
+  
+  "servicePanel": {
+    "sections": [
+      {
+        "id": "context-strip",
+        "description": "Контекстная полоса с тегами и действиями"
+      }
+    ]
+  },
+  
+  "widgetBehavior": {
+    "hover": {
+      "bounce": true,
+      "highlight": true,
+      "emblemSwap": true
+    },
+    "click": {
+      "navigateToNode": true
+    },
+    "hold": {
+      "enabled": false,
+      "note": "Lever механика отключена в v0.1"
+    }
+  }
+}
