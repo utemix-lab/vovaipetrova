@@ -167,6 +167,10 @@ body.visitor-mode {
   overflow-x: hidden;
 }
 
+#story-panel.panel-react-overlay .panel-content {
+  display: none;
+}
+
 #system-panel {
   flex: 1;
   margin-top: -12px;

@@ -193,6 +193,7 @@ let sceneStack = [];            // array of scene refs (node ids)
 let sceneStackIndex = 0;
 let episodeStack = null;       // optional for 16x9 episodes
 let preactiveResponse = null;  // computed preview when lever active
+const reactLeverProxies = new Map();
 
 // If the scene dots initializer was defined earlier inside createUI, call it now
 if (window.__initSceneDotsUI) {
@@ -218,6 +219,17 @@ function computePreactiveResponse() {
     groups: ['Services', 'Models', 'Methods'],
     previewItems: related
   };
+}
+
+function emitPreviewChange() {
+  window.dispatchEvent(
+    new CustomEvent("graph-preview-changed", {
+      detail: {
+        activeLeverId: activeLeverWidgetId || null,
+        preview: preactiveResponse
+      }
+    })
+  );
 }
 
 function updateWindowDimming() {
@@ -1419,7 +1431,13 @@ function goToStepById(stepId) {
   refreshHighlights(currentStep);
   graph.refresh();
   window.dispatchEvent(
-    new CustomEvent("graph-step-changed", { detail: { step: currentStep, route: currentRoute } })
+    new CustomEvent("graph-step-changed", {
+      detail: {
+        step: currentStep,
+        route: currentRoute,
+        storyWidgets: buildStoryWidgetSections(currentStep)
+      }
+    })
   );
   // Push to scene stack for lightweight presence tracking when navigation is explicit
   try {
@@ -1461,6 +1479,8 @@ function updatePanels() {
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
   if (storyPanel) storyPanel.classList.remove("panel-no-dim");
+  const hasReactStory = Boolean(storyPanel?.querySelector(".react-story-host"));
+  storyPanel?.classList.toggle("panel-react-overlay", hasReactStory);
 
   const serviceText = currentStep.service?.text || "";
   const hasQueryHints = extractTags(serviceText).length > 0;
@@ -1499,40 +1519,48 @@ function updatePanels() {
     bindWidgetLever(systemContent);
   };
 
-  // Story панель: домены, практики и персонажи имеют спец. виджеты
-  if (currentStep.id === "domains" && domainWidgets?.widgets?.length) {
-    updateStoryWithDomainWidgets(storyPanel, currentStep.story);
-  } else if (currentStep.id === "practices") {
-    updateStoryWithPracticeWidgets(storyPanel, currentStep.story);
-  } else if (currentStep.id === "characters") {
-    updateStoryWithCharacterWidgets(storyPanel, currentStep.story);
-  } else if (EXPERIMENTAL_RULES.potentialInStory && isCharacterNode(currentStep)) {
-    updateStoryWithPotential(storyPanel, currentStep);
-    updatePanel(systemPanel, { text: "" });
-    updateServicePanel(servicePanel, { text: "", actions: [] });
-    appendPracticesToSystem();
-    updateContextStrip();
-    return;
-  } else if (isWorkbenchNode(currentStep) || isCollabNode(currentStep)) {
-    updateStoryWithWorkbench(storyPanel, currentStep);
-    updatePanel(systemPanel, { text: "" });
-    updateServicePanel(servicePanel, { text: "", actions: [] });
-    appendPracticesToSystem();
-    updateContextStrip();
-    return;
-  } else if (isDomainNode(currentStep)) {
-    updateStoryWithDomainFocus(storyPanel, currentStep);
-  } else if (isWidgetNode(currentStep)) {
-    updateStoryWithNodeWidget(storyPanel, currentStep.story, currentStep);
+  if (!hasReactStory) {
+    // Story панель: домены, практики и персонажи имеют спец. виджеты
+    if (currentStep.id === "domains" && domainWidgets?.widgets?.length) {
+      updateStoryWithDomainWidgets(storyPanel, currentStep.story);
+    } else if (currentStep.id === "practices") {
+      updateStoryWithPracticeWidgets(storyPanel, currentStep.story);
+    } else if (currentStep.id === "characters") {
+      updateStoryWithCharacterWidgets(storyPanel, currentStep.story);
+    } else if (EXPERIMENTAL_RULES.potentialInStory && isCharacterNode(currentStep)) {
+      updateStoryWithPotential(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      appendPracticesToSystem();
+      updateContextStrip();
+      return;
+    } else if (isWorkbenchNode(currentStep) || isCollabNode(currentStep)) {
+      updateStoryWithWorkbench(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      appendPracticesToSystem();
+      updateContextStrip();
+      return;
+    } else if (isDomainNode(currentStep)) {
+      updateStoryWithDomainFocus(storyPanel, currentStep);
+    } else if (isWidgetNode(currentStep)) {
+      updateStoryWithNodeWidget(storyPanel, currentStep.story, currentStep);
+    } else {
+      const storyContent = storyPanel?.querySelector(".panel-content");
+      storyContent?.classList.remove("story-compact");
+      if (queryModeActive && PRACTICE_HINTS[currentStep.id]) {
+        updateStoryWithPracticeHint(storyPanel, currentStep.story, PRACTICE_HINTS[currentStep.id]);
+      } else if (hasQueryHints && !isQueryNode) {
+        updateStoryWithSystemText(storyPanel, currentStep.story, currentStep.system);
+      } else {
+        updatePanel(storyPanel, currentStep.story);
+      }
+    }
   } else {
     const storyContent = storyPanel?.querySelector(".panel-content");
-    storyContent?.classList.remove("story-compact");
-    if (queryModeActive && PRACTICE_HINTS[currentStep.id]) {
-      updateStoryWithPracticeHint(storyPanel, currentStep.story, PRACTICE_HINTS[currentStep.id]);
-    } else if (hasQueryHints && !isQueryNode) {
-      updateStoryWithSystemText(storyPanel, currentStep.story, currentStep.system);
-    } else {
-      updatePanel(storyPanel, currentStep.story);
+    if (storyContent) {
+      storyContent.innerHTML = "";
+      storyContent.classList.remove("story-compact");
     }
   }
 
@@ -2689,8 +2717,14 @@ function setRootLeverState(widget, isActive) {
     document.body.classList.add("scene-lever-active");
     // Track active lever id for scene logic
     try { activeLeverWidgetId = widget.dataset && widget.dataset.nodeId ? widget.dataset.nodeId : null; } catch(e){ activeLeverWidgetId = null; }
-    computePreactiveResponse();
-    updateWindowDimming();
+  computePreactiveResponse();
+  updateWindowDimming();
+  emitPreviewChange();
+    window.dispatchEvent(
+      new CustomEvent("graph-lever-changed", {
+        detail: { nodeId: activeLeverWidgetId, active: true }
+      })
+    );
   } else {
     if (activeRootLever === widget) {
       activeRootLever = null;
@@ -2702,8 +2736,14 @@ function setRootLeverState(widget, isActive) {
     }
     // clear active lever id if this widget was active
     try { if (!activeRootLever) activeLeverWidgetId = null; } catch(e) { activeLeverWidgetId = null; }
-    computePreactiveResponse();
-    updateWindowDimming();
+  computePreactiveResponse();
+  updateWindowDimming();
+  emitPreviewChange();
+    window.dispatchEvent(
+      new CustomEvent("graph-lever-changed", {
+        detail: { nodeId: activeLeverWidgetId, active: false }
+      })
+    );
   }
 }
 
@@ -2864,6 +2904,51 @@ function buildDomainTag(nodeId) {
   if (!nodeId || !nodeId.startsWith("domain-")) return null;
   const value = nodeId.replace("domain-", "");
   return value ? `domain:${value}` : null;
+}
+
+function buildStoryWidgetSections(step) {
+  if (!step) return [];
+  const sections = [];
+  const addSection = (title, type, ids) => {
+    if (!ids || !ids.length) return;
+    sections.push({
+      title,
+      type,
+      items: ids.map((id) => ({
+        id,
+        label: nodesById.get(id)?.label || id,
+        type
+      }))
+    });
+  };
+
+  if (step.id === "domains" && domainWidgets?.widgets?.length) {
+    addSection("Континенты", "domain", domainWidgets.widgets.map((w) => w.nodeId));
+    return sections;
+  }
+  if (step.id === "practices") {
+    addSection(
+      "Практики",
+      "practice",
+      [...nodesById.values()].filter((n) => n.type === "practice").map((n) => n.id)
+    );
+    return sections;
+  }
+  if (step.id === "characters") {
+    addSection(
+      "Персонажи",
+      "character",
+      sortCharacterIds([...nodesById.values()].filter((n) => n.type === "character").map((n) => n.id))
+    );
+    return sections;
+  }
+
+  addSection("Континенты", "domain", getRelatedNodeIdsByType(step.id, "domain"));
+  addSection("Практики", "practice", getRelatedNodeIdsByType(step.id, "practice"));
+  addSection("Проводники", "character", sortCharacterIds(getRelatedNodeIdsByType(step.id, "character")));
+  addSection("Воркбенчи", "workbench", getRelatedNodeIdsByType(step.id, "workbench"));
+  addSection("Коллабы", "collab", getRelatedNodeIdsByType(step.id, "collab"));
+  return sections;
 }
 
 function updateStoryWithPracticeHint(panel, storyData, hint) {
@@ -3493,6 +3578,85 @@ document.addEventListener("keydown", (e) => {
     registerInteraction();
     motionSound.resumeIfNeeded();
   }, { passive: true });
+});
+
+window.addEventListener("graph-ref-clicked", (event) => {
+  const ref = event?.detail?.ref;
+  if (!ref) return;
+  const candidateId = ref.id || ref.label;
+  if (typeof candidateId === "string" && candidateId.startsWith("http")) {
+    window.open(candidateId, "_blank", "noopener,noreferrer");
+    return;
+  }
+  if (candidateId && nodesById?.has(candidateId)) {
+    goToStepById(candidateId);
+  }
+});
+
+window.addEventListener("graph-widget-hovered", (event) => {
+  const nodeId = event?.detail?.nodeId;
+  const active = Boolean(event?.detail?.active);
+  if (!nodeId) return;
+  if (!active && activeLeverWidgetId === nodeId) {
+    hoveredWidgetId = nodeId;
+    hoveredWindow = 1;
+    updateWindowDimming();
+    highlightNodeById(nodeId, true);
+    const node = nodesById.get(nodeId);
+    if (node) {
+      refreshHighlights(node);
+    }
+    graph.refresh();
+    return;
+  }
+  if (active) {
+    hoveredWidgetId = nodeId;
+    hoveredWindow = 1;
+    updateWindowDimming();
+    highlightNodeById(nodeId, true);
+    const node = nodesById.get(nodeId);
+    if (node) {
+      refreshHighlights(node);
+    }
+  } else {
+    hoveredWidgetId = null;
+    hoveredWindow = null;
+    updateWindowDimming();
+    highlightNodeById(nodeId, false);
+    refreshHighlights(null);
+  }
+  graph.refresh();
+});
+
+window.addEventListener("graph-widget-lever", (event) => {
+  const nodeId = event?.detail?.nodeId;
+  if (!nodeId) return;
+  let proxy = reactLeverProxies.get(nodeId);
+  if (!proxy) {
+    proxy = document.createElement("div");
+    proxy.dataset.nodeId = nodeId;
+    proxy.className = "react-lever-proxy widget--lever";
+    reactLeverProxies.set(nodeId, proxy);
+  }
+  if (activeRootLever && activeRootLever.dataset?.nodeId === nodeId) {
+    setRootLeverState(activeRootLever, false);
+    return;
+  }
+  if (activeRootLever) {
+    setRootLeverState(activeRootLever, false);
+  }
+  setRootLeverState(proxy, true);
+});
+
+window.addEventListener("graph-mini-shape-host", (event) => {
+  const detail = event?.detail || {};
+  const container = detail.container || null;
+  const nodeIds = Array.isArray(detail.nodeIds) ? detail.nodeIds : [];
+  destroyMiniCube();
+  if (!container || nodeIds.length === 0) return;
+  const type = detail.type || "cube";
+  const hubId = detail.hubId || "story";
+  initMiniShape(type, container, nodeIds, hubId);
 });
 
 // === Инициализация ===

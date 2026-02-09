@@ -6,12 +6,18 @@ import { NodeInspector } from "./ui/node-inspector.jsx";
 import { StepStatus } from "./ui/step-status.jsx";
 import { FocusIndicator } from "./ui/focus-indicator.jsx";
 import { SceneStackStatus } from "./ui/scene-stack-status.jsx";
+import { StoryPanel } from "./ui/story-panel.jsx";
+import { SystemPanel } from "./ui/system-panel.jsx";
+import { ServicePanel } from "./ui/service-panel.jsx";
 import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [currentStep, setCurrentStep] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
+  const [storyWidgets, setStoryWidgets] = useState([]);
+  const [activeLeverId, setActiveLeverId] = useState(null);
+  const [preactivePreview, setPreactivePreview] = useState(null);
   const [focusPanel, setFocusPanel] = useState(null);
   const [sceneStack, setSceneStack] = useState([]);
   const [sceneStackIndex, setSceneStackIndex] = useState(0);
@@ -32,6 +38,7 @@ function App() {
     const handler = (event) => {
       setCurrentStep(event?.detail?.step ?? null);
       setCurrentRoute(event?.detail?.route ?? null);
+      setStoryWidgets(event?.detail?.storyWidgets ?? []);
     };
     window.addEventListener("graph-step-changed", handler);
     return () => window.removeEventListener("graph-step-changed", handler);
@@ -52,6 +59,24 @@ function App() {
     };
     window.addEventListener("graph-stack-changed", handler);
     return () => window.removeEventListener("graph-stack-changed", handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (event) => {
+      const nodeId = event?.detail?.nodeId ?? null;
+      const active = Boolean(event?.detail?.active);
+      setActiveLeverId(active ? nodeId : null);
+    };
+    window.addEventListener("graph-lever-changed", handler);
+    return () => window.removeEventListener("graph-lever-changed", handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (event) => {
+      setPreactivePreview(event?.detail?.preview ?? null);
+    };
+    window.addEventListener("graph-preview-changed", handler);
+    return () => window.removeEventListener("graph-preview-changed", handler);
   }, []);
 
   return (
@@ -75,6 +100,30 @@ function App() {
             index={sceneStackIndex}
           />
         )}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <StoryPanel
+          key={currentStep?.id || "story-panel"}
+          step={currentStep}
+          widgets={storyWidgets}
+          activeLeverId={activeLeverId}
+        />
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <SystemPanel
+          key={`${currentStep?.id || "system"}-${currentRoute?.title || "route"}`}
+          step={currentStep}
+          route={currentRoute}
+          preview={preactivePreview}
+        />
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <ServicePanel
+          key={`${currentStep?.id || "service"}-${currentRoute?.title || "route"}`}
+          step={currentStep}
+          route={currentRoute}
+          preview={preactivePreview}
+        />
       </AnimatePresence>
     </div>
   );

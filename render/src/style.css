@@ -186,6 +186,337 @@ body {
   font-weight: 600;
 }
 
+.react-story-host {
+  position: absolute;
+  top: 40px;
+  left: 16px;
+  right: 16px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.react-story-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 14, 20, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: rgba(224, 232, 240, 0.8);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.react-story-panel__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-story-panel__title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.react-story-panel__subtitle {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.react-story-panel__body {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.react-story-panel__widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.react-story-panel__widget-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.react-story-panel__widget-title {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-story-panel__widget-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.react-story-panel__widget {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.5);
+  color: rgba(224, 232, 240, 0.8);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.react-story-panel__widget:hover {
+  border-color: rgba(125, 211, 252, 0.6);
+  color: rgba(224, 232, 240, 0.95);
+}
+
+.react-story-panel__widget--active {
+  border-color: rgba(251, 191, 36, 0.75);
+  color: rgba(251, 191, 36, 0.95);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.react-story-panel__widget--active:hover {
+  border-color: rgba(251, 191, 36, 0.95);
+  background: rgba(251, 191, 36, 0.18);
+}
+
+.react-story-panel__mini-shape {
+  width: 220px;
+  height: 220px;
+  align-self: center;
+  margin: 6px auto;
+  pointer-events: none;
+}
+
+.react-story-panel__refs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.react-story-panel__ref {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.react-story-panel__ref:hover {
+  opacity: 1;
+}
+
+.react-story-panel__ref-type {
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.18);
+  color: rgba(147, 197, 253, 0.9);
+}
+
+.react-story-panel__ref-label {
+  color: rgba(224, 232, 240, 0.75);
+}
+
+.react-system-host {
+  position: absolute;
+  top: 40px;
+  left: 16px;
+  right: 16px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.react-system-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 14, 20, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: rgba(224, 232, 240, 0.8);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.react-system-panel__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-system-panel__title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.react-system-panel__subtitle,
+.react-system-panel__meta {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.react-system-panel__body {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.react-system-panel__refs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.react-system-panel__ref {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.react-system-panel__ref:hover {
+  opacity: 1;
+}
+
+.react-system-panel__ref-type {
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.18);
+  color: rgba(134, 239, 172, 0.9);
+}
+
+.react-system-panel__ref-label {
+  color: rgba(224, 232, 240, 0.75);
+}
+
+.react-service-host {
+  position: absolute;
+  top: 40px;
+  left: 16px;
+  right: 16px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.react-service-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 14, 20, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: rgba(224, 232, 240, 0.8);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.react-service-panel__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-service-panel__title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.react-service-panel__subtitle,
+.react-service-panel__meta {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.react-service-panel__body {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.react-service-panel__refs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.react-service-panel__ref {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.react-service-panel__ref:hover {
+  opacity: 1;
+}
+
+.react-service-panel__ref-type {
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.2);
+  color: rgba(216, 180, 254, 0.9);
+}
+
+.react-service-panel__ref-label {
+  color: rgba(224, 232, 240, 0.75);
+}
+
+.react-panel-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.react-panel-preview .preview-header {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.react-panel-preview .preview-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.react-panel-preview .preview-group {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(224, 232, 240, 0.7);
+}
+
 /* Panel dimming for lever mode */
 .panel-dimmed {
   opacity: 0.85;
