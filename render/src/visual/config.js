@@ -1,3 +1,7 @@
+import { ARCHITECTURE } from "../architecture/dna.ts";
+
+void ARCHITECTURE;
+
 export const VISUAL_CONFIG = {
   node: {
     minRadius: 2.2,

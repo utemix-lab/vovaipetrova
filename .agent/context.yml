@@ -1,0 +1,56 @@
+architecture:
+  vision: "Рефлексивная система с гомеостазом замысла"
+  current_phase: "visual_prototype_as_arch_training"
+  focus_areas:
+    - "complex_animations_with_react"
+    - "graph_engine_abstraction"
+    - "state_management_for_future_agents"
+  anti_patterns:
+    - "mixing_business_logic_with_threejs"
+    - "creating_tight_coupling"
+    - "ignoring_future_layer_preparation"
+  validation_rules:
+    - "every_new_file_must_have_arch_proto_annotation"
+    - "react_components_should_use_framer_motion_for_animations"
+    - "graph_code_should_implement_abstract_engine_interface"
+
+react_integration:
+  purpose: "prototype_future_patterns_and_enable_complex_animations"
+  step_by_step:
+    setup:
+      goal: "React + Three.js integration"
+      deliverables:
+        - "Graph engine wrapped in React component"
+        - "Basic state synchronization"
+    abstraction:
+      goal: "Abstract GraphEngine layer"
+      deliverables:
+        - "IGraphEngine interface"
+        - "Mock implementations for AST/OWL"
+    animations:
+      goal: "Framer Motion transitions"
+      deliverables:
+        - "Node selection animations"
+        - "Graph transition animations"
+    agent_patterns:
+      goal: "Agent interaction patterns"
+      deliverables:
+        - "Event system mimicking future agent API"
+        - "Context preservation between views"
+
+agent_instructions:
+  before_every_commit:
+    - "Check if changes align with architecture vision"
+    - "Verify ArchProto annotations are present"
+    - "Ensure React code prototypes future patterns"
+  task_template: "docs/AGENT_TASK_TEMPLATE.md"
+  execution_plan: "docs/REFACTOR_EXECUTION_PLAN.md"
+  recovery_guide: "docs/AGENT_RECOVERY.md"
+  code_review_questions:
+    - "How does this contribute to the future meta-system?"
+    - "What pattern is being prototyped here?"
+    - "Is this preparing for AST/OWL layer integration?"
+  refactoring_guidelines:
+    - "Extract reusable patterns for future layers"
+    - "Keep Three.js isolated as renderer only"
+    - "Make all state transitions explicit for future agents"

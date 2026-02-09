@@ -6,6 +6,15 @@ This file is the single source of UI mechanics for the renderer.
 - Visitor mode UI contracts live in `render/public/ui/`.
 - Runtime implementation lives in `render/src/`.
 
+
+## Dual-use UI Principle (Human + Agent)
+
+- Интерфейс проектируется как профессиональная кабина для людей сейчас и как программно доступная среда для ИИ-агентов в будущем.
+- UX приоритетен сегодня (красиво, плавно, интуитивно), но каждый паттерн должен быть структурирован и предсказуем.
+- Любая анимация — это одновременно UX-качество и прототип будущего агентного взаимодействия.
+- Архитектура UI закладывается так, чтобы элементы и состояния могли быть адресованы через API.
+
+
 ## Terms
 - Story = scene (narrative / images / backgrounds / allegory).
 - System = map (where I am and what is connected).

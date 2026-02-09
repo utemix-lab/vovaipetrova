@@ -19,6 +19,7 @@
   "check:full": "node scripts/checks.js --full",
   "check:visual": "node scripts/checks.js --full --visual",
   "check:visual:update": "node scripts/checks.js --full --visual --update-snapshots",
+  "arch-lint": "node scripts/arch-linter.js",
     "build": "npm run build --prefix render",
     "deploy": "npm run build && npx gh-pages -d render/dist",
     "release": "git push origin main && npm run deploy"

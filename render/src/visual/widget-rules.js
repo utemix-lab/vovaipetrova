@@ -13,6 +13,10 @@
  * В будущем у каждого виджета будет свой уникальный авторский лого.
  */
 
+import { ARCHITECTURE } from "../architecture/dna.ts";
+
+void ARCHITECTURE;
+
 export const WIDGET_RULES = {
   // Корневой виджет — мы уже на этой странице
   root: {

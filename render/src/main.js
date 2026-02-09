@@ -1,4 +1,5 @@
 import "./style.css";
+import "./architecture/dna.ts";
 
 function showFatalError(message, error) {
   const existing = document.getElementById("fatal-error");
