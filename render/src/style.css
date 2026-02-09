@@ -91,6 +91,101 @@ body {
   opacity: 0.6;
 }
 
+.react-step-status {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 14, 20, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: rgba(224, 232, 240, 0.82);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.react-step-status__label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-step-status__value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.react-step-status__meta {
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+.react-focus-indicator {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(12, 16, 24, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: rgba(224, 232, 240, 0.78);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.react-focus-indicator__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-focus-indicator__value {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.react-stack-status {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(8, 12, 18, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: rgba(224, 232, 240, 0.78);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.react-stack-status__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.react-stack-status__value {
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Panel dimming for lever mode */
 .panel-dimmed {
   opacity: 0.85;

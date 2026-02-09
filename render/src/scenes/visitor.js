@@ -280,6 +280,11 @@ function renderSceneStack() {
   const el = document.getElementById('scene-stack');
   if (!el) return;
   const canGoBack = sceneStackIndex > 0;
+  window.dispatchEvent(
+    new CustomEvent("graph-stack-changed", {
+      detail: { stack: [...sceneStack], index: sceneStackIndex }
+    })
+  );
   const iconPrev = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
       <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -1413,6 +1418,9 @@ function goToStepById(stepId) {
   updatePanels();
   refreshHighlights(currentStep);
   graph.refresh();
+  window.dispatchEvent(
+    new CustomEvent("graph-step-changed", { detail: { step: currentStep, route: currentRoute } })
+  );
   // Push to scene stack for lightweight presence tracking when navigation is explicit
   try {
     if (!activeLeverWidgetId) pushSceneStack(stepId);
@@ -3285,6 +3293,7 @@ function setPanelFocus(panelId) {
   if (panelId === "story-panel") document.body.classList.add("focus-story");
   if (panelId === "system-panel") document.body.classList.add("focus-system");
   if (panelId === "service-panel") document.body.classList.add("focus-service");
+  window.dispatchEvent(new CustomEvent("graph-focus-changed", { detail: { panelId } }));
 }
 
 // === Создание UI ===
