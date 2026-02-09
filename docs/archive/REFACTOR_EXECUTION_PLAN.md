@@ -116,10 +116,55 @@
 - Подтянуть группировку/лейблы в preview.
 - Согласовать стили preview между System и Service.
 
-### Шаг 21 — Lever preview interactions (React) (в работе)
+### Шаг 21 — Lever preview interactions (React) ✅
 
 - Добавить клик по preview элементам для перехода.
 - Синхронизировать поведение preview с query‑mode.
+
+### Шаг 22 — Preview hover sync (React) ✅
+
+- Добавить hover‑подсветку preview элементов.
+- Согласовать подсветку preview с 3D графом.
+
+### Шаг 23 — Preview selection state (React) ✅
+
+- Отметить выбранный preview элемент.
+- Синхронизировать выбранный элемент с Service‑панелью.
+
+### Шаг 24 — Preview selection persist (React) ✅
+
+- Сбрасывать выбранный preview при смене шага.
+- Добавить явный reset при выключении lever.
+
+### Шаг 25 — Preview polish & telemetry (React) ✅
+
+- Добавить лёгкий лог/телеметрию при выборе preview.
+- Согласовать подсказки/тултипы preview.
+
+### Шаг 26 — Preview action routing (React) ✅
+
+- Подготовить события для перехода в Service action.
+- Согласовать preview с Service actions UI.
+
+### Шаг 27 — Service actions overlay (React) ✅
+
+- Отрисовать actions UI в React Service‑панели.
+- Согласовать клики actions с legacy обработчиками.
+
+### Шаг 28 — Service actions cleanup (React) ✅
+
+- Убрать legacy actions при активном React‑оверлее.
+- Согласовать стили и hover состояния.
+
+### Шаг 29 — Query mode React overlay ✅
+
+- Добавить React‑версию query‑mode.
+- Согласовать поведение с preview/actions.
+
+### Шаг 30 — Query mode System overlay (React) ✅
+
+- Отрисовать query‑tags и статус в React System‑панели.
+- Скрыть legacy System контент во время query‑mode.
 
 ## Формат отчёта в чате (обязателен)
 

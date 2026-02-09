@@ -489,6 +489,29 @@ body {
   color: rgba(224, 232, 240, 0.75);
 }
 
+.react-service-panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.react-service-panel__action {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.5);
+  color: rgba(224, 232, 240, 0.85);
+  border-radius: 8px;
+  padding: 6px 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.react-service-panel__action:hover {
+  border-color: rgba(125, 211, 252, 0.6);
+  color: rgba(224, 232, 240, 0.95);
+}
+
 .react-panel-preview {
   display: flex;
   flex-direction: column;
@@ -515,6 +538,10 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(224, 232, 240, 0.7);
+}
+
+.preview-item--active {
+  color: rgba(251, 191, 36, 0.95);
 }
 
 /* Panel dimming for lever mode */

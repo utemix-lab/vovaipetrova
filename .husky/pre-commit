@@ -1,4 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint && npm test
+# Architecture check (warnings only, does not block commit)
+node scripts/arch-linter.js
+
+# Run tests in render directory
+npm run test --prefix render

@@ -118,6 +118,11 @@ const VIEW_TYPES = {
   all: null
 };
 
+// @future: Практики временно отключены — нужно домыслить их статус и роль в системе
+// Узлы типа "practice" и хаб "practices" скрыты из графа, но виджеты остаются в System панели
+const DISABLED_NODE_TYPES = new Set(["practice"]);
+const DISABLED_HUB_IDS = new Set(["practices"]);
+
 // === UI Setup ===
 document.body.classList.add("visitor-mode");
 createUI();
@@ -779,16 +784,30 @@ function normalizeNode(node) {
 }
 
 function applyViewFilter(nodes, edges, view) {
+  // Сначала отфильтровываем временно отключённые узлы (практики)
+  const enabledNodes = nodes.filter((node) => {
+    const type = node.type || NODE_DEFAULTS.type;
+    if (DISABLED_NODE_TYPES.has(type)) return false;
+    if (DISABLED_HUB_IDS.has(node.id)) return false;
+    return true;
+  });
+  const enabledIds = new Set(enabledNodes.map((n) => n.id));
+  const enabledEdges = edges.filter((edge) => {
+    const sourceId = typeof edge.source === "object" ? edge.source.id : edge.source;
+    const targetId = typeof edge.target === "object" ? edge.target.id : edge.target;
+    return enabledIds.has(sourceId) && enabledIds.has(targetId);
+  });
+
   if (!view || view === "all") {
-    return { nodes, edges };
+    return { nodes: enabledNodes, edges: enabledEdges };
   }
   const allowed = VIEW_TYPES[view];
   if (!allowed) {
-    return { nodes, edges };
+    return { nodes: enabledNodes, edges: enabledEdges };
   }
 
   const allowedIds = new Set();
-  const filteredNodes = nodes.filter((node) => {
+  const filteredNodes = enabledNodes.filter((node) => {
     const type = node.type || NODE_DEFAULTS.type;
     const isAllowed = allowed.has(type);
     if (isAllowed) {
@@ -797,7 +816,7 @@ function applyViewFilter(nodes, edges, view) {
     return isAllowed;
   });
 
-  const filteredEdges = edges.filter((edge) => {
+  const filteredEdges = enabledEdges.filter((edge) => {
     const sourceId = typeof edge.source === "object" ? edge.source.id : edge.source;
     const targetId = typeof edge.target === "object" ? edge.target.id : edge.target;
     return allowedIds.has(sourceId) && allowedIds.has(targetId);
@@ -1480,7 +1499,9 @@ function updatePanels() {
   const servicePanel = document.getElementById("service-panel");
   if (storyPanel) storyPanel.classList.remove("panel-no-dim");
   const hasReactStory = Boolean(storyPanel?.querySelector(".react-story-host"));
+  const hasReactSystem = Boolean(systemPanel?.querySelector(".react-system-host"));
   storyPanel?.classList.toggle("panel-react-overlay", hasReactStory);
+  const hasReactService = Boolean(servicePanel?.querySelector(".react-service-host"));
 
   const serviceText = currentStep.service?.text || "";
   const hasQueryHints = extractTags(serviceText).length > 0;
@@ -1566,21 +1587,54 @@ function updatePanels() {
 
   if (queryModeActive && hasQueryHints) {
     updateSystemWithQueryTags(systemPanel, serviceText);
-    updateServicePanel(servicePanel, { text: "" });
+    if (hasReactSystem) {
+      systemPanel?.classList.add("panel-react-overlay");
+      const legacyContent = systemPanel?.querySelector(".panel-content");
+      if (legacyContent) {
+        legacyContent.innerHTML = "";
+      }
+    } else {
+      systemPanel?.classList.remove("panel-react-overlay");
+    }
+    if (!hasReactService) {
+      updateServicePanel(servicePanel, { text: "" });
+      servicePanel?.classList.remove("panel-react-overlay");
+    } else {
+      servicePanel?.classList.add("panel-react-overlay");
+      const legacyContent = servicePanel?.querySelector(".panel-content");
+      if (legacyContent) {
+        legacyContent.innerHTML = "";
+      }
+    }
   } else {
+    if (hasReactSystem) {
+      systemPanel?.classList.remove("panel-react-overlay");
+    }
     // If a lever is active, show a lightweight preactive preview in System/Service panels
     if (activeLeverWidgetId && preactiveResponse) {
       const items = (preactiveResponse.previewItems || []).map(i => i.label || i.id).join(', ');
       updatePanel(systemPanel, { text: `Preview: ${preactiveResponse.type} — ${items}` });
-      updateServicePanel(servicePanel, { text: `Preview: ${preactiveResponse.type} — ${items}`, actions: [] });
+      if (!hasReactService) {
+        updateServicePanel(servicePanel, { text: `Preview: ${preactiveResponse.type} — ${items}`, actions: [] });
+      }
     } else {
       updatePanel(systemPanel, currentStep.system);
-      updateServicePanel(servicePanel, currentStep.service);
+      if (!hasReactService) {
+        updateServicePanel(servicePanel, currentStep.service);
+      }
+    }
+    servicePanel?.classList.toggle("panel-react-overlay", hasReactService);
+    if (hasReactService) {
+      const legacyContent = servicePanel?.querySelector(".panel-content");
+      if (legacyContent) {
+        legacyContent.innerHTML = "";
+      }
     }
     appendPracticesToSystem();
   }
 
   updateContextStrip();
+  emitQueryModeChange();
 }
 
 function updateStoryWithPotential(panel, node) {
@@ -3050,6 +3104,7 @@ function setQueryTag(tag, source = "text") {
   updateServicePanel(document.getElementById("service-panel"), currentStep?.service);
   updateActiveTagPills();
   updateContextStrip();
+  emitQueryModeChange();
 }
 
 function clearQueryTag() {
@@ -3060,6 +3115,7 @@ function clearQueryTag() {
   updateServicePanel(document.getElementById("service-panel"), currentStep?.service);
   updateActiveTagPills();
   updateContextStrip();
+  emitQueryModeChange();
 }
 
 function buildEntityContextValue(item) {
@@ -3078,6 +3134,66 @@ function updateActiveTagPills() {
   });
 }
 
+function buildQueryModeState() {
+  if (!queryModeActive || !activeQueryTag) {
+    return { active: false };
+  }
+  const tagSource = currentStep?.service?.text || "";
+  const availableTags = extractTags(tagSource);
+  const { localResults, externalLinks } = resolveQuery(activeQueryTag);
+  const grouped = {
+    service: [],
+    model: [],
+    method: [],
+    other: []
+  };
+  const normalized = localResults.map((item) => {
+    const participation = practiceParticipation.filter((p) => p.item_external_id === item.external_id);
+    const participationLabel = participation.map((p) => p.practice_id).join(", ");
+    const link = item.external_id?.startsWith("http") ? item.external_id : null;
+    return {
+      id: item.id || item.external_id || "",
+      title: item.title || item.display_name || item.external_id || "Item",
+      kind: item.kind || "other",
+      source: item.source || "unknown",
+      externalId: item.external_id || "",
+      participationLabel,
+      link
+    };
+  });
+  normalized.forEach((item) => {
+    if (grouped[item.kind]) grouped[item.kind].push(item);
+    else grouped.other.push(item);
+  });
+  const total = normalized.length;
+  const status = aiCatalog.length === 0
+    ? "Catalog empty or missing."
+    : total === 0
+      ? "No matches for this tag."
+      : `Matches: ${total}`;
+  const hint = total > 0 ? "Scroll to see results." : "";
+  return {
+    active: true,
+    tag: activeQueryTag,
+    grouped,
+    status,
+    hint,
+    externalLinks,
+    selectedServiceItem,
+    total,
+    isEmpty: total === 0,
+    availableTags
+  };
+}
+
+function emitQueryModeChange() {
+  window.dispatchEvent(
+    new CustomEvent("graph-query-mode-changed", {
+      detail: buildQueryModeState()
+    })
+  );
+}
+
 function setSelectedServiceItem(item) {
   selectedServiceItem = item;
   const ownerTag = getOwnerContextTag();
@@ -3089,6 +3205,7 @@ function setSelectedServiceItem(item) {
     : [...baseContext, ...projection];
   updateServicePanel(document.getElementById("service-panel"), currentStep?.service);
   updateContextStrip();
+  emitQueryModeChange();
 }
 
 function resolveQuery(tag) {
@@ -3657,6 +3774,70 @@ window.addEventListener("graph-mini-shape-host", (event) => {
   const type = detail.type || "cube";
   const hubId = detail.hubId || "story";
   initMiniShape(type, container, nodeIds, hubId);
+});
+
+window.addEventListener("graph-preview-item-clicked", (event) => {
+  const item = event?.detail?.item;
+  if (!item) return;
+  if (queryModeActive) return;
+  const targetId = item.id || item.label;
+  if (targetId && nodesById?.has(targetId)) {
+    goToStepById(targetId);
+  }
+});
+
+window.addEventListener("graph-preview-action", (event) => {
+  const item = event?.detail?.item;
+  if (!item) return;
+  if (!queryModeActive) return;
+  const name = item.label || item.id || "Service";
+  setSelectedServiceItem({ id: item.id || name, name });
+});
+
+window.addEventListener("graph-service-action", (event) => {
+  const action = event?.detail?.action;
+  if (!action) return;
+  const selector = `[data-action-type='${action.type}'][data-action-id='${action.id || ""}']`;
+  const legacyButton = document.querySelector(selector);
+  if (legacyButton) {
+    legacyButton.click();
+    return;
+  }
+  console.log("[Service] Action", action);
+});
+
+window.addEventListener("graph-preview-hovered", (event) => {
+  const item = event?.detail?.item;
+  const active = Boolean(event?.detail?.active);
+  if (!item || queryModeActive) return;
+  const targetId = item.id || item.label;
+  if (!targetId || !nodesById?.has(targetId)) return;
+  highlightNodeById(targetId, active);
+  if (active) {
+    const node = nodesById.get(targetId);
+    if (node) {
+      refreshHighlights(node);
+    }
+  } else {
+    refreshHighlights(null);
+  }
+  graph.refresh();
+});
+
+window.addEventListener("graph-preview-selected", (event) => {
+  const item = event?.detail?.item;
+  if (!item) return;
+  console.log("[Preview] Selected", item.id || item.label || item);
+});
+
+window.addEventListener("graph-query-clear", () => {
+  clearQueryTag();
+});
+
+window.addEventListener("graph-query-tag-selected", (event) => {
+  const tag = event?.detail?.tag;
+  if (!tag) return;
+  setQueryTag(tag, "ui");
 });
 
 // === Инициализация ===

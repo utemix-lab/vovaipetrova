@@ -184,6 +184,10 @@ body.visitor-mode {
   overflow-x: hidden;
 }
 
+#system-panel.panel-react-overlay .panel-content {
+  display: none;
+}
+
 #service-panel {
   flex: 1;
   margin-bottom: -12px;
@@ -219,6 +223,10 @@ body.visitor-mode {
 #service-panel {
   flex: 1;
   margin-bottom: 0;
+}
+
+#service-panel.panel-react-overlay .panel-content {
+  display: none;
 }
 
 /* Focus states (panel emphasis) */

@@ -1,18 +1,58 @@
+reading_order:
+  required:
+    - "docs/INDEX.md"
+    - "docs/ARCHITECTURE_PRINCIPLES.md"
+    - ".agent/context.yml"
+  optional:
+    - "docs/AST_OWL_PREPARATION_PLAN.md"
+  code_entry:
+    - "render/src/scenes/visitor.js"
+    - "render/src/architecture/dna.ts"
+  archive:
+    - "docs/archive/*"
+
 architecture:
-  vision: "Рефлексивная система с гомеостазом замысла"
-  current_phase: "visual_prototype_as_arch_training"
+  vision: "Графоцентричная система: онтологический граф — единственный источник истины"
+  current_phase: "visual_first_interface_building"
+  
+  # КЛЮЧЕВОЙ АКЦЕНТ
+  core_principle: |
+    Система архитектурно графоцентрична. Мост к будущей сложности (RAG, LLM, рефлексия) —
+    это НЕ поведение пользователя и НЕ его клики. Мост — это:
+    - Онтология узлов (типы, связи, метаданные)
+    - Инструменты (pointer-tags, режимы навигации)
+    - Режимы (query mode, routes, exports)
+    
+  phases:
+    current:
+      name: "Фаза 1: Визуальный каркас"
+      goals:
+        - "Простой интерфейс для путешествия по графу"
+        - "Компактная онтология (не второй Интернет)"
+        - "Pointer-tags для навигации"
+        - "React как мост для будущей сложности"
+      no_magic: true  # Никакой "сознательной" реакции системы
+    next:
+      name: "Фаза 2: Онтологический слой"
+      trigger: "Визуал полностью функционален, граф стабилен"
+    future:
+      name: "Фаза 3: Рефлексия"
+      trigger: "Онтология формализована"
+      
   focus_areas:
-    - "complex_animations_with_react"
-    - "graph_engine_abstraction"
-    - "state_management_for_future_agents"
+    - "visual_interface_polish"
+    - "ontology_graph_structure"
+    - "pointer_tags_coverage"
+    - "react_as_bridge_not_goal"
   anti_patterns:
+    - "adding_magic_before_visual_is_ready"
+    - "interpreting_user_intent_as_semantic_events"
+    - "building_agent_reactions_to_clicks"
     - "mixing_business_logic_with_threejs"
-    - "creating_tight_coupling"
-    - "ignoring_future_layer_preparation"
   validation_rules:
     - "every_new_file_must_have_arch_proto_annotation"
     - "react_components_should_use_framer_motion_for_animations"
-    - "graph_code_should_implement_abstract_engine_interface"
+    - "no_llm_or_rag_integration_in_phase_1"
 
 react_integration:
   purpose: "prototype_future_patterns_and_enable_complex_animations"
@@ -39,18 +79,55 @@ react_integration:
         - "Context preservation between views"
 
 agent_instructions:
+  # ГЛАВНОЕ ПРАВИЛО
+  golden_rule: |
+    Мы строим простой веб-интерфейс для навигации по графу.
+    В этот простой механизм закладываются ЯКОРЯ для будущей привязки
+    к онтологии и инструментам, которые создадим позже.
+    
+    Якоря — это:
+    - @ArchProto аннотации (помечают будущий слой)
+    - data-arch-* атрибуты в HTML (для будущего парсинга)
+    - graph-*-changed события (единый event bus)
+    - Чистое разделение: Three.js = рендер, логика = отдельно
+    
+    НЕ якоря:
+    - Переписывание работающего кода на React "потому что React"
+    - Добавление LLM/RAG интеграций
+    - Интерпретация кликов как "семантических намерений"
+
+  before_coding:
+    - "Работает ли текущий код? Если да — не трогай без причины"
+    - "Добавляю ли я якорь или переписываю ради переписывания?"
+    - "Это Фаза 1 — никакой магии, только визуал и навигация"
+    
   before_every_commit:
-    - "Check if changes align with architecture vision"
-    - "Verify ArchProto annotations are present"
-    - "Ensure React code prototypes future patterns"
+    - "Запусти node scripts/arch-linter.js"
+    - "Проверь, что не добавил LLM/RAG импорты"
+    - "Убедись, что новый код имеет @ArchProto если это новый модуль"
+    
+  what_is_anchor:
+    description: "Якорь — это точка привязки для будущей сложности"
+    examples:
+      - "@ArchProto('AGENT_LAYER', [...]) — помечает модуль для будущего агентного слоя"
+      - "data-arch-layer='REFLECTION_LAYER' — HTML-атрибут для будущего парсера"
+      - "window.dispatchEvent(new CustomEvent('graph-node-selected')) — единый event bus"
+      - "// @future: AST binding point — комментарий-маркер"
+    not_examples:
+      - "Переписать updatePanels() на React — это не якорь, это рефакторинг"
+      - "Добавить useState для каждого состояния — избыточно для Фазы 1"
+      
   task_template: "docs/AGENT_TASK_TEMPLATE.md"
-  execution_plan: "docs/REFACTOR_EXECUTION_PLAN.md"
+  execution_plan: "docs/archive/REFACTOR_EXECUTION_PLAN.md"  # Выполнен, в архиве
   recovery_guide: "docs/AGENT_RECOVERY.md"
+  
   code_review_questions:
-    - "How does this contribute to the future meta-system?"
-    - "What pattern is being prototyped here?"
-    - "Is this preparing for AST/OWL layer integration?"
+    - "Это якорь или переписывание?"
+    - "Работало ли до этого? Почему меняю?"
+    - "Добавил ли @ArchProto для нового модуля?"
+    
   refactoring_guidelines:
-    - "Extract reusable patterns for future layers"
-    - "Keep Three.js isolated as renderer only"
-    - "Make all state transitions explicit for future agents"
+    - "Не трогай работающий legacy-код без явной причины"
+    - "Three.js = только рендер, никакой бизнес-логики"
+    - "React-компоненты — заготовки, не обязательно рендерить"
+    - "Каждое изменение должно быть обратимым"
