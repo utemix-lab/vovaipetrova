@@ -54,6 +54,10 @@ export class ThreeGraphEngine {
     controls.minDistance = 80;
     controls.maxDistance = 600;
 
+    // Начальный масштаб — середина между min и max
+    const initialDistance = (controls.minDistance + controls.maxDistance) / 2;
+    graph.cameraPosition({ x: 0, y: 0, z: initialDistance });
+
     this.graph = graph;
     return graph;
   }

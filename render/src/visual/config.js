@@ -3,19 +3,68 @@ import { ARCHITECTURE } from "../architecture/dna.ts";
 void ARCHITECTURE;
 
 export const VISUAL_CONFIG = {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // УЗЛЫ ОНТОЛОГИИ (entities)
+  // Сущности, существующие в пространстве графа
+  // ═══════════════════════════════════════════════════════════════════════════
+  nodeTypes: {
+    // Системные узлы (Universe, Cryptocosm) — пустые страницы
+    root: {
+      size: 4,
+      pageTemplate: "root",
+      tooltip: "{label}"
+    },
+    // Хабы (Characters, Domains) — навигационные узлы
+    hub: {
+      size: 4,
+      pageTemplate: "hub",
+      tooltipById: {
+        characters: "Персонажи",
+        domains: "Домены"
+      }
+    },
+    // Персонажи — полная страница с виджет-группами
+    character: {
+      size: 2.5,
+      pageTemplate: "character",
+      tooltip: "{label}"
+    },
+    // Домены — отдельный шаблон страницы
+    domain: {
+      size: 1.5,
+      pageTemplate: "domain",
+      tooltip: "{label}"
+    },
+    // Воркбенчи
+    workbench: {
+      size: 1,
+      pageTemplate: "workbench",
+      tooltip: "{label}"
+    },
+    // Коллабы
+    collab: {
+      size: 1,
+      pageTemplate: "collab",
+      tooltip: "{label}"
+    }
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ИНСТРУМЕНТЫ (tools)
+  // Функциональные элементы, не являющиеся узлами онтологии
+  // Будущие категории: режимы, модусы, фильтры...
+  // ═══════════════════════════════════════════════════════════════════════════
+  tools: {
+    // Практики — первый тип инструментов
+    practice: {
+      icon: "practice",
+      tooltip: "{label}"
+    }
+  },
   node: {
     minRadius: 2.2,
-    maxRadius: 6.5,
-    // Канонические множители размеров по типу узла (от minRadius)
-    sizeByType: {
-      root: 4,        // Universe, Cryptocosm
-      hub: 4,         // Characters, Domains, Practices
-      character: 2.5, // Персонажи
-      domain: 1.5,    // Континенты
-      practice: 1,    // Практики
-      workbench: 1,   // Воркбенчи
-      collab: 1       // Коллабы
-    }
+    maxRadius: 6.5
+    // Размеры узлов теперь в nodeTypes[type].size
   },
   link: {
     baseLength: 65,
@@ -78,13 +127,13 @@ export const VISUAL_CONFIG = {
       ],
       workbench: [
         "{label} — воркбенч",
-        "Назначение — ...",
-        "Инструменты — ..."
+        "Роль в системе — ...",
+        "Технический профиль — ..."
       ],
       collab: [
         "{label} — коллаб",
-        "Участники — ...",
-        "Фокус — ..."
+        "Роль в системе — ...",
+        "Технический профиль — ..."
       ],
       hub: [
         "{label}",
@@ -96,6 +145,48 @@ export const VISUAL_CONFIG = {
         "Корневой узел",
         ""
       ]
+    }
+  },
+  // === ПРАВИЛА ПОДСВЕТКИ ===
+  // Единый источник для логики подсветки узлов, рёбер и виджетов
+  highlight: {
+    // Интенсивность рёбер (0-1)
+    link: {
+      full: 1.0,      // Полная яркость (hover на узел/виджет)
+      half: 0.5,      // Половинная яркость (выделенный узел без hover)
+      dim: 0.15       // Приглушённый (неактивные рёбра)
+    },
+    // Ширина рёбер в пикселях
+    linkWidth: {
+      full: 1.6,
+      half: 1.0,
+      dim: 0.6
+    },
+    // Правила подсветки по контексту:
+    // 1. selected — выделенный узел (currentStep)
+    // 2. hover — hover на узел/виджет
+    // 3. scope — hover на корневой виджет (подсвечивает все связанные)
+    rules: {
+      // Выделенный узел: горит сам, рёбра к соседям в полсилы
+      selected: {
+        node: "full",
+        neighborLinks: "half"
+      },
+      // Hover на некорневой виджет: горит сам и рёбра к соседям
+      hover: {
+        node: "full",
+        neighborLinks: "full"
+      },
+      // Hover на корневой виджет: горят все виджеты группы и их рёбра
+      scope: {
+        nodes: "full",
+        links: "full"
+      },
+      // Страница без групп виджетов: при hover на корневой — рёбра ярче
+      simplePageHover: {
+        node: "full",
+        neighborLinks: "full"
+      }
     }
   }
 };

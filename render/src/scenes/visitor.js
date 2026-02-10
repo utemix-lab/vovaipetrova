@@ -39,23 +39,39 @@
  * 🗺️ КАРТА СИСТЕМЫ: ПОДСВЕТКА И КОМПОЗИЦИЯ
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * ТИПЫ УЗЛОВ:
- * ┌─────────────────┬─────────────┬─────────────────────────────────────────┐
- * │ Тип             │ Виджет      │ Описание                                │
- * ├─────────────────┼─────────────┼─────────────────────────────────────────┤
- * │ character       │ ✓           │ Персонаж (Vova, Vasya)                  │
- * │ domain          │ ✓           │ Континент (тематическая область)        │
- * │ practice        │ ✓           │ Практика (отключена в графе)            │
- * │ workbench       │ ✓           │ Воркбенч (рабочее пространство)         │
- * │ collab          │ ✓           │ Коллаб (совместный проект)              │
- * │ domains-hub     │ ✗           │ Хаб континентов (без виджета)           │
- * │ practices-hub   │ ✗           │ Хаб практик (без виджета)               │
- * ├─────────────────┴─────────────┴─────────────────────────────────────────┤
- * │ Хабы — служебные узлы графа, не имеют виджетов в UI                     │
- * └─────────────────────────────────────────────────────────────────────────┘
+ * УЗЛЫ ОНТОЛОГИИ (см. VISUAL_CONFIG.nodeTypes):
+ * ┌─────────────────┬─────────────┬──────────┬────────────────────────────────┐
+ * │ Тип             │ Виджет      │ Шаблон   │ Описание                       │
+ * ├─────────────────┼─────────────┼──────────┼────────────────────────────────┤
+ * │ root            │ ✗           │ root     │ Universe, Cryptocosm           │
+ * │ hub             │ ✗           │ hub      │ Хабы (Персонажи, Домены)       │
+ * │ character       │ ✓           │ character│ Персонаж (Vova, Vasya)         │
+ * │ domain          │ ✓           │ domain   │ Домен (тематическая область)   │
+ * │ workbench       │ ✓           │ workbench│ Воркбенч (рабочее пространство)│
+ * │ collab          │ ✓           │ collab   │ Коллаб (совместный проект)     │
+ * ├─────────────────┴─────────────┴──────────┴────────────────────────────────┤
+ * │ Один тип узла = один шаблон страницы                                      │
+ * │ Размеры и шаблоны: VISUAL_CONFIG.nodeTypes[type]                          │
+ * │ Функции шаблонов: updateStoryWith{Root|Hub|Character|Domain|...}          │
+ * └───────────────────────────────────────────────────────────────────────────┘
  *
- * ЛОГИКА ПОДСВЕТКИ (HighlightManager):
+ * ИНСТРУМЕНТЫ (см. VISUAL_CONFIG.tools):
+ * ┌─────────────────┬─────────────────────────────────────────────────────────┐
+ * │ Тип             │ Описание                                                │
+ * ├─────────────────┼─────────────────────────────────────────────────────────┤
+ * │ practice        │ Практики — первый тип инструментов                      │
+ * ├─────────────────┴─────────────────────────────────────────────────────────┤
+ * │ Инструменты НЕ являются узлами онтологии                                  │
+ * │ Будущие категории: режимы, модусы, фильтры...                             │
+ * └───────────────────────────────────────────────────────────────────────────┘
+ *
+ * ЛОГИКА ПОДСВЕТКИ (см. VISUAL_CONFIG.highlight):
  * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ РЕЖИМЫ ПОДСВЕТКИ РЁБЕР:                                                 │
+ * │ • selected — выделенный узел, рёбра в полсилы (width: 1.0)              │
+ * │ • hover    — hover на узел/виджет, рёбра полная яркость (width: 1.6)    │
+ * │ • scope    — hover на корневой виджет, все связанные рёбра ярко         │
+ * ├─────────────────────────────────────────────────────────────────────────┤
  * │ HighlightManager.node(nodeId, active)                                   │
  * │ ─────────────────────────────────────────────────────────────────────── │
  * │ Подсвечивает ОДИН узел:                                                 │
@@ -81,7 +97,7 @@
  * │ │ Narrative Screen (мини-окно с кнопками, расширением, пропорциями)  │ │
  * │ └─────────────────────────────────────────────────────────────────────┘ │
  * │ ┌─────────────────────────────────────────────────────────────────────┐ │
- * │ │ КОНТИНЕНТЫ        ВОРКБЕНЧИ         КОЛЛАБЫ                        │ │
+ * │ │ ДОМЕНЫ            ВОРКБЕНЧИ         КОЛЛАБЫ                        │ │
  * │ │ [○][○][○]         [○][○]            [○]                            │ │
  * │ │ (widget-groups-row — горизонтальный ряд)                           │ │
  * │ └─────────────────────────────────────────────────────────────────────┘ │
@@ -131,6 +147,28 @@ const AUTHOR_PLUG_ICON = `${PATHS.WIDGETS}/author-plug.png`;
 const BASE_NODE_RADIUS = VISUAL_CONFIG.node.minRadius;
 // Хелпер для получения названия секции из конфига
 const getSectionLabel = (type) => VISUAL_CONFIG.labels?.sections?.[type] || type;
+// Хелпер для генерации HTML описания узла из шаблона
+const getNodeInfoHtml = (node) => {
+  const templates = VISUAL_CONFIG.labels?.nodeInfo?.[node.type];
+  if (!templates) return "";
+  const lines = templates.map(t => t.replace("{label}", node.label || node.id));
+  return `
+    <div class="vova-root-info">
+      ${lines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
+    </div>`;
+};
+// Хелпер для получения тултипа узла из конфига
+const getNodeTooltip = (node) => {
+  const typeConfig = VISUAL_CONFIG.nodeTypes?.[node.type];
+  if (!typeConfig) return node.label || node.id;
+  // Для хабов — русские названия по id
+  if (typeConfig.tooltipById && typeConfig.tooltipById[node.id]) {
+    return typeConfig.tooltipById[node.id];
+  }
+  // Для остальных — шаблон с подстановкой label
+  const template = typeConfig.tooltip || "{label}";
+  return template.replace("{label}", node.label || node.id);
+};
 const SYSTEM_NODE_SCALE = 3;
 const SYSTEM_NODE_ID = "system";
 // Системный светлый цвет — используем голубой для системного шара
@@ -434,6 +472,8 @@ let isDragging = false;
 
 const highlightNodes = new Set();
 const highlightLinks = new Set();
+const halfHighlightLinks = new Set(); // Рёбра с половинной яркостью (selected без hover)
+let highlightMode = "none"; // "none" | "selected" | "hover" | "scope"
 const nodeGeometry = new THREE.SphereGeometry(1, 48, 48);
 const systemNodeGeometry = new THREE.SphereGeometry(1, 96, 96);
 const nodeMaterialCache = new Map();
@@ -922,7 +962,7 @@ function getSystemMaterial() {
 }
 
 // === Настройка графа ===
-graph.nodeLabel((node) => node.label || node.id);
+graph.nodeLabel((node) => getNodeTooltip(node));
 graph.nodeColor((node) => getNodeColor(node));
 nodeThreeObjectFactory = (node) => createNodeMesh(node);
 // Wrap the factory to log creation/attachment for lifecycle diagnostics.
@@ -941,8 +981,17 @@ graph.nodeVal((node) => {
 
 graph.linkThreeObject((link) => createLinkObject(link));
 graph.linkPositionUpdate((obj, position, link) => updateLinkObject(obj, position, link));
-graph.linkColor((link) => (highlightLinks.has(link) ? palette.highlight : palette.linkDefault));
-graph.linkWidth((link) => (highlightLinks.has(link) ? 1.6 : 0.6));
+graph.linkColor((link) => {
+  if (highlightLinks.has(link)) return palette.highlight;
+  if (halfHighlightLinks.has(link)) return palette.highlight;
+  return palette.linkDefault;
+});
+graph.linkWidth((link) => {
+  const cfg = VISUAL_CONFIG.highlight?.linkWidth || { full: 1.6, half: 1.0, dim: 0.6 };
+  if (highlightLinks.has(link)) return cfg.full;
+  if (halfHighlightLinks.has(link)) return cfg.half;
+  return cfg.dim;
+});
 
 // === Звук — один непрерывный, синхронизированный с физикой ===
 const motionSound = (() => {
@@ -1110,9 +1159,13 @@ function buildIndex(data) {
 }
 
 // === Подсветка ===
-function refreshHighlights(node) {
+// mode: "hover" — полная яркость рёбер (hover на узел/виджет)
+// mode: "selected" — половинная яркость рёбер (выделенный узел без hover)
+function refreshHighlights(node, mode = "hover") {
   highlightNodes.clear();
   highlightLinks.clear();
+  halfHighlightLinks.clear();
+  highlightMode = node ? mode : "none";
 
   if (node) {
     highlightNodes.add(node);
@@ -1121,7 +1174,12 @@ function refreshHighlights(node) {
       const sourceId = getId(link.source);
       const targetId = getId(link.target);
       if (sourceId === node.id || targetId === node.id) {
-        highlightLinks.add(link);
+        // Выбираем набор в зависимости от режима
+        if (mode === "selected") {
+          halfHighlightLinks.add(link);
+        } else {
+          highlightLinks.add(link);
+        }
         const otherId = sourceId === node.id ? targetId : sourceId;
         const otherNode = nodesById.get(otherId);
         if (otherNode) highlightNodes.add(otherNode);
@@ -1142,14 +1200,17 @@ graph.onNodeHover((node) => {
 
   if (node === hoverNode) return;
   hoverNode = node || null;
-  refreshHighlights(hoverNode);
-  graph.refresh();
-
-  // Подсветить узел
+  
   if (hoverNode) {
+    // Hover на узел: полная яркость рёбер
+    refreshHighlights(hoverNode, "hover");
     HighlightManager.node(hoverNode.id, true);
     lastHoveredNodeId = hoverNode.id;
+  } else {
+    // Возврат к подсветке выделенного узла (полсилы)
+    refreshHighlights(currentStep, "selected");
   }
+  graph.refresh();
 });
 
 graph.onNodeClick((node) => {
@@ -1483,10 +1544,9 @@ function withCacheBust(url) {
 function setRoute(route) {
   currentRoute = route;
 
-  // Размеры узлов из VISUAL_CONFIG.node.sizeByType
-  const sizeByType = VISUAL_CONFIG.node.sizeByType || {};
+  // Размеры узлов из VISUAL_CONFIG.nodeTypes[type].size
   const getVisualRadius = (node) => {
-    const multiplier = sizeByType[node.type] ?? 1;
+    const multiplier = VISUAL_CONFIG.nodeTypes?.[node.type]?.size ?? 1;
     return BASE_NODE_RADIUS * multiplier;
   };
 
@@ -1520,7 +1580,10 @@ function setRoute(route) {
   goToStepById(startId);
 
   setTimeout(() => {
-    graph.zoomToFit(800, 150);  // Больше отступ = камера дальше
+    // Начальный масштаб — середина между min (80) и max (600) = 340
+    const controls = graph.controls();
+    const initialDistance = (controls.minDistance + controls.maxDistance) / 2;
+    graph.cameraPosition({ x: 0, y: 0, z: initialDistance }, null, 800);
   }, 200);
 
   console.log("[Visitor] Route loaded:", route.title);
@@ -1538,7 +1601,8 @@ function goToStepById(stepId) {
   nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
 
   updatePanels();
-  refreshHighlights(currentStep);
+  // Выделенный узел: рёбра в полсилы (режим "selected")
+  refreshHighlights(currentStep, "selected");
   graph.refresh();
   window.dispatchEvent(
     new CustomEvent("graph-step-changed", {
@@ -1639,6 +1703,18 @@ function updatePanels() {
       updateStoryWithPracticeWidgets(storyPanel, currentStep.story);
     } else if (currentStep.id === "characters") {
       updateStoryWithCharacterWidgets(storyPanel, currentStep.story);
+    } else if (isRootNode(currentStep)) {
+      updateStoryWithRoot(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      updateContextStrip();
+      return;
+    } else if (isHubNode(currentStep)) {
+      updateStoryWithHub(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      updateContextStrip();
+      return;
     } else if (EXPERIMENTAL_RULES.potentialInStory && isCharacterNode(currentStep)) {
       updateStoryWithPotential(storyPanel, currentStep);
       updatePanel(systemPanel, { text: "" });
@@ -1646,8 +1722,15 @@ function updatePanels() {
       appendPracticesToSystem();
       updateContextStrip();
       return;
-    } else if (isWorkbenchNode(currentStep) || isCollabNode(currentStep)) {
+    } else if (isWorkbenchNode(currentStep)) {
       updateStoryWithWorkbench(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      appendPracticesToSystem();
+      updateContextStrip();
+      return;
+    } else if (isCollabNode(currentStep)) {
+      updateStoryWithCollab(storyPanel, currentStep);
       updatePanel(systemPanel, { text: "" });
       updateServicePanel(servicePanel, { text: "", actions: [] });
       appendPracticesToSystem();
@@ -1655,6 +1738,11 @@ function updatePanels() {
       return;
     } else if (isDomainNode(currentStep)) {
       updateStoryWithDomainFocus(storyPanel, currentStep);
+      updatePanel(systemPanel, { text: "" });
+      updateServicePanel(servicePanel, { text: "", actions: [] });
+      appendPracticesToSystem();
+      updateContextStrip();
+      return;
     } else if (isWidgetNode(currentStep)) {
       updateStoryWithNodeWidget(storyPanel, currentStep.story, currentStep);
     } else {
@@ -1728,6 +1816,10 @@ function updatePanels() {
   emitQueryModeChange();
 }
 
+// === ШАБЛОН СТРАНИЦЫ ПЕРСОНАЖА ===
+// pageTemplate: "character" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы персонажей
+// Октаэдр пока только у Вовы (isVova)
 function updateStoryWithPotential(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -1737,26 +1829,14 @@ function updateStoryWithPotential(panel, node) {
 
   const widgetIcon = getNodeWidgetIcon(node);
   const isVova = node?.id === "character-vova";
-  const descriptionText = "Описательный блок";
   const domainNodeIds = getRelatedNodeIdsByType(node?.id, "domain");
   const practiceNodeIds = getRelatedNodeIdsByType(node?.id, "practice");
   const workbenchNodeIds = getRelatedNodeIdsByType(node?.id, "workbench");
   const collabNodeIds = getRelatedNodeIdsByType(node?.id, "collab");
 
-  // Генерация текста описания узла из шаблона
-  const getNodeInfoHtml = (node) => {
-    const templates = VISUAL_CONFIG.labels?.nodeInfo?.[node.type];
-    if (!templates) return "";
-    const lines = templates.map(t => t.replace("{label}", node.label || node.id));
-    return `
-      <div class="vova-root-info">
-        ${lines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
-      </div>`;
-  };
-
   let html = "";
   if (widgetIcon) {
-    const nodeInfoHtml = isVova ? getNodeInfoHtml(node) : "";
+    const nodeInfoHtml = getNodeInfoHtml(node);
     html += `
       <div class="node-toc">
         <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
@@ -1767,66 +1847,64 @@ function updateStoryWithPotential(panel, node) {
         ${nodeInfoHtml}
       </div>`;
   }
-  if (isVova) {
-    html += renderNarrativeScreen();
-  } else {
-    html += `<div class="text">${escapeHtml(descriptionText)}</div>`;
-  }
+  html += renderNarrativeScreen();
 
   // Widget groups in horizontal row
-  html += `<div class="widget-groups-row">`;
-  
-  html += `<div class="widget-group">`;
-  html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
-  html += `<div class="domain-widgets inline-widgets">`;
-  html += domainNodeIds.map((nodeId) => {
-    const label = nodesById.get(nodeId)?.label || nodeId;
-    return `
-      <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
-        </div>
-      </div>`;
-  }).join("");
-  html += `</div>`;
-  html += `</div>`;
+  {
+    html += `<div class="widget-groups-row">`;
+    
+    html += `<div class="widget-group">`;
+    html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
+    html += `<div class="domain-widgets inline-widgets">`;
+    html += domainNodeIds.map((nodeId) => {
+      const label = nodesById.get(nodeId)?.label || nodeId;
+      return `
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
+          </div>
+        </div>`;
+    }).join("");
+    html += `</div>`;
+    html += `</div>`;
 
-  html += `<div class="widget-group">`;
-  html += `<div class="section-title">${getSectionLabel("workbench")}</div>`;
-  html += `<div class="domain-widgets inline-widgets">`;
-  html += workbenchNodeIds.map((nodeId) => {
-    const label = nodesById.get(nodeId)?.label || nodeId;
-    const sharedClass = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
-    return `
-      <div class="domain-widget highlight-widget ${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
-        </div>
-      </div>`;
-  }).join("");
-  html += `</div>`;
-  html += `</div>`;
+    html += `<div class="widget-group">`;
+    html += `<div class="section-title">${getSectionLabel("workbench")}</div>`;
+    html += `<div class="domain-widgets inline-widgets">`;
+    html += workbenchNodeIds.map((nodeId) => {
+      const label = nodesById.get(nodeId)?.label || nodeId;
+      const sharedClass = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
+      return `
+        <div class="domain-widget highlight-widget ${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
+          </div>
+        </div>`;
+    }).join("");
+    html += `</div>`;
+    html += `</div>`;
 
-  html += `<div class="widget-group">`;
-  html += `<div class="section-title">${getSectionLabel("collab")}</div>`;
-  html += `<div class="domain-widgets inline-widgets">`;
-  html += collabNodeIds.map((nodeId) => {
-    const label = nodesById.get(nodeId)?.label || nodeId;
-    return `
-      <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getCollabWidgetIcon(nodeId), "collab")}
-        </div>
-      </div>`;
-  }).join("");
-  html += `</div>`;
-  html += `</div>`;
-  
-  html += `</div>`;
+    html += `<div class="widget-group">`;
+    html += `<div class="section-title">${getSectionLabel("collab")}</div>`;
+    html += `<div class="domain-widgets inline-widgets">`;
+    html += collabNodeIds.map((nodeId) => {
+      const label = nodesById.get(nodeId)?.label || nodeId;
+      return `
+        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(getCollabWidgetIcon(nodeId), "collab")}
+          </div>
+        </div>`;
+    }).join("");
+    html += `</div>`;
+    html += `</div>`;
+    
+    html += `</div>`;
 
-  // Octahedron container for character page
-  if (isVova) {
-    html += `<div id="character-octa-container" class="character-octa-container"></div>`;
+    // Octahedron container for character page (only Vova for now)
+    if (isVova) {
+      html += `<div id="character-octa-container" class="character-octa-container"></div>`;
+    }
   }
 
   content.innerHTML = html;
@@ -2005,6 +2083,14 @@ function bindNarrativeScreen(container) {
   document.addEventListener("fullscreenchange", syncExpandedBounds);
 }
 
+function isRootNode(node) {
+  return node && node.type === "root";
+}
+
+function isHubNode(node) {
+  return node && node.type === "hub";
+}
+
 function isCharacterNode(node) {
   return node && node.type === "character";
 }
@@ -2038,6 +2124,9 @@ function isWorkbenchShared(nodeId) {
   return getRelatedNodeIdsByType(nodeId, "character").length > 1;
 }
 
+// === ШАБЛОН СТРАНИЦЫ ВОРКБЕНЧА ===
+// pageTemplate: "workbench" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы воркбенчей
 function updateStoryWithWorkbench(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -2045,90 +2134,98 @@ function updateStoryWithWorkbench(panel, node) {
   destroyMiniCube();
   content.classList.remove("story-compact");
 
-  const workbenchLabel = node.label || node.id;
-  const workbenchIcon = node.type === "collab" ? getCollabWidgetIcon(node.id) : getWorkbenchWidgetIcon(node.id);
-  const characterIcon = getCharacterWidgetIcon();
-  const sharedClass = node.type === "collab" ? "" : (isWorkbenchShared(node.id) ? " node-widget--shared" : "");
+  const widgetIcon = getWorkbenchWidgetIcon(node.id);
+  const nodeInfoHtml = getNodeInfoHtml(node);
 
-  const relatedCharacters = sortCharacterIds(getRelatedNodeIdsByType(node.id, "character"));
-  const relatedDomains = getRelatedNodeIdsByType(node.id, "domain");
-  const relatedPractices = getRelatedNodeIdsByType(node.id, "practice");
-  const relatedWorkbenches = getRelatedNodeIdsByType(node.id, "workbench").filter((id) => id !== node.id);
-
-  let html = "";
-  html += `
+  let html = `
     <div class="node-toc">
-      <div class="node-toc-row">
-        <div class="node-widget node-widget--static node-widget--root${sharedClass}" title="${escapeHtml(workbenchLabel)}">
-          <div class="widget-frame">
-            ${getWidgetImageHtml(workbenchIcon, "workbench", { isRoot: true })}
-          </div>
+      <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+        <div class="widget-frame">
+          ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
         </div>
-        ${relatedCharacters.map((nodeId) => {
-          const label = nodesById.get(nodeId)?.label || nodeId;
-          return `
-            <div class="node-widget node-widget--static node-widget--root node-" title="${escapeHtml(label)}">
-              <div class="widget-frame">
-                ${getWidgetImageHtml(characterIcon, "character", { isRoot: true })}
-              </div>
-            </div>`;
-        }).join("")}
       </div>
+      ${nodeInfoHtml}
     </div>`;
 
-  html += `<div class="text">Описательный блок</div>`;
-
-  if (relatedDomains.length) {
-    html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
-    html += `<div class="domain-widgets inline-widgets">`;
-    html += relatedDomains.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
-      return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
-        </div>
-        </div>`;
-    }).join("");
-    html += `</div>`;
-  }
-
-  if (relatedPractices.length) {
-    html += `<div class="section-title">${getSectionLabel("practice")}</div>`;
-    html += `<div class="domain-widgets inline-widgets">`;
-    html += relatedPractices.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
-      return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
-        </div>
-        </div>`;
-    }).join("");
-    html += `</div>`;
-  }
-
-  if (relatedWorkbenches.length) {
-    html += `<div class="section-title">${getSectionLabel("workbench")}</div>`;
-    html += `<div class="domain-widgets inline-widgets">`;
-    html += relatedWorkbenches.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
-      const shared = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
-      return `
-        <div class="domain-widget highlight-widget ${shared}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
-        </div>
-        </div>`;
-    }).join("");
-    html += `</div>`;
-  }
+  html += renderNarrativeScreen();
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
+  bindVovaScopeWidget(content, node);
+  bindNarrativeScreen(content);
   bindEmblemSwap(content);
 }
 
+// === ШАБЛОН СТРАНИЦЫ КОЛЛАБА ===
+// pageTemplate: "collab" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы коллабов
+function updateStoryWithCollab(panel, node) {
+  const content = panel?.querySelector(".panel-content");
+  if (!content) return;
+
+  destroyMiniCube();
+  content.classList.remove("story-compact");
+
+  const widgetIcon = getCollabWidgetIcon(node.id);
+  const nodeInfoHtml = getNodeInfoHtml(node);
+
+  let html = `
+    <div class="node-toc">
+      <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+        <div class="widget-frame">
+          ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
+        </div>
+      </div>
+      ${nodeInfoHtml}
+    </div>`;
+
+  html += renderNarrativeScreen();
+
+  content.innerHTML = html;
+  bindHighlightWidgets(content);
+  bindVovaScopeWidget(content, node);
+  bindNarrativeScreen(content);
+  bindEmblemSwap(content);
+}
+
+// === ШАБЛОН СТРАНИЦЫ ХАБА ===
+// pageTemplate: "hub" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы хабов (Персонажи, Домены)
+function updateStoryWithHub(panel, node) {
+  const content = panel?.querySelector(".panel-content");
+  if (!content) return;
+
+  destroyMiniCube();
+  content.classList.remove("story-compact");
+
+  // Хабы пока показывают пустую страницу с названием
+  const hubLabel = getNodeTooltip(node);
+  content.innerHTML = `
+    <div class="hub-page">
+      <div class="hub-title">${escapeHtml(hubLabel)}</div>
+    </div>`;
+}
+
+// === ШАБЛОН СТРАНИЦЫ СИСТЕМНОГО УЗЛА ===
+// pageTemplate: "root" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы системных узлов (Universe, Cryptocosm)
+function updateStoryWithRoot(panel, node) {
+  const content = panel?.querySelector(".panel-content");
+  if (!content) return;
+
+  destroyMiniCube();
+  content.classList.remove("story-compact");
+
+  // Системные узлы пока показывают пустую страницу
+  content.innerHTML = `
+    <div class="root-page">
+      <div class="root-title">${escapeHtml(node.label || node.id)}</div>
+    </div>`;
+}
+
+// === ШАБЛОН СТРАНИЦЫ ДОМЕНА ===
+// pageTemplate: "domain" в VISUAL_CONFIG.nodeTypes
+// Редактируя эту функцию, изменяешь все страницы доменов
 function updateStoryWithDomainFocus(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -2136,71 +2233,26 @@ function updateStoryWithDomainFocus(panel, node) {
   destroyMiniCube();
   content.classList.remove("story-compact");
 
-  const widgetIcon = getNodeWidgetIcon(node);
-  const descriptionText = "Описательный блок";
-  const domainTag = buildDomainTag(node?.id);
-  const relatedCharacters = getRelatedNodeIdsByType(node?.id, "character");
-  const relatedPractices = getRelatedNodeIdsByType(node?.id, "practice");
+  const widgetIcon = getDomainWidgetIcon(node.id);
+  const nodeInfoHtml = getNodeInfoHtml(node);
 
-  let html = "";
-  if (widgetIcon) {
-    html += `
-      <div class="node-toc">
-        <div class="node-widget node-widget--static node-widget--root" title="${escapeHtml(node.label || node.id)}">
-          <div class="widget-frame">
-            ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
-          </div>
-        </div>
-      </div>`;
-  }
-  html += `<div class="text">${escapeHtml(descriptionText)}</div>`;
-
-  html += `<div class="potential-section">
-    <div class="potential-title">Потенциал</div>`;
-
-  if (relatedCharacters.length) {
-    html += `<div class="potential-group-title">Проводники</div>`;
-    html += `<div class="potential-buttons">`;
-    html += relatedCharacters.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
-      return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+  let html = `
+    <div class="node-toc">
+      <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
         <div class="widget-frame">
-          ${getWidgetImageHtml(getCharacterWidgetIcon(), "character")}
+          ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
         </div>
-        </div>`;
-    }).join("");
-    html += `</div>`;
-  }
-
-  if (relatedPractices.length) {
-    html += `<div class="potential-group-title">Практики</div>`;
-    html += `<div class="potential-buttons">`;
-    html += relatedPractices.map((nodeId) => {
-      const label = nodesById.get(nodeId)?.label || nodeId;
-      return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
-        <div class="widget-frame">
-          ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
-        </div>
-        </div>`;
-    }).join("");
-    html += `</div>`;
-  }
-
-  if (domainTag) {
-    html += `<div class="potential-group-title">Данные</div>`;
-    html += `<div class="potential-tags">
-      <span class="pointer-tag" data-tag="${escapeHtml(domainTag)}">${escapeHtml(domainTag)}</span>
+      </div>
+      ${nodeInfoHtml}
     </div>`;
-  }
 
-  html += `</div>`;
+  html += renderNarrativeScreen();
 
   content.innerHTML = html;
-  bindTagPills(content);
-  bindEmblemSwap(content);
   bindHighlightWidgets(content);
+  bindVovaScopeWidget(content, node);
+  bindNarrativeScreen(content);
+  bindEmblemSwap(content);
 }
 
 function updateStoryWithDomainWidgets(panel, data) {
@@ -2512,7 +2564,8 @@ function initMiniShape(type, container, nodeIds, hubId) {
   if (!nodeIds || nodeIds.length === 0) return;
 
   miniShapeHubId = hubId;
-  const size = type === "octa" ? 270 : 220;
+  // Октаэдр уменьшен до размера виджета (44px + padding)
+  const size = type === "octa" ? 60 : 220;
   const width = size;
   const height = size;
 
@@ -2878,14 +2931,16 @@ function bindHighlightWidgets(container) {
       const node = nodesById.get(nodeId);
       HighlightManager.node(nodeId, true);
       if (node) {
-        refreshHighlights(node);
+        // Hover на виджет: полная яркость рёбер
+        refreshHighlights(node, "hover");
         graph.refresh();
       }
     });
     el.addEventListener("mouseleave", () => {
       const nodeId = el.dataset.nodeId;
       HighlightManager.node(nodeId, false);
-      refreshHighlights(null);
+      // Возврат к подсветке выделенного узла (полсилы)
+      refreshHighlights(currentStep, "selected");
       graph.refresh();
     });
     el.addEventListener("click", (event) => {
@@ -2893,12 +2948,7 @@ function bindHighlightWidgets(container) {
       const nodeId = el.dataset.nodeId;
       const node = nodesById.get(nodeId);
       if (!node) return;
-      if (node.type === "domain") {
-        const domainTag = buildDomainTag(node.id);
-        if (domainTag) {
-          setQueryTag(domainTag, "widget");
-        }
-      } else if (node.type === "workbench") {
+      if (node.type === "domain" || node.type === "workbench" || node.type === "collab") {
         registerInteraction();
         motionSound.resumeIfNeeded();
         goToStepById(node.id);
@@ -2910,11 +2960,34 @@ function bindHighlightWidgets(container) {
 function bindVovaScopeWidget(container, node) {
   const scopeWidget = container.querySelector(".vova-scope-widget");
   if (!scopeWidget || !node) return;
+  
+  // Определяем, есть ли на странице группы виджетов
+  const hasWidgetGroups = container.querySelector(".widget-groups-row") !== null;
+  
   scopeWidget.addEventListener("mouseenter", () => {
-    HighlightManager.scope(node.id, true);
+    // Подсветка рамки корневого виджета при hover
+    scopeWidget.classList.add("scope-active");
+    if (hasWidgetGroups) {
+      // Страница с группами: подсвечиваем весь scope
+      HighlightManager.scope(node.id, true);
+    } else {
+      // Страница без групп: подсвечиваем только узел с полной яркостью рёбер
+      refreshHighlights(node, "hover");
+      HighlightManager.node(node.id, true);
+      graph.refresh();
+    }
   });
   scopeWidget.addEventListener("mouseleave", () => {
-    HighlightManager.scope(node.id, false);
+    // Снять подсветку рамки корневого виджета
+    scopeWidget.classList.remove("scope-active");
+    if (hasWidgetGroups) {
+      HighlightManager.scope(node.id, false);
+    } else {
+      HighlightManager.node(node.id, false);
+    }
+    // Возврат к подсветке выделенного узла (полсилы)
+    refreshHighlights(currentStep, "selected");
+    graph.refresh();
   });
 }
 
@@ -3000,6 +3073,8 @@ function activateScopeHighlight(nodeIds) {
   scopeHighlightNodeIds = new Set(nodeIds);
   highlightNodes.clear();
   highlightLinks.clear();
+  halfHighlightLinks.clear();
+  highlightMode = "scope";
 
   const graphData = graph.graphData();
   
@@ -3030,7 +3105,8 @@ function activateScopeHighlight(nodeIds) {
 function clearScopeHighlight() {
   scopeHighlightActive = false;
   scopeHighlightNodeIds = new Set();
-  refreshHighlights(hoverNode);
+  // Возврат к подсветке выделенного узла (полсилы)
+  refreshHighlights(currentStep, "selected");
   updateScopeNodeMaterials();
   graph.refresh();
 }
