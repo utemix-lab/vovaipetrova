@@ -7,952 +7,1611 @@
     {
       "id": "universe",
       "label": "Universe",
-      "position": { "x": 400, "y": 300 },
-      "story": "Добро пожаловать в Universe — единое пространство знаний, где всё связано со всем.",
-      "system": "Universe — корневой узел графа. От него расходятся четыре ветви: System, Characters, Domains, Practices.",
-      "service": "Выберите направление для исследования.",
+      "position": {
+        "x": 400,
+        "y": 300
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "root",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "container", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.8 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.8
+      }
     },
     {
       "id": "system",
       "label": "System",
-      "position": { "x": 600, "y": 150 },
-      "story": "Системный слой экосистемы: правила, процессы и модули.",
-      "system": "Root узел системного графа. Объединяет модули, политики и процессы.",
-      "service": "Исследовать внутреннюю архитектуру.",
+      "position": {
+        "x": 600,
+        "y": 150
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "root",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "container", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "characters",
       "label": "Characters",
-      "position": { "x": 600, "y": 300 },
-      "story": "Персонажи — проводники по миру знаний.",
-      "system": "Hub для персонажей-медиаторов. Они не владеют доменами, а знают дорогу.",
-      "service": "Познакомиться с проводниками.",
+      "position": {
+        "x": 600,
+        "y": 300
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "hub",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "domains",
       "label": "Domains",
-      "position": { "x": 600, "y": 450 },
-      "story": "Континенты знаний — большие области без дробления.",
-      "system": "Hub для доменов. Каждый домен — опорная точка, к которой цепляются понятия и артефакты.",
-      "service": "Выбрать континент.",
+      "position": {
+        "x": 600,
+        "y": 450
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "hub",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "system-graph",
       "label": "System Graph",
-      "position": { "x": 800, "y": 150 },
-      "story": "Системный граф — карта документации и правил.",
-      "system": "Контейнер для модулей, политик, процессов и спецификаций экосистемы.",
-      "service": "Открыть карту модулей.",
+      "position": {
+        "x": 800,
+        "y": 150
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "hub",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "character-vova",
       "label": "Вова",
-      "position": { "x": 800, "y": 260 },
-      "story": "Музыкант и исследователь звука, проводник в аудиокультуру и AI.\nЕго взгляд: слышать структуру, строить ритм и смысл во времени.\nДля него звук — это навигация, не фон.",
-      "system": "Роль: медиатор между доменами музыки и AI, мост к практике звукового мышления.\nФокус: тембр, ритм, акустика, генеративный звук.\nСвязанные домены: музыка, AI.\nСвязанная практика: звуковое мышление.",
-      "service": "Пути Вовы (пока текстовая карта):\n- Треки: генеративная музыка, саунд-дизайн, синтез.",
+      "position": {
+        "x": 800,
+        "y": 260
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.8 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.8
+      }
     },
     {
       "id": "character-petrova",
       "label": "Петрова",
-      "position": { "x": 800, "y": 340 },
-      "story": "Художница, дизайнер, мастер визуального.",
-      "system": "Проводник в мир визуала, анимации и дизайна.",
-      "service": "Следовать за Петровой.",
+      "position": {
+        "x": 800,
+        "y": 340
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.8 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.8
+      }
     },
     {
       "id": "character-ai",
       "label": "ИИ",
-      "position": { "x": 800, "y": 380 },
-      "story": "Сущность машинного мышления.",
-      "system": "Проводник в машинную логику и агентность.",
-      "service": "Следовать за ИИ.",
+      "position": {
+        "x": 800,
+        "y": 380
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-runa",
       "label": "Руна",
-      "position": { "x": 800, "y": 420 },
-      "story": "Проводник в код и инструменты.",
-      "system": "Фокус на инженерии и агентах.",
-      "service": "Следовать за Руной.",
+      "position": {
+        "x": 800,
+        "y": 420
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-hinto",
-      "label": "Hinto",
-      "position": { "x": 800, "y": 460 },
-      "story": "Проводник через скрытые связи.",
-      "system": "Фокус на скрытых закономерностях.",
-      "service": "Следовать за Hinto.",
+      "label": "Хинто",
+      "position": {
+        "x": 800,
+        "y": 460
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-ancy",
       "label": "Ancy",
-      "position": { "x": 800, "y": 500 },
-      "story": "Проводник в философию структуры.",
-      "system": "Фокус на архитектуре и принципах.",
-      "service": "Следовать за Ancy.",
+      "position": {
+        "x": 800,
+        "y": 500
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-ney",
       "label": "Нэй",
-      "position": { "x": 800, "y": 540 },
-      "story": "Проводник через интерфейсы и форму.",
-      "system": "Фокус на восприятии и UX.",
-      "service": "Следовать за Нэй.",
+      "position": {
+        "x": 800,
+        "y": 540
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-dizi",
       "label": "Дизи",
-      "position": { "x": 800, "y": 580 },
-      "story": "Проводник в художественные практики.",
-      "system": "Фокус на стиле, визуале, Киберантике.",
-      "service": "Следовать за Дизи.",
+      "position": {
+        "x": 800,
+        "y": 580
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-cadrik",
       "label": "CADрик",
-      "position": { "x": 800, "y": 620 },
-      "story": "Проводник в инженерную визуализацию.",
-      "system": "Фокус на CAD и физическом мире.",
-      "service": "Следовать за CADрик.",
+      "position": {
+        "x": 800,
+        "y": 620
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-geymych",
       "label": "Геймыч",
-      "position": { "x": 800, "y": 660 },
-      "story": "Проводник в игровые миры.",
-      "system": "Фокус на интерактиве и симуляциях.",
-      "service": "Следовать за Геймыч.",
+      "position": {
+        "x": 800,
+        "y": 660
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-author",
       "label": "Автор",
-      "position": { "x": 800, "y": 700 },
-      "story": "Проводник через авторскую траекторию.",
-      "system": "Фокус на мета-уровне и рефлексии.",
-      "service": "Следовать за Автором.",
+      "position": {
+        "x": 800,
+        "y": 700
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "character-vasya",
       "label": "Вася",
-      "position": { "x": 800, "y": 740 },
-      "story": "Проводник в простые траектории.",
-      "system": "Фокус на базовом чтении системы.",
-      "service": "Следовать за Васей.",
+      "position": {
+        "x": 800,
+        "y": 740
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "character",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "domain-ai",
       "label": "AI & Computational Models",
-      "position": { "x": 800, "y": 400 },
-      "story": "Искусственный интеллект как способ мышления и вычисления.",
-      "system": "Домен: модели, архитектуры, вычислительные парадигмы, агенты, LLM.",
-      "service": "cap:lipsync cap:image_to_image method:diffusion method:rag",
+      "position": {
+        "x": 800,
+        "y": 400
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-music",
       "label": "Music & Sound Culture",
-      "position": { "x": 800, "y": 460 },
-      "story": "Музыка и звук как культура, история и практика.",
-      "system": "Домен: композиция, продакшен, акустика, история музыки, звуковые культуры.",
-      "service": "Исследовать звук.",
+      "position": {
+        "x": 800,
+        "y": 460
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-visual",
       "label": "Visual & Media Arts",
-      "position": { "x": 800, "y": 520 },
-      "story": "Визуальное искусство, видео, motion, генеративная графика.",
-      "system": "Домен: 2D/3D, анимация, видео-арт, визуальные нарративы.",
-      "service": "Исследовать визуал.",
+      "position": {
+        "x": 800,
+        "y": 520
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-knowledge",
       "label": "Knowledge Systems & Cognitive Architectures",
-      "position": { "x": 800, "y": 580 },
-      "story": "Системы знаний, онтологии, архитектуры мышления.",
-      "system": "Домен: PKM, графы знаний, когнитивные модели, философия AI.",
-      "service": "Исследовать знания.",
+      "position": {
+        "x": 800,
+        "y": 580
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-dev",
       "label": "Software & Digital Tools",
-      "position": { "x": 800, "y": 640 },
-      "story": "Инструментальный домен: софт, код, автоматизация.",
-      "system": "Домен: языки, фреймворки, DevOps. Без искусства и эстетики.",
-      "service": "Исследовать инструменты.",
+      "position": {
+        "x": 800,
+        "y": 640
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "module-extended-mind",
       "label": "extended-mind",
-      "position": { "x": 1000, "y": 80 },
-      "story": "Канонический граф и редактор системы.",
-      "system": "Модуль, который хранит Universe Graph, документацию и Playbook.",
-      "service": "Перейти к архитектуре.",
+      "position": {
+        "x": 1000,
+        "y": 80
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "module",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "content", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "content",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "module-dream-graph",
       "label": "dream-graph",
-      "position": { "x": 1000, "y": 140 },
-      "story": "Финальный рендер канона в 3D.",
-      "system": "Renderer, читающий Universe Graph и контракты. Read-only.",
-      "service": "Открыть рендер.",
+      "position": {
+        "x": 1000,
+        "y": 140
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "module",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "content", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "content",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "module-contracts",
       "label": "contracts",
-      "position": { "x": 1000, "y": 200 },
-      "story": "Единый язык между рендерами.",
-      "system": "Хранилище канона (universe.json), UI контрактов, ассетов и текстов.",
-      "service": "Открыть контракты.",
+      "position": {
+        "x": 1000,
+        "y": 200
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "module",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "content", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "content",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "module-godot-sandbox",
       "label": "godot-sandbox",
-      "position": { "x": 1000, "y": 260 },
-      "story": "Строительные леса для UI-сценографии.",
-      "system": "Опциональный модуль для экспериментов с не-веб-метафорами. Может быть убран.",
-      "service": "Открыть песочницу.",
+      "position": {
+        "x": 1000,
+        "y": 260
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "module",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "content", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "content",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "policy-ssot",
       "label": "Single Source of Truth",
-      "position": { "x": 1150, "y": 80 },
-      "story": "Истина — одна и находится в каноне.",
-      "system": "Политика: канон редактируется только через extended-mind. Рендеры read-only.",
-      "service": "Прочитать политику.",
+      "position": {
+        "x": 1150,
+        "y": 80
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "policy",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "description", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "description",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "policy-projection-coherence",
       "label": "Согласованность проекций",
-      "position": { "x": 1150, "y": 110 },
-      "story": "Визуальные проекции узла должны быть согласованы.",
-      "system": "Политика: взаимодействие с одной проекцией узла вызывает согласованную реакцию всех проекций. Реализация — в рендерах, не в каноне.",
-      "service": "См. ADR-004.",
+      "position": {
+        "x": 1150,
+        "y": 110
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "policy",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "description", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "description",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "process-edit-to-render",
       "label": "Edit → Render",
-      "position": { "x": 1150, "y": 140 },
-      "story": "Путь от редактирования канона до визуализации.",
-      "system": "Процесс: editor → universe.json → выбор узла → загрузка 3S → рендер/сценография.",
-      "service": "Проследить пайплайн.",
+      "position": {
+        "x": 1150,
+        "y": 140
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "process",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "description", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "description",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "spec-universe-graph",
       "label": "Universe Graph Spec",
-      "position": { "x": 1150, "y": 200 },
-      "story": "Формат канонического графа.",
-      "system": "Спецификация: universe.json + Node Contract v1. Описывает структуру узлов и рёбер.",
-      "service": "Читать спецификацию.",
+      "position": {
+        "x": 1150,
+        "y": 200
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "spec",
       "visibility": "public",
       "status": "core",
-      "semantics": { "role": "description", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 },
-      "content": { "system_ref": "extended-mind/docs/UNIVERSE_GRAPH_SPEC.md" }
+      "semantics": {
+        "role": "description",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      },
+      "content": {
+        "system_ref": "extended-mind/docs/UNIVERSE_GRAPH_SPEC.md"
+      }
     },
     {
       "id": "spec-contracts-public",
       "label": "Contracts Public Spec",
-      "position": { "x": 1150, "y": 260 },
-      "story": "Язык рендеров: layout, interaction, bindings.",
-      "system": "Спецификация структуры contracts/public: graph/, assets/, texts/, sessions/, ui/.",
-      "service": "Читать спецификацию.",
+      "position": {
+        "x": 1150,
+        "y": 260
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "spec",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "description", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "description",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "domain-design",
       "label": "Design & Aesthetic Systems",
-      "position": { "x": 800, "y": 700 },
-      "story": "Дизайн как система мышления и эстетических решений.",
-      "system": "Домен: UI/UX, графический дизайн, типографика, эстетические системы.",
-      "service": "Исследовать дизайн.",
+      "position": {
+        "x": 800,
+        "y": 700
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-physical",
       "label": "Architecture & Physical Realization",
-      "position": { "x": 800, "y": 760 },
-      "story": "Физическое воплощение: от CAD до арт-продакшена.",
-      "system": "Домен: проектирование, ЧПУ, электроника, материальное производство.",
-      "service": "Исследовать физическое.",
+      "position": {
+        "x": 800,
+        "y": 760
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "domain-interactive",
       "label": "Interactive Systems & Game Culture",
-      "position": { "x": 800, "y": 820 },
-      "story": "Интерактивные миры, игры, симуляции.",
-      "system": "Домен: игровые движки, интерактивные нарративы, VR/AR, симуляции.",
-      "service": "Исследовать интерактив.",
+      "position": {
+        "x": 800,
+        "y": 820
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "domain",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "medium" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "medium"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practices",
       "label": "Practices",
-      "position": { "x": 200, "y": 300 },
-      "story": "Поперечные практики — способы действия, работающие cross-domain.",
-      "system": "Hub для практик. Практики связывают домены, не заменяя их.",
-      "service": "Исследовать способы действия.",
+      "position": {
+        "x": 200,
+        "y": 300
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "hub",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "container", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.7 }
+      "semantics": {
+        "role": "container",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.7
+      }
     },
     {
       "id": "practice-system-thinking",
       "label": "Системное мышление",
-      "position": { "x": 100, "y": 140 },
-      "story": "Системное мышление как связывание уровней, причин и последствий.",
-      "system": "Поперечная практика: удержание архитектуры и смысла.",
-      "service": "Построить системную рамку.",
+      "position": {
+        "x": 100,
+        "y": 140
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-anti-taxonomy",
       "label": "Антитаксономическая навигация",
-      "position": { "x": 100, "y": 160 },
-      "story": "Навигация без таксономии: пути вместо списков.",
-      "system": "Поперечная практика: контексты вместо сущностей.",
-      "service": "Перейти к пути.",
+      "position": {
+        "x": 100,
+        "y": 160
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-research-thinking",
       "label": "Исследовательское мышление",
-      "position": { "x": 100, "y": 180 },
-      "story": "Исследование через гипотезы и наблюдения.",
-      "system": "Поперечная практика: поиск закономерностей.",
-      "service": "Запустить исследовательский проход.",
+      "position": {
+        "x": 100,
+        "y": 180
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-direction",
       "label": "Режиссура",
-      "position": { "x": 100, "y": 200 },
-      "story": "Способ собирать внимание и смысл во времени: монтаж, сценография, ритм подачи. Первая реализация — куб доменов как визуальное утверждение структуры.",
-      "system": "Поперечная практика: связывает визуал, дизайн и интерактив. Паттерн: Perceptual Scenography (ADR-006).",
-      "service": "Применить режиссёрский подход.",
+      "position": {
+        "x": 100,
+        "y": 200
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-systems-design",
       "label": "Дизайн систем",
-      "position": { "x": 100, "y": 220 },
-      "story": "Дизайн систем как сборка процессов и связей.",
-      "system": "Поперечная практика: архитектура взаимодействий.",
-      "service": "Сконструировать систему.",
+      "position": {
+        "x": 100,
+        "y": 220
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-architectural-design",
       "label": "Архитектурное проектирование",
-      "position": { "x": 100, "y": 240 },
-      "story": "Архитектурное проектирование как каркас и ограничения.",
-      "system": "Поперечная практика: структура и устойчивость.",
-      "service": "Построить каркас.",
+      "position": {
+        "x": 100,
+        "y": 240
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-visual-thinking",
       "label": "Визуальное мышление",
-      "position": { "x": 100, "y": 260 },
-      "story": "Визуальное мышление как инструмент смысла.",
-      "system": "Поперечная практика: образ как структура.",
-      "service": "Собрать визуальную линию.",
+      "position": {
+        "x": 100,
+        "y": 260
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-sound-thinking",
       "label": "Звуковое мышление",
-      "position": { "x": 100, "y": 280 },
-      "story": "Звуковое мышление как форма навигации.",
-      "system": "Поперечная практика: ритм и тембр как смысл.",
-      "service": "Собрать звуковую линию.",
+      "position": {
+        "x": 100,
+        "y": 280
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-interactive-thinking",
       "label": "Интерактивное мышление",
-      "position": { "x": 100, "y": 300 },
-      "story": "Интерактив как способ понимания.",
-      "system": "Поперечная практика: действие раскрывает смысл.",
-      "service": "Построить интерактивный путь.",
+      "position": {
+        "x": 100,
+        "y": 300
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-branding",
       "label": "Брендинг",
-      "position": { "x": 100, "y": 400 },
-      "story": "Система образа и доверия: айдентика, тон, позиционирование.",
-      "system": "Поперечная практика: связывает дизайн, визуал и стратегию подачи.",
-      "service": "Построить образ.",
+      "position": {
+        "x": 100,
+        "y": 400
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-ecosystem-thinking",
       "label": "Экосистемное мышление",
-      "position": { "x": 100, "y": 420 },
-      "story": "Экосистема как сеть взаимосвязей и ролей.",
-      "system": "Поперечная практика: рост без раздувания.",
-      "service": "Собрать экосистемный контур.",
+      "position": {
+        "x": 100,
+        "y": 420
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-curation",
       "label": "Кураторство и отбор",
-      "position": { "x": 100, "y": 440 },
-      "story": "Кураторство как отбор и сборка фокуса.",
-      "system": "Поперечная практика: фокус и контекст.",
-      "service": "Собрать отбор.",
+      "position": {
+        "x": 100,
+        "y": 440
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-reflection-fixation",
       "label": "Рефлексия и фиксация",
-      "position": { "x": 100, "y": 460 },
-      "story": "Фиксация опыта и сдвигов во времени.",
-      "system": "Поперечная практика: следы и контур времени.",
-      "service": "Зафиксировать смысл.",
+      "position": {
+        "x": 100,
+        "y": 460
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "practice-possibility-navigation",
       "label": "Навигация по возможностям",
-      "position": { "x": 100, "y": 480 },
-      "story": "Навигация по возможным путям вместо каталогов.",
-      "system": "Поперечная практика: путь как результат.",
-      "service": "Открыть ветвление.",
+      "position": {
+        "x": 100,
+        "y": 480
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "practice",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "mediator", "abstraction": "high" },
-      "rag": { "index": true, "priority": 0.6 }
+      "semantics": {
+        "role": "mediator",
+        "abstraction": "high"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.6
+      }
     },
     {
       "id": "workbench-vova-music-general",
       "label": "Музыка в целом",
-      "position": { "x": 940, "y": 220 },
-      "story": "Воркбенч: музыка как культурный феномен.",
-      "system": "Линия работы: сцены, эпохи, стили, сдвиги.",
-      "service": "Входы в музыку: релизы, критика, плейлисты, интервью.",
+      "position": {
+        "x": 940,
+        "y": 220
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "content", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "content",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-vova-vstablishment",
       "label": "VSTablishment",
-      "position": { "x": 940, "y": 260 },
-      "story": "Воркбенч: VST-инструменты и эффекты.",
-      "system": "Линия работы: навигация по миру VST.",
-      "service": "Входы в VST: релизы, обзоры, практики использования.",
+      "position": {
+        "x": 940,
+        "y": 260
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-vova-zucken-drukcken",
       "label": "Zucken‑Drücken",
-      "position": { "x": 940, "y": 300 },
-      "story": "Воркбенч: AI‑музыка и генеративные сервисы.",
-      "system": "Линия работы: модели, техники, новые способы звукоизвлечения.",
-      "service": "Входы в AI‑музыку: статьи, демо, сервисы, эксперименты.",
+      "position": {
+        "x": 940,
+        "y": 300
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-as-if",
       "label": "As if",
-      "position": { "x": 940, "y": 340 },
-      "story": "Воркбенч: совместная лаборатория для режимов «как если бы».",
-      "system": "Линия работы: эксперименты с фреймами, симуляциями и допущениями.",
-      "service": "Входы: сценарии, эксперименты, протоколы наблюдения.",
+      "position": {
+        "x": 940,
+        "y": 340
+      },
+      "story": "",
+      "system": "",
+      "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-animation-plus",
       "label": "Анимация +",
-      "position": { "x": 940, "y": 380 },
+      "position": {
+        "x": 940,
+        "y": 380
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-brand-direction",
       "label": "Brand Direction",
-      "position": { "x": 940, "y": 420 },
+      "position": {
+        "x": 940,
+        "y": 420
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-iron-fairy-tales",
       "label": "Iron Fairy Tales",
-      "position": { "x": 940, "y": 460 },
+      "position": {
+        "x": 940,
+        "y": 460
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-frame-grinder",
       "label": "Frame Grinder",
-      "position": { "x": 940, "y": 500 },
+      "position": {
+        "x": 940,
+        "y": 500
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-appearance-atelier",
       "label": "Appearance Atelier",
-      "position": { "x": 940, "y": 540 },
+      "position": {
+        "x": 940,
+        "y": 540
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-solidol",
       "label": "Solidol",
-      "position": { "x": 940, "y": 580 },
+      "position": {
+        "x": 940,
+        "y": 580
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-mojibake",
       "label": "Mojibake",
-      "position": { "x": 940, "y": 620 },
+      "position": {
+        "x": 940,
+        "y": 620
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-ji",
       "label": "Ji (ジ)",
-      "position": { "x": 940, "y": 660 },
+      "position": {
+        "x": 940,
+        "y": 660
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-narrative-dump",
       "label": "Narrative Dump",
-      "position": { "x": 940, "y": 700 },
+      "position": {
+        "x": 940,
+        "y": 700
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-evoquant",
       "label": "Evoquant",
-      "position": { "x": 940, "y": 740 },
+      "position": {
+        "x": 940,
+        "y": 740
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-playfield",
       "label": "Playfield",
-      "position": { "x": 940, "y": 780 },
+      "position": {
+        "x": 940,
+        "y": 780
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-word-machine",
       "label": "Word Machine",
-      "position": { "x": 940, "y": 820 },
+      "position": {
+        "x": 940,
+        "y": 820
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-homo-perceptivus",
       "label": "Homo Perceptivus",
-      "position": { "x": 940, "y": 860 },
+      "position": {
+        "x": 940,
+        "y": 860
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-kiberantika",
       "label": "Киберантика",
-      "position": { "x": 940, "y": 900 },
+      "position": {
+        "x": 940,
+        "y": 900
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "workbench-moralite",
       "label": "Моралите",
-      "position": { "x": 940, "y": 940 },
+      "position": {
+        "x": 940,
+        "y": 940
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "workbench",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "collab-circus-technologies",
       "label": "Circus Technologies",
-      "position": { "x": 1080, "y": 380 },
+      "position": {
+        "x": 1080,
+        "y": 380
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "collab-minds-lorgnette",
       "label": "Mind's Lorgnette",
-      "position": { "x": 1080, "y": 420 },
+      "position": {
+        "x": 1080,
+        "y": 420
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "collab-dream-graph",
       "label": "Dream Graph",
-      "position": { "x": 1080, "y": 460 },
+      "position": {
+        "x": 1080,
+        "y": 460
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "collab-om",
       "label": "ОМ",
-      "position": { "x": 1080, "y": 500 },
+      "position": {
+        "x": 1080,
+        "y": 500
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     },
     {
       "id": "collab-lykeion",
       "label": "Lykeion",
-      "position": { "x": 1080, "y": 540 },
+      "position": {
+        "x": 1080,
+        "y": 540
+      },
       "story": "",
       "system": "",
       "service": "",
       "type": "collab",
       "visibility": "public",
       "status": "expandable",
-      "semantics": { "role": "tooling", "abstraction": "low" },
-      "rag": { "index": true, "priority": 0.5 }
+      "semantics": {
+        "role": "tooling",
+        "abstraction": "low"
+      },
+      "rag": {
+        "index": true,
+        "priority": 0.5
+      }
     }
   ],
   "edges": [
