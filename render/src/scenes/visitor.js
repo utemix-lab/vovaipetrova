@@ -129,6 +129,8 @@ void ARCHITECTURE;
 const AUTHOR_PLUG_ICON = `${PATHS.WIDGETS}/author-plug.png`;
 
 const BASE_NODE_RADIUS = VISUAL_CONFIG.node.minRadius;
+// Хелпер для получения названия секции из конфига
+const getSectionLabel = (type) => VISUAL_CONFIG.labels?.sections?.[type] || type;
 const SYSTEM_NODE_SCALE = 3;
 const SYSTEM_NODE_ID = "system";
 // Системный светлый цвет — используем голубой для системного шара
@@ -1612,7 +1614,7 @@ function updatePanels() {
     const practiceNodeIds = getRelatedNodeIdsByType(currentStep?.id, "practice");
     if (!practiceNodeIds.length) return;
     let systemHtml = "";
-    systemHtml += `<div class="section-title">Практики</div>`;
+    systemHtml += `<div class="section-title">${getSectionLabel("practice")}</div>`;
     systemHtml += `<div class="domain-widgets inline-widgets">`;
     systemHtml += practiceNodeIds.map((nodeId) => {
       // Используем allNodesById для отключённых узлов (практики)
@@ -1741,16 +1743,20 @@ function updateStoryWithPotential(panel, node) {
   const workbenchNodeIds = getRelatedNodeIdsByType(node?.id, "workbench");
   const collabNodeIds = getRelatedNodeIdsByType(node?.id, "collab");
 
+  // Генерация текста описания узла из шаблона
+  const getNodeInfoHtml = (node) => {
+    const templates = VISUAL_CONFIG.labels?.nodeInfo?.[node.type];
+    if (!templates) return "";
+    const lines = templates.map(t => t.replace("{label}", node.label || node.id));
+    return `
+      <div class="vova-root-info">
+        ${lines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
+      </div>`;
+  };
+
   let html = "";
   if (widgetIcon) {
-    const vovaInfo = isVova
-      ? `
-        <div class="vova-root-info">
-          <div>Вова - персонаж</div>
-          <div>Роль в системе - ...</div>
-          <div>Технический профиль - ...</div>
-        </div>`
-      : "";
+    const nodeInfoHtml = isVova ? getNodeInfoHtml(node) : "";
     html += `
       <div class="node-toc">
         <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
@@ -1758,7 +1764,7 @@ function updateStoryWithPotential(panel, node) {
             ${getWidgetImageHtml(widgetIcon, "widget", { isRoot: true })}
           </div>
         </div>
-        ${vovaInfo}
+        ${nodeInfoHtml}
       </div>`;
   }
   if (isVova) {
@@ -1771,7 +1777,7 @@ function updateStoryWithPotential(panel, node) {
   html += `<div class="widget-groups-row">`;
   
   html += `<div class="widget-group">`;
-  html += `<div class="section-title">Домены</div>`;
+  html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += domainNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
@@ -1786,7 +1792,7 @@ function updateStoryWithPotential(panel, node) {
   html += `</div>`;
 
   html += `<div class="widget-group">`;
-  html += `<div class="section-title">Воркбенчи</div>`;
+  html += `<div class="section-title">${getSectionLabel("workbench")}</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += workbenchNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
@@ -1802,7 +1808,7 @@ function updateStoryWithPotential(panel, node) {
   html += `</div>`;
 
   html += `<div class="widget-group">`;
-  html += `<div class="section-title">Коллабы</div>`;
+  html += `<div class="section-title">${getSectionLabel("collab")}</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += collabNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
@@ -2073,7 +2079,7 @@ function updateStoryWithWorkbench(panel, node) {
   html += `<div class="text">Описательный блок</div>`;
 
   if (relatedDomains.length) {
-    html += `<div class="section-title">Домены</div>`;
+    html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
     html += `<div class="domain-widgets inline-widgets">`;
     html += relatedDomains.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
@@ -2088,7 +2094,7 @@ function updateStoryWithWorkbench(panel, node) {
   }
 
   if (relatedPractices.length) {
-    html += `<div class="section-title">Практики</div>`;
+    html += `<div class="section-title">${getSectionLabel("practice")}</div>`;
     html += `<div class="domain-widgets inline-widgets">`;
     html += relatedPractices.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
@@ -2103,7 +2109,7 @@ function updateStoryWithWorkbench(panel, node) {
   }
 
   if (relatedWorkbenches.length) {
-    html += `<div class="section-title">Воркбенчи</div>`;
+    html += `<div class="section-title">${getSectionLabel("workbench")}</div>`;
     html += `<div class="domain-widgets inline-widgets">`;
     html += relatedWorkbenches.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
@@ -3070,12 +3076,12 @@ function buildStoryWidgetSections(step) {
   };
 
   if (step.id === "domains" && domainWidgets?.widgets?.length) {
-    addSection("Домены", "domain", domainWidgets.widgets.map((w) => w.nodeId));
+    addSection(getSectionLabel("domain"), "domain", domainWidgets.widgets.map((w) => w.nodeId));
     return sections;
   }
   if (step.id === "practices") {
     addSection(
-      "Практики",
+      getSectionLabel("practice"),
       "practice",
       [...nodesById.values()].filter((n) => n.type === "practice").map((n) => n.id)
     );
@@ -3083,18 +3089,18 @@ function buildStoryWidgetSections(step) {
   }
   if (step.id === "characters") {
     addSection(
-      "Персонажи",
+      getSectionLabel("character"),
       "character",
       sortCharacterIds([...nodesById.values()].filter((n) => n.type === "character").map((n) => n.id))
     );
     return sections;
   }
 
-  addSection("Домены", "domain", getRelatedNodeIdsByType(step.id, "domain"));
-  addSection("Практики", "practice", getRelatedNodeIdsByType(step.id, "practice"));
-  addSection("Проводники", "character", sortCharacterIds(getRelatedNodeIdsByType(step.id, "character")));
-  addSection("Воркбенчи", "workbench", getRelatedNodeIdsByType(step.id, "workbench"));
-  addSection("Коллабы", "collab", getRelatedNodeIdsByType(step.id, "collab"));
+  addSection(getSectionLabel("domain"), "domain", getRelatedNodeIdsByType(step.id, "domain"));
+  addSection(getSectionLabel("practice"), "practice", getRelatedNodeIdsByType(step.id, "practice"));
+  addSection(getSectionLabel("character"), "character", sortCharacterIds(getRelatedNodeIdsByType(step.id, "character")));
+  addSection(getSectionLabel("workbench"), "workbench", getRelatedNodeIdsByType(step.id, "workbench"));
+  addSection(getSectionLabel("collab"), "collab", getRelatedNodeIdsByType(step.id, "collab"));
   return sections;
 }
 
