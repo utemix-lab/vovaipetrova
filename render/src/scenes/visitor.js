@@ -34,6 +34,82 @@
  * └── БУДУЩЕЕ: Станут интерфейсом для LLM-агента
  */
 
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * 🗺️ КАРТА СИСТЕМЫ: ПОДСВЕТКА И КОМПОЗИЦИЯ
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * ТИПЫ УЗЛОВ:
+ * ┌─────────────────┬─────────────┬─────────────────────────────────────────┐
+ * │ Тип             │ Виджет      │ Описание                                │
+ * ├─────────────────┼─────────────┼─────────────────────────────────────────┤
+ * │ character       │ ✓           │ Персонаж (Vova, Vasya)                  │
+ * │ domain          │ ✓           │ Континент (тематическая область)        │
+ * │ practice        │ ✓           │ Практика (отключена в графе)            │
+ * │ workbench       │ ✓           │ Воркбенч (рабочее пространство)         │
+ * │ collab          │ ✓           │ Коллаб (совместный проект)              │
+ * │ domains-hub     │ ✗           │ Хаб континентов (без виджета)           │
+ * │ practices-hub   │ ✗           │ Хаб практик (без виджета)               │
+ * ├─────────────────┴─────────────┴─────────────────────────────────────────┤
+ * │ Хабы — служебные узлы графа, не имеют виджетов в UI                     │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
+ * ЛОГИКА ПОДСВЕТКИ (HighlightManager):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ HighlightManager.node(nodeId, active)                                   │
+ * │ ─────────────────────────────────────────────────────────────────────── │
+ * │ Подсвечивает ОДИН узел:                                                 │
+ * │ • Виджет узла (widget-highlighted)                                      │
+ * │ • Узел в графе (highlightNodeById)                                      │
+ * │ • Вершину мини-фигуры (highlightMiniShapeNode)                          │
+ * │ Используется: hover на виджет, hover на вершину фигуры (не центр)       │
+ * ├─────────────────────────────────────────────────────────────────────────┤
+ * │ HighlightManager.scope(hubId, active)                                   │
+ * │ ─────────────────────────────────────────────────────────────────────── │
+ * │ Подсвечивает SCOPE (хаб + все связанные узлы):                          │
+ * │ • Рамка хаба (scope-active, голубая для Vova)                           │
+ * │ • Рамки всех связанных виджетов (widget-scope-highlighted, жёлтые)      │
+ * │ • Все вершины мини-фигуры                                               │
+ * │ • Все узлы scope + их соседи в графе (activateScopeHighlight)           │
+ * │ Используется: hover на корневой виджет, hover на центр фигуры           │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
+ * КОМПОЗИЦИЯ ОКНА ПЕРСОНАЖА (Story Panel):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ ┌─────────────────────────────────────────────────────────────────────┐ │
+ * │ │ [Корневой виджет] — голубой фон (vova-scope-widget)                │ │
+ * │ │ Narrative Screen (мини-окно с кнопками, расширением, пропорциями)  │ │
+ * │ └─────────────────────────────────────────────────────────────────────┘ │
+ * │ ┌─────────────────────────────────────────────────────────────────────┐ │
+ * │ │ КОНТИНЕНТЫ        ВОРКБЕНЧИ         КОЛЛАБЫ                        │ │
+ * │ │ [○][○][○]         [○][○]            [○]                            │ │
+ * │ │ (widget-groups-row — горизонтальный ряд)                           │ │
+ * │ └─────────────────────────────────────────────────────────────────────┘ │
+ * │ ┌─────────────────────────────────────────────────────────────────────┐ │
+ * │ │                    ◇ МИНИ-ФИГУРА ◇                                 │ │
+ * │ │              (character-octa-container)                            │ │
+ * │ │   Количество вершин = количество виджетов на странице              │ │
+ * │ │   Центр = корневой виджет                                          │ │
+ * │ │   Тип фигуры зависит от числа виджетов (octa для 6, cube для 8)    │ │
+ * │ └─────────────────────────────────────────────────────────────────────┘ │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
+ * МИНИ-ОКНО (Narrative Screen):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ • Кнопки управления (закрыть, развернуть)                              │
+ * │ • Расширение/сворачивание                                              │
+ * │ • Пропорции адаптивные                                                 │
+ * │ • Содержит медиа-контент персонажа                                     │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
+ * ЦВЕТА ПОДСВЕТКИ:
+ * • Голубой (cyan): 0x22d3ee — корневой виджет (рамка, фон, центр фигуры)
+ * • Жёлтый: 0xfbbf24 — связанные виджеты, вершины фигуры
+ * • Серый: 0x9ca3af / 0x6b7280 — неактивные вершины
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -1056,11 +1132,9 @@ function refreshHighlights(node) {
 let lastHoveredNodeId = null;
 
 graph.onNodeHover((node) => {
-  // Снять подсветку с предыдущего узла, виджета и мини-куба
+  // Снять подсветку с предыдущего узла
   if (lastHoveredNodeId && lastHoveredNodeId !== node?.id) {
-    highlightNodeById(lastHoveredNodeId, false);
-    highlightWidgetById(lastHoveredNodeId, false);
-    syncMiniCubeHighlight(lastHoveredNodeId, false);
+    HighlightManager.node(lastHoveredNodeId, false);
     lastHoveredNodeId = null;
   }
 
@@ -1069,11 +1143,9 @@ graph.onNodeHover((node) => {
   refreshHighlights(hoverNode);
   graph.refresh();
 
-  // Подсветить узел, виджет и мини-куб
+  // Подсветить узел
   if (hoverNode) {
-    highlightNodeById(hoverNode.id, true);
-    highlightWidgetById(hoverNode.id, true);
-    syncMiniCubeHighlight(hoverNode.id, true);
+    HighlightManager.node(hoverNode.id, true);
     lastHoveredNodeId = hoverNode.id;
   }
 });
@@ -1693,6 +1765,10 @@ function updateStoryWithPotential(panel, node) {
     html += `<div class="text">${escapeHtml(descriptionText)}</div>`;
   }
 
+  // Widget groups in horizontal row
+  html += `<div class="widget-groups-row">`;
+  
+  html += `<div class="widget-group">`;
   html += `<div class="section-title">Континенты</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += domainNodeIds.map((nodeId) => {
@@ -1705,7 +1781,9 @@ function updateStoryWithPotential(panel, node) {
       </div>`;
   }).join("");
   html += `</div>`;
+  html += `</div>`;
 
+  html += `<div class="widget-group">`;
   html += `<div class="section-title">Воркбенчи</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += workbenchNodeIds.map((nodeId) => {
@@ -1719,7 +1797,9 @@ function updateStoryWithPotential(panel, node) {
       </div>`;
   }).join("");
   html += `</div>`;
+  html += `</div>`;
 
+  html += `<div class="widget-group">`;
   html += `<div class="section-title">Коллабы</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += collabNodeIds.map((nodeId) => {
@@ -1732,12 +1812,37 @@ function updateStoryWithPotential(panel, node) {
       </div>`;
   }).join("");
   html += `</div>`;
+  html += `</div>`;
+  
+  html += `</div>`;
+
+  // Octahedron container for character page
+  if (isVova) {
+    html += `<div id="character-octa-container" class="character-octa-container"></div>`;
+  }
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+
+  // Initialize octahedron for Vova page
+  if (isVova) {
+    const octaContainer = document.getElementById("character-octa-container");
+    if (octaContainer) {
+      // Collect exactly 6 widget node IDs for octahedron vertices
+      // Priority: domains, workbenches, collabs, practices
+      const allWidgetIds = [
+        ...domainNodeIds,
+        ...workbenchNodeIds,
+        ...collabNodeIds,
+        ...practiceNodeIds
+      ];
+      const octaNodeIds = allWidgetIds.slice(0, 6);
+      initMiniShape("octa", octaContainer, octaNodeIds, node.id);
+    }
+  }
 }
 
 function renderNarrativeScreen() {
@@ -2133,9 +2238,7 @@ function updateStoryWithDomainWidgets(panel, data) {
       hoveredWindow = 1;
       updateWindowDimming();
       const node = nodesById.get(nodeId);
-      highlightNodeById(nodeId, true);
-      highlightMiniShapeNode(nodeId, true);
-      // Подсветить связи
+      HighlightManager.node(nodeId, true);
       if (node) {
         refreshHighlights(node);
         graph.refresh();
@@ -2146,9 +2249,7 @@ function updateStoryWithDomainWidgets(panel, data) {
       hoveredWidgetId = null;
       hoveredWindow = null;
       updateWindowDimming();
-      highlightNodeById(nodeId, false);
-      highlightMiniShapeNode(nodeId, false);
-      // Снять подсветку связей
+      HighlightManager.node(nodeId, false);
       refreshHighlights(null);
       graph.refresh();
     });
@@ -2195,8 +2296,7 @@ function updateStoryWithPracticeWidgets(panel, data) {
     el.addEventListener("mouseenter", () => {
       const nodeId = el.dataset.nodeId;
       const node = nodesById.get(nodeId);
-      highlightNodeById(nodeId, true);
-      highlightMiniShapeNode(nodeId, true);
+      HighlightManager.node(nodeId, true);
       if (node) {
         refreshHighlights(node);
         graph.refresh();
@@ -2204,8 +2304,7 @@ function updateStoryWithPracticeWidgets(panel, data) {
     });
     el.addEventListener("mouseleave", () => {
       const nodeId = el.dataset.nodeId;
-      highlightNodeById(nodeId, false);
-      highlightMiniShapeNode(nodeId, false);
+      HighlightManager.node(nodeId, false);
       refreshHighlights(null);
       graph.refresh();
     });
@@ -2252,8 +2351,7 @@ function updateStoryWithCharacterWidgets(panel, data) {
     el.addEventListener("mouseenter", () => {
       const nodeId = el.dataset.nodeId;
       const node = nodesById.get(nodeId);
-      highlightNodeById(nodeId, true);
-      highlightMiniShapeNode(nodeId, true);
+      HighlightManager.node(nodeId, true);
       if (node) {
         refreshHighlights(node);
         graph.refresh();
@@ -2261,8 +2359,7 @@ function updateStoryWithCharacterWidgets(panel, data) {
     });
     el.addEventListener("mouseleave", () => {
       const nodeId = el.dataset.nodeId;
-      highlightNodeById(nodeId, false);
-      highlightMiniShapeNode(nodeId, false);
+      HighlightManager.node(nodeId, false);
       refreshHighlights(null);
       graph.refresh();
     });
@@ -2407,7 +2504,7 @@ function initMiniShape(type, container, nodeIds, hubId) {
   if (!nodeIds || nodeIds.length === 0) return;
 
   miniShapeHubId = hubId;
-  const size = 220;
+  const size = type === "octa" ? 270 : 220;
   const width = size;
   const height = size;
 
@@ -2433,6 +2530,13 @@ function initMiniShape(type, container, nodeIds, hubId) {
       [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
       [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
     ].map(p => p.map(v => v * cubeSize));
+  } else if (type === "octa") {
+    const octaSize = 1.2;
+    positions = [
+      [1, 0, 0], [-1, 0, 0],
+      [0, 1, 0], [0, -1, 0],
+      [0, 0, 1], [0, 0, -1]
+    ].map(p => p.map(v => v * octaSize));
   } else {
     const geom = new THREE.IcosahedronGeometry(1);
     const arr = geom.getAttribute("position").array;
@@ -2484,6 +2588,24 @@ function initMiniShape(type, container, nodeIds, hubId) {
       const line = new THREE.Line(geometry, lineMat);
       miniCubeGroup.add(line);
     });
+  } else if (type === "octa") {
+    // Octahedron edges: each vertex connects to 4 others (not opposite)
+    // Vertices: 0=+X, 1=-X, 2=+Y, 3=-Y, 4=+Z, 5=-Z
+    const edgeIndices = [
+      [0, 2], [0, 3], [0, 4], [0, 5],
+      [1, 2], [1, 3], [1, 4], [1, 5],
+      [2, 4], [2, 5], [3, 4], [3, 5]
+    ];
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x4b5563, opacity: 0.5, transparent: true });
+    edgeIndices.forEach(([a, b]) => {
+      if (!positions[a] || !positions[b]) return;
+      const geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(...positions[a]),
+        new THREE.Vector3(...positions[b])
+      ]);
+      const line = new THREE.Line(geometry, lineMat);
+      miniCubeGroup.add(line);
+    });
   } else {
     const wireGeom = new THREE.IcosahedronGeometry(1.275);
     const edges = new THREE.EdgesGeometry(wireGeom);
@@ -2492,8 +2614,8 @@ function initMiniShape(type, container, nodeIds, hubId) {
     miniCubeGroup.add(wire);
   }
 
-  // Center to vertices (only for cube)
-  if (type === "cube") {
+  // Center to vertices (for cube and octa)
+  if (type === "cube" || type === "octa") {
     const centerLineMat = new THREE.LineBasicMaterial({ color: 0x374151, opacity: 0.3, transparent: true });
     positions.forEach(pos => {
       const geometry = new THREE.BufferGeometry().setFromPoints([
@@ -2522,30 +2644,40 @@ function initMiniShape(type, container, nodeIds, hubId) {
     if (intersects.length > 0) {
       const mesh = intersects[0].object;
       if (hoveredMesh !== mesh) {
+        // Clear previous highlights
         if (hoveredMesh) {
           const prevId = hoveredMesh.userData.nodeId;
-          highlightMiniShapeNode(prevId, false);
-          highlightNodeById(prevId, false);
-          highlightWidgetById(prevId, false);
+          const wasCenter = prevId === hubId;
+          if (wasCenter) {
+            HighlightManager.scope(prevId, false);
+          } else {
+            HighlightManager.node(prevId, false);
+          }
           refreshHighlights(null);
           graph.refresh();
         }
         hoveredMesh = mesh;
         const nodeId = mesh.userData.nodeId;
-        highlightMiniShapeNode(nodeId, true);
-        highlightNodeById(nodeId, true);
-        highlightWidgetById(nodeId, true);
-        const node = nodesById.get(nodeId);
-        if (node) {
-          refreshHighlights(node);
-          graph.refresh();
+        const isCenter = nodeId === hubId;
+        if (isCenter) {
+          HighlightManager.scope(nodeId, true);
+        } else {
+          HighlightManager.node(nodeId, true);
+          const node = nodesById.get(nodeId);
+          if (node) {
+            refreshHighlights(node);
+            graph.refresh();
+          }
         }
       }
     } else if (hoveredMesh) {
       const prevId = hoveredMesh.userData.nodeId;
-      highlightMiniShapeNode(prevId, false);
-      highlightNodeById(prevId, false);
-      highlightWidgetById(prevId, false);
+      const wasCenter = prevId === hubId;
+      if (wasCenter) {
+        HighlightManager.scope(prevId, false);
+      } else {
+        HighlightManager.node(prevId, false);
+      }
       refreshHighlights(null);
       graph.refresh();
       hoveredMesh = null;
@@ -2564,9 +2696,12 @@ function initMiniShape(type, container, nodeIds, hubId) {
   miniCubeRenderer.domElement.addEventListener("mouseleave", () => {
     if (hoveredMesh) {
       const prevId = hoveredMesh.userData.nodeId;
-      highlightMiniShapeNode(prevId, false);
-      highlightNodeById(prevId, false);
-      highlightWidgetById(prevId, false);
+      const wasCenter = prevId === hubId;
+      if (wasCenter) {
+        HighlightManager.scope(prevId, false);
+      } else {
+        HighlightManager.node(prevId, false);
+      }
       refreshHighlights(null);
       graph.refresh();
       hoveredMesh = null;
@@ -2580,15 +2715,59 @@ function highlightMiniShapeNode(nodeId, highlight) {
   const mesh = miniCubeMeshes.get(nodeId);
   if (!mesh) return;
 
+  const isHub = nodeId === miniShapeHubId;
   if (highlight) {
-    mesh.material.color.setHex(0xfbbf24);
+    // Hub (center) uses cyan, vertices use yellow
+    mesh.material.color.setHex(isHub ? 0x22d3ee : 0xfbbf24);
     mesh.scale.setScalar(1.5);
   } else {
-    const isHub = nodeId === miniShapeHubId;
     mesh.material.color.setHex(isHub ? 0x9ca3af : 0x6b7280);
     mesh.scale.setScalar(1);
   }
 }
+
+// === HighlightManager (см. карту системы в начале файла) ===
+const HighlightManager = {
+  node(nodeId, active) {
+    highlightNodeById(nodeId, active);
+    highlightWidgetById(nodeId, active);
+    highlightMiniShapeNode(nodeId, active);
+  },
+
+  scope(hubId, active) {
+    const vovaWidget = document.querySelector(`.vova-scope-widget[data-node-id="${hubId}"]`);
+    const container = vovaWidget?.closest(".panel-content");
+
+    // Collect ALL related node IDs (not just octahedron vertices)
+    const scopeIds = new Set([
+      hubId,
+      ...getRelatedNodeIdsByType(hubId, "domain"),
+      ...getRelatedNodeIdsByType(hubId, "practice"),
+      ...getRelatedNodeIdsByType(hubId, "workbench"),
+      ...getRelatedNodeIdsByType(hubId, "collab")
+    ]);
+
+    if (active) {
+      // Hub widget scope-active
+      if (vovaWidget) vovaWidget.classList.add("scope-active");
+      if (container) setScopeWidgetHighlight(container, true);
+      // All octahedron vertices
+      miniCubeMeshes.forEach((m, id) => highlightMiniShapeNode(id, true));
+      // Graph scope - highlight all nodes in scope AND their neighbors' links
+      activateScopeHighlight(scopeIds);
+      highlightNodeById(hubId, true);
+    } else {
+      // Clear hub widget
+      if (vovaWidget) vovaWidget.classList.remove("scope-active");
+      if (container) setScopeWidgetHighlight(container, false);
+      // Clear all octahedron vertices
+      miniCubeMeshes.forEach((m, id) => highlightMiniShapeNode(id, false));
+      // Clear graph scope
+      clearScopeHighlight();
+      highlightNodeById(hubId, false);
+    }
+  }
+};
 
 function animateMiniCube() {
   if (!miniCubeRenderer) return;
@@ -2619,12 +2798,6 @@ function destroyMiniCube() {
   miniCubeGroup = null;
   miniCubeMeshes.clear();
   miniShapeHubId = null;
-}
-
-// Sync: highlight mini cube from main graph hover
-function syncMiniCubeHighlight(nodeId, highlight) {
-  if (!miniCubeRenderer) return;
-  highlightMiniShapeNode(nodeId, highlight);
 }
 
 // === Pointer Tags / Query Mode ===
@@ -2695,7 +2868,7 @@ function bindHighlightWidgets(container) {
     el.addEventListener("mouseenter", () => {
       const nodeId = el.dataset.nodeId;
       const node = nodesById.get(nodeId);
-      highlightNodeById(nodeId, true);
+      HighlightManager.node(nodeId, true);
       if (node) {
         refreshHighlights(node);
         graph.refresh();
@@ -2703,7 +2876,7 @@ function bindHighlightWidgets(container) {
     });
     el.addEventListener("mouseleave", () => {
       const nodeId = el.dataset.nodeId;
-      highlightNodeById(nodeId, false);
+      HighlightManager.node(nodeId, false);
       refreshHighlights(null);
       graph.refresh();
     });
@@ -2729,21 +2902,11 @@ function bindHighlightWidgets(container) {
 function bindVovaScopeWidget(container, node) {
   const scopeWidget = container.querySelector(".vova-scope-widget");
   if (!scopeWidget || !node) return;
-  const scopeIds = new Set([
-    node.id,
-    ...getRelatedNodeIdsByType(node.id, "domain"),
-    ...getRelatedNodeIdsByType(node.id, "practice"),
-    ...getRelatedNodeIdsByType(node.id, "workbench")
-  ]);
   scopeWidget.addEventListener("mouseenter", () => {
-    scopeWidget.classList.add("scope-active");
-    setScopeWidgetHighlight(container, true);
-    activateScopeHighlight(scopeIds);
+    HighlightManager.scope(node.id, true);
   });
   scopeWidget.addEventListener("mouseleave", () => {
-    scopeWidget.classList.remove("scope-active");
-    setScopeWidgetHighlight(container, false);
-    clearScopeHighlight();
+    HighlightManager.scope(node.id, false);
   });
 }
 
@@ -2831,14 +2994,20 @@ function activateScopeHighlight(nodeIds) {
   highlightLinks.clear();
 
   const graphData = graph.graphData();
+  
+  // Add all scope nodes
   graphData.nodes.forEach((node) => {
     if (scopeHighlightNodeIds.has(node.id)) highlightNodes.add(node);
   });
+  
+  // For each node in scope, highlight ALL its links (to any neighbor)
   graphData.links.forEach((link) => {
     const sourceId = getId(link.source);
     const targetId = getId(link.target);
+    // Highlight link if either end is in scope
     if (scopeHighlightNodeIds.has(sourceId) || scopeHighlightNodeIds.has(targetId)) {
       highlightLinks.add(link);
+      // Also add the neighbor nodes (even if not in scope)
       const sourceNode = nodesById.get(sourceId);
       const targetNode = nodesById.get(targetId);
       if (sourceNode) highlightNodes.add(sourceNode);
@@ -3640,7 +3809,7 @@ window.addEventListener("graph-widget-hovered", (event) => {
     hoveredWidgetId = nodeId;
     hoveredWindow = 1;
     updateWindowDimming();
-    highlightNodeById(nodeId, true);
+    HighlightManager.node(nodeId, true);
     const node = nodesById.get(nodeId);
     if (node) {
       refreshHighlights(node);
@@ -3652,7 +3821,7 @@ window.addEventListener("graph-widget-hovered", (event) => {
     hoveredWidgetId = nodeId;
     hoveredWindow = 1;
     updateWindowDimming();
-    highlightNodeById(nodeId, true);
+    HighlightManager.node(nodeId, true);
     const node = nodesById.get(nodeId);
     if (node) {
       refreshHighlights(node);
@@ -3661,7 +3830,7 @@ window.addEventListener("graph-widget-hovered", (event) => {
     hoveredWidgetId = null;
     hoveredWindow = null;
     updateWindowDimming();
-    highlightNodeById(nodeId, false);
+    HighlightManager.node(nodeId, false);
     refreshHighlights(null);
   }
   graph.refresh();
@@ -3734,7 +3903,7 @@ window.addEventListener("graph-preview-hovered", (event) => {
   if (!item || queryModeActive) return;
   const targetId = item.id || item.label;
   if (!targetId || !nodesById?.has(targetId)) return;
-  highlightNodeById(targetId, active);
+  HighlightManager.node(targetId, active);
   if (active) {
     const node = nodesById.get(targetId);
     if (node) {

@@ -165,6 +165,7 @@ body.visitor-mode {
   padding-right: 16px;
   overflow-y: hidden;
   overflow-x: hidden;
+  position: relative;
 }
 
 #story-panel.panel-react-overlay .panel-content {
@@ -1017,6 +1018,59 @@ body.focus-service #service-panel::before {
   cursor: pointer;
 }
 
+/* Character Octahedron Container */
+.character-octa-container {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 270px;
+  height: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.character-octa-container canvas {
+  cursor: pointer;
+}
+
+/* Widget Groups Row - horizontal layout for Vova page */
+.widget-groups-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.widget-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.widget-group .section-title {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.widget-group .domain-widgets {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.widget-groups-row .widget-group:last-child {
+  align-items: flex-end;
+}
+
+.widget-groups-row .widget-group:last-child .section-title {
+  align-self: flex-end;
+}
+
 /* Domain Widgets — Cyberpunk */
 .domain-widgets {
   display: grid;
@@ -1206,6 +1260,11 @@ body.focus-service #service-panel::before {
 .node-widget--scope.scope-active {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 12px var(--panel-glow);
+}
+
+/* Vova widget always has cyan background glow */
+.node-widget--root.vova-scope-widget .widget-frame {
+  background: rgba(34, 211, 238, 0.15);
 }
 
 .node-widget--root.vova-scope-widget.scope-active .widget-frame {
