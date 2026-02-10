@@ -5,7 +5,17 @@ void ARCHITECTURE;
 export const VISUAL_CONFIG = {
   node: {
     minRadius: 2.2,
-    maxRadius: 6.5
+    maxRadius: 6.5,
+    // Канонические множители размеров по типу узла (от minRadius)
+    sizeByType: {
+      root: 4,        // Universe, Cryptocosm
+      hub: 4,         // Characters, Domains, Practices
+      character: 2.5, // Персонажи
+      domain: 1.5,    // Континенты
+      practice: 1,    // Практики
+      workbench: 1,   // Воркбенчи
+      collab: 1       // Коллабы
+    }
   },
   link: {
     baseLength: 65,

@@ -1481,13 +1481,11 @@ function withCacheBust(url) {
 function setRoute(route) {
   currentRoute = route;
 
-  // 4 размера узлов: hub/root (4x), character (2.5x), domain (1.5x), остальные (1x)
+  // Размеры узлов из VISUAL_CONFIG.node.sizeByType
+  const sizeByType = VISUAL_CONFIG.node.sizeByType || {};
   const getVisualRadius = (node) => {
-    const type = node.type;
-    if (type === "hub" || type === "root") return BASE_NODE_RADIUS * 4;
-    if (type === "character") return BASE_NODE_RADIUS * 2.5;
-    if (type === "domain") return BASE_NODE_RADIUS * 1.5;
-    return BASE_NODE_RADIUS; // workbench, collab, practice и др.
+    const multiplier = sizeByType[node.type] ?? 1;
+    return BASE_NODE_RADIUS * multiplier;
   };
 
   const graphData = {
