@@ -1481,17 +1481,21 @@ function withCacheBust(url) {
 function setRoute(route) {
   currentRoute = route;
 
+  // 4 размера узлов: hub/root (4x), character (2.5x), domain (1.5x), остальные (1x)
+  const getVisualRadius = (node) => {
+    const type = node.type;
+    if (type === "hub" || type === "root") return BASE_NODE_RADIUS * 4;
+    if (type === "character") return BASE_NODE_RADIUS * 2.5;
+    if (type === "domain") return BASE_NODE_RADIUS * 1.5;
+    return BASE_NODE_RADIUS; // workbench, collab, practice и др.
+  };
+
   const graphData = {
     nodes: route.nodes.map((n) => {
-      const jitter = (hashId(n.id) % 100) / 100 * 2;
-      const baseRadius = BASE_NODE_RADIUS + jitter;
-      const visualRadius = (n.type === "hub" || n.type === "root")
-        ? BASE_NODE_RADIUS * 4
-        : baseRadius;
       return {
         ...n,
         isStart: n.id === route.start_node_id,
-        visualRadius
+        visualRadius: getVisualRadius(n)
       };
     }),
     links: route.edges.map((e) => ({
