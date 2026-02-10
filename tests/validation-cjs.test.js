@@ -40,7 +40,7 @@ function validateUniverseGraph(filePath) {
 
 // Tests
 describe('Universe Graph Validation', () => {
-  const graphPath = path.join(__dirname, '../data/graph/universe.json');
+  const graphPath = path.join(__dirname, '../render/public/graph/universe.json');
   
   test('universe.json should exist', () => {
     expect(fs.existsSync(graphPath)).toBe(true);

@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Face Registry — единый реестр узлов графа (id + label)"
+  },
+  "characters": [
+    { "id": "character-vova", "label": "Вова" },
+    { "id": "character-petrova", "label": "Петрова" },
+    { "id": "character-ai", "label": "ИИ" },
+    { "id": "character-runa", "label": "Руна" },
+    { "id": "character-hinto", "label": "Hinto" },
+    { "id": "character-ancy", "label": "Ancy" },
+    { "id": "character-ney", "label": "Нэй" },
+    { "id": "character-dizi", "label": "Дизи" },
+    { "id": "character-cadrik", "label": "CADрик" },
+    { "id": "character-geymych", "label": "Геймыч" },
+    { "id": "character-author", "label": "Автор" },
+    { "id": "character-vasya", "label": "Вася" }
+  ],
+  "domains": [
+    { "id": "domain-ai", "label": "AI & Computational Models" },
+    { "id": "domain-music", "label": "Music & Sound Culture" },
+    { "id": "domain-visual", "label": "Visual & Media Arts" },
+    { "id": "domain-knowledge", "label": "Knowledge Systems & Cognitive Architectures" },
+    { "id": "domain-dev", "label": "Software & Digital Tools" },
+    { "id": "domain-design", "label": "Design & Aesthetic Systems" },
+    { "id": "domain-physical", "label": "Architecture & Physical Realization" },
+    { "id": "domain-interactive", "label": "Interactive Systems & Game Culture" }
+  ],
+  "workbenches": [
+    { "id": "workbench-vova-music-general", "label": "Музыка в целом" },
+    { "id": "workbench-vova-vstablishment", "label": "VSTablishment" },
+    { "id": "workbench-vova-zucken-drukcken", "label": "Zucken‑Drücken" },
+    { "id": "workbench-animation-plus", "label": "Анимация +" },
+    { "id": "workbench-brand-direction", "label": "Brand Direction" },
+    { "id": "workbench-iron-fairy-tales", "label": "Iron Fairy Tales" },
+    { "id": "workbench-frame-grinder", "label": "Frame Grinder" },
+    { "id": "workbench-appearance-atelier", "label": "Appearance Atelier" },
+    { "id": "workbench-solidol", "label": "Solidol" },
+    { "id": "workbench-mojibake", "label": "Mojibake" },
+    { "id": "workbench-ji", "label": "Ji (ジ)" },
+    { "id": "workbench-narrative-dump", "label": "Narrative Dump" },
+    { "id": "workbench-evoquant", "label": "Evoquant" },
+    { "id": "workbench-playfield", "label": "Playfield" },
+    { "id": "workbench-word-machine", "label": "Word Machine" },
+    { "id": "workbench-homo-perceptivus", "label": "Homo Perceptivus" },
+    { "id": "workbench-kiberantika", "label": "Киберантика" },
+    { "id": "workbench-moralite", "label": "Моралите" }
+  ],
+  "collabs": [
+    { "id": "workbench-as-if", "label": "As if" },
+    { "id": "collab-circus-technologies", "label": "Circus Technologies" },
+    { "id": "collab-minds-lorgnette", "label": "Mind's Lorgnette" },
+    { "id": "collab-dream-graph", "label": "Dream Graph" },
+    { "id": "collab-om", "label": "ОМ" },
+    { "id": "collab-lykeion", "label": "Lykeion" }
+  ],
+  "hubs": [
+    { "id": "universe", "label": "Universe" },
+    { "id": "system", "label": "System" },
+    { "id": "characters", "label": "Characters" },
+    { "id": "domains", "label": "Domains" },
+    { "id": "practices", "label": "Practices" },
+    { "id": "system-graph", "label": "System Graph" }
+  ],
+  "practices": [
+    { "id": "practice-system-thinking", "label": "Системное мышление" },
+    { "id": "practice-anti-taxonomy", "label": "Антитаксономическая навигация" },
+    { "id": "practice-research-thinking", "label": "Исследовательское мышление" },
+    { "id": "practice-direction", "label": "Режиссура" },
+    { "id": "practice-systems-design", "label": "Дизайн систем" },
+    { "id": "practice-architectural-design", "label": "Архитектурное проектирование" },
+    { "id": "practice-visual-thinking", "label": "Визуальное мышление" },
+    { "id": "practice-sound-thinking", "label": "Звуковое мышление" },
+    { "id": "practice-interactive-thinking", "label": "Интерактивное мышление" },
+    { "id": "practice-branding", "label": "Брендинг" },
+    { "id": "practice-ecosystem-thinking", "label": "Экосистемное мышление" },
+    { "id": "practice-curation", "label": "Кураторство и отбор" },
+    { "id": "practice-reflection-fixation", "label": "Рефлексия и фиксация" },
+    { "id": "practice-possibility-navigation", "label": "Навигация по возможностям" }
+  ],
+  "system": [
+    { "id": "module-extended-mind", "label": "extended-mind" },
+    { "id": "module-dream-graph", "label": "dream-graph" },
+    { "id": "module-contracts", "label": "contracts" },
+    { "id": "module-godot-sandbox", "label": "godot-sandbox" },
+    { "id": "policy-ssot", "label": "Single Source of Truth" },
+    { "id": "policy-projection-coherence", "label": "Согласованность проекций" },
+    { "id": "process-edit-to-render", "label": "Edit → Render" },
+    { "id": "spec-universe-graph", "label": "Universe Graph Spec" },
+    { "id": "spec-contracts-public", "label": "Contracts Public Spec" }
+  ]
+}
