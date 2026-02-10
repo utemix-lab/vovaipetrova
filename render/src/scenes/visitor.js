@@ -1771,7 +1771,7 @@ function updateStoryWithPotential(panel, node) {
   html += `<div class="widget-groups-row">`;
   
   html += `<div class="widget-group">`;
-  html += `<div class="section-title">Континенты</div>`;
+  html += `<div class="section-title">Домены</div>`;
   html += `<div class="domain-widgets inline-widgets">`;
   html += domainNodeIds.map((nodeId) => {
     const label = nodesById.get(nodeId)?.label || nodeId;
@@ -2073,7 +2073,7 @@ function updateStoryWithWorkbench(panel, node) {
   html += `<div class="text">Описательный блок</div>`;
 
   if (relatedDomains.length) {
-    html += `<div class="section-title">Континенты</div>`;
+    html += `<div class="section-title">Домены</div>`;
     html += `<div class="domain-widgets inline-widgets">`;
     html += relatedDomains.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
@@ -3070,7 +3070,7 @@ function buildStoryWidgetSections(step) {
   };
 
   if (step.id === "domains" && domainWidgets?.widgets?.length) {
-    addSection("Континенты", "domain", domainWidgets.widgets.map((w) => w.nodeId));
+    addSection("Домены", "domain", domainWidgets.widgets.map((w) => w.nodeId));
     return sections;
   }
   if (step.id === "practices") {
@@ -3090,7 +3090,7 @@ function buildStoryWidgetSections(step) {
     return sections;
   }
 
-  addSection("Континенты", "domain", getRelatedNodeIdsByType(step.id, "domain"));
+  addSection("Домены", "domain", getRelatedNodeIdsByType(step.id, "domain"));
   addSection("Практики", "practice", getRelatedNodeIdsByType(step.id, "practice"));
   addSection("Проводники", "character", sortCharacterIds(getRelatedNodeIdsByType(step.id, "character")));
   addSection("Воркбенчи", "workbench", getRelatedNodeIdsByType(step.id, "workbench"));
