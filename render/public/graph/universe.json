@@ -266,7 +266,7 @@
     },
     {
       "id": "domain-knowledge",
-      "label": "Knowledge & Cognitive Systems",
+      "label": "Knowledge Systems & Cognitive Architectures",
       "position": { "x": 800, "y": 580 },
       "story": "Системы знаний, онтологии, архитектуры мышления.",
       "system": "Домен: PKM, графы знаний, когнитивные модели, философия AI.",
@@ -423,7 +423,7 @@
     },
     {
       "id": "domain-physical",
-      "label": "Physical & Fabrication",
+      "label": "Architecture & Physical Realization",
       "position": { "x": 800, "y": 760 },
       "story": "Физическое воплощение: от CAD до арт-продакшена.",
       "system": "Домен: проектирование, ЧПУ, электроника, материальное производство.",
@@ -436,7 +436,7 @@
     },
     {
       "id": "domain-interactive",
-      "label": "Interactive & Game Culture",
+      "label": "Interactive Systems & Game Culture",
       "position": { "x": 800, "y": 820 },
       "story": "Интерактивные миры, игры, симуляции.",
       "system": "Домен: игровые движки, интерактивные нарративы, VR/AR, симуляции.",
@@ -688,7 +688,267 @@
       "story": "Воркбенч: совместная лаборатория для режимов «как если бы».",
       "system": "Линия работы: эксперименты с фреймами, симуляциями и допущениями.",
       "service": "Входы: сценарии, эксперименты, протоколы наблюдения.",
-  "type": "collab",
+      "type": "collab",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-animation-plus",
+      "label": "Анимация +",
+      "position": { "x": 940, "y": 380 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-brand-direction",
+      "label": "Brand Direction",
+      "position": { "x": 940, "y": 420 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-iron-fairy-tales",
+      "label": "Iron Fairy Tales",
+      "position": { "x": 940, "y": 460 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-frame-grinder",
+      "label": "Frame Grinder",
+      "position": { "x": 940, "y": 500 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-appearance-atelier",
+      "label": "Appearance Atelier",
+      "position": { "x": 940, "y": 540 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-solidol",
+      "label": "Solidol",
+      "position": { "x": 940, "y": 580 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-mojibake",
+      "label": "Mojibake",
+      "position": { "x": 940, "y": 620 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-ji",
+      "label": "Ji (ジ)",
+      "position": { "x": 940, "y": 660 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-narrative-dump",
+      "label": "Narrative Dump",
+      "position": { "x": 940, "y": 700 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-evoquant",
+      "label": "Evoquant",
+      "position": { "x": 940, "y": 740 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-playfield",
+      "label": "Playfield",
+      "position": { "x": 940, "y": 780 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-word-machine",
+      "label": "Word Machine",
+      "position": { "x": 940, "y": 820 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-homo-perceptivus",
+      "label": "Homo Perceptivus",
+      "position": { "x": 940, "y": 860 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-kiberantika",
+      "label": "Киберантика",
+      "position": { "x": 940, "y": 900 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "workbench-moralite",
+      "label": "Моралите",
+      "position": { "x": 940, "y": 940 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "collab-circus-technologies",
+      "label": "Circus Technologies",
+      "position": { "x": 1080, "y": 380 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "collab",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "collab-minds-lorgnette",
+      "label": "Mind's Lorgnette",
+      "position": { "x": 1080, "y": 420 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "collab",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "collab-dream-graph",
+      "label": "Dream Graph",
+      "position": { "x": 1080, "y": 460 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "collab",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "collab-om",
+      "label": "ОМ",
+      "position": { "x": 1080, "y": 500 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "collab",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "tooling", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "collab-lykeion",
+      "label": "Lykeion",
+      "position": { "x": 1080, "y": 540 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "collab",
       "visibility": "public",
       "status": "expandable",
       "semantics": { "role": "tooling", "abstraction": "low" },
@@ -874,6 +1134,288 @@
       "id": "edge-petrova-relates-visual",
       "source": "character-petrova",
       "target": "domain-visual",
+      "type": "relates"
+    },
+    {
+      "id": "edge-petrova-relates-ai",
+      "source": "character-petrova",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-petrova-relates-workbench-animation-plus",
+      "source": "character-petrova",
+      "target": "workbench-animation-plus",
+      "type": "relates"
+    },
+    {
+      "id": "edge-petrova-relates-workbench-brand-direction",
+      "source": "character-petrova",
+      "target": "workbench-brand-direction",
+      "type": "relates"
+    },
+    {
+      "id": "edge-petrova-relates-collab-circus-technologies",
+      "source": "character-petrova",
+      "target": "collab-circus-technologies",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-relates-ai-domain",
+      "source": "character-ai",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-relates-workbench-iron-fairy-tales",
+      "source": "character-ai",
+      "target": "workbench-iron-fairy-tales",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-relates-collab-circus-technologies",
+      "source": "character-ai",
+      "target": "collab-circus-technologies",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-relates-collab-minds-lorgnette",
+      "source": "character-ai",
+      "target": "collab-minds-lorgnette",
+      "type": "relates"
+    },
+    {
+      "id": "edge-vasya-relates-visual",
+      "source": "character-vasya",
+      "target": "domain-visual",
+      "type": "relates"
+    },
+    {
+      "id": "edge-vasya-relates-interactive",
+      "source": "character-vasya",
+      "target": "domain-interactive",
+      "type": "relates"
+    },
+    {
+      "id": "edge-vasya-relates-music",
+      "source": "character-vasya",
+      "target": "domain-music",
+      "type": "relates"
+    },
+    {
+      "id": "edge-vasya-relates-workbench-frame-grinder",
+      "source": "character-vasya",
+      "target": "workbench-frame-grinder",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ney-relates-ai",
+      "source": "character-ney",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ney-relates-visual",
+      "source": "character-ney",
+      "target": "domain-visual",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ney-relates-workbench-appearance-atelier",
+      "source": "character-ney",
+      "target": "workbench-appearance-atelier",
+      "type": "relates"
+    },
+    {
+      "id": "edge-cadrik-relates-physical",
+      "source": "character-cadrik",
+      "target": "domain-physical",
+      "type": "relates"
+    },
+    {
+      "id": "edge-cadrik-relates-workbench-solidol",
+      "source": "character-cadrik",
+      "target": "workbench-solidol",
+      "type": "relates"
+    },
+    {
+      "id": "edge-cadrik-relates-collab-om",
+      "source": "character-cadrik",
+      "target": "collab-om",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-relates-ai",
+      "source": "character-runa",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-relates-dev",
+      "source": "character-runa",
+      "target": "domain-dev",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-relates-workbench-mojibake",
+      "source": "character-runa",
+      "target": "workbench-mojibake",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-relates-collab-minds-lorgnette",
+      "source": "character-runa",
+      "target": "collab-minds-lorgnette",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-relates-collab-dream-graph",
+      "source": "character-runa",
+      "target": "collab-dream-graph",
+      "type": "relates"
+    },
+    {
+      "id": "edge-hinto-relates-ai",
+      "source": "character-hinto",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-hinto-relates-dev",
+      "source": "character-hinto",
+      "target": "domain-dev",
+      "type": "relates"
+    },
+    {
+      "id": "edge-hinto-relates-workbench-ji",
+      "source": "character-hinto",
+      "target": "workbench-ji",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ancy-relates-knowledge",
+      "source": "character-ancy",
+      "target": "domain-knowledge",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ancy-relates-workbench-narrative-dump",
+      "source": "character-ancy",
+      "target": "workbench-narrative-dump",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ancy-relates-workbench-evoquant",
+      "source": "character-ancy",
+      "target": "workbench-evoquant",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ancy-relates-collab-minds-lorgnette",
+      "source": "character-ancy",
+      "target": "collab-minds-lorgnette",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ancy-relates-collab-lykeion",
+      "source": "character-ancy",
+      "target": "collab-lykeion",
+      "type": "relates"
+    },
+    {
+      "id": "edge-geymych-relates-interactive",
+      "source": "character-geymych",
+      "target": "domain-interactive",
+      "type": "relates"
+    },
+    {
+      "id": "edge-geymych-relates-workbench-playfield",
+      "source": "character-geymych",
+      "target": "workbench-playfield",
+      "type": "relates"
+    },
+    {
+      "id": "edge-geymych-relates-workbench-word-machine",
+      "source": "character-geymych",
+      "target": "workbench-word-machine",
+      "type": "relates"
+    },
+    {
+      "id": "edge-geymych-relates-collab-lykeion",
+      "source": "character-geymych",
+      "target": "collab-lykeion",
+      "type": "relates"
+    },
+    {
+      "id": "edge-dizi-relates-design",
+      "source": "character-dizi",
+      "target": "domain-design",
+      "type": "relates"
+    },
+    {
+      "id": "edge-dizi-relates-visual",
+      "source": "character-dizi",
+      "target": "domain-visual",
+      "type": "relates"
+    },
+    {
+      "id": "edge-dizi-relates-workbench-homo-perceptivus",
+      "source": "character-dizi",
+      "target": "workbench-homo-perceptivus",
+      "type": "relates"
+    },
+    {
+      "id": "edge-dizi-relates-workbench-kiberantika",
+      "source": "character-dizi",
+      "target": "workbench-kiberantika",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-relates-ai",
+      "source": "character-author",
+      "target": "domain-ai",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-relates-music",
+      "source": "character-author",
+      "target": "domain-music",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-relates-physical",
+      "source": "character-author",
+      "target": "domain-physical",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-relates-workbench-moralite",
+      "source": "character-author",
+      "target": "workbench-moralite",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-relates-collab-om",
+      "source": "character-author",
+      "target": "collab-om",
+      "type": "relates"
+    },
+    {
+      "id": "edge-collab-dream-graph-relates-dizi",
+      "source": "collab-dream-graph",
+      "target": "character-dizi",
+      "type": "relates"
+    },
+    {
+      "id": "edge-collab-lykeion-relates-word-machine",
+      "source": "collab-lykeion",
+      "target": "workbench-word-machine",
+      "type": "relates"
+    },
+    {
+      "id": "edge-collab-lykeion-relates-evoquant",
+      "source": "collab-lykeion",
+      "target": "workbench-evoquant",
       "type": "relates"
     },
     {

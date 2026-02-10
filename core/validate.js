@@ -9,7 +9,7 @@ import path from 'path';
 const NODE_TYPES = [
   'root', 'hub', 'domain', 'concept', 'character', 
   'module', 'spec', 'process', 'policy', 'artifact',
-  'practice', 'workbench'
+  'practice', 'workbench', 'collab'
 ];
 
 const VISIBILITY_TYPES = ['public', 'internal', 'hidden'];
@@ -139,7 +139,7 @@ function validateEdge(edge, index, nodes) {
 
 // CLI интерфейс
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const graphPath = path.join(process.cwd(), 'data', 'graph', 'universe.json');
+  const graphPath = path.join(process.cwd(), 'render', 'public', 'graph', 'universe.json');
   const result = validateUniverseGraph(graphPath);
   
   if (result.valid) {

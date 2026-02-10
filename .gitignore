@@ -43,4 +43,3 @@ tmp/
 temp/
 
 # Исключения для Git
-render/public/graph/universe.json
