@@ -27,8 +27,8 @@
       }
     },
     {
-      "id": "system",
-      "label": "System",
+      "id": "cryptocosm",
+      "label": "Cryptocosm",
       "position": {
         "x": 600,
         "y": 150
@@ -90,28 +90,6 @@
       "rag": {
         "index": true,
         "priority": 0.7
-      }
-    },
-    {
-      "id": "system-graph",
-      "label": "System Graph",
-      "position": {
-        "x": 800,
-        "y": 150
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "hub",
-      "visibility": "public",
-      "status": "expandable",
-      "semantics": {
-        "role": "container",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.6
       }
     },
     {
@@ -474,207 +452,6 @@
       "rag": {
         "index": true,
         "priority": 0.6
-      }
-    },
-    {
-      "id": "module-extended-mind",
-      "label": "extended-mind",
-      "position": {
-        "x": 1000,
-        "y": 80
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "module",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "content",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.7
-      }
-    },
-    {
-      "id": "module-dream-graph",
-      "label": "dream-graph",
-      "position": {
-        "x": 1000,
-        "y": 140
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "module",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "content",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.7
-      }
-    },
-    {
-      "id": "module-contracts",
-      "label": "contracts",
-      "position": {
-        "x": 1000,
-        "y": 200
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "module",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "content",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.7
-      }
-    },
-    {
-      "id": "module-godot-sandbox",
-      "label": "godot-sandbox",
-      "position": {
-        "x": 1000,
-        "y": 260
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "module",
-      "visibility": "public",
-      "status": "expandable",
-      "semantics": {
-        "role": "content",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.5
-      }
-    },
-    {
-      "id": "policy-ssot",
-      "label": "Single Source of Truth",
-      "position": {
-        "x": 1150,
-        "y": 80
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "policy",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "description",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.6
-      }
-    },
-    {
-      "id": "policy-projection-coherence",
-      "label": "Согласованность проекций",
-      "position": {
-        "x": 1150,
-        "y": 110
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "policy",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "description",
-        "abstraction": "high"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.5
-      }
-    },
-    {
-      "id": "process-edit-to-render",
-      "label": "Edit → Render",
-      "position": {
-        "x": 1150,
-        "y": 140
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "process",
-      "visibility": "public",
-      "status": "expandable",
-      "semantics": {
-        "role": "description",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.6
-      }
-    },
-    {
-      "id": "spec-universe-graph",
-      "label": "Universe Graph Spec",
-      "position": {
-        "x": 1150,
-        "y": 200
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "spec",
-      "visibility": "public",
-      "status": "core",
-      "semantics": {
-        "role": "description",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.6
-      },
-      "content": {
-        "system_ref": "extended-mind/docs/UNIVERSE_GRAPH_SPEC.md"
-      }
-    },
-    {
-      "id": "spec-contracts-public",
-      "label": "Contracts Public Spec",
-      "position": {
-        "x": 1150,
-        "y": 260
-      },
-      "story": "",
-      "system": "",
-      "service": "",
-      "type": "spec",
-      "visibility": "public",
-      "status": "expandable",
-      "semantics": {
-        "role": "description",
-        "abstraction": "medium"
-      },
-      "rag": {
-        "index": true,
-        "priority": 0.5
       }
     },
     {
@@ -1590,9 +1367,9 @@
   ],
   "edges": [
     {
-      "id": "edge-universe-system",
+      "id": "edge-universe-cryptocosm",
       "source": "universe",
-      "target": "system",
+      "target": "cryptocosm",
       "type": "structural"
     },
     {
@@ -1605,12 +1382,6 @@
       "id": "edge-universe-domains",
       "source": "universe",
       "target": "domains",
-      "type": "structural"
-    },
-    {
-      "id": "edge-system-structural",
-      "source": "system",
-      "target": "system-graph",
       "type": "structural"
     },
     {
@@ -2052,114 +1823,6 @@
       "type": "relates"
     },
     {
-      "id": "edge-system-contains-em",
-      "source": "system-graph",
-      "target": "module-extended-mind",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-dg",
-      "source": "system-graph",
-      "target": "module-dream-graph",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-contracts",
-      "source": "system-graph",
-      "target": "module-contracts",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-godot",
-      "source": "system-graph",
-      "target": "module-godot-sandbox",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-policy",
-      "source": "system-graph",
-      "target": "policy-ssot",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-projection-policy",
-      "source": "system-graph",
-      "target": "policy-projection-coherence",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-process",
-      "source": "system-graph",
-      "target": "process-edit-to-render",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-spec-universe",
-      "source": "system-graph",
-      "target": "spec-universe-graph",
-      "type": "contains"
-    },
-    {
-      "id": "edge-system-contains-spec-contracts",
-      "source": "system-graph",
-      "target": "spec-contracts-public",
-      "type": "contains"
-    },
-    {
-      "id": "edge-spec-universe-describes-em",
-      "source": "spec-universe-graph",
-      "target": "module-extended-mind",
-      "type": "describes"
-    },
-    {
-      "id": "edge-spec-contracts-describes-contracts",
-      "source": "spec-contracts-public",
-      "target": "module-contracts",
-      "type": "describes"
-    },
-    {
-      "id": "edge-process-relates-em",
-      "source": "process-edit-to-render",
-      "target": "module-extended-mind",
-      "type": "relates"
-    },
-    {
-      "id": "edge-process-relates-dg",
-      "source": "process-edit-to-render",
-      "target": "module-dream-graph",
-      "type": "relates"
-    },
-    {
-      "id": "edge-process-relates-contracts",
-      "source": "process-edit-to-render",
-      "target": "module-contracts",
-      "type": "relates"
-    },
-    {
-      "id": "edge-policy-relates-em",
-      "source": "policy-ssot",
-      "target": "module-extended-mind",
-      "type": "relates"
-    },
-    {
-      "id": "edge-policy-relates-dg",
-      "source": "policy-ssot",
-      "target": "module-dream-graph",
-      "type": "relates"
-    },
-    {
-      "id": "edge-policy-relates-contracts",
-      "source": "policy-ssot",
-      "target": "module-contracts",
-      "type": "relates"
-    },
-    {
-      "id": "edge-policy-relates-godot",
-      "source": "policy-ssot",
-      "target": "module-godot-sandbox",
-      "type": "relates"
-    },
-    {
       "id": "edge-domains-contains-design",
       "source": "domains",
       "target": "domain-design",
@@ -2220,7 +1883,7 @@
       "type": "contains"
     },
     {
-      "id": "edge-practices-contains-system-thinking",
+      "id": "edge-practices-contains-cryptocosm-thinking",
       "source": "practices",
       "target": "practice-system-thinking",
       "type": "contains"
@@ -2322,19 +1985,19 @@
       "type": "relates"
     },
     {
-      "id": "edge-system-thinking-relates-knowledge",
+      "id": "edge-cryptocosm-thinking-relates-knowledge",
       "source": "practice-system-thinking",
       "target": "domain-knowledge",
       "type": "relates"
     },
     {
-      "id": "edge-system-thinking-relates-ai",
+      "id": "edge-cryptocosm-thinking-relates-ai",
       "source": "practice-system-thinking",
       "target": "domain-ai",
       "type": "relates"
     },
     {
-      "id": "edge-system-thinking-relates-physical",
+      "id": "edge-cryptocosm-thinking-relates-physical",
       "source": "practice-system-thinking",
       "target": "domain-physical",
       "type": "relates"

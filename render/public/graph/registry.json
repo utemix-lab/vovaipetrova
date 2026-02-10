@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "description": "Face Registry — единый реестр узлов графа (id + label)"
+    "description": "Universe Registry — единый реестр узлов графа (id + label)"
   },
   "characters": [
     { "id": "character-vova", "label": "Вова" },
@@ -57,11 +57,10 @@
   ],
   "hubs": [
     { "id": "universe", "label": "Universe" },
-    { "id": "system", "label": "System" },
+    { "id": "cryptocosm", "label": "Cryptocosm" },
     { "id": "characters", "label": "Characters" },
     { "id": "domains", "label": "Domains" },
-    { "id": "practices", "label": "Practices" },
-    { "id": "system-graph", "label": "System Graph" }
+    { "id": "practices", "label": "Practices" }
   ],
   "practices": [
     { "id": "practice-system-thinking", "label": "Системное мышление" },
@@ -79,15 +78,5 @@
     { "id": "practice-reflection-fixation", "label": "Рефлексия и фиксация" },
     { "id": "practice-possibility-navigation", "label": "Навигация по возможностям" }
   ],
-  "system": [
-    { "id": "module-extended-mind", "label": "extended-mind" },
-    { "id": "module-dream-graph", "label": "dream-graph" },
-    { "id": "module-contracts", "label": "contracts" },
-    { "id": "module-godot-sandbox", "label": "godot-sandbox" },
-    { "id": "policy-ssot", "label": "Single Source of Truth" },
-    { "id": "policy-projection-coherence", "label": "Согласованность проекций" },
-    { "id": "process-edit-to-render", "label": "Edit → Render" },
-    { "id": "spec-universe-graph", "label": "Universe Graph Spec" },
-    { "id": "spec-contracts-public", "label": "Contracts Public Spec" }
-  ]
+  "cryptocosm": []
 }
