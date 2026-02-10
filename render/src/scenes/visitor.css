@@ -1054,8 +1054,9 @@ body.focus-service #service-panel::before {
 
 .widget-group .section-title {
   margin: 0;
-  white-space: nowrap;
   font-size: 9px;
+  max-width: var(--widget-frame-size, 44px);
+  text-align: center;
 }
 
 .widget-group .domain-widgets {
