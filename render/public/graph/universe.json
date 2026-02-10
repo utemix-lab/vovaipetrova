@@ -128,7 +128,6 @@
       "visibility": "public",
       "status": "core",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -150,7 +149,6 @@
       "visibility": "public",
       "status": "core",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -172,7 +170,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -194,7 +191,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -216,7 +212,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -238,7 +233,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -260,7 +254,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -282,7 +275,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -304,7 +296,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -326,7 +317,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -348,7 +338,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -370,7 +359,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "low"
       },
       "rag": {
@@ -791,7 +779,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -813,7 +800,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -835,7 +821,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -857,7 +842,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -879,7 +863,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -901,7 +884,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -923,7 +905,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -945,7 +926,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -967,7 +947,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -989,7 +968,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -1011,7 +989,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -1033,7 +1010,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -1055,7 +1031,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
@@ -1077,7 +1052,6 @@
       "visibility": "public",
       "status": "expandable",
       "semantics": {
-        "role": "mediator",
         "abstraction": "high"
       },
       "rag": {
