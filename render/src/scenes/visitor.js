@@ -2419,16 +2419,13 @@ function updateStoryWithHub(panel, node) {
   const widgetIcon = getHubWidgetIcon(node.id);
   const nodeInfoHtml = getNodeInfoHtml(node);
   
-  // Определяем тип хаба и собираем связанные узлы
-  const isCharactersHub = node.id === "characters";
-  const isDomainsHub = node.id === "domains";
+  // Получаем соседей из единой карты графа (links/edges)
+  const characterNodeIds = getRelatedNodeIdsByType(node.id, "character");
+  const domainNodeIds = getRelatedNodeIdsByType(node.id, "domain");
   
-  // Получаем дочерние узлы хаба
-  const childNodes = isCharactersHub 
-    ? [...nodesById.values()].filter(n => n.type === "character")
-    : isDomainsHub 
-      ? [...nodesById.values()].filter(n => n.type === "domain")
-      : [];
+  // Собираем все дочерние узлы с их типами
+  const characterNodes = characterNodeIds.map(id => nodesById.get(id)).filter(Boolean);
+  const domainNodes = domainNodeIds.map(id => nodesById.get(id)).filter(Boolean);
 
   let html = "";
   
@@ -2446,28 +2443,49 @@ function updateStoryWithHub(panel, node) {
   // Narrative Screen (пока без фигуры)
   html += renderNarrativeScreen();
 
-  // Виджеты дочерних узлов
-  if (childNodes.length > 0) {
-    const sectionLabel = isCharactersHub ? getSectionLabel("character") : getSectionLabel("domain");
+  // Виджеты дочерних узлов (из единой карты графа)
+  const hasWidgets = characterNodes.length > 0 || domainNodes.length > 0;
+  if (hasWidgets) {
     html += `<div class="widget-groups-row">`;
-    html += `<div class="widget-group">`;
-    html += `<div class="section-title">${sectionLabel}</div>`;
-    html += `<div class="domain-widgets inline-widgets">`;
     
-    for (const childNode of childNodes) {
-      const childIcon = isCharactersHub 
-        ? getCharacterWidgetIcon() 
-        : getDomainWidgetIcon(childNode.id);
-      html += `
-        <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
-          <div class="widget-frame">
-            ${getWidgetImageHtml(childIcon, isCharactersHub ? "character" : "domain")}
-          </div>
-        </div>`;
+    // Секция персонажей
+    if (characterNodes.length > 0) {
+      html += `<div class="widget-group">`;
+      html += `<div class="section-title">${getSectionLabel("character")}</div>`;
+      html += `<div class="domain-widgets inline-widgets">`;
+      
+      for (const childNode of characterNodes) {
+        html += `
+          <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
+            <div class="widget-frame">
+              ${getWidgetImageHtml(getCharacterWidgetIcon(), "character")}
+            </div>
+          </div>`;
+      }
+      
+      html += `</div>`;
+      html += `</div>`;
     }
     
-    html += `</div>`;
-    html += `</div>`;
+    // Секция доменов
+    if (domainNodes.length > 0) {
+      html += `<div class="widget-group">`;
+      html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
+      html += `<div class="domain-widgets inline-widgets">`;
+      
+      for (const childNode of domainNodes) {
+        html += `
+          <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
+            <div class="widget-frame">
+              ${getWidgetImageHtml(getDomainWidgetIcon(childNode.id), "domain")}
+            </div>
+          </div>`;
+      }
+      
+      html += `</div>`;
+      html += `</div>`;
+    }
+    
     html += `</div>`;
   }
 
@@ -2478,9 +2496,10 @@ function updateStoryWithHub(panel, node) {
 
   // Инициализация фигуры в shape area
   const shapeArea = content.querySelector(".narrative-screen__shape-area");
-  if (shapeArea && childNodes.length > 0) {
-    const shapeType = isCharactersHub ? "icosa" : "cube";
-    initMiniShape(shapeType, shapeArea, childNodes.map(n => n.id), node.id);
+  const allChildIds = [...characterNodeIds, ...domainNodeIds];
+  if (shapeArea && allChildIds.length > 0) {
+    const shapeType = characterNodes.length > 0 ? "icosa" : "cube";
+    initMiniShape(shapeType, shapeArea, allChildIds, node.id);
   }
 }
 
@@ -2497,9 +2516,12 @@ function updateStoryWithRoot(panel, node) {
   const widgetIcon = getRootWidgetIcon(node.id);
   const nodeInfoHtml = getNodeInfoHtml(node);
   
-  // Получаем связанные узлы: хабы и другие root-узлы (кроме текущего)
-  const hubNodes = [...nodesById.values()].filter(n => n.type === "hub");
-  const otherRootNodes = [...nodesById.values()].filter(n => n.type === "root" && n.id !== node.id);
+  // Получаем соседей из единой карты графа (links/edges)
+  const hubNodeIds = getRelatedNodeIdsByType(node.id, "hub");
+  const rootNodeIds = getRelatedNodeIdsByType(node.id, "root");
+  
+  const hubNodes = hubNodeIds.map(id => nodesById.get(id)).filter(Boolean);
+  const otherRootNodes = rootNodeIds.map(id => nodesById.get(id)).filter(Boolean);
 
   let html = "";
   
