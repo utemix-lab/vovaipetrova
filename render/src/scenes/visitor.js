@@ -469,9 +469,22 @@ function renderSceneStack() {
     .join('');
 }
 
-// === Type Highlight Mode ===
-// Подсвечивает все узлы того же типа, что и текущий узел
-// Текущий узел — с рёбрами (стандартная логика), остальные — только узлы без рёбер
+// ═══════════════════════════════════════════════════════════════════════════
+// TYPE HIGHLIGHT MODE
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// Подсвечивает все узлы того же типа, что и текущий узел.
+// Активируется через "точку с точкой" в правом верхнем углу Story.
+// 
+// ПОВЕДЕНИЕ:
+// ┌─────────────────┬────────────────────────────────────────────────────────┐
+// │ Hover на точку  │ Временная подсветка узлов текущего типа                │
+// │ Click на точку  │ Фиксация подсветки (точка становится жёлтой)           │
+// │ Переход на узел │ Подсветка обновляется для нового типа                  │
+// └─────────────────┴────────────────────────────────────────────────────────┘
+// 
+// ВАЖНО: Текущий узел — с рёбрами, остальные узлы типа — только подсветка.
+// ═══════════════════════════════════════════════════════════════════════════
 
 let typeHighlightPrevType = null; // Предыдущий тип для снятия подсветки
 
@@ -630,30 +643,55 @@ function hashId(value) {
   return Math.abs(hash);
 }
 
-// === Цвета узлов ===
+// ═══════════════════════════════════════════════════════════════════════════
+// СИСТЕМА ПОДСВЕТКИ (Highlight System)
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// ПРИОРИТЕТ ЦВЕТА УЗЛА (от высшего к низшему):
+// ┌─────────────────────┬────────────────────────────────────────────────────┐
+// │ 1. typeHighlight    │ Узлы того же типа (жёлтый, БЕЗ рёбер)              │
+// │ 2. widgetHover      │ Hover на виджет (жёлтый)                           │
+// │ 3. currentStep      │ Текущий выделенный узел (жёлтый)                   │
+// │ 4. isStart          │ Стартовый узел (голубой)                           │
+// │ 5. scopeHighlight   │ Узлы в scope (жёлтый)                              │
+// │ 6. default          │ Обычный цвет                                       │
+// └─────────────────────┴────────────────────────────────────────────────────┘
+//
+// ВАЖНО: Type Highlight подсвечивает только узлы, НЕ рёбра.
+// Рёбра горят только у текущего узла (currentStep).
+// ═══════════════════════════════════════════════════════════════════════════
+
 let widgetHighlightedNodeId = null; // Узел, подсвеченный через виджет (одиночный hover)
 const typeHighlightedNodeIds = new Set(); // Узлы, подсвеченные через Type Highlight Mode
 
-function getNodeColor(node) {
-  // Подсветка через Type Highlight Mode — жёлтый
-  if (typeHighlightedNodeIds.has(node.id)) return palette.nodeSelected;
-  // Подсветка через виджет — жёлтый
+/**
+ * Получить цвет узла с учётом всех режимов подсветки.
+ * @param {Object} node - Узел графа
+ * @param {boolean} forLink - Если true, исключает Type Highlight (для рёбер)
+ * @returns {string} Цвет в формате hex
+ */
+function getNodeColor(node, forLink = false) {
+  // Type Highlight — только для узлов, не для рёбер
+  if (!forLink && typeHighlightedNodeIds.has(node.id)) return palette.nodeSelected;
+  // Подсветка через виджет
   if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return palette.nodeSelected;
+  // Текущий выделенный узел
   if (currentStep && node.id === currentStep.id) return palette.nodeSelected;
+  // Стартовый узел
   if (node.isStart) return palette.nodeStart;
+  // Scope highlight
   if (scopeHighlightActive && scopeHighlightNodeIds.has(node.id)) return palette.nodeSelected;
+  // По умолчанию
   return palette.nodeDefault;
 }
 
-// Цвет узла для рёбер — БЕЗ учёта Type Highlight Mode
-// (Type Highlight подсвечивает только узлы, не рёбра)
+/**
+ * Получить цвет узла для рёбер (исключает Type Highlight).
+ * @param {Object} node - Узел графа
+ * @returns {string} Цвет в формате hex
+ */
 function getNodeColorForLink(node) {
-  // Подсветка через виджет — жёлтый
-  if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return palette.nodeSelected;
-  if (currentStep && node.id === currentStep.id) return palette.nodeSelected;
-  if (node.isStart) return palette.nodeStart;
-  if (scopeHighlightActive && scopeHighlightNodeIds.has(node.id)) return palette.nodeSelected;
-  return palette.nodeDefault;
+  return getNodeColor(node, true);
 }
 
 function getNodeCategory(node) {
@@ -1253,9 +1291,30 @@ function buildIndex(data) {
   });
 }
 
-// === Подсветка ===
-// mode: "hover" — полная яркость рёбер (hover на узел/виджет)
-// mode: "selected" — половинная яркость рёбер (выделенный узел без hover)
+// ═══════════════════════════════════════════════════════════════════════════
+// ПОДСВЕТКА РЁБЕР (Edge Highlight)
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// Управляет подсветкой рёбер при выделении узла.
+// 
+// РЕЖИМЫ:
+// ┌─────────────────┬────────────────────────────────────────────────────────┐
+// │ hover           │ Полная яркость рёбер (opacity: 0.9, width: 1.6)        │
+// │ selected        │ Половинная яркость рёбер (opacity: 0.55, width: 1.0)   │
+// │ none            │ Обычные рёбра (opacity: 0.4, width: 0.6)               │
+// └─────────────────┴────────────────────────────────────────────────────────┘
+// 
+// НАБОРЫ:
+// - highlightLinks — рёбра с полной яркостью
+// - halfHighlightLinks — рёбра с половинной яркостью
+// - highlightNodes — узлы, связанные с подсвеченными рёбрами
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Обновить подсветку рёбер для узла.
+ * @param {Object|null} node - Узел для подсветки (null для сброса)
+ * @param {string} mode - Режим: "hover" | "selected"
+ */
 function refreshHighlights(node, mode = "hover") {
   highlightNodes.clear();
   highlightLinks.clear();
@@ -2915,8 +2974,30 @@ function highlightMiniShapeNode(nodeId, highlight) {
   }
 }
 
-// === HighlightManager (см. карту системы в начале файла) ===
+// ═══════════════════════════════════════════════════════════════════════════
+// HIGHLIGHT MANAGER
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// Единый интерфейс для управления подсветкой узлов и scope.
+// 
+// МЕТОДЫ:
+// ┌─────────────────────────┬────────────────────────────────────────────────┐
+// │ node(nodeId, active)    │ Подсветить один узел (виджет + граф + фигура)  │
+// │ scope(hubId, active)    │ Подсветить scope (хаб + все связанные узлы)    │
+// └─────────────────────────┴────────────────────────────────────────────────┘
+// 
+// ВНУТРЕННИЕ ФУНКЦИИ:
+// - highlightNodeById — изменить материал узла в графе
+// - highlightWidgetById — добавить класс widget-highlighted
+// - highlightMiniShapeNode — подсветить вершину мини-фигуры
+// ═══════════════════════════════════════════════════════════════════════════
+
 const HighlightManager = {
+  /**
+   * Подсветить один узел (виджет + граф + мини-фигура).
+   * @param {string} nodeId - ID узла
+   * @param {boolean} active - Включить/выключить подсветку
+   */
   node(nodeId, active) {
     highlightNodeById(nodeId, active);
     highlightWidgetById(nodeId, active);
