@@ -5,6 +5,49 @@
 
 ---
 
+## [11 февраля 2026] Формальная модель онтологии (Digital Twin)
+
+### Изменения
+- **Схема онтологии** (`render/src/ontology/schema/`)
+  - `core.ts` — базовые типы: NodeId, OntologyNodeType, EdgeType, BaseNode, Edge, Graph
+  - `entities.ts` — сущности: RootNode, HubNode, CharacterNode, DomainNode, WorkbenchNode, CollabNode
+  - `tools.ts` — инструменты: Practice, Mode, Filter, Lens + ToolCatalog
+  - `relations.ts` — семантика связей + правила валидации
+
+- **Registry** (`render/src/ontology/registry/`)
+  - Типизированный доступ к данным графа
+  - Валидация при загрузке
+  - Проверка инвариантов онтологии
+
+- **Архитектурные правила** (`render/src/ontology/rules/`)
+  - `architectural.ts` — правила отображения узлов и связей в UI
+  - `constraints.ts` — иерархия и инварианты
+  - `config-generator.ts` — генерация конфигурации из правил
+
+- **Загрузчик инструментов** (`render/src/ontology/tools/`)
+  - `ToolCatalogLoader.ts` — типизированная загрузка практик
+  - Функции: `getPracticeById`, `getPracticesByTag`, `getPracticesByDomain`
+
+- **Очистка данных**
+  - Удалены practice-узлы из `universe.json` (48 узлов, 82 связи)
+  - Создан каталог `tools/practices.json` (14 практик)
+
+### Консоль при загрузке
+```
+[Ontology] Граф валиден ✓
+[Ontology] Registry: 48 узлов, 82 связей
+[Ontology] Инварианты соблюдены ✓
+[Tools] Загружено практик: 14
+```
+
+### Commits
+- `06bc316` — Формальная модель онтологии
+- `91553fe` — Архитектурные правила
+- `88422e2` — Проверка инвариантов
+- `f781aae` — Загрузчик каталога инструментов
+
+---
+
 ## [Февраль 2026] Унификация типов и разделение онтологии
 
 ### Изменения
