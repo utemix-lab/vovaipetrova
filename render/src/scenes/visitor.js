@@ -2138,9 +2138,9 @@ function renderNarrativeScreen() {
     <div class="narrative-screen" data-expanded="false" data-index="0">
       <div class="narrative-screen__hud">
         <div class="narrative-screen__dots" aria-hidden="true">
-          <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад">${iconPrev}</button>
-          <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед">${iconNext}</button>
-          <button class="narrative-dot narrative-dot--control narrative-dot--toggle" type="button" data-action="toggle" aria-label="Развернуть">${iconPlus}</button>
+          <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
+          <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
         </div>
       </div>
       <div class="narrative-screen__viewport" aria-hidden="true"></div>
@@ -2224,6 +2224,7 @@ function bindNarrativeScreen(container) {
     const expanded = screen.classList.toggle("narrative-screen--expanded");
     screen.dataset.expanded = expanded ? "true" : "false";
     toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
+    toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
     if (expanded) {
       document.body.classList.add("narrative-expanded");
       document.body.classList.remove("focus-story", "focus-system", "focus-service");
