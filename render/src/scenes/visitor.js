@@ -323,6 +323,10 @@ let hoveredWidgetId = null;     // string | null
 let hoveredWindow = null;       // 1 | 2 | 3 | null
 let sceneStack = [];            // array of scene refs (node ids)
 let sceneStackIndex = 0;
+
+// Type Highlight Mode — подсветка всех узлов текущего типа
+let typeHighlightActive = false;  // Зафиксирована ли подсветка типа
+let typeHighlightHovered = false; // Временная подсветка при hover на точку
 let episodeStack = null;       // optional for 16x9 episodes
 let preactiveResponse = null;  // computed preview when lever active
 const reactLeverProxies = new Map();
@@ -439,6 +443,9 @@ function renderSceneStack() {
       <circle cx="6" cy="6" r="2" fill="currentColor" />
     </svg>
   `;
+  const typeLabel = currentStep?.type || "";
+  const typeDotActive = typeHighlightActive ? " scene-dot--active" : "";
+  
   el.innerHTML = [
     {
       label: iconPrev,
@@ -448,17 +455,78 @@ function renderSceneStack() {
     },
     {
       label: iconDot,
-      action: "placeholder",
-      disabled: true,
-      title: "",
+      action: "type-highlight",
+      disabled: false,
+      title: typeLabel ? `Показать все ${typeLabel}` : "Показать узлы этого типа",
+      extraClass: typeDotActive,
     },
   ]
-    .map(({ label, action, disabled, title }) => {
+    .map(({ label, action, disabled, title, extraClass }) => {
       const disabledClass = disabled ? " scene-dot--disabled" : "";
       const titleAttr = title ? ` title="${title}"` : "";
-      return `<button class="scene-dot scene-dot--control${disabledClass}" type="button" data-action="${action}"${titleAttr}>${label}</button>`;
+      return `<button class="scene-dot scene-dot--control${disabledClass}${extraClass || ""}" type="button" data-action="${action}"${titleAttr}>${label}</button>`;
     })
     .join('');
+}
+
+// === Type Highlight Mode ===
+// Подсвечивает все узлы того же типа, что и текущий узел
+// Текущий узел — с рёбрами (стандартная логика), остальные — только узлы без рёбер
+
+let typeHighlightPrevType = null; // Предыдущий тип для снятия подсветки
+
+function getNodesByType(type) {
+  return [...nodesById.values()].filter(n => n.type === type);
+}
+
+function clearTypeHighlight() {
+  // Снять подсветку со всех узлов в Set
+  typeHighlightedNodeIds.forEach(nodeId => {
+    applyNodeMaterial(nodeId);
+  });
+  typeHighlightedNodeIds.clear();
+  typeHighlightPrevType = null;
+}
+
+function applyTypeHighlight(active) {
+  if (!currentStep) return;
+  
+  // Сначала снять предыдущую подсветку
+  clearTypeHighlight();
+  
+  if (!active) {
+    graph.refresh();
+    return;
+  }
+  
+  const currentType = currentStep.type;
+  const sameTypeNodes = getNodesByType(currentType);
+  
+  // Подсветить все узлы этого типа (без рёбер)
+  // Текущий узел уже подсвечен стандартной логикой с рёбрами
+  sameTypeNodes.forEach(node => {
+    if (node.id !== currentStep.id) {
+      typeHighlightedNodeIds.add(node.id);
+      applyNodeMaterial(node.id);
+    }
+  });
+  
+  typeHighlightPrevType = currentType;
+  graph.refresh();
+}
+
+function setTypeHighlightActive(active) {
+  typeHighlightActive = active;
+  applyTypeHighlight(active);
+  renderSceneStack(); // Обновить визуал точки
+}
+
+function handleTypeHighlightHover(hovered) {
+  typeHighlightHovered = hovered;
+  // Если не зафиксировано, применяем временную подсветку
+  if (!typeHighlightActive) {
+    applyTypeHighlight(hovered);
+  }
 }
 
 // Experimental UI rule (non-canon): keep potential in Story panel
@@ -563,9 +631,23 @@ function hashId(value) {
 }
 
 // === Цвета узлов ===
-let widgetHighlightedNodeId = null; // Узел, подсвеченный через виджет
+let widgetHighlightedNodeId = null; // Узел, подсвеченный через виджет (одиночный hover)
+const typeHighlightedNodeIds = new Set(); // Узлы, подсвеченные через Type Highlight Mode
 
 function getNodeColor(node) {
+  // Подсветка через Type Highlight Mode — жёлтый
+  if (typeHighlightedNodeIds.has(node.id)) return palette.nodeSelected;
+  // Подсветка через виджет — жёлтый
+  if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return palette.nodeSelected;
+  if (currentStep && node.id === currentStep.id) return palette.nodeSelected;
+  if (node.isStart) return palette.nodeStart;
+  if (scopeHighlightActive && scopeHighlightNodeIds.has(node.id)) return palette.nodeSelected;
+  return palette.nodeDefault;
+}
+
+// Цвет узла для рёбер — БЕЗ учёта Type Highlight Mode
+// (Type Highlight подсвечивает только узлы, не рёбра)
+function getNodeColorForLink(node) {
   // Подсветка через виджет — жёлтый
   if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return palette.nodeSelected;
   if (currentStep && node.id === currentStep.id) return palette.nodeSelected;
@@ -799,17 +881,20 @@ function updateLinkObject(obj, position, link) {
   const targetNode = nodesById.get(getId(link.target));
 
   const isHighlighted = highlightLinks.has(link);
+  const isHalfHighlighted = halfHighlightLinks.has(link);
 
   // При подсветке — жёлтый цвет, иначе — цвета узлов
   let startColor, endColor, midColor;
-  if (isHighlighted) {
+  if (isHighlighted || isHalfHighlighted) {
     const highlightColor = new THREE.Color(palette.nodeSelected); // Жёлтый
     startColor = highlightColor;
     endColor = highlightColor;
     midColor = highlightColor;
   } else {
-    startColor = new THREE.Color(sourceNode ? getNodeColor(sourceNode) : palette.linkDefault);
-    endColor = new THREE.Color(targetNode ? getNodeColor(targetNode) : palette.linkDefault);
+    // Для рёбер используем цвет узла БЕЗ учёта Type Highlight Mode
+    // (Type Highlight подсвечивает только узлы, не рёбра)
+    startColor = new THREE.Color(sourceNode ? getNodeColorForLink(sourceNode) : palette.linkDefault);
+    endColor = new THREE.Color(targetNode ? getNodeColorForLink(targetNode) : palette.linkDefault);
     midColor = new THREE.Color(palette.linkDefault);
   }
 
@@ -825,7 +910,8 @@ function updateLinkObject(obj, position, link) {
   colors.array[8] = endColor.b;
   colors.needsUpdate = true;
 
-  line.material.opacity = isHighlighted ? 0.9 : 0.4;
+  // Полная яркость для hover, половинная для selected
+  line.material.opacity = isHighlighted ? 0.9 : (isHalfHighlighted ? 0.55 : 0.4);
 
   const startRadius = sourceNode ? getNodeRadius(sourceNode) : BASE_NODE_RADIUS;
   const endRadius = targetNode ? getNodeRadius(targetNode) : BASE_NODE_RADIUS;
@@ -1635,6 +1721,15 @@ function goToStepById(stepId) {
   updatePanels();
   // Выделенный узел: рёбра в полсилы (режим "selected")
   refreshHighlights(currentStep, "selected");
+  
+  // Если активен режим подсветки типа, обновить подсветку для нового типа
+  if (typeHighlightActive) {
+    applyTypeHighlight(true);
+  }
+  
+  // Обновить визуал точки (tooltip с типом)
+  renderSceneStack();
+  
   graph.refresh();
   window.dispatchEvent(
     new CustomEvent("graph-step-changed", {
@@ -3839,16 +3934,35 @@ function createUI() {
       }
     }, { capture: true });
 
-    // Click on scene dots to navigate back/forward
+    // Click on scene dots to navigate back/forward or toggle type highlight
     const stackEl = document.getElementById("scene-stack");
     if (stackEl) {
+      // Click handler
       stackEl.addEventListener("click", (ev) => {
         const dot = ev.target.closest && ev.target.closest(".scene-dot");
         if (!dot || dot.classList.contains("scene-dot--disabled")) return;
         if (dot.dataset.action === "prev") {
           stepSceneStack(-1);
+        } else if (dot.dataset.action === "type-highlight") {
+          // Toggle type highlight mode
+          setTypeHighlightActive(!typeHighlightActive);
         }
       });
+      
+      // Hover handlers for type-highlight dot
+      stackEl.addEventListener("mouseenter", (ev) => {
+        const dot = ev.target.closest && ev.target.closest(".scene-dot");
+        if (dot && dot.dataset.action === "type-highlight" && !dot.classList.contains("scene-dot--disabled")) {
+          handleTypeHighlightHover(true);
+        }
+      }, true);
+      
+      stackEl.addEventListener("mouseleave", (ev) => {
+        const dot = ev.target.closest && ev.target.closest(".scene-dot");
+        if (dot && dot.dataset.action === "type-highlight") {
+          handleTypeHighlightHover(false);
+        }
+      }, true);
     }
   }
 

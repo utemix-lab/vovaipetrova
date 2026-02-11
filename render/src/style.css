@@ -570,6 +570,9 @@ body {
   line-height: 1;
 }
 .scene-dot--control { cursor: pointer; }
+.scene-dot--control:hover { background: rgba(255, 255, 255, 0.5); }
+.scene-dot--active { background: #fbbf24; color: #000; }
+.scene-dot--active:hover { background: #fbbf24; }
 .scene-dot--disabled { background: rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.45); cursor: default; }
 .scene-dot .icon {
   width: 10px;
