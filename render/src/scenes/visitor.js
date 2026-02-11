@@ -134,6 +134,7 @@ import { ARCHITECTURE } from "../architecture/dna.ts";
 import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
+import { initRegistry } from "../ontology";
 
 // === Константы ===
 const CONFIG = {
@@ -1296,6 +1297,16 @@ async function loadUniverseGraph() {
     if (!response.ok) throw new Error(`Failed to load: ${url}`);
     const universe = await response.json();
     currentUniverse = universe;
+    
+    // Инициализация типизированного registry
+    const registry = initRegistry(universe);
+    const validation = registry.validateAndLog();
+    if (!validation.valid) {
+      console.warn("[Visitor] Граф загружен с ошибками валидации");
+    }
+    const stats = registry.getStats();
+    console.log("[Ontology] Registry:", stats.totalNodes, "узлов,", stats.totalEdges, "связей");
+    
     const route = buildRouteFromUniverse(universe, currentView);
     setRoute(route);
     console.log("[Visitor] Loaded Universe Graph with", route.nodes.length, "nodes");

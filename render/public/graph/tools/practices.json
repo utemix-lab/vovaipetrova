@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Каталог практик — инструменты мышления и действия",
+    "category": "practice"
+  },
+  "practices": [
+    {
+      "id": "practice-system-thinking",
+      "label": "Системное мышление",
+      "tags": ["thinking", "systems", "architecture"],
+      "description": "Способность видеть целое через части и части через целое",
+      "relatedDomains": ["domain-knowledge", "domain-ai"]
+    },
+    {
+      "id": "practice-anti-taxonomy",
+      "label": "Антитаксономическая навигация",
+      "tags": ["navigation", "nonlinear", "exploration"],
+      "description": "Навигация без жёстких иерархий, через ассоциации и связи",
+      "relatedDomains": ["domain-knowledge"]
+    },
+    {
+      "id": "practice-research-thinking",
+      "label": "Исследовательское мышление",
+      "tags": ["research", "inquiry", "discovery"],
+      "description": "Систематический подход к изучению неизвестного",
+      "relatedDomains": ["domain-knowledge", "domain-ai"]
+    },
+    {
+      "id": "practice-direction",
+      "label": "Режиссура",
+      "tags": ["direction", "narrative", "composition"],
+      "description": "Организация элементов во времени и пространстве",
+      "relatedDomains": ["domain-visual", "domain-design", "domain-interactive"]
+    },
+    {
+      "id": "practice-systems-design",
+      "label": "Дизайн систем",
+      "tags": ["design", "systems", "architecture"],
+      "description": "Проектирование взаимосвязанных компонентов",
+      "relatedDomains": ["domain-dev", "domain-design"]
+    },
+    {
+      "id": "practice-architectural-design",
+      "label": "Архитектурное проектирование",
+      "tags": ["architecture", "spatial", "structure"],
+      "description": "Организация пространства и структуры",
+      "relatedDomains": ["domain-physical", "domain-design"]
+    },
+    {
+      "id": "practice-visual-thinking",
+      "label": "Визуальное мышление",
+      "tags": ["visual", "perception", "imagery"],
+      "description": "Мышление через образы и визуальные структуры",
+      "relatedDomains": ["domain-visual", "domain-design"]
+    },
+    {
+      "id": "practice-sound-thinking",
+      "label": "Звуковое мышление",
+      "tags": ["sound", "audio", "temporal"],
+      "description": "Мышление через звук, ритм и временные структуры",
+      "relatedDomains": ["domain-music"]
+    },
+    {
+      "id": "practice-interactive-thinking",
+      "label": "Интерактивное мышление",
+      "tags": ["interactive", "feedback", "agency"],
+      "description": "Мышление через взаимодействие и обратную связь",
+      "relatedDomains": ["domain-interactive", "domain-dev"]
+    },
+    {
+      "id": "practice-branding",
+      "label": "Брендинг",
+      "tags": ["brand", "identity", "communication"],
+      "description": "Создание и управление идентичностью",
+      "relatedDomains": ["domain-design", "domain-visual"]
+    },
+    {
+      "id": "practice-ecosystem-thinking",
+      "label": "Экосистемное мышление",
+      "tags": ["ecosystem", "network", "emergence"],
+      "description": "Понимание взаимозависимостей и эмерджентных свойств",
+      "relatedDomains": ["domain-knowledge", "domain-ai"]
+    },
+    {
+      "id": "practice-curation",
+      "label": "Кураторство и отбор",
+      "tags": ["curation", "selection", "taste"],
+      "description": "Отбор и организация элементов по критериям качества",
+      "relatedDomains": ["domain-visual", "domain-music", "domain-knowledge"]
+    },
+    {
+      "id": "practice-reflection-fixation",
+      "label": "Рефлексия и фиксация",
+      "tags": ["reflection", "documentation", "memory"],
+      "description": "Осмысление опыта и его сохранение",
+      "relatedDomains": ["domain-knowledge"]
+    },
+    {
+      "id": "practice-possibility-navigation",
+      "label": "Навигация по возможностям",
+      "tags": ["possibilities", "exploration", "decision"],
+      "description": "Исследование пространства возможных решений",
+      "relatedDomains": ["domain-knowledge", "domain-ai"]
+    }
+  ]
+}
