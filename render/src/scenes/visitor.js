@@ -134,7 +134,7 @@ import { ARCHITECTURE } from "../architecture/dna.ts";
 import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
-import { initRegistry } from "../ontology";
+import { initRegistry, validateConfigAgainstRules } from "../ontology";
 
 // === Константы ===
 const CONFIG = {
@@ -1306,6 +1306,13 @@ async function loadUniverseGraph() {
     }
     const stats = registry.getStats();
     console.log("[Ontology] Registry:", stats.totalNodes, "узлов,", stats.totalEdges, "связей");
+    
+    // Проверка соответствия VISUAL_CONFIG правилам онтологии
+    const configValidation = validateConfigAgainstRules(VISUAL_CONFIG);
+    if (!configValidation.valid) {
+      console.warn("[Ontology] VISUAL_CONFIG не соответствует правилам:");
+      configValidation.mismatches.forEach((m) => console.warn("  ⚠", m));
+    }
     
     const route = buildRouteFromUniverse(universe, currentView);
     setRoute(route);

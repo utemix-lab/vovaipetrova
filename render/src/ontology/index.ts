@@ -15,3 +15,6 @@ export * from "./schema";
 
 // Registry — типизированный доступ к данным
 export * from "./registry";
+
+// Правила — архитектурные и ограничения
+export * from "./rules";
