@@ -30,6 +30,7 @@ import type {
   RelatedNodesResult,
 } from "./types";
 import { validateGraph, logValidationResult } from "./validation";
+import { checkInvariants, type InvariantContext } from "../rules/constraints";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // REGISTRY CLASS
@@ -210,6 +211,38 @@ export class Registry implements IRegistry {
   validateAndLog(): ValidationResult {
     const result = this.validate();
     logValidationResult(result);
+    return result;
+  }
+  
+  /**
+   * Проверить инварианты онтологии.
+   */
+  checkInvariants(): { valid: boolean; violations: { id: string; description: string }[] } {
+    const nodeCount: Record<string, number> = {};
+    for (const [type, nodes] of this.nodesByType) {
+      nodeCount[type] = nodes.length;
+    }
+    
+    const context: InvariantContext = {
+      nodeCount: nodeCount as any,
+      edgeCount: this.edges.length,
+      hasNode: (id: string) => this.nodeById.has(id),
+    };
+    
+    return checkInvariants(context);
+  }
+  
+  /**
+   * Проверить инварианты и залогировать результат.
+   */
+  checkInvariantsAndLog(): { valid: boolean; violations: { id: string; description: string }[] } {
+    const result = this.checkInvariants();
+    if (result.valid) {
+      console.log("[Ontology] Инварианты соблюдены ✓");
+    } else {
+      console.warn("[Ontology] Нарушены инварианты:");
+      result.violations.forEach((v) => console.warn(`  ✗ ${v.id}: ${v.description}`));
+    }
     return result;
   }
   

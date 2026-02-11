@@ -1314,6 +1314,9 @@ async function loadUniverseGraph() {
       configValidation.mismatches.forEach((m) => console.warn("  ⚠", m));
     }
     
+    // Проверка инвариантов онтологии
+    registry.checkInvariantsAndLog();
+    
     const route = buildRouteFromUniverse(universe, currentView);
     setRoute(route);
     console.log("[Visitor] Loaded Universe Graph with", route.nodes.length, "nodes");
