@@ -134,7 +134,7 @@ import { ARCHITECTURE } from "../architecture/dna.ts";
 import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
-import { initRegistry, validateConfigAgainstRules } from "../ontology";
+import { initRegistry, validateConfigAgainstRules, initToolCatalog } from "../ontology";
 
 // === Константы ===
 const CONFIG = {
@@ -1316,6 +1316,9 @@ async function loadUniverseGraph() {
     
     // Проверка инвариантов онтологии
     registry.checkInvariantsAndLog();
+    
+    // Загрузка каталога инструментов
+    await initToolCatalog(CONFIG.contractsPath);
     
     const route = buildRouteFromUniverse(universe, currentView);
     setRoute(route);

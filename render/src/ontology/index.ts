@@ -18,3 +18,6 @@ export * from "./registry";
 
 // Правила — архитектурные и ограничения
 export * from "./rules";
+
+// Инструменты — каталоги и загрузчики
+export * from "./tools";
