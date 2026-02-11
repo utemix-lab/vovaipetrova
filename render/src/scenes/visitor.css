@@ -437,6 +437,24 @@ body.focus-service #service-panel::before {
   display: block;
 }
 
+.narrative-screen__shape-area {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 56.25%; /* 9:16 ratio -> 9/16 = 0.5625 -> left square area */
+  height: 100%;
+  z-index: 2;
+  display: none; /* Hidden by default, shown on shape pages */
+  pointer-events: auto;
+}
+
+.narrative-screen__shape-area canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .narrative-screen__viewport {
   position: absolute;
   inset: 0;

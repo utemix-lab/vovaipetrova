@@ -283,9 +283,10 @@ function getPracticeHintForDomain(domainId) {
 const NARRATIVE_SLIDES = [
   {
     id: "vova-01",
-    title: "Заголовок 1",
-    detail: "Расширенный текст 1",
-    src: buildAssetPath("story/narrative/vova-01.jpg")
+    title: "",  // Страница 0 — под фигуры, без заголовка
+    detail: "",
+    src: buildAssetPath("story/narrative/vova-01.jpg"),
+    isShapePage: true  // Флаг: страница под фигуры, не разворачивается
   },
   {
     id: "vova-02",
@@ -2088,10 +2089,6 @@ function updateStoryWithPotential(panel, node) {
     
     html += `</div>`;
 
-    // Octahedron container for character page (only Vova for now)
-    if (isVova) {
-      html += `<div id="character-octa-container" class="character-octa-container"></div>`;
-    }
   }
 
   content.innerHTML = html;
@@ -2100,10 +2097,10 @@ function updateStoryWithPotential(panel, node) {
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
 
-  // Initialize octahedron for Vova page
+  // Initialize octahedron in Narrative Screen shape area (only Vova for now)
   if (isVova) {
-    const octaContainer = document.getElementById("character-octa-container");
-    if (octaContainer) {
+    const shapeArea = content.querySelector(".narrative-screen__shape-area");
+    if (shapeArea) {
       // Collect exactly 6 widget node IDs for octahedron vertices
       // Priority: domains, workbenches, collabs, practices
       const allWidgetIds = [
@@ -2113,7 +2110,7 @@ function updateStoryWithPotential(panel, node) {
         ...practiceNodeIds
       ];
       const octaNodeIds = allWidgetIds.slice(0, 6);
-      initMiniShape("octa", octaContainer, octaNodeIds, node.id);
+      initMiniShape("octa", shapeArea, octaNodeIds, node.id);
     }
   }
 }
@@ -2140,9 +2137,10 @@ function renderNarrativeScreen() {
         <div class="narrative-screen__dots" aria-hidden="true">
           <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
           <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
-          <button class="narrative-dot narrative-dot--control narrative-dot--toggle" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--disabled" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть" disabled>${iconPlus}</button>
         </div>
       </div>
+      <div class="narrative-screen__shape-area" aria-hidden="true"></div>
       <div class="narrative-screen__viewport" aria-hidden="true"></div>
       <div class="narrative-screen__text" aria-live="polite">
         <div class="narrative-screen__title"></div>
@@ -2161,12 +2159,17 @@ function bindNarrativeScreen(container) {
   const titleEl = screen.querySelector(".narrative-screen__title");
   const detailEl = screen.querySelector(".narrative-screen__detail");
   const viewport = screen.querySelector(".narrative-screen__viewport");
+  const shapeArea = screen.querySelector(".narrative-screen__shape-area");
   if (!toggle || toggle.dataset.bound) return;
   toggle.dataset.bound = "true";
 
   function updateControlsState(index) {
+    const slide = NARRATIVE_SLIDES[index];
+    const isShapePage = slide?.isShapePage === true;
     const canGoBack = index > 0;
     const canGoForward = index < NARRATIVE_SLIDES.length - 1;
+    const expanded = screen.classList.contains("narrative-screen--expanded");
+    
     if (prevButton) {
       prevButton.classList.toggle("narrative-dot--disabled", !canGoBack);
       prevButton.disabled = !canGoBack;
@@ -2174,6 +2177,15 @@ function bindNarrativeScreen(container) {
     if (nextButton) {
       nextButton.classList.toggle("narrative-dot--disabled", !canGoForward);
       nextButton.disabled = !canGoForward;
+    }
+    // Toggle disabled на странице фигур (isShapePage)
+    if (toggle) {
+      toggle.classList.toggle("narrative-dot--disabled", isShapePage);
+      toggle.disabled = isShapePage;
+    }
+    // Показать/скрыть shape area
+    if (shapeArea) {
+      shapeArea.style.display = isShapePage && !expanded ? "block" : "none";
     }
   }
 
@@ -2216,6 +2228,26 @@ function bindNarrativeScreen(container) {
     screen.style.height = `${height}px`;
   }
 
+  function collapseScreen() {
+    if (!screen.classList.contains("narrative-screen--expanded")) return;
+    const overlay = document.getElementById("scene-overlay");
+    screen.classList.remove("narrative-screen--expanded");
+    screen.dataset.expanded = "false";
+    toggle.setAttribute("aria-label", "Развернуть");
+    toggle.setAttribute("title", "Развернуть");
+    document.body.classList.remove("narrative-expanded");
+    if (overlay) overlay.classList.remove("scene-overlay--active");
+    const placeholder = document.querySelector(".narrative-screen-placeholder");
+    if (placeholder && placeholder.parentElement) {
+      placeholder.parentElement.insertBefore(screen, placeholder);
+      placeholder.remove();
+    }
+    screen.style.left = "";
+    screen.style.top = "";
+    screen.style.width = "";
+    screen.style.height = "";
+  }
+
   toggle.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -2236,17 +2268,7 @@ function bindNarrativeScreen(container) {
       overlay.appendChild(screen);
       syncExpandedBounds();
     } else {
-      document.body.classList.remove("narrative-expanded");
-      overlay.classList.remove("scene-overlay--active");
-      const placeholder = document.querySelector(".narrative-screen-placeholder");
-      if (placeholder && placeholder.parentElement) {
-        placeholder.parentElement.insertBefore(screen, placeholder);
-        placeholder.remove();
-      }
-      screen.style.left = "";
-      screen.style.top = "";
-      screen.style.width = "";
-      screen.style.height = "";
+      collapseScreen();
     }
     setSlide(Number(screen.dataset.index || 0));
   });
@@ -2255,7 +2277,15 @@ function bindNarrativeScreen(container) {
     event.preventDefault();
     event.stopPropagation();
     const current = Number(screen.dataset.index || 0);
-    setSlide(current - 1);
+    const nextIndex = current - 1;
+    const nextSlide = NARRATIVE_SLIDES[nextIndex];
+    const expanded = screen.classList.contains("narrative-screen--expanded");
+    
+    // Если переходим на страницу фигур из развёрнутого — сначала сворачиваем
+    if (expanded && nextSlide?.isShapePage) {
+      collapseScreen();
+    }
+    setSlide(nextIndex);
   });
 
   nextButton?.addEventListener("click", (event) => {
@@ -2752,8 +2782,8 @@ function initMiniShape(type, container, nodeIds, hubId) {
   if (!nodeIds || nodeIds.length === 0) return;
 
   miniShapeHubId = hubId;
-  // Октаэдр уменьшен до размера виджета (44px + padding)
-  const size = type === "octa" ? 60 : 220;
+  // Размер: octa в narrative screen — большой (9:9 область), остальные — 220px
+  const size = type === "octa" ? 280 : 220;
   const width = size;
   const height = size;
 
