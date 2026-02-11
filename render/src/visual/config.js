@@ -111,7 +111,9 @@ export const VISUAL_CONFIG = {
       character: "Проводники",
       practice: "Практики",
       workbench: "Воркбенчи",
-      collab: "Коллабы"
+      collab: "Коллабы",
+      hub: "Хабы",
+      root: "Система"
     },
     // Шаблоны описания узла (3 строки справа от виджета)
     nodeInfo: {

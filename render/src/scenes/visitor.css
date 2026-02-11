@@ -496,6 +496,14 @@ body.focus-service #service-panel::before {
   color: var(--text-secondary);
 }
 
+.narrative-screen[data-index="0"] {
+  background: transparent;
+}
+
+.narrative-screen[data-index="0"] .narrative-screen__viewport {
+  background-color: transparent;
+}
+
 .narrative-screen--expanded {
   position: absolute;
   width: auto;

@@ -285,7 +285,7 @@ const NARRATIVE_SLIDES = [
     id: "vova-01",
     title: "",  // Страница 0 — под фигуры, без заголовка
     detail: "",
-    src: buildAssetPath("story/narrative/vova-01.jpg"),
+    src: buildAssetPath("story/narrative/vova-01.png"),  // PNG с альфа-каналом
     isShapePage: true  // Флаг: страница под фигуры, не разворачивается
   },
   {
@@ -2408,7 +2408,7 @@ function updateStoryWithCollab(panel, node) {
 
 // === ШАБЛОН СТРАНИЦЫ ХАБА ===
 // pageTemplate: "hub" в VISUAL_CONFIG.nodeTypes
-// Редактируя эту функцию, изменяешь все страницы хабов (Персонажи, Домены)
+// Редактируя эту функцию, изменяешь все страницы хабов (Characters, Domains)
 function updateStoryWithHub(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -2416,12 +2416,72 @@ function updateStoryWithHub(panel, node) {
   destroyMiniCube();
   content.classList.remove("story-compact");
 
-  // Хабы пока показывают пустую страницу с названием
-  const hubLabel = getNodeTooltip(node);
-  content.innerHTML = `
-    <div class="hub-page">
-      <div class="hub-title">${escapeHtml(hubLabel)}</div>
+  const widgetIcon = getHubWidgetIcon(node.id);
+  const nodeInfoHtml = getNodeInfoHtml(node);
+  
+  // Определяем тип хаба и собираем связанные узлы
+  const isCharactersHub = node.id === "characters";
+  const isDomainsHub = node.id === "domains";
+  
+  // Получаем дочерние узлы хаба
+  const childNodes = isCharactersHub 
+    ? [...nodesById.values()].filter(n => n.type === "character")
+    : isDomainsHub 
+      ? [...nodesById.values()].filter(n => n.type === "domain")
+      : [];
+
+  let html = "";
+  
+  // Заголовок с виджетом хаба
+  html += `
+    <div class="node-toc">
+      <div class="node-widget node-widget--scope node-widget--root" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+        <div class="widget-frame">
+          ${getWidgetImageHtml(widgetIcon, "hub", { isRoot: true })}
+        </div>
+      </div>
+      ${nodeInfoHtml}
     </div>`;
+
+  // Narrative Screen (пока без фигуры)
+  html += renderNarrativeScreen();
+
+  // Виджеты дочерних узлов
+  if (childNodes.length > 0) {
+    const sectionLabel = isCharactersHub ? getSectionLabel("character") : getSectionLabel("domain");
+    html += `<div class="widget-groups-row">`;
+    html += `<div class="widget-group">`;
+    html += `<div class="section-title">${sectionLabel}</div>`;
+    html += `<div class="domain-widgets inline-widgets">`;
+    
+    for (const childNode of childNodes) {
+      const childIcon = isCharactersHub 
+        ? getCharacterWidgetIcon() 
+        : getDomainWidgetIcon(childNode.id);
+      html += `
+        <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(childIcon, isCharactersHub ? "character" : "domain")}
+          </div>
+        </div>`;
+    }
+    
+    html += `</div>`;
+    html += `</div>`;
+    html += `</div>`;
+  }
+
+  content.innerHTML = html;
+  bindHighlightWidgets(content);
+  bindNarrativeScreen(content);
+  bindEmblemSwap(content);
+
+  // Инициализация фигуры в shape area
+  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  if (shapeArea && childNodes.length > 0) {
+    const shapeType = isCharactersHub ? "icosa" : "cube";
+    initMiniShape(shapeType, shapeArea, childNodes.map(n => n.id), node.id);
+  }
 }
 
 // === ШАБЛОН СТРАНИЦЫ СИСТЕМНОГО УЗЛА ===
@@ -2434,11 +2494,59 @@ function updateStoryWithRoot(panel, node) {
   destroyMiniCube();
   content.classList.remove("story-compact");
 
-  // Системные узлы пока показывают пустую страницу
-  content.innerHTML = `
-    <div class="root-page">
-      <div class="root-title">${escapeHtml(node.label || node.id)}</div>
+  const widgetIcon = getRootWidgetIcon(node.id);
+  const nodeInfoHtml = getNodeInfoHtml(node);
+  
+  // Получаем хабы как дочерние узлы root
+  const hubNodes = [...nodesById.values()].filter(n => n.type === "hub");
+
+  let html = "";
+  
+  // Заголовок с виджетом root
+  html += `
+    <div class="node-toc">
+      <div class="node-widget node-widget--scope node-widget--root" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+        <div class="widget-frame">
+          ${getWidgetImageHtml(widgetIcon, "root", { isRoot: true })}
+        </div>
+      </div>
+      ${nodeInfoHtml}
     </div>`;
+
+  // Narrative Screen
+  html += renderNarrativeScreen();
+
+  // Виджеты хабов
+  if (hubNodes.length > 0) {
+    html += `<div class="widget-groups-row">`;
+    html += `<div class="widget-group">`;
+    html += `<div class="section-title">${getSectionLabel("hub")}</div>`;
+    html += `<div class="domain-widgets inline-widgets">`;
+    
+    for (const hubNode of hubNodes) {
+      html += `
+        <div class="domain-widget highlight-widget" data-node-id="${hubNode.id}" title="${escapeHtml(hubNode.label || hubNode.id)}">
+          <div class="widget-frame">
+            ${getWidgetImageHtml(getHubWidgetIcon(hubNode.id), "hub")}
+          </div>
+        </div>`;
+    }
+    
+    html += `</div>`;
+    html += `</div>`;
+    html += `</div>`;
+  }
+
+  content.innerHTML = html;
+  bindHighlightWidgets(content);
+  bindNarrativeScreen(content);
+  bindEmblemSwap(content);
+
+  // Инициализация фигуры в shape area (октаэдр для root)
+  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  if (shapeArea && hubNodes.length > 0) {
+    initMiniShape("octa", shapeArea, hubNodes.map(n => n.id), node.id);
+  }
 }
 
 // === ШАБЛОН СТРАНИЦЫ ДОМЕНА ===
@@ -2734,6 +2842,14 @@ function getCollabWidgetIcon(nodeId) {
   return `${CONFIG.contractsPath}/assets/widgets/collab-plug.png`;
 }
 
+function getHubWidgetIcon(nodeId) {
+  return `${CONFIG.contractsPath}/assets/widgets/hub-plug.png`;
+}
+
+function getRootWidgetIcon(nodeId) {
+  return `${CONFIG.contractsPath}/assets/widgets/root-plug.png`;
+}
+
 function getWidgetImageHtml(defaultSrc, alt = "icon", options = {}) {
   const safeAlt = escapeHtml(alt);
   const { isRoot = false } = options;
@@ -2783,7 +2899,7 @@ function initMiniShape(type, container, nodeIds, hubId) {
 
   miniShapeHubId = hubId;
   // Размер: octa в narrative screen — большой (9:9 область), остальные — 220px
-  const size = type === "octa" ? 280 : 220;
+  const size = type === "octa" ? 230 : 220;
   const width = size;
   const height = size;
 
@@ -2800,6 +2916,10 @@ function initMiniShape(type, container, nodeIds, hubId) {
   container.appendChild(miniCubeRenderer.domElement);
 
   miniCubeGroup = new THREE.Group();
+  // Октаэдр повёрнут на 45° по Z — выглядит как квадрат в проекции
+  if (type === "octa") {
+    miniCubeGroup.rotation.z = Math.PI / 4;
+  }
   miniCubeScene.add(miniCubeGroup);
 
   let positions = [];
