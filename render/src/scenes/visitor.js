@@ -2497,8 +2497,9 @@ function updateStoryWithRoot(panel, node) {
   const widgetIcon = getRootWidgetIcon(node.id);
   const nodeInfoHtml = getNodeInfoHtml(node);
   
-  // Получаем хабы как дочерние узлы root
+  // Получаем связанные узлы: хабы и другие root-узлы (кроме текущего)
   const hubNodes = [...nodesById.values()].filter(n => n.type === "hub");
+  const otherRootNodes = [...nodesById.values()].filter(n => n.type === "root" && n.id !== node.id);
 
   let html = "";
   
@@ -2516,24 +2517,49 @@ function updateStoryWithRoot(panel, node) {
   // Narrative Screen
   html += renderNarrativeScreen();
 
-  // Виджеты хабов
-  if (hubNodes.length > 0) {
+  // Виджеты связанных узлов
+  const hasWidgets = hubNodes.length > 0 || otherRootNodes.length > 0;
+  if (hasWidgets) {
     html += `<div class="widget-groups-row">`;
-    html += `<div class="widget-group">`;
-    html += `<div class="section-title">${getSectionLabel("hub")}</div>`;
-    html += `<div class="domain-widgets inline-widgets">`;
     
-    for (const hubNode of hubNodes) {
-      html += `
-        <div class="domain-widget highlight-widget" data-node-id="${hubNode.id}" title="${escapeHtml(hubNode.label || hubNode.id)}">
-          <div class="widget-frame">
-            ${getWidgetImageHtml(getHubWidgetIcon(hubNode.id), "hub")}
-          </div>
-        </div>`;
+    // Секция хабов
+    if (hubNodes.length > 0) {
+      html += `<div class="widget-group">`;
+      html += `<div class="section-title">${getSectionLabel("hub")}</div>`;
+      html += `<div class="domain-widgets inline-widgets">`;
+      
+      for (const hubNode of hubNodes) {
+        html += `
+          <div class="domain-widget highlight-widget" data-node-id="${hubNode.id}" title="${escapeHtml(hubNode.label || hubNode.id)}">
+            <div class="widget-frame">
+              ${getWidgetImageHtml(getHubWidgetIcon(hubNode.id), "hub")}
+            </div>
+          </div>`;
+      }
+      
+      html += `</div>`;
+      html += `</div>`;
     }
     
-    html += `</div>`;
-    html += `</div>`;
+    // Секция других root-узлов (Cryptocosm и т.д.)
+    if (otherRootNodes.length > 0) {
+      html += `<div class="widget-group">`;
+      html += `<div class="section-title">${getSectionLabel("root")}</div>`;
+      html += `<div class="domain-widgets inline-widgets">`;
+      
+      for (const rootNode of otherRootNodes) {
+        html += `
+          <div class="domain-widget highlight-widget" data-node-id="${rootNode.id}" title="${escapeHtml(rootNode.label || rootNode.id)}">
+            <div class="widget-frame">
+              ${getWidgetImageHtml(getRootWidgetIcon(rootNode.id), "root")}
+            </div>
+          </div>`;
+      }
+      
+      html += `</div>`;
+      html += `</div>`;
+    }
+    
     html += `</div>`;
   }
 
@@ -2544,8 +2570,9 @@ function updateStoryWithRoot(panel, node) {
 
   // Инициализация фигуры в shape area (октаэдр для root)
   const shapeArea = content.querySelector(".narrative-screen__shape-area");
-  if (shapeArea && hubNodes.length > 0) {
-    initMiniShape("octa", shapeArea, hubNodes.map(n => n.id), node.id);
+  const allChildIds = [...hubNodes.map(n => n.id), ...otherRootNodes.map(n => n.id)];
+  if (shapeArea && allChildIds.length > 0) {
+    initMiniShape("octa", shapeArea, allChildIds, node.id);
   }
 }
 
