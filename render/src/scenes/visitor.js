@@ -134,7 +134,7 @@ import { ARCHITECTURE } from "../architecture/dna.ts";
 import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
-import { initRegistry, validateConfigAgainstRules, initToolCatalog } from "../ontology";
+import { initRegistry, validateConfigAgainstRules, initToolCatalog, getPracticesByDomain } from "../ontology";
 
 // === Константы ===
 const CONFIG = {
@@ -269,9 +269,17 @@ let activeQueryTag = null;
 let queryModeActive = false;
 let selectedServiceItem = null;
 
-const PRACTICE_HINTS = {
-  "domain-ai": { id: "practice-direction", label: "Режиссура" }
-};
+/**
+ * Получить подсказку практики для домена.
+ * Использует типизированный каталог инструментов.
+ */
+function getPracticeHintForDomain(domainId) {
+  const practices = getPracticesByDomain(domainId);
+  if (practices.length === 0) return null;
+  // Возвращаем первую практику как подсказку
+  const practice = practices[0];
+  return { id: practice.id, label: practice.label };
+}
 const NARRATIVE_SLIDES = [
   {
     id: "vova-01",
@@ -1772,8 +1780,9 @@ function updatePanels() {
     } else {
       const storyContent = storyPanel?.querySelector(".panel-content");
       storyContent?.classList.remove("story-compact");
-      if (queryModeActive && PRACTICE_HINTS[currentStep.id]) {
-        updateStoryWithPracticeHint(storyPanel, currentStep.story, PRACTICE_HINTS[currentStep.id]);
+      const practiceHint = getPracticeHintForDomain(currentStep.id);
+      if (queryModeActive && practiceHint) {
+        updateStoryWithPracticeHint(storyPanel, currentStep.story, practiceHint);
       } else if (hasQueryHints && !isQueryNode) {
         updateStoryWithSystemText(storyPanel, currentStep.story, currentStep.system);
       } else {
