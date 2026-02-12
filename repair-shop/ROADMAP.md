@@ -946,19 +946,35 @@ P3.7 — GraphRAG интеграция ✓ ЗАВЕРШЁН
    │  toLLMContext — экспорт для LLM
    │
    ▼
-P4.x — Cryptocosm / Рефлексия ⏳ СЛЕДУЮЩИЙ
+P4.1 — ReflectiveProjection ✓ ЗАВЕРШЁН
+   │
+   │  Мета-линза для рефлексии: 53 теста
+   │  analyzeDensity, findIsolatedNodes, findHighCentralityNodes
+   │  detectOwnershipCycles, mapProjectionCoverage
+   │  findConnectedComponents, checkConnectivity, findBridges
+   │
+   ▼
+P4.2 — NarrativeLayer ⏳ СЛЕДУЮЩИЙ
+   │
+   │  author-mind (read-only)
+   │  Генерация нарратива из GraphRAG + Reflective
+   │
+   ▼
+P4.3 — LLMReflectionEngine
+   │
+   │  Внешний потребитель toLLMContext()
+   │  Q&A, self-reflection, анализ архитектуры
 ```
 
 ### Текущий статус
 
 ```
-Core стабилен, типизирован, протестирован (278 тестов).
-Projections реализованы и используют единый источник истины.
-OWL-экспорт готов (Turtle, JSON-LD, N-Triples).
-GraphRAG готов (индексация, поиск, контекст для LLM).
+Core стабилен, типизирован, протестирован (331 тест).
+Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
+Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. Core готов к Phase 4 — Cryptocosm / Рефлексия.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. Следующий: P4.2 NarrativeLayer.
 ```
 
 ---
