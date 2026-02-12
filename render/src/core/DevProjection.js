@@ -4,15 +4,21 @@
  * ═══════════════════════════════════════════════════════════════════════════
  * 
  * Phase 2: Core → Multi-Projection
+ * P3.5b: Boundary Freeze — Core не использует DOM
  * См. repair-shop/ROADMAP.md
  * 
  * ПРИНЦИП:
  * - Показывает ownership
  * - Показывает вычислительные зависимости
  * - Показывает поток данных highlight
- * - Простой 2D/JSON вывод (не ReactFlow пока)
+ * - Возвращает данные (не DOM) — рендеринг делает UI-адаптер
  * 
  * ЦЕЛЬ: Доказать, что Core можно смотреть иначе.
+ * 
+ * BOUNDARY FREEZE:
+ * - Этот модуль НЕ использует DOM
+ * - Этот модуль НЕ использует document/window
+ * - Рендеринг в DOM делает UI-адаптер (вне Core)
  * 
  * ═══════════════════════════════════════════════════════════════════════════
  */
@@ -22,52 +28,22 @@ import { INTENSITY } from "../ontology/highlightModel.js";
 
 /**
  * Dev-проекция для отладки и анализа.
- * Рендерит граф как JSON/текст/простую 2D-схему.
+ * Возвращает данные в виде текста/JSON — рендеринг делает UI-адаптер.
+ * 
+ * @pure Не использует DOM, не имеет side effects
  */
 export class DevProjection extends Projection {
   constructor() {
     super("dev");
-    
-    /** @type {HTMLElement|null} */
-    this.container = null;
-    
-    /** @type {HTMLElement|null} */
-    this.outputEl = null;
   }
   
   /**
-   * Инициализировать проекцию.
-   * @param {HTMLElement} container
-   */
-  init(container) {
-    this.container = container;
-    
-    // Создать элемент вывода
-    this.outputEl = document.createElement("div");
-    this.outputEl.className = "dev-projection";
-    this.outputEl.style.cssText = `
-      font-family: monospace;
-      font-size: 12px;
-      padding: 16px;
-      background: #1a1a2e;
-      color: #e0e0e0;
-      overflow: auto;
-      height: 100%;
-      white-space: pre-wrap;
-    `;
-    
-    container.appendChild(this.outputEl);
-    this.initialized = true;
-  }
-  
-  /**
-   * Отрендерить граф.
+   * Сгенерировать текстовый вывод для графа.
    * @param {import("./GraphModel.js").GraphModel} graphModel
    * @param {Object} context
+   * @returns {string} Текстовый вывод
    */
-  render(graphModel, context) {
-    if (!this.outputEl) return;
-    
+  renderText(graphModel, context) {
     const output = [];
     
     // Заголовок
@@ -160,28 +136,7 @@ export class DevProjection extends Projection {
     output.push("                     └─────────────┘");
     output.push("");
     
-    this.outputEl.textContent = output.join("\n");
-  }
-  
-  /**
-   * Обновить подсветку.
-   * @param {import("../ontology/highlightModel.js").HighlightState} highlightState
-   */
-  updateHighlight(highlightState) {
-    // В dev-проекции просто перерендериваем всё
-    // (в реальной проекции можно оптимизировать)
-  }
-  
-  /**
-   * Уничтожить проекцию.
-   */
-  destroy() {
-    if (this.outputEl && this.container) {
-      this.container.removeChild(this.outputEl);
-    }
-    this.outputEl = null;
-    this.container = null;
-    this.initialized = false;
+    return output.join("\n");
   }
   
   /**

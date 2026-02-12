@@ -617,29 +617,51 @@ npx vitest run    ✓ (122 теста)
 
 ---
 
-## СЛЕДУЮЩИЙ ЭТАП: P3.5b — Boundary Freeze
+## ЭТАП P3.5b: Boundary Freeze — ЗАВЕРШЁН
 
-### Зачем
+**Дата:** 12 февраля 2026
 
-Перед интеграцией в visitor — зафиксировать границы.
+### Что сделано
 
-### Правила
+1. **Создан архитектурный тест `boundary.test.js` (8 тестов):**
+   - Core не импортирует visitor modules
+   - Core не импортирует Three.js
+   - Core не импортирует React
+   - Core не использует DOM globals (document, window)
+   - Односторонняя зависимость Core → Projection → Visitor
+   - ontology является частью Core (разрешённые импорты)
+   - Crystal integrity (все модули существуют)
+
+2. **Исправлена утечка DOM в `DevProjection.js`:**
+   - Удалено использование `document.createElement`
+   - DevProjection теперь возвращает данные (текст/JSON)
+   - Рендеринг в DOM делает UI-адаптер (вне Core)
+
+### Результат
 
 ```
-✓ Core не импортирует ничего из visitor
-✓ visitor импортирует только из Core
-✓ Запрет циклических зависимостей
+ Test Files  7 passed (7)
+      Tests  130 passed (130)
 ```
 
-### Односторонняя зависимость
+### Гарантии Boundary Freeze
 
 ```
-Core → Projection → Renderer
+✓ Core не импортирует visitor
+✓ Core не импортирует Three.js
+✓ Core не импортирует React
+✓ Core не использует DOM (document, window)
+✓ Односторонняя зависимость: Core → Projection → Renderer
+✓ Если удалить visitor — Core компилируется и тесты проходят
+```
+
+### Архитектурная гравитация
+
+```
+Core → Projection → Visitor/UI
 
 Никогда наоборот.
 ```
-
-Это можно зафиксировать линтером или правилом структуры.
 
 ---
 
@@ -655,15 +677,14 @@ P3.5a — Identity & Naming ✓ ЗАВЕРШЁН
 P3.5 — TypeScript для Core ✓ ЗАВЕРШЁН
    │
    ▼
-P3.5b — Boundary Freeze ⏳ СЛЕДУЮЩИЙ
-   │
-   │  Правила:
-   │  - Core не импортирует из visitor
-   │  - visitor импортирует только из Core
-   │  - Запрет циклических зависимостей
+P3.5b — Boundary Freeze ✓ ЗАВЕРШЁН
    │
    ▼
-P3.1 — Интеграция Core в visitor
+P3.1 — Интеграция Core в visitor ⏳ СЛЕДУЮЩИЙ
+   │
+   │  visitor становится клиентом Core:
+   │  - highlightedNodes исчезает как источник истины
+   │  - Core.computeHighlight() — единственный источник
    │
    ▼
 P3.2/P3.3 — Projections
@@ -700,6 +721,7 @@ P3.6/P3.7 — OWL / GraphRAG
 | `render/src/core/__tests__/GraphModel.test.js` | Тесты GraphModel (23) |
 | `render/src/core/__tests__/OwnershipGraph.test.js` | Тесты OwnershipGraph (23) |
 | `render/src/core/__tests__/Identity.test.js` | Тесты Identity (33) |
+| `render/src/core/__tests__/boundary.test.js` | Тесты Boundary Freeze (8) |
 | `render/src/core/types/identity.d.ts` | Типы Identity |
 | `render/src/core/types/graph.d.ts` | Типы GraphModel |
 | `render/src/core/types/highlight.d.ts` | Типы Highlight |
