@@ -838,33 +838,75 @@ Core (highlightState)
 
 ---
 
-## ЭТАП P3.7: GraphRAG интеграция — ПЛАНИРУЕТСЯ
+## ЭТАП P3.7: GraphRAG интеграция — В РАБОТЕ
 
-### Цель
+**Дата начала:** 12 февраля 2026
 
-RAG поверх Core GraphModel для поиска, reasoning, Q&A.
+### Ключевой принцип
+
+**GraphRAG — это ещё одна проекция, а не новый Core.**
+
+```
+Core
+ ├── VisitorProjection
+ ├── DevProjection
+ ├── OWLProjection
+ └── GraphRAGProjection   ← новый слой
+```
+
+GraphRAG = интеллектуальная линза над тем же GraphModel.
+
+Он:
+- НЕ вычисляет бизнес-логику
+- НЕ мутирует граф
+- НЕ дублирует highlight
+- НЕ хранит альтернативное состояние
+- Читает Core, как OWLProjection
 
 ### Задачи
 
-1. **RAG поверх Core:**
-   - Nodes + Edges + OwnershipGraph → knowledge graph
-   - HighlightState, Identity, Ownership → RAG-узлы и связи
+1. **GraphRAGProjection.js:**
+   - `buildIndex()` — индексация Nodes/Edges/Identity
+   - `queryByNode(id)` — поиск по узлу
+   - `queryByText(text)` — поиск по тексту
+   - `expandContext(nodeIds, depth)` — расширение подграфа
+   - `toLLMContext()` — экспорт для LLM
 
-2. **Интеграция:**
-   - Поиск по графу
-   - Reasoning на основе связей
-   - Q&A с контекстом из Core
+2. **Индексация:**
+   - Nodes → документы
+   - Edges → связи
+   - Ownership → семантические отношения
+   - Identity → метаданные
 
-3. **Использование Core как источника истины:**
-   - Любые новые проекции берут RAG из Core
-   - Без дублирования логики
+3. **Query Engine (MVP без LLM):**
+   - Поиск по узлам
+   - Поиск по связям
+   - Выборка подграфа
+   - Контекстная экспансия (1–2 hop)
+   - Deterministic reasoning
+
+### Тестирование
+
+- Индекс воспроизводим
+- Поиск детерминирован
+- Расширение подграфа корректно
+- Никакой мутации Core
 
 ### Перспективы после P3.7
 
-- Сценарии рефлексии для LLM
-- Dev-анализ зависимостей
-- Автоматическая документация
-- Cryptocosm как "мозг" системы
+- Cryptocosm становится reasoning-ready
+- Q&A сценарии
+- Self-reflection сценарии
+- Анализ архитектуры через LLM
+- Внешние embeddings без риска для Core
+
+### Стратегический эффект
+
+Если OWLProjection сделал Core «экспортируемым»,
+то GraphRAG сделает его «мыслящим».
+
+Но мыслить он должен как клиент,
+а не как сердце системы.
 
 ---
 
