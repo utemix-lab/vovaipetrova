@@ -1,0 +1,21 @@
+{
+  "name": "meaning-engine",
+  "version": "0.1.0",
+  "description": "Universal semantic graph engine",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.1"
+  },
+  "keywords": [
+    "semantic",
+    "graph",
+    "engine",
+    "ontology"
+  ],
+  "license": "MIT"
+}

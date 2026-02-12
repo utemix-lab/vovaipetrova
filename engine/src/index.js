@@ -21,8 +21,13 @@
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
-// TODO: P5.0b — Перенести универсальные компоненты из render/src/core/
-// Пока это placeholder для будущей структуры
+// P5.0a.1 — World Interface Contract
+export {
+  WorldInterface,
+  SchemaValidator,
+  GraphValidator,
+  WorldValidator,
+} from "./WorldInterface.js";
 
 export const ENGINE_VERSION = "0.1.0";
 
