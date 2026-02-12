@@ -4,6 +4,7 @@
  * ═══════════════════════════════════════════════════════════════════════════
  * 
  * Phase 4.2a: Canonical Schema Definition
+ * Phase 5.0c: Externalized to worlds/vovaipetrova/schema.json
  * См. repair-shop/ROADMAP.md
  * 
  * НАЗНАЧЕНИЕ:
@@ -17,241 +18,98 @@
  * - Validator = проверка соответствия
  * - Никакой мутации данных
  * 
+ * P5.0c: Типы теперь загружаются из worlds/vovaipetrova/schema.json
+ * через WorldSchemaLoader. Этот файл — thin-wrapper для обратной совместимости.
+ * 
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NODE TYPES — Допустимые типы узлов
+// P5.0c: ИМПОРТ ИЗ WORLD SCHEMA
+// ═══════════════════════════════════════════════════════════════════════════
+
+import {
+  NODE_TYPES as LOADED_NODE_TYPES,
+  NODE_TYPE_META as LOADED_NODE_TYPE_META,
+  EDGE_TYPES as LOADED_EDGE_TYPES,
+  EDGE_TYPE_META as LOADED_EDGE_TYPE_META,
+  VISIBILITY as LOADED_VISIBILITY,
+  STATUS as LOADED_STATUS,
+  IDENTITY_REQUIRED_FIELDS as LOADED_IDENTITY_REQUIRED_FIELDS,
+  IDENTITY_RECOMMENDED_FIELDS as LOADED_IDENTITY_RECOMMENDED_FIELDS,
+} from "./WorldSchemaLoader.js";
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NODE TYPES — Допустимые типы узлов (из world schema)
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
  * Каноническое определение типов узлов.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const NODE_TYPES = Object.freeze({
-  // Системные типы (высокий уровень абстракции)
-  ROOT: "root",           // Корневой узел (Universe, Cryptocosm)
-  HUB: "hub",             // Контейнер-хаб (Characters, Domains)
-  
-  // Контентные типы (средний уровень абстракции)
-  CHARACTER: "character", // Персонаж
-  DOMAIN: "domain",       // Домен знаний
-  
-  // Рабочие типы (низкий уровень абстракции)
-  WORKBENCH: "workbench", // Рабочий стол / инструмент
-  COLLAB: "collab",       // Коллаборация / совместный проект
-  
-  // Расширяемые типы (для будущего)
-  SUBDOMAIN: "subdomain", // Поддомен
-  ARTIFACT: "artifact",   // Артефакт / результат работы
-  CONCEPT: "concept",     // Концепция / идея
-});
+export const NODE_TYPES = LOADED_NODE_TYPES;
 
 /**
  * Метаданные типов узлов.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const NODE_TYPE_META = Object.freeze({
-  [NODE_TYPES.ROOT]: {
-    description: "Корневой узел системы",
-    abstraction: "high",
-    role: "container",
-    allowedChildren: [NODE_TYPES.HUB, NODE_TYPES.ROOT],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.HUB]: {
-    description: "Контейнер-хаб для группировки",
-    abstraction: "high",
-    role: "container",
-    allowedChildren: [NODE_TYPES.CHARACTER, NODE_TYPES.DOMAIN, NODE_TYPES.WORKBENCH, NODE_TYPES.COLLAB],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.CHARACTER]: {
-    description: "Персонаж / актор системы",
-    abstraction: "low",
-    role: "entity",
-    allowedChildren: [NODE_TYPES.WORKBENCH, NODE_TYPES.ARTIFACT],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag", "story"],
-  },
-  [NODE_TYPES.DOMAIN]: {
-    description: "Домен знаний / область",
-    abstraction: "medium",
-    role: "container",
-    allowedChildren: [NODE_TYPES.SUBDOMAIN, NODE_TYPES.CONCEPT, NODE_TYPES.WORKBENCH],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.WORKBENCH]: {
-    description: "Рабочий стол / инструмент",
-    abstraction: "low",
-    role: "tooling",
-    allowedChildren: [NODE_TYPES.ARTIFACT],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.COLLAB]: {
-    description: "Коллаборация / совместный проект",
-    abstraction: "low",
-    role: "tooling",
-    allowedChildren: [NODE_TYPES.ARTIFACT],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.SUBDOMAIN]: {
-    description: "Поддомен / подобласть",
-    abstraction: "medium",
-    role: "container",
-    allowedChildren: [NODE_TYPES.CONCEPT, NODE_TYPES.ARTIFACT],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.ARTIFACT]: {
-    description: "Артефакт / результат работы",
-    abstraction: "low",
-    role: "content",
-    allowedChildren: [],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-  [NODE_TYPES.CONCEPT]: {
-    description: "Концепция / идея",
-    abstraction: "medium",
-    role: "content",
-    allowedChildren: [],
-    requiredFields: ["id", "label", "type"],
-    optionalFields: ["position", "visibility", "status", "semantics", "rag"],
-  },
-});
+export const NODE_TYPE_META = LOADED_NODE_TYPE_META;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// EDGE TYPES — Допустимые типы рёбер
+// EDGE TYPES — Допустимые типы рёбер (из world schema)
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
  * Каноническое определение типов рёбер.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const EDGE_TYPES = Object.freeze({
-  // Структурные связи
-  STRUCTURAL: "structural",   // Структурная связь (root → hub)
-  CONTAINS: "contains",       // Содержит (hub → child)
-  
-  // Семантические связи
-  RELATES: "relates",         // Связан с (character → domain)
-  OWNS: "owns",               // Владеет (character → workbench)
-  
-  // Расширяемые типы
-  DEPENDS: "depends",         // Зависит от
-  INFLUENCES: "influences",   // Влияет на
-  COLLABORATES: "collaborates", // Сотрудничает с
-});
+export const EDGE_TYPES = LOADED_EDGE_TYPES;
 
 /**
  * Метаданные типов рёбер.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const EDGE_TYPE_META = Object.freeze({
-  [EDGE_TYPES.STRUCTURAL]: {
-    description: "Структурная связь между системными узлами",
-    directed: true,
-    allowedSourceTypes: [NODE_TYPES.ROOT],
-    allowedTargetTypes: [NODE_TYPES.ROOT, NODE_TYPES.HUB],
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.CONTAINS]: {
-    description: "Иерархическая связь содержания",
-    directed: true,
-    allowedSourceTypes: [NODE_TYPES.HUB, NODE_TYPES.DOMAIN],
-    allowedTargetTypes: [NODE_TYPES.CHARACTER, NODE_TYPES.DOMAIN, NODE_TYPES.SUBDOMAIN, NODE_TYPES.WORKBENCH, NODE_TYPES.COLLAB],
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.RELATES]: {
-    description: "Семантическая связь между сущностями",
-    directed: false,
-    allowedSourceTypes: [NODE_TYPES.CHARACTER, NODE_TYPES.DOMAIN, NODE_TYPES.WORKBENCH, NODE_TYPES.COLLAB],
-    allowedTargetTypes: [NODE_TYPES.DOMAIN, NODE_TYPES.WORKBENCH, NODE_TYPES.COLLAB, NODE_TYPES.CONCEPT],
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.OWNS]: {
-    description: "Связь владения",
-    directed: true,
-    allowedSourceTypes: [NODE_TYPES.CHARACTER],
-    allowedTargetTypes: [NODE_TYPES.WORKBENCH, NODE_TYPES.ARTIFACT],
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.DEPENDS]: {
-    description: "Связь зависимости",
-    directed: true,
-    allowedSourceTypes: Object.values(NODE_TYPES),
-    allowedTargetTypes: Object.values(NODE_TYPES),
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.INFLUENCES]: {
-    description: "Связь влияния",
-    directed: true,
-    allowedSourceTypes: Object.values(NODE_TYPES),
-    allowedTargetTypes: Object.values(NODE_TYPES),
-    requiredFields: ["id", "source", "target", "type"],
-  },
-  [EDGE_TYPES.COLLABORATES]: {
-    description: "Связь сотрудничества",
-    directed: false,
-    allowedSourceTypes: [NODE_TYPES.CHARACTER],
-    allowedTargetTypes: [NODE_TYPES.CHARACTER, NODE_TYPES.COLLAB],
-    requiredFields: ["id", "source", "target", "type"],
-  },
-});
+export const EDGE_TYPE_META = LOADED_EDGE_TYPE_META;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// VISIBILITY & STATUS — Допустимые значения
+// VISIBILITY & STATUS — Допустимые значения (из world schema)
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
  * Допустимые значения visibility.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const VISIBILITY = Object.freeze({
-  PUBLIC: "public",
-  PRIVATE: "private",
-  HIDDEN: "hidden",
-});
+export const VISIBILITY = LOADED_VISIBILITY;
 
 /**
  * Допустимые значения status.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const STATUS = Object.freeze({
-  CORE: "core",           // Ядро системы
-  EXPANDABLE: "expandable", // Расширяемый
-  DRAFT: "draft",         // Черновик
-  ARCHIVED: "archived",   // Архивный
-});
+export const STATUS = LOADED_STATUS;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// IDENTITY FIELDS — Обязательные поля идентичности
+// IDENTITY FIELDS — Обязательные поля идентичности (из world schema)
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
  * Обязательные поля Identity для узла.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const IDENTITY_REQUIRED_FIELDS = Object.freeze([
-  "id",           // Уникальный идентификатор (immutable)
-]);
+export const IDENTITY_REQUIRED_FIELDS = LOADED_IDENTITY_REQUIRED_FIELDS;
 
 /**
  * Рекомендуемые поля Identity для узла.
+ * P5.0c: Загружается из worlds/vovaipetrova/schema.json
  * @readonly
  */
-export const IDENTITY_RECOMMENDED_FIELDS = Object.freeze([
-  "label",        // Отображаемое имя
-  "canonicalName", // Каноническое имя
-  "aliases",      // Альтернативные имена
-  "slug",         // URL-friendly идентификатор
-]);
+export const IDENTITY_RECOMMENDED_FIELDS = LOADED_IDENTITY_RECOMMENDED_FIELDS;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SCHEMA VALIDATOR — Валидация соответствия схеме
