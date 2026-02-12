@@ -665,6 +665,74 @@ Core → Projection → Visitor/UI
 
 ---
 
+## ЭТАП P3.1: Интеграция Core в visitor — ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
+
+### Что сделано
+
+Интеграция уже была выполнена ранее (Маршрут G). Проверено:
+
+1. **visitor.js импортирует из Core:**
+   ```javascript
+   import { computeHighlight, createContextFromState, INTENSITY } from "../ontology/highlightModel.js";
+   ```
+
+2. **Единственная точка входа `updateHighlight()`:**
+   ```javascript
+   function updateHighlight() {
+     const context = createContextFromState({...});
+     cachedHighlightState = computeHighlight(context, graphData);
+     renderHighlight(cachedHighlightState);
+   }
+   ```
+
+3. **`renderHighlight()` применяет state к визуалу:**
+   - `highlightNodes`, `highlightLinks`, `halfHighlightLinks` — производные
+   - Заполняются из `state.nodeIntensities` и `state.edgeIntensities`
+
+4. **Нет прямых мутаций Sets:**
+   - `.add()` вызовы только внутри `renderHighlight()`
+   - Все изменения проходят через `updateHighlight()`
+
+### Результат
+
+```
+ Test Files  7 passed (7)
+      Tests  130 passed (130)
+```
+
+### Архитектура интеграции
+
+```
+visitor.js
+    │
+    ├── import { computeHighlight } from "../ontology/highlightModel.js"
+    │
+    ├── updateHighlight()
+    │       │
+    │       ├── createContextFromState(state)
+    │       │
+    │       ├── computeHighlight(context, graph)  ← Core
+    │       │
+    │       └── renderHighlight(state)
+    │               │
+    │               ├── highlightNodes.clear()
+    │               ├── highlightLinks.clear()
+    │               └── fill from state.*Intensities
+    │
+    └── graph.refresh()
+```
+
+### Значение
+
+- **visitor — клиент Core**
+- `computeHighlight()` — единственный источник истины
+- `highlightNodes/Links` — производные от Core state
+- Логика подсветки не дублируется
+
+---
+
 ## СТРАТЕГИЧЕСКАЯ ПЕРСПЕКТИВА
 
 ```
@@ -680,14 +748,14 @@ P3.5 — TypeScript для Core ✓ ЗАВЕРШЁН
 P3.5b — Boundary Freeze ✓ ЗАВЕРШЁН
    │
    ▼
-P3.1 — Интеграция Core в visitor ⏳ СЛЕДУЮЩИЙ
+P3.1 — Интеграция Core в visitor ✓ ЗАВЕРШЁН
    │
-   │  visitor становится клиентом Core:
-   │  - highlightedNodes исчезает как источник истины
-   │  - Core.computeHighlight() — единственный источник
+   │  visitor — клиент Core:
+   │  - computeHighlight() — единственный источник
+   │  - highlightNodes/Links — производные
    │
    ▼
-P3.2/P3.3 — Projections
+P3.2/P3.3 — Projections ⏳ СЛЕДУЮЩИЙ
    │
    ▼
 P3.6/P3.7 — OWL / GraphRAG
