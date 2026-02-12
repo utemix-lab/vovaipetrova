@@ -1012,15 +1012,12 @@ P4.4 — LLMReflectionEngine
 ### Текущий статус
 
 ```
-Core стабилен, типизирован, протестирован (331 тест).
-Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
-Рефлексия = read-only. Изменение = только через осознанное действие.
-Архитектура кристаллическая, границы зафиксированы.
+P5.0 Separation ЗАВЕРШЁН.
+MeaningEngine = абстрактная платформа.
+VovaIPetrova = первый плагин (мир владеет типами).
+Граница Engine ↔ World реальна, не декларативна.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-e ЗАВЕРШЕНЫ. P4.4 ЗАВЕРШЁН.
-Замкнутый цикл архитектурного мышления достигнут.
-LLMReflectionEngine — внешний оркестратор, Core остаётся центром.
-Всего: 656 тестов.
+Всего: 808 тестов (152 engine + 656 render).
 ```
 
 ---
@@ -1488,3 +1485,120 @@ destroy()
 exportJSON(graphModel, context)
 exportMarkdown(graphModel, context)
 ```
+
+---
+
+## ЭТАП P5.0: Separation — MeaningEngine vs SemanticWorld ✓ ЗАВЕРШЁН
+
+**Дата:** 13 февраля 2026
+**Branch:** `p5-separation`
+**Tag до:** `v0.4.4-before-separation`
+
+### Суть изменения
+
+```
+До P5.0:
+  Core владел онтологией (NODE_TYPES захардкожены)
+  Мир = встроенная реальность
+
+После P5.0:
+  Мир владеет типами (worlds/vovaipetrova/schema.json)
+  Engine = абстрактная платформа
+  VovaIPetrova = первый плагин
+```
+
+### Архитектура
+
+```
+MeaningEngine (platform)
+        ↑
+   WorldAdapter
+        ↑
+   World Package
+        ↑
+       UI
+```
+
+### Шаги P5.0
+
+| Шаг | Описание | Commit | Тестов |
+|-----|----------|--------|--------|
+| P5.0a | Структура `/engine` и `/worlds` | `c887f6a` | — |
+| P5.0a.1 | Engine ↔ World Contract | `37a0b52` | 35 |
+| P5.0b | Schema class | `885db45` | 58 |
+| P5.0c.1 | Копия типов в world | `9286c31` | — |
+| P5.0c.2 | Thin-wrapper | `d39b119` | — |
+| P5.0d | WorldAdapter | `b2d3bff` | 31 |
+| P5.0e | MeaningEngine | `a07370b` | 28 |
+
+### Созданные файлы Engine
+
+| Файл | Описание |
+|------|----------|
+| `engine/src/WorldInterface.js` | Контракт Engine ↔ World (35 тестов) |
+| `engine/src/Schema.js` | Абстрактная схема (58 тестов) |
+| `engine/src/WorldAdapter.js` | Адаптер мира (31 тест) |
+| `engine/src/index.js` | MeaningEngine (28 тестов) |
+| `engine/WORLD_CONTRACT.md` | Формальный контракт |
+| `engine/README.md` | Документация Engine |
+
+### Созданные файлы World
+
+| Файл | Описание |
+|------|----------|
+| `worlds/vovaipetrova/schema.json` | Типы узлов и рёбер |
+| `worlds/vovaipetrova/seed.json` | Начальные данные |
+| `worlds/vovaipetrova/world.md` | Философия мира |
+| `worlds/vovaipetrova/README.md` | Документация мира |
+
+### Изменённые файлы render
+
+| Файл | Изменение |
+|------|-----------|
+| `render/src/core/CanonicalGraphSchema.js` | Thin-wrapper (импорт из WorldSchemaLoader) |
+| `render/src/core/WorldSchemaLoader.js` | Загрузчик world schema |
+
+### Критерий успеха
+
+```javascript
+// Любой мир может быть подключён
+const spaceWorld = WorldAdapter.fromJSON({
+  name: "space-world",
+  nodeTypes: [
+    { id: "galaxy", label: "Galaxy" },
+    { id: "star", label: "Star" },
+  ],
+  edgeTypes: [
+    { id: "orbits", label: "Orbits" },
+  ],
+}, spaceSeed);
+
+const engine = new MeaningEngine(spaceWorld);
+
+// Engine работает без знания о "galaxy" или "star"
+engine.isValidNodeType("galaxy");  // true
+engine.isValidNodeType("character"); // false
+```
+
+### Архитектурный эффект
+
+- **Multi-world архитектура возможна**
+- **Engine не знает конкретных типов**
+- **Мир инжектируется через адаптер**
+- **Граница реальна, не декларативна**
+
+### Тесты
+
+| Пакет | Тестов |
+|-------|--------|
+| engine | 152 |
+| render | 656 |
+| **Всего** | **808** |
+
+### Следующие возможности
+
+- Multi-world UI
+- World versioning
+- Engine API стабилизация
+- Plugin loader
+- `npm install meaning-engine`
