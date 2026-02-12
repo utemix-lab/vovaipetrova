@@ -56,6 +56,13 @@ export {
   InvariantChecker,
   STRICTNESS,
 } from "./StructuralInvariants.js";
+export {
+  GraphSnapshot,
+  SnapshotHistory,
+  diffSnapshots,
+  CHANGE_TYPE,
+  SNAPSHOT_VERSION,
+} from "./GraphSnapshot.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,

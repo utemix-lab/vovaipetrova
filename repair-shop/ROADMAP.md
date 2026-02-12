@@ -968,11 +968,11 @@ P4.2b — Structural Invariants ✓ ЗАВЕРШЁН
    │  57 тестов
    │
    ▼
-P4.2c — Versioned Snapshots
+P4.2c — Versioned Snapshots ✓ ЗАВЕРШЁН
    │
-   │  GraphSnapshot, diff между версиями
-   │  Эволюция архитектуры
-   │  Рефлексия во времени
+   │  GraphSnapshot, SnapshotHistory
+   │  diffSnapshots, CHANGE_TYPE
+   │  62 теста
    │
    ▼
 P4.2d — Performance Audit
@@ -1016,10 +1016,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a ЗАВЕРШЁН. P4.2b ЗАВЕРШЁН.
-Следующий: P4.2c Versioned Snapshots.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-c ЗАВЕРШЕНЫ.
+Следующий: P4.2d Performance Audit (опционально).
 NarrativeLayer отложен до структурной зрелости.
-Всего: 450 тестов.
+Всего: 512 тестов.
 ```
 
 ---
@@ -1115,17 +1115,51 @@ NarrativeLayer отложен до структурной зрелости.
 
 **Результат:** `InvariantChecker v1` — 450 тестов (все прошли)
 
-### P4.2c — Versioned Snapshots
+### P4.2c — Versioned Snapshots ✓ ЗАВЕРШЁН
 
-**Цель:** Версионирование графа.
+**Дата:** 12 февраля 2026
 
-**Содержание:**
-- `GraphSnapshot` — снимок состояния графа
-- diff между версиями
-- эволюция архитектуры
-- рефлексия во времени
+**Цель:** Версионирование графа — рефлексия во времени.
 
-**Результат:** `GraphSnapshot.js` + тесты
+**Что сделано:**
+
+1. **`GraphSnapshot.js`:**
+   - **GraphSnapshot** — неизменяемый снимок состояния графа:
+     - `getNodeById(id)`, `getEdgeById(id)` — доступ к данным
+     - `getNodeIds()`, `getEdgeIds()` — множества ID
+     - `hasNode(id)`, `hasEdge(id)` — проверка наличия
+     - `getStats()` — статистика снапшота
+     - `toJSON()`, `fromJSON()` — сериализация
+   - **diffSnapshots(before, after)** — сравнение снапшотов:
+     - `nodes.added`, `nodes.removed`, `nodes.modified`
+     - `edges.added`, `edges.removed`, `edges.modified`
+     - `summary` — итоговая статистика изменений
+   - **SnapshotHistory** — история снапшотов:
+     - `add(snapshot)` — добавить снапшот
+     - `getById(id)`, `getLatest()`, `getFirst()` — доступ
+     - `diff(beforeId, afterId)` — сравнение по ID
+     - `diffRange(from, to)` — последовательные diff'ы
+     - `getFullEvolution()` — от первого до последнего
+     - `toJSON()`, `fromJSON()` — сериализация
+   - **CHANGE_TYPE:** ADDED, REMOVED, MODIFIED
+   - **SNAPSHOT_VERSION:** 1.0.0
+
+2. **`GraphSnapshot.test.js` (62 теста):**
+   - SNAPSHOT_VERSION (2)
+   - CHANGE_TYPE (2)
+   - GraphSnapshot.constructor (12)
+   - GraphSnapshot.accessors (8)
+   - GraphSnapshot.getStats (4)
+   - GraphSnapshot.serialization (3)
+   - diffSnapshots.no_changes (1)
+   - diffSnapshots.added/removed/modified nodes (3)
+   - diffSnapshots.added/removed/modified edges (3)
+   - diffSnapshots.summary (2)
+   - diffSnapshots.deep_comparison (2)
+   - SnapshotHistory (18)
+   - Integration (2)
+
+**Результат:** `GraphSnapshot v1.0.0` — 512 тестов (все прошли)
 
 ### P4.2d — Performance Audit
 
@@ -1290,6 +1324,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/CanonicalGraphSchema.test.js` | Тесты схемы (62) |
 | `render/src/core/StructuralInvariants.js` | Инварианты структуры графа |
 | `render/src/core/__tests__/StructuralInvariants.test.js` | Тесты инвариантов (57) |
+| `render/src/core/GraphSnapshot.js` | Версионирование графа |
+| `render/src/core/__tests__/GraphSnapshot.test.js` | Тесты снапшотов (62) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 
