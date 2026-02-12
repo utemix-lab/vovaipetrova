@@ -157,7 +157,7 @@
 | 2.3 | Правила в Core | highlight, scope, selection в Core | ✓ |
 | 2.4 | Projection | Абстракция адаптера рендеринга | ✓ |
 | 2.5 | DevProjection | Прототип dev-линзы | ✓ |
-| 2.6 | OwnershipGraph | Граф владения состоянием | ⏳ |
+| 2.6 | OwnershipGraph | Граф владения состоянием | ✓ |
 | 2.7 | Проверка на кристалл | Тест: новая линза без копирования логики | ⏳ |
 
 ### Критерий завершения D
@@ -269,7 +269,7 @@
 
 ---
 
-*Phase 2 в работе. Текущий шаг: 2.6 — OwnershipGraph.*
+*Phase 2 в работе. Текущий шаг: 2.7 — Проверка на кристалл.*
 
 ---
 
@@ -280,6 +280,7 @@
 | `render/src/core/GraphModel.js` | Абстрактная модель графа с API |
 | `render/src/core/Projection.js` | Базовый класс проекции + реестр |
 | `render/src/core/DevProjection.js` | Прототип dev-линзы |
+| `render/src/core/OwnershipGraph.js` | Граф владения состоянием |
 | `render/src/core/index.js` | Экспорты Core |
 
 ### GraphModel API
