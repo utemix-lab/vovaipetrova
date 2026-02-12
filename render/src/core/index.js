@@ -22,6 +22,7 @@ export { DevProjection } from "./DevProjection.js";
 export { VisitorProjection } from "./VisitorProjection.js";
 export { OWLProjection, NAMESPACES } from "./OWLProjection.js";
 export { GraphRAGProjection } from "./GraphRAGProjection.js";
+export { ReflectiveProjection } from "./ReflectiveProjection.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,

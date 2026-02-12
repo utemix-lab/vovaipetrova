@@ -963,6 +963,91 @@ Phase 3 ЗАВЕРШЕНА. Core готов к Phase 4 — Cryptocosm / Рефл
 
 ---
 
+## ЭТАП P4.1: ReflectiveProjection — ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
+
+### Ключевой принцип
+
+**Рефлексия = read-only. Изменение = только через осознанное действие.**
+
+```
+Core
+ ├── VisitorProjection
+ ├── DevProjection
+ ├── OWLProjection
+ ├── GraphRAGProjection
+ └── ReflectiveProjection   ← P4.1 мета-линза
+```
+
+### Что сделано
+
+1. **Создан `ReflectiveProjection.js`:**
+   - `analyzeDensity()` — плотность графа
+   - `findIsolatedNodes()` — изолированные узлы
+   - `findHighCentralityNodes()` — центральные узлы (degree centrality)
+   - `detectOwnershipCycles()` — циклы владения
+   - `mapProjectionCoverage()` — покрытие проекций
+   - `getTypeDistribution()` — распределение по типам
+   - `getStructuralReport()` — полный отчёт
+   - `findConnectedComponents()` — компоненты связности
+   - `checkConnectivity()` — проверка связности
+   - `findBridges()` — мосты (критические рёбра)
+
+2. **Создан `ReflectiveProjection.test.js` (53 теста):**
+   - constructor (4)
+   - analyzeDensity (7)
+   - findIsolatedNodes (4)
+   - findHighCentralityNodes (5)
+   - detectOwnershipCycles (3)
+   - mapProjectionCoverage (4)
+   - getTypeDistribution (4)
+   - getStructuralReport (2)
+   - findConnectedComponents (4)
+   - checkConnectivity (4)
+   - findBridges (3)
+   - getStats (2), invalidateCache (1), destroy (1)
+   - purity (2), edge cases (3)
+
+### Результат
+
+```
+ Test Files  11 passed (11)
+      Tests  331 passed (331)
+```
+
+### Архитектурная схема Phase 4
+
+```
+Core
+ ├── VisitorProjection
+ ├── DevProjection
+ ├── OWLProjection
+ ├── GraphRAGProjection
+ └── ReflectiveProjection      ← P4.1
+
+NarrativeLayer                ← P4.2 (author-mind, read-only)
+LLMReflectionEngine           ← P4.3 (внешний потребитель)
+```
+
+### Критическая граница
+
+В Phase 4 появляется главный риск: смешать «анализ» и «изменение».
+
+Если рефлексия начнёт менять Core автоматически — кристалл разрушится.
+
+**Поэтому:**
+- Рефлексия = read-only
+- Изменение = только через осознанное действие
+
+### Терминология
+
+- **author-mind** — пульт управления для автора (абстракция)
+- **extended-mind** — воркбенч Автора, архитектурно будет "кабиной" в Cryptocosm
+- Пересечение смысловое, но реализация отдельная
+
+---
+
 ## Созданные файлы Core
 
 | Файл | Описание |
@@ -990,6 +1075,8 @@ Phase 3 ЗАВЕРШЕНА. Core готов к Phase 4 — Cryptocosm / Рефл
 | `render/src/core/__tests__/OWLProjection.test.js` | Тесты OWL-экспорта (57) |
 | `render/src/core/GraphRAGProjection.js` | GraphRAG индексация и поиск |
 | `render/src/core/__tests__/GraphRAGProjection.test.js` | Тесты GraphRAG (51) |
+| `render/src/core/ReflectiveProjection.js` | Мета-линза для рефлексии |
+| `render/src/core/__tests__/ReflectiveProjection.test.js` | Тесты ReflectiveProjection (53) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 
