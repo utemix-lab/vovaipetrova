@@ -463,56 +463,68 @@ Core можно использовать:
 
 ---
 
-## СЛЕДУЮЩИЙ ЭТАП: P3.5a — Identity & Naming Formalization
+## ЭТАП P3.5a: Identity & Naming — ЗАВЕРШЁН
 
-### Почему сейчас, а не позже
+**Дата:** 12 февраля 2026
 
-**Проблема:** Нейминг находится между тестами (P3.4) и интеграцией (P3.1).
+### Что сделано
 
-Если отложить:
-- Часть логики окажется в UI
-- Появятся `displayNameVisitor` и `displayNameDev`
-- Появятся хардкоды в tooltips
-- Кристалл даст микротрещины
+1. **Создан `core/Identity.js`:**
+   - `createIdentity(id, canonicalName, options)` — создание идентичности
+   - `getDisplayName(identity, locale)` — локализованное имя
+   - `generateSlug(identity)` — URL-friendly версия
+   - `validateIdImmutability(identity, newId)` — проверка неизменности id
+   - `updateCanonicalName(identity, newName)` — обновление имени (id сохраняется)
+   - `addAlias(identity, alias)` — добавление альтернативного имени
+   - `matchesName(identity, name)` — поиск по любому имени
+   - `extractIdentityFromNode(nodeData)` — извлечение из universe.json
+   - `serializeIdentity(identity)` — сериализация для JSON
 
-**Имя — это часть идентичности сущности.**
-**Идентичность — фундамент Core.**
+2. **Созданы тесты для Identity (33 теста):**
+   - createIdentity: валидация, aliases, meta
+   - getDisplayName: локализация, fallback
+   - generateSlug: нормализация
+   - Инварианты: id immutability, slug derivation
 
-### Что нужно формализовать
-
-| Поле | Назначение | Где хранится |
-|------|------------|--------------|
-| `id` | Machine identity (неизменяемый) | Core |
-| `canonicalName` | Онтологическое имя | Core |
-| `aliases` | Альтернативные имена | Core (опционально) |
-| `meta.lang` | Язык оригинала | Core |
-| `meta.script` | Оригинальная графика | Core |
-| `slug` | URL-friendly версия | Производное |
-| `displayName` | Отображаемое имя | Projection |
-
-### Инварианты
+### Результат
 
 ```
-✓ Projection не хранит имя — только отображает
-✓ UI не хранит canonicalName — получает из Core
-✓ slug не является идентичностью — производное от canonicalName
+ Test Files  6 passed (6)
+      Tests  122 passed (122)
+```
+
+### Инварианты зафиксированы
+
+```
 ✓ id остаётся неизменным при смене canonicalName
+✓ slug — производное от canonicalName, не идентичность
+✓ Projection может менять displayName без изменения identity
+✓ Локализация через aliases (формат: "ru:Вова")
 ```
 
-### Что сделать
+---
 
-1. **Расширить `GraphModel`:**
-   - Добавить поля `canonicalName`, `aliases`, `meta`
-   - Добавить метод `getDisplayName(locale)`
+## СЛЕДУЮЩИЙ ЭТАП: P3.5 — TypeScript для Core
 
-2. **Добавить тесты:**
-   - Projection не ломается при смене `canonicalName`
-   - `id` остаётся неизменным
-   - `getDisplayName` возвращает правильное имя для локали
+### Почему сейчас
 
-3. **Обновить `universe.json`:**
-   - Добавить `canonicalName` для узлов
-   - Добавить `meta` для многоязычных узлов
+После P3.4 (тесты) и P3.5a (Identity) — Core стабилен.
+
+TypeScript даст:
+- Формализацию сущностей как типов
+- Строгие контракты Projection
+- Защиту от утечек UI-типов в Core
+- Автодокументацию через типы
+
+### Что типизировать
+
+| Модуль | Типы |
+|--------|------|
+| `Identity.js` | `EntityIdentity`, `IdentityMeta`, `LocalizedName` |
+| `GraphModel.js` | `NodeData`, `EdgeData`, `GraphData` |
+| `highlightModel.js` | `HighlightContext`, `HighlightState`, `INTENSITY` |
+| `Projection.js` | `Projection`, `RenderContext` |
+| `OwnershipGraph.js` | `StateOwnership`, `ComputationNode` |
 
 ### Перспектива
 
@@ -520,19 +532,13 @@ Core можно использовать:
 P3.4 — Тесты для Core ✓ ЗАВЕРШЁН
    │
    ▼
-P3.5a — Identity & Naming ⏳ СЛЕДУЮЩИЙ
-   │
-   │  Формализация:
-   │  - id (machine identity)
-   │  - canonicalName (онтологическое имя)
-   │  - aliases, meta
-   │  - getDisplayName(locale)
+P3.5a — Identity & Naming ✓ ЗАВЕРШЁН
    │
    ▼
-P3.5 — TypeScript для Core
+P3.5 — TypeScript для Core ⏳ СЛЕДУЮЩИЙ
    │
    │  Типизация:
-   │  - NodeData, EdgeData
+   │  - EntityIdentity, NodeData, EdgeData
    │  - HighlightContext, HighlightState
    │  - Projection interface
    │
@@ -546,16 +552,6 @@ P3.2/P3.3 — Projections
 P3.6/P3.7 — OWL / GraphRAG
 ```
 
-### Влияние на другие компоненты
-
-| Компонент | Как затронет |
-|-----------|--------------|
-| `GraphModel` | Новые поля и методы |
-| `DevProjection` | Использует `canonicalName` |
-| `VisitorProjection` | Использует `getDisplayName()` |
-| OWL-экспорт | `canonicalName` → `rdfs:label` |
-| RAG-интеграция | `canonicalName` для поиска |
-
 ---
 
 ## Созданные файлы Core
@@ -566,11 +562,13 @@ P3.6/P3.7 — OWL / GraphRAG
 | `render/src/core/Projection.js` | Базовый класс проекции + реестр |
 | `render/src/core/DevProjection.js` | Прототип dev-линзы |
 | `render/src/core/OwnershipGraph.js` | Граф владения состоянием |
+| `render/src/core/Identity.js` | Формализация идентичности сущностей |
 | `render/src/core/index.js` | Экспорты Core |
 | `render/src/core/test-crystal.js` | Crystal Test (Node.js) |
 | `render/src/core/__tests__/highlightModel.test.js` | Тесты highlightModel (31) |
 | `render/src/core/__tests__/GraphModel.test.js` | Тесты GraphModel (23) |
 | `render/src/core/__tests__/OwnershipGraph.test.js` | Тесты OwnershipGraph (23) |
+| `render/src/core/__tests__/Identity.test.js` | Тесты Identity (33) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 
 ### GraphModel API
