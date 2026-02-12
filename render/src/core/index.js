@@ -23,6 +23,19 @@ export { VisitorProjection } from "./VisitorProjection.js";
 export { OWLProjection, NAMESPACES } from "./OWLProjection.js";
 export { GraphRAGProjection } from "./GraphRAGProjection.js";
 export { ReflectiveProjection } from "./ReflectiveProjection.js";
+export {
+  NODE_TYPES,
+  NODE_TYPE_META,
+  EDGE_TYPES,
+  EDGE_TYPE_META,
+  VISIBILITY,
+  STATUS,
+  IDENTITY_REQUIRED_FIELDS,
+  IDENTITY_RECOMMENDED_FIELDS,
+  SchemaValidator,
+  SCHEMA_VERSION,
+  SCHEMA_META,
+} from "./CanonicalGraphSchema.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,

@@ -954,11 +954,11 @@ P4.1 — ReflectiveProjection ✓ ЗАВЕРШЁН
    │  findConnectedComponents, checkConnectivity, findBridges
    │
    ▼
-P4.2a — Canonical Schema Definition ⏳ СЛЕДУЮЩИЙ
+P4.2a — Canonical Schema Definition ✓ ЗАВЕРШЁН
    │
-   │  Допустимые типы узлов и рёбер
-   │  Обязательные поля Identity
-   │  Правила Ownership
+   │  NODE_TYPES (9), EDGE_TYPES (7)
+   │  SchemaValidator, SCHEMA_VERSION 1.0.0
+   │  62 теста
    │
    ▼
 P4.2b — Structural Invariants
@@ -1016,9 +1016,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН.
-Следующий: P4.2a Canonical Schema Definition.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a ЗАВЕРШЁН.
+Следующий: P4.2b Structural Invariants.
 NarrativeLayer отложен до структурной зрелости.
+Всего: 393 теста.
 ```
 
 ---
@@ -1027,18 +1028,45 @@ NarrativeLayer отложен до структурной зрелости.
 
 **Принцип:** Phase 3 дала функциональность. P4.1 дал рефлексию. Теперь время шлифовки.
 
-### P4.2a — Canonical Schema Definition
+### P4.2a — Canonical Schema Definition ✓ ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
 
 **Цель:** Зафиксировать контракт до больших расширений.
 
-**Содержание:**
-- Допустимые типы узлов (character, domain, subdomain, hub, root, ...)
-- Допустимые типы рёбер (связь, владение, ...)
-- Обязательные поля Identity (id, canonicalName, ...)
-- Правила Ownership (кто может владеть чем)
-- Валидация при загрузке графа
+**Что сделано:**
 
-**Результат:** `CanonicalGraphSchema v1`
+1. **`CanonicalGraphSchema.js`:**
+   - `NODE_TYPES` — 9 типов узлов (root, hub, character, domain, workbench, collab, subdomain, artifact, concept)
+   - `NODE_TYPE_META` — метаданные типов (description, abstraction, role, allowedChildren, requiredFields)
+   - `EDGE_TYPES` — 7 типов рёбер (structural, contains, relates, owns, depends, influences, collaborates)
+   - `EDGE_TYPE_META` — метаданные рёбер (description, directed, allowedSourceTypes, allowedTargetTypes)
+   - `VISIBILITY` — public, private, hidden
+   - `STATUS` — core, expandable, draft, archived
+   - `IDENTITY_REQUIRED_FIELDS` — id
+   - `IDENTITY_RECOMMENDED_FIELDS` — label, canonicalName, aliases, slug
+   - `SchemaValidator` — валидация узлов, рёбер, графа
+   - `SCHEMA_VERSION` — 1.0.0
+
+2. **`CanonicalGraphSchema.test.js` (62 теста):**
+   - NODE_TYPES (4)
+   - NODE_TYPE_META (5)
+   - EDGE_TYPES (3)
+   - EDGE_TYPE_META (4)
+   - VISIBILITY (2)
+   - STATUS (2)
+   - IDENTITY_REQUIRED_FIELDS (2)
+   - IDENTITY_RECOMMENDED_FIELDS (2)
+   - SchemaValidator.validateNode (10)
+   - SchemaValidator.validateEdge (10)
+   - SchemaValidator.validateGraph (8)
+   - SchemaValidator.getSchemaStats (3)
+   - SchemaValidator.reset (1)
+   - SCHEMA_VERSION (2)
+   - SCHEMA_META (4)
+   - Integration (2)
+
+**Результат:** `CanonicalGraphSchema v1.0.0` — 393 теста (все прошли)
 
 ### P4.2b — Structural Invariants
 
@@ -1223,6 +1251,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/GraphRAGProjection.test.js` | Тесты GraphRAG (51) |
 | `render/src/core/ReflectiveProjection.js` | Мета-линза для рефлексии |
 | `render/src/core/__tests__/ReflectiveProjection.test.js` | Тесты ReflectiveProjection (53) |
+| `render/src/core/CanonicalGraphSchema.js` | Каноническая схема графа v1 |
+| `render/src/core/__tests__/CanonicalGraphSchema.test.js` | Тесты схемы (62) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 
