@@ -975,11 +975,11 @@ P4.2c — Versioned Snapshots ✓ ЗАВЕРШЁН
    │  62 теста
    │
    ▼
-P4.2d — Performance Audit
+P4.2d — Performance Audit ✓ ЗАВЕРШЁН
    │
-   │  Synthetic graph generator
-   │  Нагрузочные тесты (10k узлов)
-   │  Memory snapshots
+   │  SyntheticGraphGenerator, PerformanceAuditor
+   │  benchmark, analyzeScalability
+   │  42 теста
    │
    ▼
 P4.2e — Change Protocol
@@ -1016,10 +1016,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-c ЗАВЕРШЕНЫ.
-Следующий: P4.2d Performance Audit (опционально).
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-d ЗАВЕРШЕНЫ.
+Следующий: P4.2e Change Protocol (опционально).
 NarrativeLayer отложен до структурной зрелости.
-Всего: 512 тестов.
+Всего: 554 теста.
 ```
 
 ---
@@ -1161,17 +1161,39 @@ NarrativeLayer отложен до структурной зрелости.
 
 **Результат:** `GraphSnapshot v1.0.0` — 512 тестов (все прошли)
 
-### P4.2d — Performance Audit
+### P4.2d — Performance Audit ✓ ЗАВЕРШЁН
 
-**Цель:** Предсказуемость роста.
+**Дата:** 12 февраля 2026
 
-**Содержание:**
-- Synthetic graph generator (100, 1k, 10k узлов)
-- Нагрузочные тесты buildIndex, expandContext
-- Memory snapshots
-- Замеры времени
+**Цель:** Предсказуемость роста — инструменты для нагрузочного тестирования.
 
-**Результат:** Отчёт о масштабируемости
+**Что сделано:**
+
+1. **`PerformanceAudit.js`:**
+   - **SyntheticGraphGenerator** — генератор синтетических графов:
+     - Детерминированная генерация (seed)
+     - Настраиваемые параметры: nodeCount, edgeDensity
+     - Автоматическая иерархия (root → hubs → nodes)
+     - `generate()`, `generateSeries(sizes)`
+   - **benchmark(fn, iterations)** — измерение времени выполнения
+   - **benchmarkAsync(fn, iterations)** — для async функций
+   - **PerformanceAuditor** — аудитор производительности:
+     - `run(operation, size, fn)` — запуск бенчмарка
+     - `setThreshold(key, ms)` — установка порогов
+     - `getReport()`, `getTextReport()` — отчёты
+   - **analyzeScalability(dataPoints)** — анализ сложности O(n), O(n²)
+   - **formatTime(ms)**, **formatSize(bytes)** — форматирование
+
+2. **`PerformanceAudit.test.js` (42 теста):**
+   - SyntheticGraphGenerator (16)
+   - benchmark / benchmarkAsync (3)
+   - formatTime / formatSize (6)
+   - PerformanceAuditor (8)
+   - analyzeScalability (3)
+   - Integration: Real benchmarks (4)
+   - Stress test: Medium graphs (2)
+
+**Результат:** `PerformanceAudit v1` — 554 теста (все прошли)
 
 ### P4.2e — Change Protocol
 
@@ -1326,6 +1348,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/StructuralInvariants.test.js` | Тесты инвариантов (57) |
 | `render/src/core/GraphSnapshot.js` | Версионирование графа |
 | `render/src/core/__tests__/GraphSnapshot.test.js` | Тесты снапшотов (62) |
+| `render/src/core/PerformanceAudit.js` | Нагрузочное тестирование |
+| `render/src/core/__tests__/PerformanceAudit.test.js` | Тесты бенчмарков (42) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 

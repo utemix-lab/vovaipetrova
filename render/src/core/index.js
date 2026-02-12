@@ -63,6 +63,15 @@ export {
   CHANGE_TYPE,
   SNAPSHOT_VERSION,
 } from "./GraphSnapshot.js";
+export {
+  SyntheticGraphGenerator,
+  PerformanceAuditor,
+  benchmark,
+  benchmarkAsync,
+  formatTime,
+  formatSize,
+  analyzeScalability,
+} from "./PerformanceAudit.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,
