@@ -961,11 +961,11 @@ P4.2a — Canonical Schema Definition ✓ ЗАВЕРШЁН
    │  62 теста
    │
    ▼
-P4.2b — Structural Invariants
+P4.2b — Structural Invariants ✓ ЗАВЕРШЁН
    │
-   │  Инварианты графа (нет висящих ссылок)
-   │  Инварианты проекций (покрытие)
-   │  Инварианты связности
+   │  16 инвариантов: Graph, Identity, Edge, Connectivity, Hierarchy
+   │  InvariantChecker, STRICTNESS
+   │  57 тестов
    │
    ▼
 P4.2c — Versioned Snapshots
@@ -1016,10 +1016,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a ЗАВЕРШЁН.
-Следующий: P4.2b Structural Invariants.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a ЗАВЕРШЁН. P4.2b ЗАВЕРШЁН.
+Следующий: P4.2c Versioned Snapshots.
 NarrativeLayer отложен до структурной зрелости.
-Всего: 393 теста.
+Всего: 450 тестов.
 ```
 
 ---
@@ -1068,21 +1068,56 @@ NarrativeLayer отложен до структурной зрелости.
 
 **Результат:** `CanonicalGraphSchema v1.0.0` — 393 теста (все прошли)
 
-### P4.2b — Structural Invariants
+### P4.2b — Structural Invariants ✓ ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
 
 **Цель:** Математика кристалла — гарантии структуры.
 
-**Содержание:**
-- Инварианты графа: нет «висящих» ownership ссылок, identity всегда существует
-- Инварианты проекций: каждая projection покрывает 100% узлов (или явно не покрывает)
-- Инварианты связности: если система задумана как связная — enforce это
-- Тесты инвариантов
+**Что сделано:**
 
-**Результат:** `StructuralInvariants.js` + тесты
+1. **`StructuralInvariants.js`:**
+   - **Graph Invariants (INV-G1 to INV-G4):**
+     - `checkUniqueNodeIds` — уникальность ID узлов
+     - `checkUniqueEdgeIds` — уникальность ID рёбер
+     - `checkNoDanglingEdges` — нет висящих рёбер
+     - `checkNoSelfLoops` — нет петель
+   - **Identity Invariants (INV-I1 to INV-I4):**
+     - `checkAllNodesHaveId` — все узлы имеют ID
+     - `checkAllNodesHaveType` — все узлы имеют тип
+     - `checkKnownNodeTypes` — типы известны схеме
+     - `checkAllNodesHaveLabel` — все узлы имеют label
+   - **Edge Invariants (INV-E1 to INV-E3):**
+     - `checkAllEdgesHaveType` — все рёбра имеют тип
+     - `checkKnownEdgeTypes` — типы известны схеме
+     - `checkNoDuplicateEdges` — нет дубликатов
+   - **Connectivity Invariants (INV-C1 to INV-C3):**
+     - `checkGraphConnected` — граф связен
+     - `checkNoIsolatedNodes` — нет изолированных узлов
+     - `checkHasRootNode` — есть корневой узел
+   - **Hierarchy Invariants (INV-H1 to INV-H2):**
+     - `checkNoContainsCycles` — нет циклов в contains
+     - `checkSingleParent` — один родитель в contains
+   - **InvariantChecker:**
+     - `checkAll(graphData, strictness)` — проверка всех
+     - `checkOne(invariantName, graphData)` — проверка одного
+     - `listInvariants()` — список всех инвариантов
+   - **STRICTNESS:** MINIMAL (5), STANDARD (8), STRICT (16)
+
+2. **`StructuralInvariants.test.js` (57 тестов):**
+   - INV-G1 to INV-G4 (12)
+   - INV-I1 to INV-I4 (10)
+   - INV-E1 to INV-E3 (8)
+   - INV-C1 to INV-C3 (8)
+   - INV-H1 to INV-H2 (6)
+   - InvariantChecker (11)
+   - Integration (2)
+
+**Результат:** `InvariantChecker v1` — 450 тестов (все прошли)
 
 ### P4.2c — Versioned Snapshots
 
-**Цель:** Переход к эволюционной системе.
+**Цель:** Версионирование графа.
 
 **Содержание:**
 - `GraphSnapshot` — снимок состояния графа
@@ -1253,6 +1288,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/ReflectiveProjection.test.js` | Тесты ReflectiveProjection (53) |
 | `render/src/core/CanonicalGraphSchema.js` | Каноническая схема графа v1 |
 | `render/src/core/__tests__/CanonicalGraphSchema.test.js` | Тесты схемы (62) |
+| `render/src/core/StructuralInvariants.js` | Инварианты структуры графа |
+| `render/src/core/__tests__/StructuralInvariants.test.js` | Тесты инвариантов (57) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 

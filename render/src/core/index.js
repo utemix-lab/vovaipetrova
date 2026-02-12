@@ -36,6 +36,26 @@ export {
   SCHEMA_VERSION,
   SCHEMA_META,
 } from "./CanonicalGraphSchema.js";
+export {
+  checkUniqueNodeIds,
+  checkUniqueEdgeIds,
+  checkNoDanglingEdges,
+  checkNoSelfLoops,
+  checkAllNodesHaveId,
+  checkAllNodesHaveType,
+  checkKnownNodeTypes,
+  checkAllNodesHaveLabel,
+  checkAllEdgesHaveType,
+  checkKnownEdgeTypes,
+  checkNoDuplicateEdges,
+  checkGraphConnected,
+  checkNoIsolatedNodes,
+  checkHasRootNode,
+  checkNoContainsCycles,
+  checkSingleParent,
+  InvariantChecker,
+  STRICTNESS,
+} from "./StructuralInvariants.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,
