@@ -32,6 +32,9 @@ export {
 // P5.0b — Abstract Schema
 export { Schema } from "./Schema.js";
 
+// P5.0d — World Adapter
+export { WorldAdapter } from "./WorldAdapter.js";
+
 export const ENGINE_VERSION = "0.1.0";
 
 /**
