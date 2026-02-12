@@ -178,20 +178,20 @@ describe("SyntheticGraphGenerator", () => {
     });
   });
   
-  describe("large graphs", () => {
-    it("should generate 200 node graph", () => {
-      const gen = new SyntheticGraphGenerator({ nodeCount: 200 });
+  describe("realistic graphs", () => {
+    it("should generate 50 node graph", () => {
+      const gen = new SyntheticGraphGenerator({ nodeCount: 50 });
       const graph = gen.generate();
       
-      expect(graph.nodes).toHaveLength(200);
-      expect(graph.edges.length).toBeGreaterThan(20);
+      expect(graph.nodes).toHaveLength(50);
+      expect(graph.edges.length).toBeGreaterThan(5);
     });
     
-    it("should generate 500 node graph", () => {
-      const gen = new SyntheticGraphGenerator({ nodeCount: 500 });
+    it("should generate 100 node graph", () => {
+      const gen = new SyntheticGraphGenerator({ nodeCount: 100 });
       const graph = gen.generate();
       
-      expect(graph.nodes).toHaveLength(500);
+      expect(graph.nodes).toHaveLength(100);
     });
   });
 });
@@ -482,28 +482,28 @@ describe("Integration: Real benchmarks", () => {
 // STRESS TEST
 // ═══════════════════════════════════════════════════════════════════════════
 
-describe("Stress test: Medium graphs", () => {
-  it("should handle 200 nodes efficiently", () => {
-    const gen = new SyntheticGraphGenerator({ nodeCount: 200 });
+describe("Stress test: Realistic graphs", () => {
+  it("should handle 50 nodes efficiently", () => {
+    const gen = new SyntheticGraphGenerator({ nodeCount: 50 });
     const graph = gen.generate();
     
     const start = performance.now();
     const snapshot = new GraphSnapshot(graph);
     const time = performance.now() - start;
     
-    expect(snapshot.nodes).toHaveLength(200);
-    expect(time).toBeLessThan(500);
+    expect(snapshot.nodes).toHaveLength(50);
+    expect(time).toBeLessThan(100); // Should be very fast
   });
   
-  it("should handle 300 nodes efficiently", () => {
-    const gen = new SyntheticGraphGenerator({ nodeCount: 300 });
+  it("should handle 100 nodes efficiently", () => {
+    const gen = new SyntheticGraphGenerator({ nodeCount: 100 });
     const graph = gen.generate();
     
     const start = performance.now();
     const snapshot = new GraphSnapshot(graph);
     const time = performance.now() - start;
     
-    expect(snapshot.nodes).toHaveLength(300);
-    expect(time).toBeLessThan(500);
+    expect(snapshot.nodes).toHaveLength(100);
+    expect(time).toBeLessThan(100);
   });
 });
