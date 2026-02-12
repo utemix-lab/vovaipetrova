@@ -733,6 +733,65 @@ visitor.js
 
 ---
 
+## ЭТАП P3.2/P3.3: Projections — ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
+
+### Что сделано
+
+1. **Создан `VisitorProjection.js`:**
+   - Адаптер между Core и Three.js 3D-графом
+   - `applyHighlight(state)` — применяет highlightState к визуалу
+   - `setGraph(graph, nodesById)` — устанавливает ссылку на граф
+   - `getHighlightSets()` — совместимость с существующим кодом
+   - Не содержит бизнес-логики подсветки
+
+2. **Доработан `DevProjection.js`:**
+   - `renderText()` — текстовый вывод состояния
+   - `exportJSON()` — JSON экспорт
+   - `exportMarkdown()` — Markdown экспорт
+   - Не использует DOM (Boundary Freeze)
+
+3. **Создан `Projection.test.js` (40 тестов):**
+   - Projection base class (3)
+   - ProjectionRegistry (5)
+   - DevProjection (14)
+   - VisitorProjection (16)
+   - Projection purity (2)
+
+### Результат
+
+```
+ Test Files  8 passed (8)
+      Tests  170 passed (170)
+```
+
+### Архитектура Projections
+
+```
+Core (highlightState)
+    │
+    ├── VisitorProjection
+    │       │
+    │       ├── applyHighlight(state)
+    │       ├── highlightNodes/Links Sets
+    │       └── graph.refresh()
+    │
+    └── DevProjection
+            │
+            ├── renderText(graphModel, context)
+            ├── exportJSON(graphModel, context)
+            └── exportMarkdown(graphModel, context)
+```
+
+### Значение
+
+- **Любая новая линза берёт данные из Core**
+- Visitor и Dev проекции используют один источник истины
+- Архитектурная кристаллическая решётка остаётся неизменной
+
+---
+
 ## СТРАТЕГИЧЕСКАЯ ПЕРСПЕКТИВА
 
 ```
@@ -750,15 +809,15 @@ P3.5b — Boundary Freeze ✓ ЗАВЕРШЁН
    ▼
 P3.1 — Интеграция Core в visitor ✓ ЗАВЕРШЁН
    │
-   │  visitor — клиент Core:
-   │  - computeHighlight() — единственный источник
-   │  - highlightNodes/Links — производные
+   ▼
+P3.2/P3.3 — Projections ✓ ЗАВЕРШЁН
+   │
+   │  VisitorProjection: адаптер для 3D-графа
+   │  DevProjection: текст/JSON/Markdown экспорт
+   │  40 тестов
    │
    ▼
-P3.2/P3.3 — Projections ⏳ СЛЕДУЮЩИЙ
-   │
-   ▼
-P3.6/P3.7 — OWL / GraphRAG
+P3.6/P3.7 — OWL / GraphRAG ⏳ СЛЕДУЮЩИЙ
 ```
 
 ### Важное предупреждение
@@ -795,6 +854,8 @@ P3.6/P3.7 — OWL / GraphRAG
 | `render/src/core/types/highlight.d.ts` | Типы Highlight |
 | `render/src/core/types/projection.d.ts` | Типы Projection |
 | `render/src/core/types/index.d.ts` | Центральный экспорт типов |
+| `render/src/core/VisitorProjection.js` | Адаптер для 3D-графа |
+| `render/src/core/__tests__/Projection.test.js` | Тесты Projections (40) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 

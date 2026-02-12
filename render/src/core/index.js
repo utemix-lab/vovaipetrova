@@ -19,6 +19,7 @@
 export { GraphModel, createContextFromState, createEmptyContext, INTENSITY } from "./GraphModel.js";
 export { Projection, ProjectionRegistry, projectionRegistry } from "./Projection.js";
 export { DevProjection } from "./DevProjection.js";
+export { VisitorProjection } from "./VisitorProjection.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,
