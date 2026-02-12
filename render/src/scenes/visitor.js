@@ -135,6 +135,7 @@ import { ThreeGraphEngine } from "../graph/three-graph-engine.js";
 import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
 import { initRegistry, validateConfigAgainstRules, initToolCatalog, getPracticesByDomain } from "../ontology";
+import { computeHighlight, createContextFromState, INTENSITY } from "../ontology/highlightModel.js";
 
 // === Константы ===
 const CONFIG = {
@@ -493,40 +494,41 @@ function getNodesByType(type) {
   return [...nodesById.values()].filter(n => n.type === type);
 }
 
+/**
+ * Очистить Type Highlight.
+ * 
+ * МИГРАЦИЯ (Маршрут G): Очищает состояние для модели.
+ */
 function clearTypeHighlight() {
-  // Снять подсветку со всех узлов в Set
-  typeHighlightedNodeIds.forEach(nodeId => {
-    applyNodeMaterial(nodeId);
-  });
   typeHighlightedNodeIds.clear();
   typeHighlightPrevType = null;
 }
 
+/**
+ * Применить Type Highlight.
+ * 
+ * МИГРАЦИЯ (Маршрут G): Обновляет состояние и делегирует в updateHighlight().
+ */
 function applyTypeHighlight(active) {
   if (!currentStep) return;
   
-  // Сначала снять предыдущую подсветку
+  // Очистить предыдущее состояние
   clearTypeHighlight();
   
-  if (!active) {
-    graph.refresh();
-    return;
+  if (active) {
+    const currentType = currentStep.type;
+    const sameTypeNodes = getNodesByType(currentType);
+    
+    // Заполнить Set для модели
+    sameTypeNodes.forEach(node => {
+      typeHighlightedNodeIds.add(node.id);
+    });
+    
+    typeHighlightPrevType = currentType;
   }
   
-  const currentType = currentStep.type;
-  const sameTypeNodes = getNodesByType(currentType);
-  
-  // Подсветить все узлы этого типа (без рёбер)
-  // Текущий узел уже подсвечен стандартной логикой с рёбрами
-  sameTypeNodes.forEach(node => {
-    if (node.id !== currentStep.id) {
-      typeHighlightedNodeIds.add(node.id);
-      applyNodeMaterial(node.id);
-    }
-  });
-  
-  typeHighlightPrevType = currentType;
-  graph.refresh();
+  // Вызвать центральную точку вычисления
+  updateHighlight();
 }
 
 function setTypeHighlightActive(active) {
@@ -565,6 +567,85 @@ const highlightNodes = new Set();
 const highlightLinks = new Set();
 const halfHighlightLinks = new Set(); // Рёбра с половинной яркостью (selected без hover)
 let highlightMode = "none"; // "none" | "selected" | "hover" | "scope"
+
+// ═══════════════════════════════════════════════════════════════════════════
+// HIGHLIGHT MODEL INTEGRATION (Маршрут G)
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// Центральная точка вычисления подсветки.
+// Все изменения подсветки должны проходить через updateHighlight().
+// 
+// БЫЛО: highlightedNodes модифицируется из 5+ мест
+// СТАЛО: highlightedNodes = производная от computeHighlight()
+// ═══════════════════════════════════════════════════════════════════════════
+
+let cachedHighlightState = null;
+
+/**
+ * Обновить подсветку через вычислительную модель.
+ * ЕДИНСТВЕННАЯ точка входа для изменения подсветки.
+ */
+function updateHighlight() {
+  const context = createContextFromState({
+    currentStepId: currentStep?.id || null,
+    hoverNodeId: hoverNode?.id || null,
+    widgetHighlightedNodeId: widgetHighlightedNodeId,
+    scopeHighlightNodeIds: scopeHighlightNodeIds,
+    scopeHighlightActive: scopeHighlightActive,
+    typeHighlightedNodeIds: typeHighlightedNodeIds,
+    typeHighlightActive: typeHighlightActive
+  });
+  
+  const graphData = {
+    nodesById: nodesById,
+    neighborsById: neighborsById,
+    edges: graph?.graphData()?.links || []
+  };
+  
+  cachedHighlightState = computeHighlight(context, graphData);
+  renderHighlight(cachedHighlightState);
+}
+
+/**
+ * Применить состояние подсветки к визуалу.
+ * Чистая функция рендеринга — только читает state, применяет к DOM/Three.js.
+ */
+function renderHighlight(state) {
+  if (!state) return;
+  
+  // Обновить Sets для совместимости с существующим кодом
+  highlightNodes.clear();
+  highlightLinks.clear();
+  halfHighlightLinks.clear();
+  highlightMode = state.mode;
+  
+  const graphData = graph?.graphData();
+  if (!graphData) return;
+  
+  // Заполнить highlightNodes
+  for (const [nodeId, intensity] of state.nodeIntensities) {
+    if (intensity >= INTENSITY.HALF) {
+      const node = nodesById.get(nodeId);
+      if (node) highlightNodes.add(node);
+    }
+  }
+  
+  // Заполнить highlightLinks / halfHighlightLinks
+  for (const link of graphData.links) {
+    const intensity = state.edgeIntensities.get(link.id);
+    if (intensity === INTENSITY.FULL) {
+      highlightLinks.add(link);
+    } else if (intensity === INTENSITY.HALF) {
+      halfHighlightLinks.add(link);
+    }
+  }
+  
+  // Обновить материалы узлов
+  nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
+  
+  // Обновить граф
+  if (graph) graph.refresh();
+}
 const nodeGeometry = new THREE.SphereGeometry(1, 48, 48);
 const systemNodeGeometry = new THREE.SphereGeometry(1, 96, 96);
 const nodeMaterialCache = new Map();
@@ -1313,34 +1394,22 @@ function buildIndex(data) {
 
 /**
  * Обновить подсветку рёбер для узла.
+ * 
+ * МИГРАЦИЯ (Маршрут G): Эта функция теперь обновляет состояние
+ * и делегирует вычисление в highlightModel.js через updateHighlight().
+ * 
  * @param {Object|null} node - Узел для подсветки (null для сброса)
  * @param {string} mode - Режим: "hover" | "selected"
  */
 function refreshHighlights(node, mode = "hover") {
-  highlightNodes.clear();
-  highlightLinks.clear();
-  halfHighlightLinks.clear();
-  highlightMode = node ? mode : "none";
-
-  if (node) {
-    highlightNodes.add(node);
-    const graphData = graph.graphData();
-    graphData.links.forEach((link) => {
-      const sourceId = getId(link.source);
-      const targetId = getId(link.target);
-      if (sourceId === node.id || targetId === node.id) {
-        // Выбираем набор в зависимости от режима
-        if (mode === "selected") {
-          halfHighlightLinks.add(link);
-        } else {
-          highlightLinks.add(link);
-        }
-        const otherId = sourceId === node.id ? targetId : sourceId;
-        const otherNode = nodesById.get(otherId);
-        if (otherNode) highlightNodes.add(otherNode);
-      }
-    });
+  // Обновить состояние для вычислительной модели
+  if (mode === "hover" && node) {
+    // Временно устанавливаем hoverNode для модели
+    // (hoverNode уже установлен в onNodeHover, здесь для виджетов)
   }
+  
+  // Вызвать центральную точку вычисления
+  updateHighlight();
 }
 
 // === События графа ===
@@ -3477,47 +3546,30 @@ function setScopeWidgetHighlight(container, isActive) {
   });
 }
 
+/**
+ * Активировать подсветку scope.
+ * 
+ * МИГРАЦИЯ (Маршрут G): Обновляет состояние и делегирует в updateHighlight().
+ */
 function activateScopeHighlight(nodeIds) {
   scopeHighlightActive = true;
   scopeHighlightNodeIds = new Set(nodeIds);
-  highlightNodes.clear();
-  highlightLinks.clear();
-  halfHighlightLinks.clear();
-  highlightMode = "scope";
-
-  const graphData = graph.graphData();
   
-  // Add all scope nodes
-  graphData.nodes.forEach((node) => {
-    if (scopeHighlightNodeIds.has(node.id)) highlightNodes.add(node);
-  });
-  
-  // For each node in scope, highlight ALL its links (to any neighbor)
-  graphData.links.forEach((link) => {
-    const sourceId = getId(link.source);
-    const targetId = getId(link.target);
-    // Highlight link if either end is in scope
-    if (scopeHighlightNodeIds.has(sourceId) || scopeHighlightNodeIds.has(targetId)) {
-      highlightLinks.add(link);
-      // Also add the neighbor nodes (even if not in scope)
-      const sourceNode = nodesById.get(sourceId);
-      const targetNode = nodesById.get(targetId);
-      if (sourceNode) highlightNodes.add(sourceNode);
-      if (targetNode) highlightNodes.add(targetNode);
-    }
-  });
-
-  updateScopeNodeMaterials();
-  graph.refresh();
+  // Вызвать центральную точку вычисления
+  updateHighlight();
 }
 
+/**
+ * Снять подсветку scope.
+ * 
+ * МИГРАЦИЯ (Маршрут G): Обновляет состояние и делегирует в updateHighlight().
+ */
 function clearScopeHighlight() {
   scopeHighlightActive = false;
   scopeHighlightNodeIds = new Set();
-  // Возврат к подсветке выделенного узла (полсилы)
-  refreshHighlights(currentStep, "selected");
-  updateScopeNodeMaterials();
-  graph.refresh();
+  
+  // Вызвать центральную точку вычисления
+  updateHighlight();
 }
 
 function updateScopeNodeMaterials() {

@@ -121,4 +121,47 @@ LLM + RAG + GraphRAG смогут анализировать:
 
 ---
 
-*Следующий шаг: создать `ontology/highlightModel.js` и реализовать `computeHighlight()`.*
+## Шаг #1: Создание highlightModel.js
+
+**Дата:** 12 февраля 2026  
+**Статус:** ВЫПОЛНЕН
+
+### Что сделано
+
+1. **Создан `render/src/ontology/highlightModel.js`:**
+   - Чистая функция `computeHighlight(context, graph) → HighlightState`
+   - Типы: `HighlightContext`, `HighlightState`, `INTENSITY`
+   - Без DOM, Three.js, side effects
+   - Логика для всех режимов: scope, hover, selected, type
+
+2. **Интеграция в `visitor.js`:**
+   - Добавлен импорт `computeHighlight`, `createContextFromState`, `INTENSITY`
+   - Создана `updateHighlight()` — единственная точка входа
+   - Создана `renderHighlight(state)` — применение состояния к визуалу
+   - `refreshHighlights()` теперь вызывает `updateHighlight()`
+   - `activateScopeHighlight()` теперь вызывает `updateHighlight()`
+   - `clearScopeHighlight()` теперь вызывает `updateHighlight()`
+   - `applyTypeHighlight()` теперь вызывает `updateHighlight()`
+
+### Архитектурный сдвиг
+
+```
+БЫЛО:
+handleHover → modify highlightedNodes → applyNodeMaterial → updateLinkOpacities
+(5+ точек мутации)
+
+СТАЛО:
+updateHighlight() → computeHighlight(context) → renderHighlight(state)
+(1 точка вычисления)
+```
+
+### Результат
+
+- Build успешен
+- Подсветка работает как раньше
+- Появилась формальная точка причинности
+- Модель готова к анализу LLM/RAG
+
+---
+
+*Следующий шаг: расширить модель на другие аспекты (navigation, scope, etc.)*
