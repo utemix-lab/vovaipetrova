@@ -792,6 +792,71 @@ Core (highlightState)
 
 ---
 
+## ЭТАП P3.6: OWL-экспорт — В РАБОТЕ
+
+**Дата начала:** 12 февраля 2026
+
+### Цель
+
+Создать адаптер Core → OWL для экспорта онтологии в стандартный формат.
+
+### Задачи
+
+1. **Создать `OWLProjection.js`:**
+   - Адаптер между Core и OWL/RDF
+   - Сериализация GraphModel → OWL-онтология
+   - Identity, canonicalName, типы → OWL-классы и свойства
+   - OwnershipGraph → OWL-отношения
+
+2. **Реализовать сериализацию:**
+   - Nodes → owl:Class / owl:NamedIndividual
+   - Edges → owl:ObjectProperty
+   - HighlightState → owl:AnnotationProperty
+   - Identity → rdfs:label, skos:prefLabel, skos:altLabel
+
+3. **Тестирование:**
+   - Валидная RDF/OWL-структура
+   - Соответствие идентичности и связей
+   - Boundary Freeze (без DOM)
+
+### Перспективы после P3.6
+
+- Автоматическая документация из OWL
+- Интеграция с внешними онтологиями
+- Экспорт для LLM-reasoning
+
+---
+
+## ЭТАП P3.7: GraphRAG интеграция — ПЛАНИРУЕТСЯ
+
+### Цель
+
+RAG поверх Core GraphModel для поиска, reasoning, Q&A.
+
+### Задачи
+
+1. **RAG поверх Core:**
+   - Nodes + Edges + OwnershipGraph → knowledge graph
+   - HighlightState, Identity, Ownership → RAG-узлы и связи
+
+2. **Интеграция:**
+   - Поиск по графу
+   - Reasoning на основе связей
+   - Q&A с контекстом из Core
+
+3. **Использование Core как источника истины:**
+   - Любые новые проекции берут RAG из Core
+   - Без дублирования логики
+
+### Перспективы после P3.7
+
+- Сценарии рефлексии для LLM
+- Dev-анализ зависимостей
+- Автоматическая документация
+- Cryptocosm как "мозг" системы
+
+---
+
 ## СТРАТЕГИЧЕСКАЯ ПЕРСПЕКТИВА
 
 ```
@@ -817,18 +882,31 @@ P3.2/P3.3 — Projections ✓ ЗАВЕРШЁН
    │  40 тестов
    │
    ▼
-P3.6/P3.7 — OWL / GraphRAG ⏳ СЛЕДУЮЩИЙ
+P3.6 — OWL-экспорт ⏳ В РАБОТЕ
+   │
+   │  Core → OWL/RDF сериализация
+   │  Identity → rdfs:label, skos:prefLabel
+   │  OwnershipGraph → owl:ObjectProperty
+   │
+   ▼
+P3.7 — GraphRAG интеграция
+   │
+   │  RAG поверх Core GraphModel
+   │  Knowledge graph из Nodes + Edges
+   │  Q&A с контекстом из Core
+   │
+   ▼
+P4.x — Cryptocosm / Рефлексия
 ```
 
-### Важное предупреждение
+### Текущий статус
 
 ```
-Не ускоряться к OWL или GraphRAG.
+Core стабилен, типизирован, протестирован (170 тестов).
+Projections реализованы и используют единый источник истины.
+Архитектура кристаллическая, границы зафиксированы.
 
-Сначала:
-  Core → типы → границы → интеграция → стабильность
-
-Потом расширение.
+Можно безопасно строить OWL/GraphRAG без риска сломать основную логику.
 ```
 
 ---
