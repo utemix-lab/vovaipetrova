@@ -954,13 +954,55 @@ P4.1 — ReflectiveProjection ✓ ЗАВЕРШЁН
    │  findConnectedComponents, checkConnectivity, findBridges
    │
    ▼
-P4.2 — NarrativeLayer ⏳ СЛЕДУЮЩИЙ
+P4.2a — Canonical Schema Definition ⏳ СЛЕДУЮЩИЙ
+   │
+   │  Допустимые типы узлов и рёбер
+   │  Обязательные поля Identity
+   │  Правила Ownership
+   │
+   ▼
+P4.2b — Structural Invariants
+   │
+   │  Инварианты графа (нет висящих ссылок)
+   │  Инварианты проекций (покрытие)
+   │  Инварианты связности
+   │
+   ▼
+P4.2c — Versioned Snapshots
+   │
+   │  GraphSnapshot, diff между версиями
+   │  Эволюция архитектуры
+   │  Рефлексия во времени
+   │
+   ▼
+P4.2d — Performance Audit
+   │
+   │  Synthetic graph generator
+   │  Нагрузочные тесты (10k узлов)
+   │  Memory snapshots
+   │
+   ▼
+P4.2e — Change Protocol
+   │
+   │  GraphMutationProtocol
+   │  change proposal → validation → apply → snapshot
+   │
+   ▼
+P4.2f — Ontology Alignment
+   │
+   │  Mapping к внешним онтологиям
+   │  OWL reasoning
+   │
+   ▼
+P4.3 — NarrativeLayer (отложен)
    │
    │  author-mind (read-only)
    │  Генерация нарратива из GraphRAG + Reflective
+   │  Требует: структурная самодостаточность,
+   │  инвариантная защита, версионирование
    │
    ▼
-P4.3 — LLMReflectionEngine
+P4.4 — LLMReflectionEngine
    │
    │  Внешний потребитель toLLMContext()
    │  Q&A, self-reflection, анализ архитектуры
@@ -974,8 +1016,96 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. Следующий: P4.2 NarrativeLayer.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН.
+Следующий: P4.2a Canonical Schema Definition.
+NarrativeLayer отложен до структурной зрелости.
 ```
+
+---
+
+## ЭТАП P4.2: Шлифовка кристалла — ПЛАН
+
+**Принцип:** Phase 3 дала функциональность. P4.1 дал рефлексию. Теперь время шлифовки.
+
+### P4.2a — Canonical Schema Definition
+
+**Цель:** Зафиксировать контракт до больших расширений.
+
+**Содержание:**
+- Допустимые типы узлов (character, domain, subdomain, hub, root, ...)
+- Допустимые типы рёбер (связь, владение, ...)
+- Обязательные поля Identity (id, canonicalName, ...)
+- Правила Ownership (кто может владеть чем)
+- Валидация при загрузке графа
+
+**Результат:** `CanonicalGraphSchema v1`
+
+### P4.2b — Structural Invariants
+
+**Цель:** Математика кристалла — гарантии структуры.
+
+**Содержание:**
+- Инварианты графа: нет «висящих» ownership ссылок, identity всегда существует
+- Инварианты проекций: каждая projection покрывает 100% узлов (или явно не покрывает)
+- Инварианты связности: если система задумана как связная — enforce это
+- Тесты инвариантов
+
+**Результат:** `StructuralInvariants.js` + тесты
+
+### P4.2c — Versioned Snapshots
+
+**Цель:** Переход к эволюционной системе.
+
+**Содержание:**
+- `GraphSnapshot` — снимок состояния графа
+- diff между версиями
+- эволюция архитектуры
+- рефлексия во времени
+
+**Результат:** `GraphSnapshot.js` + тесты
+
+### P4.2d — Performance Audit
+
+**Цель:** Предсказуемость роста.
+
+**Содержание:**
+- Synthetic graph generator (100, 1k, 10k узлов)
+- Нагрузочные тесты buildIndex, expandContext
+- Memory snapshots
+- Замеры времени
+
+**Результат:** Отчёт о масштабируемости
+
+### P4.2e — Change Protocol
+
+**Цель:** Механизм изменений (не только принцип).
+
+**Содержание:**
+- `GraphMutationProtocol`
+- change proposal → validation → apply → snapshot
+- Подготовка к автоматическим предложениям от LLM
+
+**Результат:** `GraphMutationProtocol.js` + тесты
+
+### P4.2f — Ontology Alignment
+
+**Цель:** Усиление интеллектуальной части без LLM.
+
+**Содержание:**
+- Mapping к внешним онтологиям
+- Проверка логической непротиворечивости
+- OWL reasoning через стандартные reasoner'ы
+
+**Результат:** Интеграция с OWL reasoner
+
+### P4.3 — NarrativeLayer (отложен)
+
+**Причина отложения:** Хороший нарратив должен описывать устойчивую структуру.
+
+**Требования до реализации:**
+- Структурная самодостаточность (P4.2a)
+- Инвариантная защита (P4.2b)
+- Версионирование (P4.2c)
 
 ---
 
