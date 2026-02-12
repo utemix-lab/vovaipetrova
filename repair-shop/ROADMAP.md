@@ -420,6 +420,144 @@ Core можно использовать:
 
 ---
 
+## ЭТАП P3.4: Тесты для Core — ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026  
+**Commit:** `4d38626`
+
+### Что сделано
+
+1. **Созданы тесты для `highlightModel.js` (31 тест):**
+   - Все режимы: `none`, `selected`, `hover`, `scope`, `type`
+   - Приоритет режимов: scope > hover > type > selected > none
+   - Интенсивности: FULL, HALF, DIM для узлов и рёбер
+   - Тесты на чистоту (purity): не мутирует входные данные
+
+2. **Созданы тесты для `GraphModel.js` (23 теста):**
+   - API: `getNodes`, `getEdges`, `getNodeById`, `getNeighbors`
+   - Вычисления: `computeHighlight`, `computeScope`
+   - Сериализация: `toJSON`, `fromJSON`
+   - Индексация по типам
+
+3. **Созданы тесты для `OwnershipGraph.js` (23 теста):**
+   - Регистрация: `registerState`, `registerProducer`, `registerConsumer`
+   - Вычисления: `registerComputation`, `getDependencies`
+   - Экспорт: `getDataFlowGraph`, `toJSON`, `toMarkdown`, `toASCII`
+
+4. **Обновлена конфигурация Vitest:**
+   - `vitest.config.js`: расширен `include` pattern
+   - Тесты Core теперь запускаются автоматически
+
+### Результат
+
+```
+ Test Files  5 passed (5)
+      Tests  89 passed (89)
+```
+
+### Значение
+
+- Core защищён от случайных изменений
+- Инварианты зафиксированы как исполняемая спецификация
+- Любое нарушение контракта ломает тест
+
+---
+
+## СЛЕДУЮЩИЙ ЭТАП: P3.5a — Identity & Naming Formalization
+
+### Почему сейчас, а не позже
+
+**Проблема:** Нейминг находится между тестами (P3.4) и интеграцией (P3.1).
+
+Если отложить:
+- Часть логики окажется в UI
+- Появятся `displayNameVisitor` и `displayNameDev`
+- Появятся хардкоды в tooltips
+- Кристалл даст микротрещины
+
+**Имя — это часть идентичности сущности.**
+**Идентичность — фундамент Core.**
+
+### Что нужно формализовать
+
+| Поле | Назначение | Где хранится |
+|------|------------|--------------|
+| `id` | Machine identity (неизменяемый) | Core |
+| `canonicalName` | Онтологическое имя | Core |
+| `aliases` | Альтернативные имена | Core (опционально) |
+| `meta.lang` | Язык оригинала | Core |
+| `meta.script` | Оригинальная графика | Core |
+| `slug` | URL-friendly версия | Производное |
+| `displayName` | Отображаемое имя | Projection |
+
+### Инварианты
+
+```
+✓ Projection не хранит имя — только отображает
+✓ UI не хранит canonicalName — получает из Core
+✓ slug не является идентичностью — производное от canonicalName
+✓ id остаётся неизменным при смене canonicalName
+```
+
+### Что сделать
+
+1. **Расширить `GraphModel`:**
+   - Добавить поля `canonicalName`, `aliases`, `meta`
+   - Добавить метод `getDisplayName(locale)`
+
+2. **Добавить тесты:**
+   - Projection не ломается при смене `canonicalName`
+   - `id` остаётся неизменным
+   - `getDisplayName` возвращает правильное имя для локали
+
+3. **Обновить `universe.json`:**
+   - Добавить `canonicalName` для узлов
+   - Добавить `meta` для многоязычных узлов
+
+### Перспектива
+
+```
+P3.4 — Тесты для Core ✓ ЗАВЕРШЁН
+   │
+   ▼
+P3.5a — Identity & Naming ⏳ СЛЕДУЮЩИЙ
+   │
+   │  Формализация:
+   │  - id (machine identity)
+   │  - canonicalName (онтологическое имя)
+   │  - aliases, meta
+   │  - getDisplayName(locale)
+   │
+   ▼
+P3.5 — TypeScript для Core
+   │
+   │  Типизация:
+   │  - NodeData, EdgeData
+   │  - HighlightContext, HighlightState
+   │  - Projection interface
+   │
+   ▼
+P3.1 — Интеграция Core в visitor
+   │
+   ▼
+P3.2/P3.3 — Projections
+   │
+   ▼
+P3.6/P3.7 — OWL / GraphRAG
+```
+
+### Влияние на другие компоненты
+
+| Компонент | Как затронет |
+|-----------|--------------|
+| `GraphModel` | Новые поля и методы |
+| `DevProjection` | Использует `canonicalName` |
+| `VisitorProjection` | Использует `getDisplayName()` |
+| OWL-экспорт | `canonicalName` → `rdfs:label` |
+| RAG-интеграция | `canonicalName` для поиска |
+
+---
+
 ## Созданные файлы Core
 
 | Файл | Описание |
@@ -429,6 +567,11 @@ Core можно использовать:
 | `render/src/core/DevProjection.js` | Прототип dev-линзы |
 | `render/src/core/OwnershipGraph.js` | Граф владения состоянием |
 | `render/src/core/index.js` | Экспорты Core |
+| `render/src/core/test-crystal.js` | Crystal Test (Node.js) |
+| `render/src/core/__tests__/highlightModel.test.js` | Тесты highlightModel (31) |
+| `render/src/core/__tests__/GraphModel.test.js` | Тесты GraphModel (23) |
+| `render/src/core/__tests__/OwnershipGraph.test.js` | Тесты OwnershipGraph (23) |
+| `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 
 ### GraphModel API
 
