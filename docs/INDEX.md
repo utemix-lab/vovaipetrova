@@ -2,12 +2,16 @@
 
 Карта документов с приоритетами для навигации.
 
+**Версия:** v0.5.0-separation
+
 ## Обязательно прочитать
 
 | Документ | Описание |
 |----------|----------|
-| [ARCHITECTURE_PRINCIPLES.md](ARCHITECTURE_PRINCIPLES.md) | **Ключевой акцент** — графоцентричность, фазы, что делаем/не делаем |
+| [../ARCHITECTURE.md](../ARCHITECTURE.md) | **Архитектура v0.5.0** — диаграммы, контракты, границы |
+| [ARCHITECTURE_PRINCIPLES.md](ARCHITECTURE_PRINCIPLES.md) | Графоцентричность, фазы, что делаем/не делаем |
 | [../.agent/context.yml](../.agent/context.yml) | Правила для агента, golden_rule, примеры якорей |
+| [../engine/WORLD_CONTRACT.md](../engine/WORLD_CONTRACT.md) | Контракт Engine ↔ World |
 
 ## Текущая работа
 
@@ -38,7 +42,11 @@
 
 ## Порядок чтения для нового агента
 
-1. **README.md** (корень) — быстрый старт
-2. **docs/ARCHITECTURE_PRINCIPLES.md** — понять философию
-3. **.agent/context.yml** — понять правила
-4. Код: `render/src/scenes/visitor.js` — основная логика
+1. **README.md** (корень) — быстрый старт и архитектурная диаграмма
+2. **ARCHITECTURE.md** — полная архитектура v0.5.0
+3. **engine/README.md** — API MeaningEngine
+4. **engine/WORLD_CONTRACT.md** — контракт Engine ↔ World
+5. **docs/ARCHITECTURE_PRINCIPLES.md** — понять философию
+6. **.agent/context.yml** — понять правила
+7. Код: `engine/src/index.js` — MeaningEngine
+8. Код: `render/src/scenes/visitor.js` — основная логика UI
