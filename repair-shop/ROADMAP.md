@@ -557,43 +557,67 @@ scope > hover > type > selected > none
 
 ---
 
-## СЛЕДУЮЩИЙ ЭТАП: P3.5 — TypeScript для Core
+## ЭТАП P3.5: TypeScript для Core — ЗАВЕРШЁН
 
-### Почему сейчас
+**Дата:** 12 февраля 2026
 
-После P3.4 (тесты) и P3.5a (Identity) — Core стабилен.
+### Что сделано
 
-**Это редкий момент равновесия.**
+1. **Создан `tsconfig.json`:**
+   - `strict: true` — строгая типизация
+   - `noEmit: true` — только проверка типов
+   - Paths alias: `@core/*` → `src/core/*`
 
-TypeScript сейчас — не «типизация ради типизации», а:
+2. **Созданы типы для Core:**
+
+| Файл | Типы |
+|------|------|
+| `types/identity.d.ts` | `EntityIdentity`, `IdentityMeta`, `LocalizedName`, `CreateIdentityOptions` |
+| `types/graph.d.ts` | `NodeData`, `EdgeData`, `GraphData`, `ScopeResult`, `IGraphModel` |
+| `types/highlight.d.ts` | `HighlightMode`, `HighlightContext`, `HighlightState`, `NodeIntensity`, `EdgeIntensity`, `INTENSITY` |
+| `types/projection.d.ts` | `RenderContext`, `IProjection`, `IProjectionRegistry`, `Projection`, `ProjectionRegistry` |
+| `types/index.d.ts` | Центральный экспорт всех типов |
+
+### Ключевые инварианты в типах
+
+```typescript
+// Identity — id readonly
+interface EntityIdentity {
+  readonly id: string;  // Неизменяемый
+  canonicalName: string;
+}
+
+// Highlight — context readonly
+interface HighlightContext {
+  readonly mode: HighlightMode;
+  readonly selectedNodeId: string | null;
+  readonly scopeNodeIds: ReadonlySet<string>;
+}
+
+// HighlightState — immutable result
+interface HighlightState {
+  readonly nodes: ReadonlyMap<string, NodeIntensity>;
+  readonly edges: ReadonlyMap<string, EdgeIntensity>;
+}
+```
+
+### Результат
+
+```
+npx tsc --noEmit  ✓ (0 ошибок)
+npx vitest run    ✓ (122 теста)
+```
+
+### Значение
+
 - **Формализация границ кристалла**
 - Невозможность утечки DOM-типа в Core
 - Невозможность случайной мутации state
 - Невозможность передачи неправильного типа в Projection
 
-### Важный момент
-
-```
-TypeScript после тестов — это правильно.
-TypeScript без тестов — иллюзия безопасности.
-
-Порядок верный.
-```
-
-### Что типизировать (не всё сразу)
-
-| Приоритет | Модуль | Типы |
-|-----------|--------|------|
-| 1 | `Identity.js` | `EntityIdentity`, `IdentityMeta`, `LocalizedName` |
-| 2 | `GraphModel.js` | `NodeData`, `EdgeData`, `GraphData` |
-| 3 | `highlightModel.js` | `HighlightContext`, `HighlightState`, `INTENSITY` |
-| 4 | `Projection.js` | `Projection`, `RenderContext` |
-
-**Не трогать visitor. Не трогать UI.**
-
 ---
 
-## ПОСЛЕ P3.5: P3.5b — Boundary Freeze
+## СЛЕДУЮЩИЙ ЭТАП: P3.5b — Boundary Freeze
 
 ### Зачем
 
@@ -628,15 +652,10 @@ P3.4 — Тесты для Core ✓ ЗАВЕРШЁН
 P3.5a — Identity & Naming ✓ ЗАВЕРШЁН
    │
    ▼
-P3.5 — TypeScript для Core ⏳ СЛЕДУЮЩИЙ
-   │
-   │  Типизация:
-   │  - EntityIdentity, NodeData, EdgeData
-   │  - HighlightContext, HighlightState
-   │  - Projection interface
+P3.5 — TypeScript для Core ✓ ЗАВЕРШЁН
    │
    ▼
-P3.5b — Boundary Freeze
+P3.5b — Boundary Freeze ⏳ СЛЕДУЮЩИЙ
    │
    │  Правила:
    │  - Core не импортирует из visitor
@@ -681,7 +700,13 @@ P3.6/P3.7 — OWL / GraphRAG
 | `render/src/core/__tests__/GraphModel.test.js` | Тесты GraphModel (23) |
 | `render/src/core/__tests__/OwnershipGraph.test.js` | Тесты OwnershipGraph (23) |
 | `render/src/core/__tests__/Identity.test.js` | Тесты Identity (33) |
+| `render/src/core/types/identity.d.ts` | Типы Identity |
+| `render/src/core/types/graph.d.ts` | Типы GraphModel |
+| `render/src/core/types/highlight.d.ts` | Типы Highlight |
+| `render/src/core/types/projection.d.ts` | Типы Projection |
+| `render/src/core/types/index.d.ts` | Центральный экспорт типов |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
+| `render/tsconfig.json` | Конфигурация TypeScript |
 
 ### GraphModel API
 
