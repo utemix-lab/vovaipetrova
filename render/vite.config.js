@@ -5,6 +5,10 @@ import { resolve } from "path";
 export default defineConfig({
   plugins: [react()],
   base: "/vovaipetrova/",
+  test: {
+    include: ["src/**/*.test.{js,jsx}"],
+    environment: "jsdom"
+  },
   server: {
     host: "localhost",
     port: 5173,
