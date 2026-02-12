@@ -982,10 +982,11 @@ P4.2d — Performance Audit ✓ ЗАВЕРШЁН
    │  42 теста
    │
    ▼
-P4.2e — Change Protocol
+P4.2e — Change Protocol ✓ ЗАВЕРШЁН
    │
-   │  GraphMutationProtocol
-   │  change proposal → validation → apply → snapshot
+   │  ChangeProtocol, ProposalValidator
+   │  propose → validate → simulate → apply
+   │  48 тестов
    │
    ▼
 P4.2f — Ontology Alignment
@@ -1016,10 +1017,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-d ЗАВЕРШЕНЫ.
-Следующий: P4.2e Change Protocol (опционально).
-NarrativeLayer отложен до структурной зрелости.
-Всего: 554 теста.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-e ЗАВЕРШЕНЫ.
+Следующий: P4.2f Ontology Alignment (опционально) или P4.3 NarrativeLayer.
+Управляемая эволюция достигнута через ChangeProtocol.
+Всего: 602 теста.
 ```
 
 ---
@@ -1195,16 +1196,43 @@ NarrativeLayer отложен до структурной зрелости.
 
 **Результат:** `PerformanceAudit v1` — 554 теста (все прошли)
 
-### P4.2e — Change Protocol
+### P4.2e — Change Protocol ✓ ЗАВЕРШЁН
 
-**Цель:** Механизм изменений (не только принцип).
+**Дата:** 12 февраля 2026
 
-**Содержание:**
-- `GraphMutationProtocol`
-- change proposal → validation → apply → snapshot
-- Подготовка к автоматическим предложениям от LLM
+**Цель:** Управляемая эволюция — изменение как протокол, а не операция.
 
-**Результат:** `GraphMutationProtocol.js` + тесты
+**Что сделано:**
+
+1. **`ChangeProtocol.js`:**
+   - **MUTATION_TYPE:** ADD_NODE, REMOVE_NODE, UPDATE_NODE, ADD_EDGE, REMOVE_EDGE, UPDATE_EDGE, BATCH
+   - **AUTHOR_TYPE:** HUMAN, LLM, SYSTEM
+   - **PROPOSAL_STATUS:** PENDING, VALIDATED, REJECTED, APPLIED, SIMULATED
+   - **createProposal(options)** — создание предложения мутации
+   - **ProposalValidator:**
+     - `validate(proposal, graph)` — валидация против схемы и инвариантов
+     - Симуляция применения перед валидацией
+   - **ChangeProtocol:**
+     - `proposeAddNode`, `proposeRemoveNode`, `proposeUpdateNode` — хелперы
+     - `proposeAddEdge`, `proposeRemoveEdge`, `proposeBatch`
+     - `validate(proposal)` — валидация с обновлением статуса
+     - `simulate(proposal)` — dry-run без изменения состояния
+     - `apply(proposal)` — применение с созданием snapshot и diff
+     - `getHistory()`, `getSnapshots()`, `getStats()`, `exportHistory()`
+
+2. **`ChangeProtocol.test.js` (48 тестов):**
+   - MUTATION_TYPE, AUTHOR_TYPE, PROPOSAL_STATUS (4)
+   - createProposal (6)
+   - ProposalValidator (13)
+   - ChangeProtocol (23)
+   - Integration: LLM workflow (2)
+
+**Результат:** `ChangeProtocol v1` — 602 теста (все прошли)
+
+**Ключевой workflow:**
+```javascript
+LLM создаёт proposal → simulate (dry-run) → человек видит diff → apply
+```
 
 ### P4.2f — Ontology Alignment
 
@@ -1350,6 +1378,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/GraphSnapshot.test.js` | Тесты снапшотов (62) |
 | `render/src/core/PerformanceAudit.js` | Нагрузочное тестирование |
 | `render/src/core/__tests__/PerformanceAudit.test.js` | Тесты бенчмарков (42) |
+| `render/src/core/ChangeProtocol.js` | Управляемая эволюция графа |
+| `render/src/core/__tests__/ChangeProtocol.test.js` | Тесты протокола (48) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 

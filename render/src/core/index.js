@@ -72,6 +72,14 @@ export {
   formatSize,
   analyzeScalability,
 } from "./PerformanceAudit.js";
+export {
+  ChangeProtocol,
+  ProposalValidator,
+  createProposal,
+  MUTATION_TYPE,
+  AUTHOR_TYPE,
+  PROPOSAL_STATUS,
+} from "./ChangeProtocol.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,
