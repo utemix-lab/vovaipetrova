@@ -1017,10 +1017,10 @@ Projections: Visitor, Dev, OWL, GraphRAG, Reflective.
 Рефлексия = read-only. Изменение = только через осознанное действие.
 Архитектура кристаллическая, границы зафиксированы.
 
-Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-e ЗАВЕРШЕНЫ.
-Следующий: P4.2f Ontology Alignment (опционально) или P4.3 NarrativeLayer.
-Управляемая эволюция достигнута через ChangeProtocol.
-Всего: 602 теста.
+Phase 3 ЗАВЕРШЕНА. P4.1 ЗАВЕРШЁН. P4.2a-e ЗАВЕРШЕНЫ. P4.4 ЗАВЕРШЁН.
+Замкнутый цикл архитектурного мышления достигнут.
+LLMReflectionEngine — внешний оркестратор, Core остаётся центром.
+Всего: 656 тестов.
 ```
 
 ---
@@ -1245,14 +1245,83 @@ LLM создаёт proposal → simulate (dry-run) → человек видит
 
 **Результат:** Интеграция с OWL reasoner
 
+### P4.4 — LLMReflectionEngine ✓ ЗАВЕРШЁН
+
+**Дата:** 12 февраля 2026
+
+**Цель:** Внешний оркестратор архитектурного мышления — замкнутый цикл рефлексии.
+
+**Принцип:**
+- LLMReflectionEngine — внешний слой, НЕ часть Core
+- Читает Core через проекции
+- Генерирует контекст для LLM
+- Преобразует ответы LLM в proposals
+- Передаёт proposals в ChangeProtocol (simulate only)
+- **Никогда не применяет изменения автоматически**
+
+**Что сделано:**
+
+1. **`LLMReflectionEngine.js`:**
+   - **ENGINE_MODE:** ANALYSIS, SUGGESTION, REVIEW
+   - **PROMPT_TYPE:** analyzeStructure, detectWeaknesses, suggestImprovements, reviewProposal
+   - **ContextAssembler:**
+     - `assemble()` — полный контекст (structure, metrics, invariants, schema)
+     - `assembleMinimal()` — минимальный контекст
+   - **PromptBuilder:**
+     - Типизированные промпты для каждого режима
+     - Строгий JSON формат ответов
+   - **SuggestionParser:**
+     - `parseSuggestions()` — валидация и нормализация
+     - `parseAnalysis()`, `parseReview()`
+     - Отклонение невалидных ответов
+   - **LLMReflectionEngine (Orchestrator):**
+     - `analyzeStructure()` — MODE 1: Analysis Only
+     - `suggestImprovements()` — MODE 2: Suggestion Mode
+     - `reviewProposal()` — MODE 3: Proposal Review
+     - `getContext()`, `getStats()`, `getHistory()`
+
+2. **`LLMReflectionEngine.test.js` (54 теста):**
+   - ENGINE_MODE, PROMPT_TYPE (3)
+   - ContextAssembler (7)
+   - PromptBuilder (6)
+   - SuggestionParser (13)
+   - LLMReflectionEngine (18)
+   - Boundary: No mutation without apply (6)
+   - Integration: Full workflow (1)
+
+**Ключевой workflow:**
+```javascript
+// 1. LLM анализирует структуру
+const analysis = await engine.analyzeStructure();
+
+// 2. LLM предлагает улучшения
+const suggestions = await engine.suggestImprovements();
+
+// 3. Каждое предложение симулируется
+suggestions.forEach(s => console.log(s.simulation.diff));
+
+// 4. Человек видит diff и принимает решение
+// apply() вызывается только человеком
+```
+
+**Результат:** `LLMReflectionEngine v1` — 656 тестов (все прошли)
+
+**Архитектурный результат:**
+```
+Система → анализирует себя → формулирует гипотезы → 
+предлагает изменения → симулирует последствия → ждёт решения
+```
+
 ### P4.3 — NarrativeLayer (отложен)
 
 **Причина отложения:** Хороший нарратив должен описывать устойчивую структуру.
 
 **Требования до реализации:**
-- Структурная самодостаточность (P4.2a)
-- Инвариантная защита (P4.2b)
-- Версионирование (P4.2c)
+- Структурная самодостаточность (P4.2a) ✓
+- Инвариантная защита (P4.2b) ✓
+- Версионирование (P4.2c) ✓
+- Управляемая эволюция (P4.2e) ✓
+- LLM-рефлексия (P4.4) ✓
 
 ---
 
@@ -1380,6 +1449,8 @@ LLMReflectionEngine           ← P4.3 (внешний потребитель)
 | `render/src/core/__tests__/PerformanceAudit.test.js` | Тесты бенчмарков (42) |
 | `render/src/core/ChangeProtocol.js` | Управляемая эволюция графа |
 | `render/src/core/__tests__/ChangeProtocol.test.js` | Тесты протокола (48) |
+| `render/src/core/LLMReflectionEngine.js` | Внешний оркестратор LLM-рефлексии |
+| `render/src/core/__tests__/LLMReflectionEngine.test.js` | Тесты LLM-рефлексии (54) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 

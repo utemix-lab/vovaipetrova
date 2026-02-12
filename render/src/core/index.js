@@ -80,6 +80,14 @@ export {
   AUTHOR_TYPE,
   PROPOSAL_STATUS,
 } from "./ChangeProtocol.js";
+export {
+  LLMReflectionEngine,
+  ContextAssembler,
+  PromptBuilder,
+  SuggestionParser,
+  ENGINE_MODE,
+  PROMPT_TYPE,
+} from "./LLMReflectionEngine.js";
 export { OwnershipGraph, ownershipGraph } from "./OwnershipGraph.js";
 export {
   createIdentity,
