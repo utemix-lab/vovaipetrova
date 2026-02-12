@@ -1,0 +1,74 @@
+{
+  "_schema": "world-schema-v1",
+  "version": "1.0.0",
+  "name": "vovaipetrova",
+  "description": "VovaIPetrova — первый живой пользователь MeaningEngine",
+  
+  "nodeTypes": [
+    {
+      "id": "root",
+      "label": "Root",
+      "description": "Корневой узел мира",
+      "maxCount": 1
+    },
+    {
+      "id": "hub",
+      "label": "Hub",
+      "description": "Хаб — контейнер для группы узлов"
+    },
+    {
+      "id": "character",
+      "label": "Character",
+      "description": "Персонаж"
+    },
+    {
+      "id": "domain",
+      "label": "Domain",
+      "description": "Домен — область знаний или практики"
+    },
+    {
+      "id": "tool",
+      "label": "Tool",
+      "description": "Инструмент"
+    },
+    {
+      "id": "cryptocosm",
+      "label": "Cryptocosm",
+      "description": "Рефлексивная часть системы"
+    }
+  ],
+  
+  "edgeTypes": [
+    {
+      "id": "structural",
+      "label": "Structural",
+      "description": "Структурная связь (иерархия)"
+    },
+    {
+      "id": "contains",
+      "label": "Contains",
+      "description": "Содержит (hub → node)"
+    },
+    {
+      "id": "relates",
+      "label": "Relates",
+      "description": "Семантическая связь"
+    },
+    {
+      "id": "ownership",
+      "label": "Ownership",
+      "description": "Владение"
+    },
+    {
+      "id": "reference",
+      "label": "Reference",
+      "description": "Ссылка"
+    }
+  ],
+  
+  "constraints": {
+    "requireRootNode": true,
+    "allowCycles": false,
+    "maxDepth": 10
+  }
+}
