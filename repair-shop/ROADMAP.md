@@ -838,9 +838,9 @@ Core (highlightState)
 
 ---
 
-## ЭТАП P3.7: GraphRAG интеграция — В РАБОТЕ
+## ЭТАП P3.7: GraphRAG интеграция — ЗАВЕРШЁН
 
-**Дата начала:** 12 февраля 2026
+**Дата:** 12 февраля 2026
 
 ### Ключевой принцип
 
@@ -854,43 +854,41 @@ Core
  └── GraphRAGProjection   ← новый слой
 ```
 
-GraphRAG = интеллектуальная линза над тем же GraphModel.
+### Что сделано
 
-Он:
-- НЕ вычисляет бизнес-логику
-- НЕ мутирует граф
-- НЕ дублирует highlight
-- НЕ хранит альтернативное состояние
-- Читает Core, как OWLProjection
-
-### Задачи
-
-1. **GraphRAGProjection.js:**
-   - `buildIndex()` — индексация Nodes/Edges/Identity
-   - `queryByNode(id)` — поиск по узлу
-   - `queryByText(text)` — поиск по тексту
-   - `expandContext(nodeIds, depth)` — расширение подграфа
+1. **Создан `GraphRAGProjection.js`:**
+   - `buildIndex()` — идемпотентная индексация
+   - `queryByNode(id)` — структурированная выборка
+   - `queryByText(text)` — токенизация + textIndex
+   - `expandContext(nodeIds, depth)` — BFS расширение
    - `toLLMContext()` — экспорт для LLM
+   - `getNodesByType(type)` — фильтрация по типу
+   - `getNodeTypes()` — список типов
 
-2. **Индексация:**
-   - Nodes → документы
-   - Edges → связи
-   - Ownership → семантические отношения
-   - Identity → метаданные
+2. **Внутреннее состояние:**
+   - `nodeIndex: Map<id, NodeDocument>`
+   - `adjacency: Map<id, Set<neighborIds>>`
+   - `textIndex: Map<token, Set<id>>`
 
-3. **Query Engine (MVP без LLM):**
-   - Поиск по узлам
-   - Поиск по связям
-   - Выборка подграфа
-   - Контекстная экспансия (1–2 hop)
-   - Deterministic reasoning
+3. **Создан `GraphRAGProjection.test.js` (51 тест):**
+   - constructor (5)
+   - buildIndex (8)
+   - queryByNode (5)
+   - queryByText (7)
+   - expandContext (8)
+   - toLLMContext (5)
+   - getStats (3)
+   - getNodesByType/getNodeTypes (3)
+   - destroy (1)
+   - purity (2)
+   - edge cases (4)
 
-### Тестирование
+### Результат
 
-- Индекс воспроизводим
-- Поиск детерминирован
-- Расширение подграфа корректно
-- Никакой мутации Core
+```
+ Test Files  10 passed (10)
+      Tests  278 passed (278)
+```
 
 ### Перспективы после P3.7
 
@@ -941,25 +939,26 @@ P3.6 — OWL-экспорт ✓ ЗАВЕРШЁН
    │  Turtle, JSON-LD, N-Triples
    │
    ▼
-P3.7 — GraphRAG интеграция ⏳ СЛЕДУЮЩИЙ
+P3.7 — GraphRAG интеграция ✓ ЗАВЕРШЁН
    │
-   │  RAG поверх Core GraphModel
-   │  Knowledge graph из Nodes + Edges
-   │  Q&A с контекстом из Core
+   │  GraphRAGProjection.js: 51 тест
+   │  buildIndex, queryByNode/Text, expandContext
+   │  toLLMContext — экспорт для LLM
    │
    ▼
-P4.x — Cryptocosm / Рефлексия
+P4.x — Cryptocosm / Рефлексия ⏳ СЛЕДУЮЩИЙ
 ```
 
 ### Текущий статус
 
 ```
-Core стабилен, типизирован, протестирован (227 тестов).
+Core стабилен, типизирован, протестирован (278 тестов).
 Projections реализованы и используют единый источник истины.
 OWL-экспорт готов (Turtle, JSON-LD, N-Triples).
+GraphRAG готов (индексация, поиск, контекст для LLM).
 Архитектура кристаллическая, границы зафиксированы.
 
-Можно безопасно строить GraphRAG без риска сломать основную логику.
+Phase 3 ЗАВЕРШЕНА. Core готов к Phase 4 — Cryptocosm / Рефлексия.
 ```
 
 ---
@@ -989,6 +988,8 @@ OWL-экспорт готов (Turtle, JSON-LD, N-Triples).
 | `render/src/core/__tests__/Projection.test.js` | Тесты Projections (40) |
 | `render/src/core/OWLProjection.js` | OWL/RDF экспорт |
 | `render/src/core/__tests__/OWLProjection.test.js` | Тесты OWL-экспорта (57) |
+| `render/src/core/GraphRAGProjection.js` | GraphRAG индексация и поиск |
+| `render/src/core/__tests__/GraphRAGProjection.test.js` | Тесты GraphRAG (51) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 
