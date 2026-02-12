@@ -2,39 +2,98 @@
   "_schema": "world-schema-v1",
   "version": "1.0.0",
   "name": "vovaipetrova",
-  "description": "VovaIPetrova — первый живой пользователь MeaningEngine",
+  "description": "VovaIPetrova Universe — каноническая схема графа",
   
   "nodeTypes": [
     {
       "id": "root",
       "label": "Root",
-      "description": "Корневой узел мира",
-      "maxCount": 1
+      "description": "Корневой узел системы",
+      "abstraction": "high",
+      "role": "container",
+      "allowedChildren": ["hub", "root"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
     },
     {
       "id": "hub",
       "label": "Hub",
-      "description": "Хаб — контейнер для группы узлов"
+      "description": "Контейнер-хаб для группировки",
+      "abstraction": "high",
+      "role": "container",
+      "allowedChildren": ["character", "domain", "workbench", "collab"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
     },
     {
       "id": "character",
       "label": "Character",
-      "description": "Персонаж"
+      "description": "Персонаж / актор системы",
+      "abstraction": "low",
+      "role": "entity",
+      "allowedChildren": ["workbench", "artifact"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag", "story"]
     },
     {
       "id": "domain",
       "label": "Domain",
-      "description": "Домен — область знаний или практики"
+      "description": "Домен знаний / область",
+      "abstraction": "medium",
+      "role": "container",
+      "allowedChildren": ["subdomain", "concept", "workbench"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
     },
     {
-      "id": "tool",
-      "label": "Tool",
-      "description": "Инструмент"
+      "id": "workbench",
+      "label": "Workbench",
+      "description": "Рабочий стол / инструмент",
+      "abstraction": "low",
+      "role": "tooling",
+      "allowedChildren": ["artifact"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
     },
     {
-      "id": "cryptocosm",
-      "label": "Cryptocosm",
-      "description": "Рефлексивная часть системы"
+      "id": "collab",
+      "label": "Collab",
+      "description": "Коллаборация / совместный проект",
+      "abstraction": "low",
+      "role": "tooling",
+      "allowedChildren": ["artifact"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
+    },
+    {
+      "id": "subdomain",
+      "label": "Subdomain",
+      "description": "Поддомен / подобласть",
+      "abstraction": "medium",
+      "role": "container",
+      "allowedChildren": ["concept", "artifact"],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
+    },
+    {
+      "id": "artifact",
+      "label": "Artifact",
+      "description": "Артефакт / результат работы",
+      "abstraction": "low",
+      "role": "content",
+      "allowedChildren": [],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
+    },
+    {
+      "id": "concept",
+      "label": "Concept",
+      "description": "Концепция / идея",
+      "abstraction": "medium",
+      "role": "content",
+      "allowedChildren": [],
+      "requiredFields": ["id", "label", "type"],
+      "optionalFields": ["position", "visibility", "status", "semantics", "rag"]
     }
   ],
   
@@ -42,29 +101,68 @@
     {
       "id": "structural",
       "label": "Structural",
-      "description": "Структурная связь (иерархия)"
+      "description": "Структурная связь между системными узлами",
+      "directed": true,
+      "allowedSourceTypes": ["root"],
+      "allowedTargetTypes": ["root", "hub"]
     },
     {
       "id": "contains",
       "label": "Contains",
-      "description": "Содержит (hub → node)"
+      "description": "Иерархическая связь содержания",
+      "directed": true,
+      "allowedSourceTypes": ["hub", "domain"],
+      "allowedTargetTypes": ["character", "domain", "subdomain", "workbench", "collab"]
     },
     {
       "id": "relates",
       "label": "Relates",
-      "description": "Семантическая связь"
+      "description": "Семантическая связь между сущностями",
+      "directed": false,
+      "allowedSourceTypes": ["character", "domain", "workbench", "collab"],
+      "allowedTargetTypes": ["domain", "workbench", "collab", "concept"]
     },
     {
-      "id": "ownership",
-      "label": "Ownership",
-      "description": "Владение"
+      "id": "owns",
+      "label": "Owns",
+      "description": "Связь владения",
+      "directed": true,
+      "allowedSourceTypes": ["character"],
+      "allowedTargetTypes": ["workbench", "artifact"]
     },
     {
-      "id": "reference",
-      "label": "Reference",
-      "description": "Ссылка"
+      "id": "depends",
+      "label": "Depends",
+      "description": "Связь зависимости",
+      "directed": true,
+      "allowedSourceTypes": ["root", "hub", "character", "domain", "workbench", "collab", "subdomain", "artifact", "concept"],
+      "allowedTargetTypes": ["root", "hub", "character", "domain", "workbench", "collab", "subdomain", "artifact", "concept"]
+    },
+    {
+      "id": "influences",
+      "label": "Influences",
+      "description": "Связь влияния",
+      "directed": true,
+      "allowedSourceTypes": ["root", "hub", "character", "domain", "workbench", "collab", "subdomain", "artifact", "concept"],
+      "allowedTargetTypes": ["root", "hub", "character", "domain", "workbench", "collab", "subdomain", "artifact", "concept"]
+    },
+    {
+      "id": "collaborates",
+      "label": "Collaborates",
+      "description": "Связь сотрудничества",
+      "directed": false,
+      "allowedSourceTypes": ["character"],
+      "allowedTargetTypes": ["character", "collab"]
     }
   ],
+  
+  "visibility": ["public", "private", "hidden"],
+  "status": ["core", "expandable", "draft", "archived"],
+  
+  "identityFields": {
+    "required": ["id"],
+    "recommended": ["label", "canonicalName", "aliases", "slug"]
+  },
   
   "constraints": {
     "requireRootNode": true,
