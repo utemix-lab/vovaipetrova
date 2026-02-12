@@ -792,32 +792,43 @@ Core (highlightState)
 
 ---
 
-## ЭТАП P3.6: OWL-экспорт — В РАБОТЕ
+## ЭТАП P3.6: OWL-экспорт — ЗАВЕРШЁН
 
-**Дата начала:** 12 февраля 2026
+**Дата:** 12 февраля 2026
 
-### Цель
+### Что сделано
 
-Создать адаптер Core → OWL для экспорта онтологии в стандартный формат.
-
-### Задачи
-
-1. **Создать `OWLProjection.js`:**
+1. **Создан `OWLProjection.js`:**
    - Адаптер между Core и OWL/RDF
    - Сериализация GraphModel → OWL-онтология
    - Identity, canonicalName, типы → OWL-классы и свойства
-   - OwnershipGraph → OWL-отношения
+   - OwnershipGraph → OWL-отношения (states + computations)
 
-2. **Реализовать сериализацию:**
-   - Nodes → owl:Class / owl:NamedIndividual
-   - Edges → owl:ObjectProperty
-   - HighlightState → owl:AnnotationProperty
+2. **Реализована сериализация:**
+   - `serialize("turtle")` — Turtle формат
+   - `serialize("jsonld")` — JSON-LD формат
+   - `serialize("ntriples")` — N-Triples формат
+   - Nodes → owl:NamedIndividual
+   - Edges → owl:ObjectPropertyAssertion
    - Identity → rdfs:label, skos:prefLabel, skos:altLabel
 
-3. **Тестирование:**
-   - Валидная RDF/OWL-структура
-   - Соответствие идентичности и связей
-   - Boundary Freeze (без DOM)
+3. **Создан `OWLProjection.test.js` (57 тестов):**
+   - constructor (5)
+   - exportNodes/Edges/Identity/Ownership/Classes (17)
+   - serialize turtle/jsonld/ntriples (16)
+   - toJsonLd (3)
+   - getStats (6)
+   - destroy (1)
+   - purity (2)
+   - edge cases (4)
+   - NAMESPACES (2)
+
+### Результат
+
+```
+ Test Files  9 passed (9)
+      Tests  227 passed (227)
+```
 
 ### Перспективы после P3.6
 
@@ -882,14 +893,13 @@ P3.2/P3.3 — Projections ✓ ЗАВЕРШЁН
    │  40 тестов
    │
    ▼
-P3.6 — OWL-экспорт ⏳ В РАБОТЕ
+P3.6 — OWL-экспорт ✓ ЗАВЕРШЁН
    │
-   │  Core → OWL/RDF сериализация
-   │  Identity → rdfs:label, skos:prefLabel
-   │  OwnershipGraph → owl:ObjectProperty
+   │  OWLProjection.js: 57 тестов
+   │  Turtle, JSON-LD, N-Triples
    │
    ▼
-P3.7 — GraphRAG интеграция
+P3.7 — GraphRAG интеграция ⏳ СЛЕДУЮЩИЙ
    │
    │  RAG поверх Core GraphModel
    │  Knowledge graph из Nodes + Edges
@@ -902,11 +912,12 @@ P4.x — Cryptocosm / Рефлексия
 ### Текущий статус
 
 ```
-Core стабилен, типизирован, протестирован (170 тестов).
+Core стабилен, типизирован, протестирован (227 тестов).
 Projections реализованы и используют единый источник истины.
+OWL-экспорт готов (Turtle, JSON-LD, N-Triples).
 Архитектура кристаллическая, границы зафиксированы.
 
-Можно безопасно строить OWL/GraphRAG без риска сломать основную логику.
+Можно безопасно строить GraphRAG без риска сломать основную логику.
 ```
 
 ---
@@ -934,6 +945,8 @@ Projections реализованы и используют единый исто
 | `render/src/core/types/index.d.ts` | Центральный экспорт типов |
 | `render/src/core/VisitorProjection.js` | Адаптер для 3D-графа |
 | `render/src/core/__tests__/Projection.test.js` | Тесты Projections (40) |
+| `render/src/core/OWLProjection.js` | OWL/RDF экспорт |
+| `render/src/core/__tests__/OWLProjection.test.js` | Тесты OWL-экспорта (57) |
 | `render/src/ontology/highlightModel.js` | Чистая модель подсветки |
 | `render/tsconfig.json` | Конфигурация TypeScript |
 
