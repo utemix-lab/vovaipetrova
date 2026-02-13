@@ -31,7 +31,18 @@ export class ThreeGraphEngine {
       .linkWidth(0.6)
       .linkDirectionalParticles(0);
 
-    graph.d3Force("link").distance((link) => this.getLinkDistance(link));
+    graph.d3Force("link")
+      .distance((link) => this.getLinkDistance(link))
+      .strength((link) => {
+        // Усиленная сила для ребра Universe-Cryptocosm
+        const sourceId = typeof link.source === "object" ? link.source.id : link.source;
+        const targetId = typeof link.target === "object" ? link.target.id : link.target;
+        if ((sourceId === "universe" && targetId === "cryptocosm") ||
+            (sourceId === "cryptocosm" && targetId === "universe")) {
+          return 2.0; // Сильное притяжение
+        }
+        return 0.3; // Обычная сила
+      });
     graph.d3VelocityDecay(0.08);
     graph.d3AlphaDecay(0.008);
 
@@ -39,6 +50,10 @@ export class ThreeGraphEngine {
     const keyLight = new this.three.DirectionalLight(0xffffff, 0.8);
     keyLight.position.set(40, 60, 120);
     graph.scene().add(keyLight);
+    
+    // Fog — дымка для глубины (цвет фона, начало 150, конец 500)
+    const bgColor = new this.three.Color(this.visualConfig.colors.background);
+    graph.scene().fog = new this.three.Fog(bgColor, 150, 500);
 
     const camera = graph.camera();
     camera.fov = this.visualConfig.camera.fov;

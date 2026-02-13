@@ -241,6 +241,21 @@ const VIEW_TYPES = {
 const DISABLED_NODE_TYPES = new Set(["practice"]);
 const DISABLED_HUB_IDS = new Set(["practices"]);
 
+// Cryptocosm — тёмная материя (ч/б палитра)
+const CRYPTOCOSM_NODE_IDS = new Set([
+  "cryptocosm",
+  "crypto-engine", "crypto-cabins", "crypto-mirror",
+  "crypto-schema", "crypto-adapter", "crypto-validators", "crypto-graph",
+  "crypto-llm", "crypto-protocol", "crypto-projections",
+  "cabin-runa", "cabin-author", "cabin-ai", "cabin-petrova", "cabin-hinto", "cabin-dizi"
+]);
+const CRYPTOCOSM_PALETTE = {
+  inactive: "#3a3a3a",   // серый (ярче)
+  active: "#5a5a5a",     // светло-серый (hover/scope)
+  selected: "#4a4a4a",   // серый (выбранный)
+  link: "#252525"        // темнее узлов, чтобы сливаться с фоном
+};
+
 // === UI Setup ===
 document.body.classList.add("visitor-mode");
 createUI();
@@ -753,6 +768,20 @@ const typeHighlightedNodeIds = new Set(); // Узлы, подсвеченные 
  * @returns {string} Цвет в формате hex
  */
 function getNodeColor(node, forLink = false) {
+  // Cryptocosm — ч/б палитра (тёмная материя)
+  if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+    // Type Highlight
+    if (!forLink && typeHighlightedNodeIds.has(node.id)) return CRYPTOCOSM_PALETTE.selected;
+    // Подсветка через виджет
+    if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return CRYPTOCOSM_PALETTE.selected;
+    // Текущий выделенный узел
+    if (currentStep && node.id === currentStep.id) return CRYPTOCOSM_PALETTE.selected;
+    // Scope highlight
+    if (scopeHighlightActive && scopeHighlightNodeIds.has(node.id)) return CRYPTOCOSM_PALETTE.active;
+    // По умолчанию — почти чёрный
+    return CRYPTOCOSM_PALETTE.inactive;
+  }
+  
   // Type Highlight — только для узлов, не для рёбер
   if (!forLink && typeHighlightedNodeIds.has(node.id)) return palette.nodeSelected;
   // Подсветка через виджет
@@ -837,6 +866,57 @@ function getRimMaterial(colorHex) {
   return material;
 }
 
+// Простой материал без rim-эффекта для Cryptocosm (тёмная материя)
+const cryptoMaterialCache = new Map();
+const CRYPTOCOSM_OPACITY_BASE = 0.6; // Базовая прозрачность (центр)
+const CRYPTOCOSM_OPACITY_MIN = 0.25; // Минимальная прозрачность (края)
+
+// Глубина узла в иерархии Cryptocosm (для градиентной прозрачности)
+const CRYPTOCOSM_DEPTH = {
+  "cryptocosm": 0,           // Корень — самый яркий
+  "crypto-engine": 1,        // Хабы — уровень 1
+  "crypto-cabins": 1,
+  "crypto-mirror": 1,
+  "crypto-schema": 2,        // Модули — уровень 2
+  "crypto-adapter": 2,
+  "crypto-validators": 2,
+  "crypto-graph": 2,
+  "crypto-llm": 2,
+  "crypto-protocol": 2,
+  "crypto-projections": 2,
+  "cabin-runa": 3,           // Кабины — уровень 3 (самые прозрачные)
+  "cabin-author": 3,
+  "cabin-ai": 3,
+  "cabin-petrova": 3,
+  "cabin-hinto": 3,
+  "cabin-dizi": 3
+};
+const CRYPTOCOSM_MAX_DEPTH = 3;
+
+function getCryptoOpacity(nodeId) {
+  const depth = CRYPTOCOSM_DEPTH[nodeId] ?? CRYPTOCOSM_MAX_DEPTH;
+  const t = depth / CRYPTOCOSM_MAX_DEPTH; // 0..1
+  return CRYPTOCOSM_OPACITY_BASE - t * (CRYPTOCOSM_OPACITY_BASE - CRYPTOCOSM_OPACITY_MIN);
+}
+
+function getCryptoMaterial(colorHex, nodeId) {
+  const opacity = getCryptoOpacity(nodeId);
+  const key = `${String(colorHex).toLowerCase()}_${opacity.toFixed(2)}`;
+  if (cryptoMaterialCache.has(key)) {
+    return cryptoMaterialCache.get(key);
+  }
+
+  const baseColor = new THREE.Color(colorHex);
+  const material = new THREE.MeshBasicMaterial({
+    color: baseColor,
+    transparent: true,
+    opacity: opacity
+  });
+
+  cryptoMaterialCache.set(key, material);
+  return material;
+}
+
 let systemSphereMaterial = null;
 let systemNodeBaseGeometry = systemNodeGeometry;
 let systemModelRoot = null;
@@ -904,7 +984,11 @@ function createNodeMesh(node) {
     console.log('[Visitor] createNodeMesh: system mesh created for', node.id, sysMesh);
     return sysMesh;
   }
-  const mesh = new THREE.Mesh(nodeGeometry, getRimMaterial(getNodeColor(node)));
+  // Cryptocosm — простой материал без rim-эффекта с градиентной прозрачностью
+  const material = CRYPTOCOSM_NODE_IDS.has(node.id) 
+    ? getCryptoMaterial(getNodeColor(node), node.id)
+    : getRimMaterial(getNodeColor(node));
+  const mesh = new THREE.Mesh(nodeGeometry, material);
   const baseRadius = getNodeRadius(node);
   mesh.scale.setScalar(baseRadius);
   nodeMeshes.set(node.id, mesh);
@@ -925,7 +1009,10 @@ function applyNodeMaterial(nodeId) {
     // GLB already содержит нужные материалы; не трогаем
     return;
   }
-  mesh.material = getRimMaterial(getNodeColor(node));
+  // Cryptocosm — простой материал без rim-эффекта с градиентной прозрачностью
+  mesh.material = CRYPTOCOSM_NODE_IDS.has(node.id)
+    ? getCryptoMaterial(getNodeColor(node), node.id)
+    : getRimMaterial(getNodeColor(node));
 }
 
 // === Рёбра (конусные смычки) ===
@@ -964,17 +1051,16 @@ function createLinkObject(link) {
 
   const line = new THREE.Line(geometry, material);
 
-  const nozzleMaterialA = new THREE.MeshStandardMaterial({
+  // Материал спайков — будет обновлён в updateLinkObject
+  const nozzleMaterialA = new THREE.MeshBasicMaterial({
     color: 0xffffff,
     transparent: false,
-    opacity: 1,
-    depthWrite: true
+    opacity: 1
   });
-  const nozzleMaterialB = new THREE.MeshStandardMaterial({
+  const nozzleMaterialB = new THREE.MeshBasicMaterial({
     color: 0xffffff,
     transparent: false,
-    opacity: 1,
-    depthWrite: true
+    opacity: 1
   });
   const nozzleA = new THREE.Mesh(nozzleGeometry, nozzleMaterialA);
   const nozzleB = new THREE.Mesh(nozzleGeometry, nozzleMaterialB);
@@ -1005,17 +1091,32 @@ function updateLinkObject(obj, position, link) {
 
   // При подсветке — жёлтый цвет, иначе — цвета узлов
   let startColor, endColor, midColor;
+  
+  // Проверяем, является ли ребро частью Cryptocosm
+  const isCryptoLink = (sourceNode && CRYPTOCOSM_NODE_IDS.has(sourceNode.id)) || 
+                       (targetNode && CRYPTOCOSM_NODE_IDS.has(targetNode.id));
+  
   if (isHighlighted || isHalfHighlighted) {
-    const highlightColor = new THREE.Color(palette.nodeSelected); // Жёлтый
+    // Для Cryptocosm — тёмно-серая подсветка вместо жёлтой
+    const highlightColor = isCryptoLink 
+      ? new THREE.Color(CRYPTOCOSM_PALETTE.active) 
+      : new THREE.Color(palette.nodeSelected);
     startColor = highlightColor;
     endColor = highlightColor;
     midColor = highlightColor;
   } else {
     // Для рёбер используем цвет узла БЕЗ учёта Type Highlight Mode
     // (Type Highlight подсвечивает только узлы, не рёбра)
-    startColor = new THREE.Color(sourceNode ? getNodeColorForLink(sourceNode) : palette.linkDefault);
-    endColor = new THREE.Color(targetNode ? getNodeColorForLink(targetNode) : palette.linkDefault);
-    midColor = new THREE.Color(palette.linkDefault);
+    if (isCryptoLink) {
+      // Cryptocosm — тёмно-серые рёбра
+      startColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
+      endColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
+      midColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
+    } else {
+      startColor = new THREE.Color(sourceNode ? getNodeColorForLink(sourceNode) : palette.linkDefault);
+      endColor = new THREE.Color(targetNode ? getNodeColorForLink(targetNode) : palette.linkDefault);
+      midColor = new THREE.Color(palette.linkDefault);
+    }
   }
 
   const colors = line.geometry.getAttribute("color");
@@ -1031,7 +1132,14 @@ function updateLinkObject(obj, position, link) {
   colors.needsUpdate = true;
 
   // Полная яркость для hover, половинная для selected
-  line.material.opacity = isHighlighted ? 0.9 : (isHalfHighlighted ? 0.55 : 0.4);
+  // Cryptocosm — более прозрачные линии + NormalBlending (чтобы сливались с узлами)
+  if (isCryptoLink) {
+    line.material.opacity = isHighlighted ? 0.4 : (isHalfHighlighted ? 0.25 : 0.15);
+    line.material.blending = THREE.NormalBlending; // Без аддитивного свечения
+  } else {
+    line.material.opacity = isHighlighted ? 0.9 : (isHalfHighlighted ? 0.55 : 0.4);
+    line.material.blending = THREE.AdditiveBlending; // Обычные рёбра светятся
+  }
 
   const startRadius = sourceNode ? getNodeRadius(sourceNode) : BASE_NODE_RADIUS;
   const endRadius = targetNode ? getNodeRadius(targetNode) : BASE_NODE_RADIUS;
@@ -1067,8 +1175,17 @@ function updateLinkObject(obj, position, link) {
   positions.array[8] = lineEnd.z;
   positions.needsUpdate = true;
 
-  nozzleA.visible = true;
-  nozzleB.visible = true;
+  // Cryptocosm — рёбра скрыты по умолчанию, появляются при hover/select
+  if (isCryptoLink) {
+    nozzleA.visible = false;
+    nozzleB.visible = false;
+    // Линия видна только при подсветке
+    line.visible = isHighlighted || isHalfHighlighted;
+  } else {
+    nozzleA.visible = true;
+    nozzleB.visible = true;
+    line.visible = true;
+  }
 
   const nozzleQuatA = new THREE.Quaternion().setFromUnitVectors(
     new THREE.Vector3(0, 1, 0),
@@ -1086,6 +1203,19 @@ function updateLinkObject(obj, position, link) {
   nozzleB.scale.set(nozzleRadiusEnd, nozzleLengthEnd, nozzleRadiusEnd);
   nozzleA.material.color.copy(startColor);
   nozzleB.material.color.copy(endColor);
+  
+  // Cryptocosm — прозрачность для спайков (спайки скрыты, но оставим код на случай)
+  if (isCryptoLink) {
+    nozzleA.material.transparent = true;
+    nozzleA.material.opacity = CRYPTOCOSM_OPACITY_BASE;
+    nozzleB.material.transparent = true;
+    nozzleB.material.opacity = CRYPTOCOSM_OPACITY_BASE;
+  } else {
+    nozzleA.material.transparent = false;
+    nozzleA.material.opacity = 1;
+    nozzleB.material.transparent = false;
+    nozzleB.material.opacity = 1;
+  }
 }
 
 function getLinkPulsePhase(link) {
@@ -1098,9 +1228,18 @@ function getLinkPulsePhase(link) {
 }
 
 function getLinkDistance(link) {
+  const sourceId = getId(link.source);
+  const targetId = getId(link.target);
+  
+  // Сокращённое ребро между Universe и Cryptocosm
+  if ((sourceId === "universe" && targetId === "cryptocosm") ||
+      (sourceId === "cryptocosm" && targetId === "universe")) {
+    return VISUAL_CONFIG.link.baseLength * 0.4; // 40% от базовой длины
+  }
+  
   const base = VISUAL_CONFIG.link.baseLength;
   const variance = VISUAL_CONFIG.link.lengthVariance;
-  const seedValue = hashId(String(link.id || `${getId(link.source)}-${getId(link.target)}`));
+  const seedValue = hashId(String(link.id || `${sourceId}-${targetId}`));
   const factor = (seedValue % 1000) / 1000;
   return base + (factor - 0.5) * variance * 2;
 }

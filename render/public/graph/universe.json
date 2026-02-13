@@ -30,8 +30,8 @@
       "id": "cryptocosm",
       "label": "Cryptocosm",
       "position": {
-        "x": 600,
-        "y": 150
+        "x": 500,
+        "y": 220
       },
       "story": "",
       "system": "",
@@ -47,6 +47,214 @@
         "index": true,
         "priority": 0.7
       }
+    },
+    {
+      "id": "crypto-engine",
+      "label": "Engine",
+      "position": { "x": 420, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "hub",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "container", "abstraction": "high" },
+      "rag": { "index": true, "priority": 0.6 }
+    },
+    {
+      "id": "crypto-cabins",
+      "label": "Cabins",
+      "position": { "x": 500, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "hub",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "container", "abstraction": "high" },
+      "rag": { "index": true, "priority": 0.6 }
+    },
+    {
+      "id": "crypto-mirror",
+      "label": "Mirror",
+      "position": { "x": 580, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "hub",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "container", "abstraction": "high" },
+      "rag": { "index": true, "priority": 0.6 }
+    },
+    {
+      "id": "crypto-schema",
+      "label": "Schema",
+      "position": { "x": 350, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-adapter",
+      "label": "Adapter",
+      "position": { "x": 400, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-validators",
+      "label": "Validators",
+      "position": { "x": 450, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-graph",
+      "label": "Graph",
+      "position": { "x": 400, "y": 0 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-llm",
+      "label": "LLM Engine",
+      "position": { "x": 550, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-protocol",
+      "label": "Protocol",
+      "position": { "x": 600, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "crypto-projections",
+      "label": "Projections",
+      "position": { "x": 650, "y": 60 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "module", "abstraction": "medium" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-runa",
+      "label": "Кабина Руны",
+      "position": { "x": 450, "y": 0 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-author",
+      "label": "extended-mind",
+      "position": { "x": 500, "y": 0 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-ai",
+      "label": "Кабина ИИ",
+      "position": { "x": 550, "y": 0 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-petrova",
+      "label": "Кабина Петровой",
+      "position": { "x": 450, "y": -50 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-hinto",
+      "label": "Кабина Хинто",
+      "position": { "x": 500, "y": -50 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
+    },
+    {
+      "id": "cabin-dizi",
+      "label": "Кабина Дизи",
+      "position": { "x": 550, "y": -50 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "workbench",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "cabin", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.5 }
     },
     {
       "id": "characters",
@@ -1055,6 +1263,186 @@
       "source": "universe",
       "target": "cryptocosm",
       "type": "structural"
+    },
+    {
+      "id": "edge-crypto-engine",
+      "source": "cryptocosm",
+      "target": "crypto-engine",
+      "type": "structural"
+    },
+    {
+      "id": "edge-crypto-cabins",
+      "source": "cryptocosm",
+      "target": "crypto-cabins",
+      "type": "structural"
+    },
+    {
+      "id": "edge-crypto-mirror",
+      "source": "cryptocosm",
+      "target": "crypto-mirror",
+      "type": "structural"
+    },
+    {
+      "id": "edge-engine-schema",
+      "source": "crypto-engine",
+      "target": "crypto-schema",
+      "type": "contains"
+    },
+    {
+      "id": "edge-engine-adapter",
+      "source": "crypto-engine",
+      "target": "crypto-adapter",
+      "type": "contains"
+    },
+    {
+      "id": "edge-engine-validators",
+      "source": "crypto-engine",
+      "target": "crypto-validators",
+      "type": "contains"
+    },
+    {
+      "id": "edge-engine-graph",
+      "source": "crypto-engine",
+      "target": "crypto-graph",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-llm",
+      "source": "crypto-mirror",
+      "target": "crypto-llm",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-protocol",
+      "source": "crypto-mirror",
+      "target": "crypto-protocol",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-projections",
+      "source": "crypto-mirror",
+      "target": "crypto-projections",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-runa",
+      "source": "crypto-cabins",
+      "target": "cabin-runa",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-author",
+      "source": "crypto-cabins",
+      "target": "cabin-author",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-ai",
+      "source": "crypto-cabins",
+      "target": "cabin-ai",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-petrova",
+      "source": "crypto-cabins",
+      "target": "cabin-petrova",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-hinto",
+      "source": "crypto-cabins",
+      "target": "cabin-hinto",
+      "type": "contains"
+    },
+    {
+      "id": "edge-cabins-dizi",
+      "source": "crypto-cabins",
+      "target": "cabin-dizi",
+      "type": "contains"
+    },
+    {
+      "id": "edge-runa-reflects-schema",
+      "source": "cabin-runa",
+      "target": "crypto-schema",
+      "type": "relates"
+    },
+    {
+      "id": "edge-runa-reflects-validators",
+      "source": "cabin-runa",
+      "target": "crypto-validators",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-reflects-projections",
+      "source": "cabin-author",
+      "target": "crypto-projections",
+      "type": "relates"
+    },
+    {
+      "id": "edge-author-reflects-protocol",
+      "source": "cabin-author",
+      "target": "crypto-protocol",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-reflects-llm",
+      "source": "cabin-ai",
+      "target": "crypto-llm",
+      "type": "relates"
+    },
+    {
+      "id": "edge-ai-reflects-graph",
+      "source": "cabin-ai",
+      "target": "crypto-graph",
+      "type": "relates"
+    },
+    {
+      "id": "edge-petrova-reflects-projections",
+      "source": "cabin-petrova",
+      "target": "crypto-projections",
+      "type": "relates"
+    },
+    {
+      "id": "edge-hinto-reflects-adapter",
+      "source": "cabin-hinto",
+      "target": "crypto-adapter",
+      "type": "relates"
+    },
+    {
+      "id": "edge-dizi-reflects-projections",
+      "source": "cabin-dizi",
+      "target": "crypto-projections",
+      "type": "relates"
+    },
+    {
+      "id": "edge-llm-reads-graph",
+      "source": "crypto-llm",
+      "target": "crypto-graph",
+      "type": "relates"
+    },
+    {
+      "id": "edge-protocol-uses-validators",
+      "source": "crypto-protocol",
+      "target": "crypto-validators",
+      "type": "relates"
+    },
+    {
+      "id": "edge-projections-derives-schema",
+      "source": "crypto-projections",
+      "target": "crypto-schema",
+      "type": "relates"
+    },
+    {
+      "id": "edge-schema-defines-graph",
+      "source": "crypto-schema",
+      "target": "crypto-graph",
+      "type": "relates"
+    },
+    {
+      "id": "edge-adapter-bridges-schema",
+      "source": "crypto-adapter",
+      "target": "crypto-schema",
+      "type": "relates"
     },
     {
       "id": "edge-universe-characters",
