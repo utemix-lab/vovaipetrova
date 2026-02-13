@@ -1689,3 +1689,106 @@ Tracks = ракурсы / методология, а не модули.
 |----------|----------|
 | [docs/ARCHITECTURE_TRACKS.md](../docs/ARCHITECTURE_TRACKS.md) | Полная спецификация треков v3.0 |
 | [worlds/vovaipetrova/ONTOLOGY.md](../worlds/vovaipetrova/ONTOLOGY.md) | Онтология v1.0 — Track 1 |
+
+---
+
+## P6.0 — PLATFORM SPECIFICATION (Track 2)
+
+**Дата начала:** 13 февраля 2026
+**Трек:** Track 2 — Schema/Engine Layer
+
+### Контекст
+
+Спецификация **Платформы** (MeaningEngine), а не Мира.
+
+```
+Платформа сама «знает о себе»: структуры, контракты, возможности.
+LLM и агенты используют спецификацию как API.
+Спецификация — часть Engine, не отдельный markdown.
+```
+
+### Принцип
+
+```
+specification.json = canonical source of truth
+Markdown = human-readable projection
+React = visual projection
+LLM = operator reading spec
+```
+
+**Важно:**
+- Спецификация Мира (VovaIPetrova) — отдельный этап, не P6.0
+- P6.0 касается только Платформы
+
+---
+
+### Этапы
+
+#### P6.0a — Specification Schema
+
+**Цель:** Определить JSON-структуру спецификации платформы.
+
+**Создать:**
+- `engine/specification.json` — каноническая спецификация v1
+- `engine/specification.schema.json` — JSON Schema для валидации
+
+**Содержание spec:**
+- `engine.version`
+- `engine.contracts` (WorldInterface, Adapter)
+- `engine.capabilities` (multi-world, RAG, operators)
+- `tracks` (ссылки на архитектурные треки)
+- `constraints` (Graph Invariance, Track boundaries)
+
+---
+
+#### P6.0b — SpecificationReader
+
+**Цель:** Адаптер чтения/валидации спецификации.
+
+**Создать:**
+- `engine/src/SpecificationReader.js`
+- Методы: `load()`, `validate()`, `query()`
+- Тесты
+
+---
+
+#### P6.0c — Engine Integration
+
+**Цель:** Интеграция спецификации в MeaningEngine.
+
+**Добавить методы:**
+- `MeaningEngine.getSpecification()`
+- `MeaningEngine.getCapabilities()`
+- `MeaningEngine.getContracts()`
+
+---
+
+#### P6.0d — LLM Integration
+
+**Цель:** LLMReflectionEngine использует spec как источник правды.
+
+**Изменить:**
+- Промпты генерируются из spec, не из markdown
+- `ContextAssembler` включает spec
+
+---
+
+#### P6.0e — UI Projection (Track 0 + Track 4)
+
+**Цель:** Визуализация спецификации платформы.
+
+**Создать:**
+- Кабина платформы (Platform Cabina)
+- Визуальная проекция spec
+
+---
+
+### Статус
+
+| Этап | Статус |
+|------|--------|
+| P6.0a — Specification Schema | **СЛЕДУЮЩИЙ** |
+| P6.0b — SpecificationReader | Ожидает |
+| P6.0c — Engine Integration | Ожидает |
+| P6.0d — LLM Integration | Ожидает |
+| P6.0e — UI Projection | Ожидает |
