@@ -183,27 +183,6 @@ export class SpecificationReader {
   }
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // TRACKS
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  /**
-   * Все треки.
-   * @returns {object}
-   */
-  getTracks() {
-    return { ...this._engine.tracks };
-  }
-  
-  /**
-   * Получить трек по номеру.
-   * @param {string|number} trackId - Номер трека (0-4)
-   * @returns {object|null}
-   */
-  getTrack(trackId) {
-    return this._engine.tracks[String(trackId)] || null;
-  }
-  
-  // ═══════════════════════════════════════════════════════════════════════════
   // CONSTRAINTS
   // ═══════════════════════════════════════════════════════════════════════════
   
@@ -282,7 +261,7 @@ export class SpecificationReader {
     const engine = spec.engine;
     
     // Обязательные поля engine
-    const requiredFields = ["version", "description", "contracts", "capabilities", "tracks", "constraints", "implementation_map"];
+    const requiredFields = ["version", "description", "contracts", "capabilities", "constraints", "implementation_map"];
     for (const field of requiredFields) {
       if (!(field in engine)) {
         errors.push(`engine.${field} is required`);
@@ -332,21 +311,6 @@ export class SpecificationReader {
       for (const cap of requiredCaps) {
         if (typeof engine.capabilities[cap] !== "boolean") {
           errors.push(`engine.capabilities.${cap} must be a boolean`);
-        }
-      }
-    }
-    
-    // Проверка tracks
-    if (engine.tracks && typeof engine.tracks === "object") {
-      for (const [trackId, track] of Object.entries(engine.tracks)) {
-        if (!track.name) {
-          errors.push(`engine.tracks.${trackId}.name is required`);
-        }
-        if (!track.description) {
-          errors.push(`engine.tracks.${trackId}.description is required`);
-        }
-        if (!track.status) {
-          errors.push(`engine.tracks.${trackId}.status is required`);
         }
       }
     }
@@ -403,6 +367,7 @@ export class SpecificationReader {
   toLLMContext() {
     return {
       engine_version: this._engine.version,
+      description: this._engine.description,
       contracts: this.getContractNames().map(name => ({
         name,
         methods: this.getMethodNames(name),
@@ -453,7 +418,6 @@ export class SpecificationReader {
       methods: totalMethods,
       capabilities: Object.keys(this._engine.capabilities).length,
       activeCapabilities: this.getActiveCapabilities().length,
-      tracks: Object.keys(this._engine.tracks).length,
       constraints: Object.keys(this._engine.constraints).length,
     };
   }

@@ -95,31 +95,6 @@
           },
           "required": ["multi_world", "schema_validation", "graph_validation", "world_injection"]
         },
-        "tracks": {
-          "type": "object",
-          "description": "Архитектурные треки (0-4)",
-          "patternProperties": {
-            "^[0-4]$": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Название трека"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Описание трека"
-                },
-                "status": {
-                  "type": "string",
-                  "enum": ["formalized", "stabilized", "partial", "conceptualizing", "active"],
-                  "description": "Статус реализации трека"
-                }
-              },
-              "required": ["name", "description", "status"]
-            }
-          }
-        },
         "constraints": {
           "type": "object",
           "description": "Архитектурные ограничения",
@@ -156,7 +131,7 @@
           }
         }
       },
-      "required": ["version", "description", "contracts", "capabilities", "tracks", "constraints", "implementation_map"]
+      "required": ["version", "description", "contracts", "capabilities", "constraints", "implementation_map"]
     }
   },
   "required": ["engine"]

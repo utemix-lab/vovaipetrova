@@ -152,37 +152,6 @@ describe("SpecificationReader", () => {
   });
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // TRACKS
-  // ═══════════════════════════════════════════════════════════════════════════
-  
-  describe("Tracks", () => {
-    it("getTracks() returns all tracks", () => {
-      const tracks = reader.getTracks();
-      expect(tracks).toHaveProperty("0");
-      expect(tracks).toHaveProperty("1");
-      expect(tracks).toHaveProperty("2");
-      expect(tracks).toHaveProperty("3");
-      expect(tracks).toHaveProperty("4");
-    });
-    
-    it("getTrack() returns track by id", () => {
-      const track = reader.getTrack(0);
-      expect(track).toHaveProperty("name");
-      expect(track).toHaveProperty("description");
-      expect(track).toHaveProperty("status");
-    });
-    
-    it("getTrack() accepts string id", () => {
-      const track = reader.getTrack("2");
-      expect(track.name).toBe("Schema/Engine");
-    });
-    
-    it("getTrack() returns null for unknown track", () => {
-      expect(reader.getTrack(99)).toBeNull();
-    });
-  });
-  
-  // ═══════════════════════════════════════════════════════════════════════════
   // CONSTRAINTS
   // ═══════════════════════════════════════════════════════════════════════════
   
@@ -190,7 +159,7 @@ describe("SpecificationReader", () => {
     it("getConstraints() returns all constraints", () => {
       const constraints = reader.getConstraints();
       expect(constraints).toHaveProperty("GraphInvariance");
-      expect(constraints).toHaveProperty("TrackBoundaries");
+      expect(constraints).toHaveProperty("WorldAgnostic");
     });
     
     it("getConstraint() returns constraint by name", () => {
@@ -205,7 +174,7 @@ describe("SpecificationReader", () => {
     
     it("isConstraintEnforced() returns true for enforced constraint", () => {
       expect(reader.isConstraintEnforced("GraphInvariance")).toBe(true);
-      expect(reader.isConstraintEnforced("TrackBoundaries")).toBe(true);
+      expect(reader.isConstraintEnforced("WorldAgnostic")).toBe(true);
     });
     
     it("isConstraintEnforced() returns false for unknown constraint", () => {
@@ -325,7 +294,6 @@ describe("SpecificationReader", () => {
       expect(stats).toHaveProperty("contracts");
       expect(stats).toHaveProperty("methods");
       expect(stats).toHaveProperty("capabilities");
-      expect(stats).toHaveProperty("tracks");
       expect(stats).toHaveProperty("constraints");
       expect(stats.contracts).toBeGreaterThan(0);
       expect(stats.methods).toBeGreaterThan(0);

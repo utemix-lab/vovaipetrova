@@ -209,47 +209,10 @@
       "RAG": false,
       "operators": false
     },
-    "tracks": {
-      "0": {
-        "name": "Meta/Product",
-        "description": "Что такое Платформа как продукт?",
-        "status": "formalized"
-      },
-      "1": {
-        "name": "Ontology",
-        "description": "Что существует в Мире?",
-        "status": "stabilized"
-      },
-      "2": {
-        "name": "Schema/Engine",
-        "description": "Как онтология реализована технически?",
-        "status": "partial"
-      },
-      "3": {
-        "name": "Operators",
-        "description": "Как система действует?",
-        "status": "conceptualizing"
-      },
-      "4": {
-        "name": "Projection/UI",
-        "description": "Как система отображается?",
-        "status": "active"
-      }
-    },
     "constraints": {
       "GraphInvariance": {
         "description": "Базовый граф мира инвариантен. Инструменты трансформируют проекцию, не граф.",
         "enforced": true
-      },
-      "TrackBoundaries": {
-        "description": "Треки не знают друг о друге напрямую. Связи только через интерфейсы.",
-        "enforced": true,
-        "rules": [
-          "UI не может определять онтологию",
-          "Schema не может определять Narrative",
-          "Operators не могут изменять Ontology",
-          "Meta-режим не может вмешиваться в Graph"
-        ]
       },
       "WorldAgnostic": {
         "description": "Engine не знает конкретных типов узлов, философии мира или UI.",
