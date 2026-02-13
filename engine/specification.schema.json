@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MeaningEngine Specification Schema",
+  "description": "JSON Schema для валидации specification.json платформы MeaningEngine",
+  "type": "object",
+  "properties": {
+    "engine": {
+      "type": "object",
+      "description": "Корневой объект спецификации Engine",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Версия Engine (semver)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Описание Engine"
+        },
+        "contracts": {
+          "type": "object",
+          "description": "Контракты платформы",
+          "patternProperties": {
+            "^[A-Za-z_][A-Za-z0-9_]*$": {
+              "type": "object",
+              "description": "Контракт (класс/интерфейс)",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Описание контракта"
+                },
+                "methods": {
+                  "type": "object",
+                  "description": "Методы контракта",
+                  "patternProperties": {
+                    "^[A-Za-z_][A-Za-z0-9_]*$": {
+                      "type": "object",
+                      "description": "Метод контракта",
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "description": "Описание метода"
+                        },
+                        "inputs": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "description": "Входные параметры"
+                        },
+                        "outputs": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "description": "Выходные значения"
+                        },
+                        "implementation": {
+                          "type": "string",
+                          "description": "Путь к реализации (файл:метод или файл:строка)"
+                        }
+                      },
+                      "required": ["description", "inputs", "outputs", "implementation"]
+                    }
+                  }
+                }
+              },
+              "required": ["description", "methods"]
+            }
+          }
+        },
+        "capabilities": {
+          "type": "object",
+          "description": "Возможности платформы",
+          "properties": {
+            "multi_world": {
+              "type": "boolean",
+              "description": "Поддержка нескольких миров"
+            },
+            "schema_validation": {
+              "type": "boolean",
+              "description": "Валидация схемы"
+            },
+            "graph_validation": {
+              "type": "boolean",
+              "description": "Валидация графа"
+            },
+            "world_injection": {
+              "type": "boolean",
+              "description": "Инжекция мира через адаптер"
+            },
+            "RAG": {
+              "type": "boolean",
+              "description": "Retrieval-Augmented Generation"
+            },
+            "operators": {
+              "type": "boolean",
+              "description": "Epistemic Operators"
+            }
+          },
+          "required": ["multi_world", "schema_validation", "graph_validation", "world_injection"]
+        },
+        "tracks": {
+          "type": "object",
+          "description": "Архитектурные треки (0-4)",
+          "patternProperties": {
+            "^[0-4]$": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Название трека"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Описание трека"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["formalized", "stabilized", "partial", "conceptualizing", "active"],
+                  "description": "Статус реализации трека"
+                }
+              },
+              "required": ["name", "description", "status"]
+            }
+          }
+        },
+        "constraints": {
+          "type": "object",
+          "description": "Архитектурные ограничения",
+          "patternProperties": {
+            "^[A-Za-z_][A-Za-z0-9_]*$": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Описание ограничения"
+                },
+                "enforced": {
+                  "type": "boolean",
+                  "description": "Ограничение активно"
+                },
+                "rules": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Конкретные правила"
+                }
+              },
+              "required": ["description", "enforced"]
+            }
+          }
+        },
+        "implementation_map": {
+          "type": "object",
+          "description": "Карта реализаций: Contract.method → файл:строка",
+          "patternProperties": {
+            "^[A-Za-z_][A-Za-z0-9_.]*$": {
+              "type": "string",
+              "description": "Путь к реализации"
+            }
+          }
+        }
+      },
+      "required": ["version", "description", "contracts", "capabilities", "tracks", "constraints", "implementation_map"]
+    }
+  },
+  "required": ["engine"]
+}

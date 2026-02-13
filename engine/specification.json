@@ -1,0 +1,287 @@
+{
+  "engine": {
+    "version": "0.5.0",
+    "description": "MeaningEngine — универсальный механизм для семантических графов",
+    "contracts": {
+      "WorldInterface": {
+        "description": "Контракт между Engine и World",
+        "methods": {
+          "getSchema": {
+            "description": "Возвращает схему мира",
+            "inputs": [],
+            "outputs": ["Schema"],
+            "implementation": "engine/src/WorldInterface.js:WorldInterface.getSchema"
+          },
+          "getGraph": {
+            "description": "Возвращает граф мира",
+            "inputs": [],
+            "outputs": ["GraphInterface"],
+            "implementation": "engine/src/WorldInterface.js:WorldInterface.getGraph"
+          },
+          "getSeed": {
+            "description": "Возвращает начальные данные (опционально)",
+            "inputs": [],
+            "outputs": ["Seed", "null"],
+            "implementation": "engine/src/WorldInterface.js:WorldInterface.getSeed"
+          },
+          "getConfig": {
+            "description": "Возвращает конфигурацию мира (опционально)",
+            "inputs": [],
+            "outputs": ["WorldConfig", "null"],
+            "implementation": "engine/src/WorldInterface.js:WorldInterface.getConfig"
+          }
+        }
+      },
+      "WorldAdapter": {
+        "description": "Адаптер для подключения мира к Engine",
+        "methods": {
+          "fromJSON": {
+            "description": "Создаёт адаптер из JSON данных",
+            "inputs": ["schemaData", "seedData"],
+            "outputs": ["WorldAdapter"],
+            "implementation": "engine/src/WorldAdapter.js:WorldAdapter.fromJSON"
+          },
+          "getSchema": {
+            "description": "Возвращает схему мира",
+            "inputs": [],
+            "outputs": ["Schema"],
+            "implementation": "engine/src/WorldAdapter.js:WorldAdapter.getSchema"
+          },
+          "getGraph": {
+            "description": "Возвращает граф мира",
+            "inputs": [],
+            "outputs": ["GraphInterface"],
+            "implementation": "engine/src/WorldAdapter.js:WorldAdapter.getGraph"
+          }
+        }
+      },
+      "Schema": {
+        "description": "Абстрактная схема мира",
+        "methods": {
+          "isValidNodeType": {
+            "description": "Проверяет допустимость типа узла",
+            "inputs": ["nodeType"],
+            "outputs": ["boolean"],
+            "implementation": "engine/src/Schema.js:Schema.isValidNodeType"
+          },
+          "isValidEdgeType": {
+            "description": "Проверяет допустимость типа ребра",
+            "inputs": ["edgeType"],
+            "outputs": ["boolean"],
+            "implementation": "engine/src/Schema.js:Schema.isValidEdgeType"
+          },
+          "validateNode": {
+            "description": "Валидирует узел против схемы",
+            "inputs": ["node"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/Schema.js:Schema.validateNode"
+          },
+          "validateEdge": {
+            "description": "Валидирует ребро против схемы",
+            "inputs": ["edge", "getNodeType"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/Schema.js:Schema.validateEdge"
+          },
+          "getNodeTypeIds": {
+            "description": "Возвращает список ID типов узлов",
+            "inputs": [],
+            "outputs": ["string[]"],
+            "implementation": "engine/src/Schema.js:Schema.getNodeTypeIds"
+          },
+          "getEdgeTypeIds": {
+            "description": "Возвращает список ID типов рёбер",
+            "inputs": [],
+            "outputs": ["string[]"],
+            "implementation": "engine/src/Schema.js:Schema.getEdgeTypeIds"
+          }
+        }
+      },
+      "MeaningEngine": {
+        "description": "Главный класс Engine",
+        "methods": {
+          "getVersion": {
+            "description": "Возвращает версию Engine",
+            "inputs": [],
+            "outputs": ["string"],
+            "implementation": "engine/src/index.js:MeaningEngine.getVersion"
+          },
+          "getWorldName": {
+            "description": "Возвращает имя подключённого мира",
+            "inputs": [],
+            "outputs": ["string"],
+            "implementation": "engine/src/index.js:MeaningEngine.getWorldName"
+          },
+          "getSchema": {
+            "description": "Возвращает схему мира",
+            "inputs": [],
+            "outputs": ["Schema"],
+            "implementation": "engine/src/index.js:MeaningEngine.getSchema"
+          },
+          "getGraph": {
+            "description": "Возвращает граф мира",
+            "inputs": [],
+            "outputs": ["GraphInterface", "null"],
+            "implementation": "engine/src/index.js:MeaningEngine.getGraph"
+          },
+          "isValidNodeType": {
+            "description": "Проверяет допустимость типа узла",
+            "inputs": ["nodeType"],
+            "outputs": ["boolean"],
+            "implementation": "engine/src/index.js:MeaningEngine.isValidNodeType"
+          },
+          "isValidEdgeType": {
+            "description": "Проверяет допустимость типа ребра",
+            "inputs": ["edgeType"],
+            "outputs": ["boolean"],
+            "implementation": "engine/src/index.js:MeaningEngine.isValidEdgeType"
+          },
+          "validateNode": {
+            "description": "Валидирует узел против схемы",
+            "inputs": ["node"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/index.js:MeaningEngine.validateNode"
+          },
+          "validateEdge": {
+            "description": "Валидирует ребро против схемы",
+            "inputs": ["edge"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/index.js:MeaningEngine.validateEdge"
+          },
+          "getNodeById": {
+            "description": "Получить узел по ID",
+            "inputs": ["id"],
+            "outputs": ["node", "null"],
+            "implementation": "engine/src/index.js:MeaningEngine.getNodeById"
+          },
+          "getNeighbors": {
+            "description": "Получить соседей узла",
+            "inputs": ["nodeId"],
+            "outputs": ["node[]"],
+            "implementation": "engine/src/index.js:MeaningEngine.getNeighbors"
+          },
+          "getStats": {
+            "description": "Статистика Engine",
+            "inputs": [],
+            "outputs": ["EngineStats"],
+            "implementation": "engine/src/index.js:MeaningEngine.getStats"
+          }
+        }
+      },
+      "SchemaValidator": {
+        "description": "Валидатор схемы мира",
+        "methods": {
+          "validate": {
+            "description": "Валидирует схему мира",
+            "inputs": ["schema"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/WorldInterface.js:SchemaValidator.validate"
+          }
+        }
+      },
+      "GraphValidator": {
+        "description": "Валидатор графа мира",
+        "methods": {
+          "validate": {
+            "description": "Валидирует граф мира",
+            "inputs": ["graph"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/WorldInterface.js:GraphValidator.validate"
+          }
+        }
+      },
+      "WorldValidator": {
+        "description": "Валидатор мира (схема + граф)",
+        "methods": {
+          "validate": {
+            "description": "Валидирует мир целиком",
+            "inputs": ["world"],
+            "outputs": ["ValidationResult"],
+            "implementation": "engine/src/WorldInterface.js:WorldValidator.validate"
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "multi_world": true,
+      "schema_validation": true,
+      "graph_validation": true,
+      "world_injection": true,
+      "RAG": false,
+      "operators": false
+    },
+    "tracks": {
+      "0": {
+        "name": "Meta/Product",
+        "description": "Что такое Платформа как продукт?",
+        "status": "formalized"
+      },
+      "1": {
+        "name": "Ontology",
+        "description": "Что существует в Мире?",
+        "status": "stabilized"
+      },
+      "2": {
+        "name": "Schema/Engine",
+        "description": "Как онтология реализована технически?",
+        "status": "partial"
+      },
+      "3": {
+        "name": "Operators",
+        "description": "Как система действует?",
+        "status": "conceptualizing"
+      },
+      "4": {
+        "name": "Projection/UI",
+        "description": "Как система отображается?",
+        "status": "active"
+      }
+    },
+    "constraints": {
+      "GraphInvariance": {
+        "description": "Базовый граф мира инвариантен. Инструменты трансформируют проекцию, не граф.",
+        "enforced": true
+      },
+      "TrackBoundaries": {
+        "description": "Треки не знают друг о друге напрямую. Связи только через интерфейсы.",
+        "enforced": true,
+        "rules": [
+          "UI не может определять онтологию",
+          "Schema не может определять Narrative",
+          "Operators не могут изменять Ontology",
+          "Meta-режим не может вмешиваться в Graph"
+        ]
+      },
+      "WorldAgnostic": {
+        "description": "Engine не знает конкретных типов узлов, философии мира или UI.",
+        "enforced": true
+      }
+    },
+    "implementation_map": {
+      "WorldInterface.getSchema": "engine/src/WorldInterface.js:32",
+      "WorldInterface.getGraph": "engine/src/WorldInterface.js:41",
+      "WorldInterface.getSeed": "engine/src/WorldInterface.js:49",
+      "WorldInterface.getConfig": "engine/src/WorldInterface.js:57",
+      "WorldAdapter.fromJSON": "engine/src/WorldAdapter.js:105",
+      "WorldAdapter.getSchema": "engine/src/WorldAdapter.js:70",
+      "WorldAdapter.getGraph": "engine/src/WorldAdapter.js:78",
+      "Schema.isValidNodeType": "engine/src/Schema.js:isValidNodeType",
+      "Schema.isValidEdgeType": "engine/src/Schema.js:isValidEdgeType",
+      "Schema.validateNode": "engine/src/Schema.js:validateNode",
+      "Schema.validateEdge": "engine/src/Schema.js:validateEdge",
+      "MeaningEngine.getVersion": "engine/src/index.js:91",
+      "MeaningEngine.getWorldName": "engine/src/index.js:99",
+      "MeaningEngine.getSchema": "engine/src/index.js:115",
+      "MeaningEngine.getGraph": "engine/src/index.js:123",
+      "MeaningEngine.isValidNodeType": "engine/src/index.js:144",
+      "MeaningEngine.isValidEdgeType": "engine/src/index.js:153",
+      "MeaningEngine.validateNode": "engine/src/index.js:162",
+      "MeaningEngine.validateEdge": "engine/src/index.js:171",
+      "MeaningEngine.getNodeById": "engine/src/index.js:203",
+      "MeaningEngine.getNeighbors": "engine/src/index.js:212",
+      "MeaningEngine.getStats": "engine/src/index.js:224",
+      "SchemaValidator.validate": "engine/src/WorldInterface.js:72",
+      "GraphValidator.validate": "engine/src/WorldInterface.js:GraphValidator.validate",
+      "WorldValidator.validate": "engine/src/WorldInterface.js:WorldValidator.validate"
+    }
+  }
+}
