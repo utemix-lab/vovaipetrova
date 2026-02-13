@@ -1780,6 +1780,15 @@ LLM = operator reading spec
 **Создать:**
 - Кабина платформы (Platform Cabina)
 - Визуальная проекция spec
+- HF Spaces демо (опционально)
+
+**Комплексная задача:**
+- Требует Track 0 (Meta/Product) — концепция презентации
+- Требует Track 4 (Projection/UI) — реализация интерфейса
+- Зависит от P6.0a-c (спецификация готова)
+- Опционально зависит от P6.0d (LLM-интеграция)
+
+**Статус:** Отложено — требует отдельного планирования.
 
 ---
 
@@ -1787,8 +1796,8 @@ LLM = operator reading spec
 
 | Этап | Статус |
 |------|--------|
-| P6.0a — Specification Schema | **СЛЕДУЮЩИЙ** |
-| P6.0b — SpecificationReader | Ожидает |
-| P6.0c — Engine Integration | Ожидает |
+| P6.0a — Specification Schema | ✓ ЗАВЕРШЁН |
+| P6.0b — SpecificationReader | ✓ ЗАВЕРШЁН |
+| P6.0c — Engine Integration | ✓ ЗАВЕРШЁН |
 | P6.0d — LLM Integration | Ожидает |
-| P6.0e — UI Projection | Ожидает |
+| P6.0e — UI Projection | Отложено (комплексная задача) |
