@@ -35,6 +35,9 @@ export { Schema } from "./Schema.js";
 // P5.0d — World Adapter
 export { WorldAdapter } from "./WorldAdapter.js";
 
+// P6.0b — Specification Reader
+export { SpecificationReader } from "./SpecificationReader.js";
+
 // Internal import for MeaningEngine
 import { WorldValidator } from "./WorldInterface.js";
 
