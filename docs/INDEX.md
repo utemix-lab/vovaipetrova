@@ -8,7 +8,9 @@
 
 | Документ | Описание |
 |----------|----------|
+| [ARCHITECTURE_TRACKS.md](ARCHITECTURE_TRACKS.md) | **Треки v3.0** — 5 ракурсов системы |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | **Архитектура v0.5.0** — диаграммы, контракты, границы |
+| [../worlds/vovaipetrova/ONTOLOGY.md](../worlds/vovaipetrova/ONTOLOGY.md) | **Онтология v1.0** — Track 1 Universe |
 | [ARCHITECTURE_PRINCIPLES.md](ARCHITECTURE_PRINCIPLES.md) | Графоцентричность, фазы, что делаем/не делаем |
 | [../.agent/context.yml](../.agent/context.yml) | Правила для агента, golden_rule, примеры якорей |
 | [../engine/WORLD_CONTRACT.md](../engine/WORLD_CONTRACT.md) | Контракт Engine ↔ World |
@@ -43,10 +45,12 @@
 ## Порядок чтения для нового агента
 
 1. **README.md** (корень) — быстрый старт и архитектурная диаграмма
-2. **ARCHITECTURE.md** — полная архитектура v0.5.0
-3. **engine/README.md** — API MeaningEngine
-4. **engine/WORLD_CONTRACT.md** — контракт Engine ↔ World
-5. **docs/ARCHITECTURE_PRINCIPLES.md** — понять философию
-6. **.agent/context.yml** — понять правила
-7. Код: `engine/src/index.js` — MeaningEngine
-8. Код: `render/src/scenes/visitor.js` — основная логика UI
+2. **docs/ARCHITECTURE_TRACKS.md** — 5 треков системы (v3.0)
+3. **ARCHITECTURE.md** — полная архитектура v0.5.0
+4. **worlds/vovaipetrova/ONTOLOGY.md** — онтология v1.0
+5. **engine/README.md** — API MeaningEngine
+6. **engine/WORLD_CONTRACT.md** — контракт Engine ↔ World
+7. **docs/ARCHITECTURE_PRINCIPLES.md** — понять философию
+8. **.agent/context.yml** — понять правила
+9. Код: `engine/src/index.js` — MeaningEngine
+10. Код: `render/src/scenes/visitor.js` — основная логика UI
