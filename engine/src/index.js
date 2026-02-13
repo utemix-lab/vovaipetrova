@@ -40,6 +40,7 @@ export { SpecificationReader } from "./SpecificationReader.js";
 
 // Internal import for MeaningEngine
 import { WorldValidator } from "./WorldInterface.js";
+import { SpecificationReader } from "./SpecificationReader.js";
 
 export const ENGINE_VERSION = "0.1.0";
 
@@ -235,6 +236,50 @@ export class MeaningEngine {
       edgeCount: this.getEdgeCount(),
       hasGraph: this._graph !== null,
     };
+  }
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PLATFORM SPECIFICATION (P6.0c)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  /**
+   * Возвращает SpecificationReader для доступа к спецификации платформы.
+   * @returns {SpecificationReader}
+   */
+  static getSpecificationReader() {
+    return SpecificationReader.load();
+  }
+  
+  /**
+   * Возвращает полную спецификацию платформы.
+   * @returns {object}
+   */
+  static getSpecification() {
+    return SpecificationReader.load().getSpecification();
+  }
+  
+  /**
+   * Возвращает capabilities платформы.
+   * @returns {object}
+   */
+  static getCapabilities() {
+    return SpecificationReader.load().getCapabilities();
+  }
+  
+  /**
+   * Возвращает контракты платформы.
+   * @returns {string[]}
+   */
+  static getContracts() {
+    return SpecificationReader.load().getContractNames();
+  }
+  
+  /**
+   * Возвращает сжатый контекст для LLM.
+   * @returns {object}
+   */
+  static toLLMContext() {
+    return SpecificationReader.load().toLLMContext();
   }
 }
 

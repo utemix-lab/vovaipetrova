@@ -323,4 +323,47 @@ describe("MeaningEngine", () => {
       expect(neighbors).toHaveLength(2);
     });
   });
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PLATFORM SPECIFICATION (P6.0c)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  describe("Platform Specification (static methods)", () => {
+    it("getSpecificationReader() returns SpecificationReader instance", () => {
+      const reader = MeaningEngine.getSpecificationReader();
+      expect(reader).toBeDefined();
+      expect(typeof reader.getVersion).toBe("function");
+      expect(reader.getVersion()).toBe("0.5.0");
+    });
+    
+    it("getSpecification() returns full specification", () => {
+      const spec = MeaningEngine.getSpecification();
+      expect(spec).toHaveProperty("engine");
+      expect(spec.engine).toHaveProperty("version");
+      expect(spec.engine).toHaveProperty("contracts");
+    });
+    
+    it("getCapabilities() returns capabilities object", () => {
+      const caps = MeaningEngine.getCapabilities();
+      expect(caps).toHaveProperty("multi_world");
+      expect(caps).toHaveProperty("schema_validation");
+      expect(caps.multi_world).toBe(true);
+    });
+    
+    it("getContracts() returns list of contract names", () => {
+      const contracts = MeaningEngine.getContracts();
+      expect(Array.isArray(contracts)).toBe(true);
+      expect(contracts).toContain("MeaningEngine");
+      expect(contracts).toContain("WorldInterface");
+    });
+    
+    it("toLLMContext() returns compact context for LLM", () => {
+      const ctx = MeaningEngine.toLLMContext();
+      expect(ctx).toHaveProperty("engine_version");
+      expect(ctx).toHaveProperty("contracts");
+      expect(ctx).toHaveProperty("capabilities");
+      expect(ctx).toHaveProperty("constraints");
+      expect(ctx.engine_version).toBe("0.5.0");
+    });
+  });
 });
