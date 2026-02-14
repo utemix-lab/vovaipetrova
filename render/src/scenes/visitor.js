@@ -819,6 +819,11 @@ function isSystemNode(node) {
 }
 
 function getNodeRadius(node) {
+  // Мыльный пузырь: cabin-runa — фиксированный размер (приоритет над всем)
+  if (node.id === "cabin-runa") {
+    const parentRadius = 8.8; // Радиус crypto-cabins (hub)
+    return parentRadius * 0.4; // ~3.5 — меньше большого узла
+  }
   if (node.visualRadius && Number.isFinite(node.visualRadius)) {
     return node.visualRadius;
   }
@@ -827,11 +832,6 @@ function getNodeRadius(node) {
   }
   if (isSystemNode(node)) {
     return BASE_NODE_RADIUS * 10 * SYSTEM_NODE_SCALE;
-  }
-  // Мыльный пузырь: cabin-runa = 1/3 от crypto-cabins
-  if (node.id === "cabin-runa") {
-    const parentRadius = 8.8; // Радиус crypto-cabins (hub)
-    return parentRadius / 3;
   }
   return BASE_NODE_RADIUS;
 }
@@ -992,9 +992,15 @@ function createNodeMesh(node) {
     return sysMesh;
   }
   // Cryptocosm — простой материал без rim-эффекта с градиентной прозрачностью
-  const material = CRYPTOCOSM_NODE_IDS.has(node.id) 
-    ? getCryptoMaterial(getNodeColor(node), node.id)
-    : getRimMaterial(getNodeColor(node));
+  // Исключение: cabin-runa использует rim-материал с бликами (но чёрный цвет)
+  let material;
+  if (node.id === "cabin-runa") {
+    material = getRimMaterial(getNodeColor(node)); // Блики + чёрный цвет
+  } else if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+    material = getCryptoMaterial(getNodeColor(node), node.id);
+  } else {
+    material = getRimMaterial(getNodeColor(node));
+  }
   const mesh = new THREE.Mesh(nodeGeometry, material);
   const baseRadius = getNodeRadius(node);
   mesh.scale.setScalar(baseRadius);
@@ -1017,9 +1023,14 @@ function applyNodeMaterial(nodeId) {
     return;
   }
   // Cryptocosm — простой материал без rim-эффекта с градиентной прозрачностью
-  mesh.material = CRYPTOCOSM_NODE_IDS.has(node.id)
-    ? getCryptoMaterial(getNodeColor(node), node.id)
-    : getRimMaterial(getNodeColor(node));
+  // Исключение: cabin-runa использует rim-материал с бликами (но чёрный цвет)
+  if (node.id === "cabin-runa") {
+    mesh.material = getRimMaterial(getNodeColor(node)); // Блики + чёрный цвет
+  } else if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+    mesh.material = getCryptoMaterial(getNodeColor(node), node.id);
+  } else {
+    mesh.material = getRimMaterial(getNodeColor(node));
+  }
 }
 
 // === Рёбра (конусные смычки) ===
@@ -1245,9 +1256,12 @@ function getLinkDistance(link) {
   }
   
   // Мыльный пузырь: cabin-runa прижат к crypto-cabins
+  // Радиус crypto-cabins = 8.8, радиус cabin-runa = 5.87 (увеличен x2)
+  // Расстояние между центрами для касания = 8.8 + 5.87 = 14.67
+  // Для эффекта "на поверхности" делаем меньше
   if ((sourceId === "crypto-cabins" && targetId === "cabin-runa") ||
       (sourceId === "cabin-runa" && targetId === "crypto-cabins")) {
-    return 12; // Короткое расстояние для эффекта пузыря на поверхности
+    return 7; // Пузырь на поверхности
   }
   
   const base = VISUAL_CONFIG.link.baseLength;

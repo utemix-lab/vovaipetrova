@@ -1361,18 +1361,6 @@
       "type": "contains"
     },
     {
-      "id": "edge-runa-reflects-schema",
-      "source": "cabin-runa",
-      "target": "crypto-schema",
-      "type": "relates"
-    },
-    {
-      "id": "edge-runa-reflects-validators",
-      "source": "cabin-runa",
-      "target": "crypto-validators",
-      "type": "relates"
-    },
-    {
       "id": "edge-author-reflects-projections",
       "source": "cabin-author",
       "target": "crypto-projections",

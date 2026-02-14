@@ -34,12 +34,17 @@ export class ThreeGraphEngine {
     graph.d3Force("link")
       .distance((link) => this.getLinkDistance(link))
       .strength((link) => {
-        // Усиленная сила для ребра Universe-Cryptocosm
         const sourceId = typeof link.source === "object" ? link.source.id : link.source;
         const targetId = typeof link.target === "object" ? link.target.id : link.target;
+        // Усиленная сила для ребра Universe-Cryptocosm
         if ((sourceId === "universe" && targetId === "cryptocosm") ||
             (sourceId === "cryptocosm" && targetId === "universe")) {
           return 2.0; // Сильное притяжение
+        }
+        // Мыльный пузырь: cabin-runa прижат к crypto-cabins
+        if ((sourceId === "crypto-cabins" && targetId === "cabin-runa") ||
+            (sourceId === "cabin-runa" && targetId === "crypto-cabins")) {
+          return 5.0; // Очень сильное притяжение
         }
         return 0.3; // Обычная сила
       });
