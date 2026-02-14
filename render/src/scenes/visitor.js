@@ -2101,6 +2101,19 @@ function setRoute(route) {
     const initialDistance = (controls.minDistance + controls.maxDistance) / 2;
     graph.cameraPosition({ x: 0, y: 0, z: initialDistance }, null, 800);
   }, 200);
+  
+  // Зафиксировать позиции Cryptocosm узлов после стабилизации физики
+  // Это предотвращает дрейф при перемещении камеры
+  setTimeout(() => {
+    const gd = graph.graphData();
+    for (const node of gd.nodes) {
+      if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+        node.fx = node.x;
+        node.fy = node.y;
+        node.fz = node.z;
+      }
+    }
+  }, 3000); // После полной стабилизации физики
 
   console.log("[Visitor] Route loaded:", route.title);
 }
@@ -3827,13 +3840,24 @@ function bindCabinButton(container) {
   const cabinId = btn.dataset.cabinId;
   if (!cabinId) return;
   
-  // Hover: только визуальная подсветка виджета (без изменения графа)
+  // Hover: подсветка кнопки + подсветка узла cabin-runa в графе
   btn.addEventListener("mouseenter", () => {
     btn.classList.add("cabin-link-btn--hover");
+    // Подсветить узел cabin-runa в графе
+    const cabinNode = nodesById.get(cabinId);
+    if (cabinNode) {
+      hoverNode = cabinNode;
+      refreshHighlights(cabinNode, "hover");
+      graph.refresh();
+    }
   });
   
   btn.addEventListener("mouseleave", () => {
     btn.classList.remove("cabin-link-btn--hover");
+    // Снять подсветку, вернуть к selected
+    hoverNode = null;
+    refreshHighlights(currentStep, "selected");
+    graph.refresh();
   });
   
   // Click: приблизить камеру к узлу кабины
@@ -3841,12 +3865,12 @@ function bindCabinButton(container) {
     registerInteraction();
     const graphData = graph.graphData();
     const targetNode = graphData.nodes.find(n => n.id === cabinId);
-    console.log("[Cabin] Click, targetNode:", targetNode);
+    
     if (targetNode && targetNode.x !== undefined) {
+      // Позиции Cryptocosm узлов уже зафиксированы при загрузке графа
       const distance = 60;
       const targetPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z };
       const cameraPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z + distance };
-      console.log("[Cabin] Moving camera to:", cameraPos, "lookAt:", targetPos);
       graph.cameraPosition(cameraPos, targetPos, 1500);
     } else {
       console.warn("[Cabin] Node not found or has no position");
