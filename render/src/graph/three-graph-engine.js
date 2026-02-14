@@ -43,8 +43,10 @@ export class ThreeGraphEngine {
         }
         return 0.3; // Обычная сила
       });
-    graph.d3VelocityDecay(0.08);
-    graph.d3AlphaDecay(0.008);
+    graph.d3VelocityDecay(0.4);  // Быстрое затухание скорости (было 0.08)
+    graph.d3AlphaDecay(0.05);    // Быстрое затухание симуляции (было 0.008)
+    graph.cooldownTicks(100);    // Остановить физику после 100 тиков
+    graph.cooldownTime(3000);    // Или через 3 секунды
 
     graph.scene().add(new this.three.AmbientLight(0xffffff, 0.7));
     const keyLight = new this.three.DirectionalLight(0xffffff, 0.8);

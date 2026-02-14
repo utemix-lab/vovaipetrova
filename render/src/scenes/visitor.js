@@ -250,9 +250,9 @@ const CRYPTOCOSM_NODE_IDS = new Set([
   "cabin-runa", "cabin-author", "cabin-ai", "cabin-petrova", "cabin-hinto", "cabin-dizi"
 ]);
 const CRYPTOCOSM_PALETTE = {
-  inactive: "#3a3a3a",   // серый (ярче)
-  active: "#5a5a5a",     // светло-серый (hover/scope)
-  selected: "#4a4a4a",   // серый (выбранный)
+  inactive: "#3a3a3a",   // серый (базовый)
+  active: "#7a7a7a",     // светло-серый (hover/scope) — ярче x2
+  selected: "#5a5a5a",   // серый (выбранный)
   link: "#252525"        // темнее узлов, чтобы сливаться с фоном
 };
 
@@ -658,8 +658,8 @@ function renderHighlight(state) {
   // Обновить материалы узлов
   nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
   
-  // Обновить граф
-  if (graph) graph.refresh();
+  // graph.refresh() убран — он перезапускает физику и вызывает подрагивание
+  // Материалы обновляются напрямую через applyNodeMaterial
 }
 const nodeGeometry = new THREE.SphereGeometry(1, 48, 48);
 const systemNodeGeometry = new THREE.SphereGeometry(1, 96, 96);
@@ -770,10 +770,12 @@ const typeHighlightedNodeIds = new Set(); // Узлы, подсвеченные 
 function getNodeColor(node, forLink = false) {
   // Cryptocosm — ч/б палитра (тёмная материя)
   if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+    // Hover подсветка — только сам hovered узел, не соседи
+    if (hoverNode && node.id === hoverNode.id) return CRYPTOCOSM_PALETTE.active;
     // Type Highlight
     if (!forLink && typeHighlightedNodeIds.has(node.id)) return CRYPTOCOSM_PALETTE.selected;
-    // Подсветка через виджет
-    if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return CRYPTOCOSM_PALETTE.selected;
+    // Подсветка через виджет — только сам узел
+    if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return CRYPTOCOSM_PALETTE.active;
     // Текущий выделенный узел
     if (currentStep && node.id === currentStep.id) return CRYPTOCOSM_PALETTE.selected;
     // Scope highlight
@@ -825,6 +827,11 @@ function getNodeRadius(node) {
   }
   if (isSystemNode(node)) {
     return BASE_NODE_RADIUS * 10 * SYSTEM_NODE_SCALE;
+  }
+  // Мыльный пузырь: cabin-runa = 1/3 от crypto-cabins
+  if (node.id === "cabin-runa") {
+    const parentRadius = 8.8; // Радиус crypto-cabins (hub)
+    return parentRadius / 3;
   }
   return BASE_NODE_RADIUS;
 }
@@ -1132,10 +1139,10 @@ function updateLinkObject(obj, position, link) {
   colors.needsUpdate = true;
 
   // Полная яркость для hover, половинная для selected
-  // Cryptocosm — более прозрачные линии + NormalBlending (чтобы сливались с узлами)
+  // Cryptocosm — рёбра полностью скрыты (только для физики)
   if (isCryptoLink) {
-    line.material.opacity = isHighlighted ? 0.4 : (isHalfHighlighted ? 0.25 : 0.15);
-    line.material.blending = THREE.NormalBlending; // Без аддитивного свечения
+    line.material.opacity = 0;
+    line.material.blending = THREE.NormalBlending;
   } else {
     line.material.opacity = isHighlighted ? 0.9 : (isHalfHighlighted ? 0.55 : 0.4);
     line.material.blending = THREE.AdditiveBlending; // Обычные рёбра светятся
@@ -1235,6 +1242,12 @@ function getLinkDistance(link) {
   if ((sourceId === "universe" && targetId === "cryptocosm") ||
       (sourceId === "cryptocosm" && targetId === "universe")) {
     return VISUAL_CONFIG.link.baseLength * 0.4; // 40% от базовой длины
+  }
+  
+  // Мыльный пузырь: cabin-runa прижат к crypto-cabins
+  if ((sourceId === "crypto-cabins" && targetId === "cabin-runa") ||
+      (sourceId === "cabin-runa" && targetId === "crypto-cabins")) {
+    return 12; // Короткое расстояние для эффекта пузыря на поверхности
   }
   
   const base = VISUAL_CONFIG.link.baseLength;
@@ -1573,7 +1586,7 @@ graph.onNodeHover((node) => {
     // Возврат к подсветке выделенного узла (полсилы)
     refreshHighlights(currentStep, "selected");
   }
-  graph.refresh();
+  // graph.refresh() убран — он перезапускает физику и вызывает подрагивание
 });
 
 graph.onNodeClick((node) => {
@@ -1607,6 +1620,13 @@ function updateNodeBreathing(timeMs) {
   nodeMeshes.forEach((mesh, nodeId) => {
     const baseRadius = nodeBaseRadius.get(nodeId);
     if (!baseRadius) return;
+    
+    // Cryptocosm и Universe узлы без пульсации — статичные
+    if (CRYPTOCOSM_NODE_IDS.has(nodeId) || nodeId === "universe") {
+      mesh.scale.setScalar(baseRadius);
+      return;
+    }
+    
     const phase = nodePulsePhase.get(nodeId) || 0;
     const pulse = 1 + Math.sin(t + phase) * NODE_PULSE_AMPLITUDE;
     mesh.scale.setScalar(baseRadius * pulse);
