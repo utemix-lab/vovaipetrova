@@ -90,6 +90,22 @@
  * │ Используется: hover на корневой виджет, hover на центр фигуры           │
  * └─────────────────────────────────────────────────────────────────────────┘
  *
+ * ⚠️  КРИТИЧЕСКИЕ ПРАВИЛА (НЕ УДАЛЯТЬ):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ 1. graph.refresh() ОБЯЗАТЕЛЕН в onNodeHover для обновления рёбер       │
+ * │    Без него linkPositionUpdate не вызывается и рёбра не перерисовываются│
+ * │                                                                         │
+ * │ 2. Дрожание узлов вызывается пульсацией в updateNodeBreathing          │
+ * │    Для статичных узлов (Cryptocosm, Universe) пульсация отключена      │
+ * │                                                                         │
+ * │ 3. highlightLinks/halfHighlightLinks — Sets с объектами link           │
+ * │    При пересоздании графа ссылки становятся недействительными          │
+ * │    Используй highlightLinkIds для проверки по ID                       │
+ * │                                                                         │
+ * │ 4. nodeMeshes кэшируются в createNodeMesh                              │
+ * │    Если mesh уже существует, он возвращается из кэша                   │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
  * КОМПОЗИЦИЯ ОКНА ПЕРСОНАЖА (Story Panel):
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │ ┌─────────────────────────────────────────────────────────────────────┐ │
@@ -660,11 +676,6 @@ function renderHighlight(state) {
       halfHighlightLinkIds.add(link.id);
     }
   }
-  
-  console.log("[Highlight] renderHighlight mode:", state.mode, 
-    "fullLinks:", highlightLinkIds.size, 
-    "halfLinks:", halfHighlightLinkIds.size,
-    "nodes:", highlightNodes.size);
   
   // Обновить материалы узлов
   nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
@@ -1271,9 +1282,6 @@ function refreshLinkVisuals() {
   const graphData = graph?.graphData();
   if (!graphData) return;
   
-  console.log("[LinkVisuals] refreshLinkVisuals called, links:", graphData.links.length, 
-    "fullIds:", highlightLinkIds.size, "halfIds:", halfHighlightLinkIds.size);
-  
   for (const link of graphData.links) {
     const obj = link.__threeObj;
     if (!obj) continue;
@@ -1668,29 +1676,22 @@ function refreshHighlights(node, mode = "hover") {
 let lastHoveredNodeId = null;
 
 graph.onNodeHover((node) => {
-  console.log("[Hover] onNodeHover called:", node?.id || "null", "prev hoverNode:", hoverNode?.id);
-  
   // Снять подсветку с предыдущего узла
   if (lastHoveredNodeId && lastHoveredNodeId !== node?.id) {
     HighlightManager.node(lastHoveredNodeId, false);
     lastHoveredNodeId = null;
   }
 
-  if (node === hoverNode) {
-    console.log("[Hover] Same node, skipping");
-    return;
-  }
+  if (node === hoverNode) return;
   hoverNode = node || null;
   
   if (hoverNode) {
     // Hover на узел: полная яркость рёбер
-    console.log("[Hover] Mode: hover on", hoverNode.id);
     refreshHighlights(hoverNode, "hover");
     HighlightManager.node(hoverNode.id, true);
     lastHoveredNodeId = hoverNode.id;
   } else {
     // Возврат к подсветке выделенного узла (полсилы)
-    console.log("[Hover] Mode: selected (cursor left)");
     refreshHighlights(currentStep, "selected");
   }
   // Вернуть graph.refresh() — он нужен для обновления рёбер
