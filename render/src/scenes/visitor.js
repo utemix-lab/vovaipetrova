@@ -579,8 +579,10 @@ let sceneRotation = 0;
 let isDragging = false;
 
 const highlightNodes = new Set();
-const highlightLinks = new Set();
-const halfHighlightLinks = new Set(); // Рёбра с половинной яркостью (selected без hover)
+const highlightLinks = new Set();      // Set<link object> — для совместимости
+const halfHighlightLinks = new Set();  // Set<link object> — для совместимости
+const highlightLinkIds = new Set();    // Set<string> — ID рёбер с полной яркостью
+const halfHighlightLinkIds = new Set(); // Set<string> — ID рёбер с половинной яркостью
 let highlightMode = "none"; // "none" | "selected" | "hover" | "scope"
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -632,6 +634,8 @@ function renderHighlight(state) {
   highlightNodes.clear();
   highlightLinks.clear();
   halfHighlightLinks.clear();
+  highlightLinkIds.clear();
+  halfHighlightLinkIds.clear();
   highlightMode = state.mode;
   
   const graphData = graph?.graphData();
@@ -645,15 +649,22 @@ function renderHighlight(state) {
     }
   }
   
-  // Заполнить highlightLinks / halfHighlightLinks
+  // Заполнить highlightLinks / halfHighlightLinks + ID-based Sets
   for (const link of graphData.links) {
     const intensity = state.edgeIntensities.get(link.id);
     if (intensity === INTENSITY.FULL) {
       highlightLinks.add(link);
+      highlightLinkIds.add(link.id);
     } else if (intensity === INTENSITY.HALF) {
       halfHighlightLinks.add(link);
+      halfHighlightLinkIds.add(link.id);
     }
   }
+  
+  console.log("[Highlight] renderHighlight mode:", state.mode, 
+    "fullLinks:", highlightLinkIds.size, 
+    "halfLinks:", halfHighlightLinkIds.size,
+    "nodes:", highlightNodes.size);
   
   // Обновить материалы узлов
   nodeMeshes.forEach((_, nodeId) => applyNodeMaterial(nodeId));
@@ -985,6 +996,12 @@ function createSystemNodeMesh(node) {
 }
 
 function createNodeMesh(node) {
+  // Кэширование: если mesh уже существует, вернуть его (избежать пересоздания при graph.refresh())
+  const existingMesh = nodeMeshes.get(node.id);
+  if (existingMesh) {
+    return existingMesh;
+  }
+  
   if (isSystemNode(node)) {
     console.log('[Visitor] createNodeMesh: system node requested ->', node.id);
     const sysMesh = createSystemNodeMesh(node);
@@ -1104,8 +1121,9 @@ function updateLinkObject(obj, position, link) {
   const sourceNode = nodesById.get(getId(link.source));
   const targetNode = nodesById.get(getId(link.target));
 
-  const isHighlighted = highlightLinks.has(link);
-  const isHalfHighlighted = halfHighlightLinks.has(link);
+  // Используем ID-based Sets для проверки подсветки
+  const isHighlighted = highlightLinkIds.has(link.id);
+  const isHalfHighlighted = halfHighlightLinkIds.has(link.id);
 
   // При подсветке — жёлтый цвет, иначе — цвета узлов
   let startColor, endColor, midColor;
@@ -1243,6 +1261,74 @@ function getLinkPulsePhase(link) {
   const phase = (phaseSeed / 1000) * Math.PI * 2;
   linkPulsePhase.set(key, phase);
   return phase;
+}
+
+/**
+ * Обновить визуал всех рёбер без перезапуска физики.
+ * Вызывается вместо graph.refresh() для подсветки.
+ */
+function refreshLinkVisuals() {
+  const graphData = graph?.graphData();
+  if (!graphData) return;
+  
+  console.log("[LinkVisuals] refreshLinkVisuals called, links:", graphData.links.length, 
+    "fullIds:", highlightLinkIds.size, "halfIds:", halfHighlightLinkIds.size);
+  
+  for (const link of graphData.links) {
+    const obj = link.__threeObj;
+    if (!obj) continue;
+    
+    const { line, nozzleA, nozzleB } = obj.userData;
+    if (!line) continue;
+    
+    const sourceNode = nodesById.get(getId(link.source));
+    const targetNode = nodesById.get(getId(link.target));
+    
+    // Используем ID-based Sets для проверки подсветки
+    const isHighlighted = highlightLinkIds.has(link.id);
+    const isHalfHighlighted = halfHighlightLinkIds.has(link.id);
+    
+    const isCryptoLink = (sourceNode && CRYPTOCOSM_NODE_IDS.has(sourceNode.id)) || 
+                         (targetNode && CRYPTOCOSM_NODE_IDS.has(targetNode.id));
+    
+    // Обновить цвета
+    let linkColor;
+    if (isHighlighted || isHalfHighlighted) {
+      linkColor = isCryptoLink 
+        ? new THREE.Color(CRYPTOCOSM_PALETTE.active) 
+        : new THREE.Color(palette.nodeSelected);
+    } else {
+      linkColor = isCryptoLink
+        ? new THREE.Color(CRYPTOCOSM_PALETTE.link)
+        : new THREE.Color(palette.linkDefault);
+    }
+    
+    const colors = line.geometry.getAttribute("color");
+    if (colors) {
+      colors.array[0] = linkColor.r;
+      colors.array[1] = linkColor.g;
+      colors.array[2] = linkColor.b;
+      colors.array[3] = linkColor.r;
+      colors.array[4] = linkColor.g;
+      colors.array[5] = linkColor.b;
+      colors.array[6] = linkColor.r;
+      colors.array[7] = linkColor.g;
+      colors.array[8] = linkColor.b;
+      colors.needsUpdate = true;
+    }
+    
+    // Обновить opacity
+    if (isCryptoLink) {
+      line.material.opacity = 0;
+      line.visible = isHighlighted || isHalfHighlighted;
+    } else {
+      line.material.opacity = isHighlighted ? 0.9 : (isHalfHighlighted ? 0.55 : 0.4);
+    }
+    
+    // Обновить цвета спайков
+    if (nozzleA) nozzleA.material.color.copy(linkColor);
+    if (nozzleB) nozzleB.material.color.copy(linkColor);
+  }
 }
 
 function getLinkDistance(link) {
@@ -1582,25 +1668,34 @@ function refreshHighlights(node, mode = "hover") {
 let lastHoveredNodeId = null;
 
 graph.onNodeHover((node) => {
+  console.log("[Hover] onNodeHover called:", node?.id || "null", "prev hoverNode:", hoverNode?.id);
+  
   // Снять подсветку с предыдущего узла
   if (lastHoveredNodeId && lastHoveredNodeId !== node?.id) {
     HighlightManager.node(lastHoveredNodeId, false);
     lastHoveredNodeId = null;
   }
 
-  if (node === hoverNode) return;
+  if (node === hoverNode) {
+    console.log("[Hover] Same node, skipping");
+    return;
+  }
   hoverNode = node || null;
   
   if (hoverNode) {
     // Hover на узел: полная яркость рёбер
+    console.log("[Hover] Mode: hover on", hoverNode.id);
     refreshHighlights(hoverNode, "hover");
     HighlightManager.node(hoverNode.id, true);
     lastHoveredNodeId = hoverNode.id;
   } else {
     // Возврат к подсветке выделенного узла (полсилы)
+    console.log("[Hover] Mode: selected (cursor left)");
     refreshHighlights(currentStep, "selected");
   }
-  // graph.refresh() убран — он перезапускает физику и вызывает подрагивание
+  // Вернуть graph.refresh() — он нужен для обновления рёбер
+  // Дрожание было вызвано пульсацией узлов, которую мы уже отключили для Cryptocosm
+  graph.refresh();
 });
 
 graph.onNodeClick((node) => {
@@ -2333,11 +2428,22 @@ function updateStoryWithPotential(panel, node) {
 
   }
 
+  // Кнопка "Кабина" только для Руны
+  if (node?.id === "character-runa") {
+    html += `
+      <div class="cabin-link-section">
+        <button class="cabin-link-btn" data-cabin-id="cabin-runa" title="Перейти к Кабине Руны в Cryptocosm">
+          Кабина
+        </button>
+      </div>`;
+  }
+
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  bindCabinButton(content);
 
   // Initialize octahedron in Narrative Screen shape area (only Vova for now)
   if (isVova) {
@@ -3710,6 +3816,40 @@ function bindEmblemSwap(container) {
 
     host.addEventListener("mouseenter", onEnter);
     host.addEventListener("mouseleave", onLeave);
+  });
+}
+
+function bindCabinButton(container) {
+  const btn = container.querySelector(".cabin-link-btn");
+  if (!btn) return;
+  
+  const cabinId = btn.dataset.cabinId;
+  if (!cabinId) return;
+  
+  // Hover: только визуальная подсветка виджета (без изменения графа)
+  btn.addEventListener("mouseenter", () => {
+    btn.classList.add("cabin-link-btn--hover");
+  });
+  
+  btn.addEventListener("mouseleave", () => {
+    btn.classList.remove("cabin-link-btn--hover");
+  });
+  
+  // Click: приблизить камеру к узлу кабины
+  btn.addEventListener("click", () => {
+    registerInteraction();
+    const graphData = graph.graphData();
+    const targetNode = graphData.nodes.find(n => n.id === cabinId);
+    console.log("[Cabin] Click, targetNode:", targetNode);
+    if (targetNode && targetNode.x !== undefined) {
+      const distance = 60;
+      const targetPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z };
+      const cameraPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z + distance };
+      console.log("[Cabin] Moving camera to:", cameraPos, "lookAt:", targetPos);
+      graph.cameraPosition(cameraPos, targetPos, 1500);
+    } else {
+      console.warn("[Cabin] Node not found or has no position");
+    }
   });
 }
 
