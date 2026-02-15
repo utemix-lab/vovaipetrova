@@ -42,6 +42,7 @@ export { SpecificationReader } from "./SpecificationReader.js";
 export { CatalogRegistry } from "./CatalogRegistry.js";
 export { OperatorEngine } from "./OperatorEngine.js";
 export { CatalogValidator } from "./WorldInterface.js";
+export { CatalogLoader } from "./CatalogLoader.js";
 
 // Internal import for MeaningEngine
 import { WorldValidator } from "./WorldInterface.js";
