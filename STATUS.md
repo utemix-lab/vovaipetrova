@@ -60,9 +60,9 @@
 | P4.4 | LLMReflectionEngine | 54 |
 | P5.0 | MeaningEngine ↔ World | 152 |
 | P6.0a-c | Platform Specification | — |
-| **T3.0** | **Epistemic Operators** | **141** |
+| **T3.0** | **Epistemic Operators** | **194** |
 
-**Всего:** 949 тестов (293 engine + 656 render)
+**Всего:** 1002 тестов (346 engine + 656 render)
 
 ---
 
@@ -70,19 +70,22 @@
 
 | Задача | Track | Статус |
 |--------|-------|--------|
-| **Epistemic Operators** | 3 | ✓ Базовая реализация |
+| **Epistemic Operators** | 3 | ✓ Полная реализация |
 | **Cryptocosm Concept** | 4 | Набросок |
 | Mirror-узлы (индиго) | 4 | ✓ Добавлены |
 | Механика Кабин | 4 | Идея стабильна, реализация не определена |
 
 **Track 3 реализовано:**
-- `engine/src/WorldInterface.js` — контракт `getCatalogs()`
+- `engine/src/WorldInterface.js` — контракт `getCatalogs()`, `CatalogValidator`
 - `engine/src/CatalogRegistry.js` — реестр каталогов
 - `engine/src/OperatorEngine.js` — операторы PROJECT, FILTER, EXPAND, INTERSECT, UNION
+- `engine/src/CatalogLoader.js` — загрузка каталогов из файлов
+- `engine/src/types/catalogs.d.ts` — TypeScript типы
 - `worlds/vovaipetrova/catalogs/tools.json` — первый каталог
 
 **Документация:**
 - `docs/OPERATORS_CONCEPT.md` — концепция операторов (Track 3)
+- `engine/docs/OPERATORS_API.md` — API документация (Track 3)
 - `docs/CRYPTOCOSM_CONCEPT.md` — художественная концепция (Track 4)
 
 ---
