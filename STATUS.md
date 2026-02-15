@@ -60,8 +60,9 @@
 | P4.4 | LLMReflectionEngine | 54 |
 | P5.0 | MeaningEngine ↔ World | 152 |
 | P6.0a-c | Platform Specification | — |
+| **T3.0** | **Epistemic Operators** | **141** |
 
-**Всего:** 808 тестов (152 engine + 656 render)
+**Всего:** 949 тестов (293 engine + 656 render)
 
 ---
 
@@ -69,10 +70,16 @@
 
 | Задача | Track | Статус |
 |--------|-------|--------|
-| **Epistemic Operators** | 3 | Концепция зафиксирована |
+| **Epistemic Operators** | 3 | ✓ Базовая реализация |
 | **Cryptocosm Concept** | 4 | Набросок |
 | Mirror-узлы (индиго) | 4 | ✓ Добавлены |
 | Механика Кабин | 4 | Идея стабильна, реализация не определена |
+
+**Track 3 реализовано:**
+- `engine/src/WorldInterface.js` — контракт `getCatalogs()`
+- `engine/src/CatalogRegistry.js` — реестр каталогов
+- `engine/src/OperatorEngine.js` — операторы PROJECT, FILTER, EXPAND, INTERSECT, UNION
+- `worlds/vovaipetrova/catalogs/tools.json` — первый каталог
 
 **Документация:**
 - `docs/OPERATORS_CONCEPT.md` — концепция операторов (Track 3)
