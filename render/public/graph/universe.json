@@ -179,6 +179,84 @@
       "rag": { "index": true, "priority": 0.5 }
     },
     {
+      "id": "mirror-threejs",
+      "label": "Three.js",
+      "position": { "x": 700, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
+      "id": "mirror-forcegraph",
+      "label": "ForceGraph",
+      "position": { "x": 750, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
+      "id": "mirror-highlight",
+      "label": "Highlight",
+      "position": { "x": 700, "y": 80 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
+      "id": "mirror-materials",
+      "label": "Materials",
+      "position": { "x": 750, "y": 80 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
+      "id": "mirror-panels",
+      "label": "Panels",
+      "position": { "x": 800, "y": 80 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
+      "id": "mirror-breathing",
+      "label": "Breathing",
+      "position": { "x": 800, "y": 140 },
+      "story": "",
+      "system": "",
+      "service": "",
+      "type": "domain",
+      "visibility": "public",
+      "status": "expandable",
+      "semantics": { "role": "render", "abstraction": "low" },
+      "rag": { "index": true, "priority": 0.4 }
+    },
+    {
       "id": "cabin-runa",
       "label": "Кабина Руны",
       "position": { "x": 450, "y": 0 },
@@ -1323,6 +1401,60 @@
       "source": "crypto-mirror",
       "target": "crypto-projections",
       "type": "contains"
+    },
+    {
+      "id": "edge-mirror-threejs",
+      "source": "crypto-mirror",
+      "target": "mirror-threejs",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-forcegraph",
+      "source": "crypto-mirror",
+      "target": "mirror-forcegraph",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-highlight",
+      "source": "crypto-mirror",
+      "target": "mirror-highlight",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-materials",
+      "source": "crypto-mirror",
+      "target": "mirror-materials",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-panels",
+      "source": "crypto-mirror",
+      "target": "mirror-panels",
+      "type": "contains"
+    },
+    {
+      "id": "edge-mirror-breathing",
+      "source": "crypto-mirror",
+      "target": "mirror-breathing",
+      "type": "contains"
+    },
+    {
+      "id": "edge-highlight-relates-validators",
+      "source": "mirror-highlight",
+      "target": "crypto-validators",
+      "type": "relates"
+    },
+    {
+      "id": "edge-forcegraph-relates-graph",
+      "source": "mirror-forcegraph",
+      "target": "crypto-graph",
+      "type": "relates"
+    },
+    {
+      "id": "edge-materials-relates-schema",
+      "source": "mirror-materials",
+      "target": "crypto-schema",
+      "type": "relates"
     },
     {
       "id": "edge-cabins-runa",

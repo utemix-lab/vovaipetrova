@@ -272,6 +272,18 @@ const CRYPTOCOSM_PALETTE = {
   link: "#252525"        // темнее узлов, чтобы сливаться с фоном
 };
 
+// Mirror — Render (индиго палитра)
+const MIRROR_NODE_IDS = new Set([
+  "mirror-threejs", "mirror-forcegraph", "mirror-highlight",
+  "mirror-materials", "mirror-panels", "mirror-breathing"
+]);
+const MIRROR_PALETTE = {
+  inactive: "#2a2a4a",   // тёмно-индиго (базовый)
+  active: "#4a4a8a",     // светло-индиго (hover/scope)
+  selected: "#3a3a6a",   // индиго (выбранный)
+  link: "#1a1a3a"        // темнее узлов
+};
+
 // === UI Setup ===
 document.body.classList.add("visitor-mode");
 createUI();
@@ -790,6 +802,16 @@ const typeHighlightedNodeIds = new Set(); // Узлы, подсвеченные 
  * @returns {string} Цвет в формате hex
  */
 function getNodeColor(node, forLink = false) {
+  // Mirror — индиго палитра (Render)
+  if (MIRROR_NODE_IDS.has(node.id)) {
+    if (hoverNode && node.id === hoverNode.id) return MIRROR_PALETTE.active;
+    if (!forLink && typeHighlightedNodeIds.has(node.id)) return MIRROR_PALETTE.selected;
+    if (widgetHighlightedNodeId && node.id === widgetHighlightedNodeId) return MIRROR_PALETTE.active;
+    if (currentStep && node.id === currentStep.id) return MIRROR_PALETTE.selected;
+    if (scopeHighlightActive && scopeHighlightNodeIds.has(node.id)) return MIRROR_PALETTE.active;
+    return MIRROR_PALETTE.inactive;
+  }
+  
   // Cryptocosm — ч/б палитра (тёмная материя)
   if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
     // Hover подсветка — только сам hovered узел, не соседи
@@ -1024,6 +1046,8 @@ function createNodeMesh(node) {
   let material;
   if (node.id === "cabin-runa") {
     material = getRimMaterial(getNodeColor(node)); // Блики + чёрный цвет
+  } else if (MIRROR_NODE_IDS.has(node.id)) {
+    material = getCryptoMaterial(getNodeColor(node), node.id); // Индиго материал
   } else if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
     material = getCryptoMaterial(getNodeColor(node), node.id);
   } else {
@@ -1054,6 +1078,8 @@ function applyNodeMaterial(nodeId) {
   // Исключение: cabin-runa использует rim-материал с бликами (но чёрный цвет)
   if (node.id === "cabin-runa") {
     mesh.material = getRimMaterial(getNodeColor(node)); // Блики + чёрный цвет
+  } else if (MIRROR_NODE_IDS.has(node.id)) {
+    mesh.material = getCryptoMaterial(getNodeColor(node), node.id); // Индиго материал
   } else if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
     mesh.material = getCryptoMaterial(getNodeColor(node), node.id);
   } else {
@@ -1139,22 +1165,34 @@ function updateLinkObject(obj, position, link) {
   // При подсветке — жёлтый цвет, иначе — цвета узлов
   let startColor, endColor, midColor;
   
-  // Проверяем, является ли ребро частью Cryptocosm
+  // Проверяем, является ли ребро частью Cryptocosm или Mirror
   const isCryptoLink = (sourceNode && CRYPTOCOSM_NODE_IDS.has(sourceNode.id)) || 
                        (targetNode && CRYPTOCOSM_NODE_IDS.has(targetNode.id));
+  const isMirrorLink = (sourceNode && MIRROR_NODE_IDS.has(sourceNode.id)) || 
+                       (targetNode && MIRROR_NODE_IDS.has(targetNode.id));
   
   if (isHighlighted || isHalfHighlighted) {
-    // Для Cryptocosm — тёмно-серая подсветка вместо жёлтой
-    const highlightColor = isCryptoLink 
-      ? new THREE.Color(CRYPTOCOSM_PALETTE.active) 
-      : new THREE.Color(palette.nodeSelected);
+    // Для Cryptocosm/Mirror — тёмная подсветка вместо жёлтой
+    let highlightColor;
+    if (isMirrorLink) {
+      highlightColor = new THREE.Color(MIRROR_PALETTE.active);
+    } else if (isCryptoLink) {
+      highlightColor = new THREE.Color(CRYPTOCOSM_PALETTE.active);
+    } else {
+      highlightColor = new THREE.Color(palette.nodeSelected);
+    }
     startColor = highlightColor;
     endColor = highlightColor;
     midColor = highlightColor;
   } else {
     // Для рёбер используем цвет узла БЕЗ учёта Type Highlight Mode
     // (Type Highlight подсвечивает только узлы, не рёбра)
-    if (isCryptoLink) {
+    if (isMirrorLink) {
+      // Mirror — тёмно-индиго рёбра
+      startColor = new THREE.Color(MIRROR_PALETTE.link);
+      endColor = new THREE.Color(MIRROR_PALETTE.link);
+      midColor = new THREE.Color(MIRROR_PALETTE.link);
+    } else if (isCryptoLink) {
       // Cryptocosm — тёмно-серые рёбра
       startColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
       endColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
@@ -1298,17 +1336,27 @@ function refreshLinkVisuals() {
     
     const isCryptoLink = (sourceNode && CRYPTOCOSM_NODE_IDS.has(sourceNode.id)) || 
                          (targetNode && CRYPTOCOSM_NODE_IDS.has(targetNode.id));
+    const isMirrorLink = (sourceNode && MIRROR_NODE_IDS.has(sourceNode.id)) || 
+                         (targetNode && MIRROR_NODE_IDS.has(targetNode.id));
     
     // Обновить цвета
     let linkColor;
     if (isHighlighted || isHalfHighlighted) {
-      linkColor = isCryptoLink 
-        ? new THREE.Color(CRYPTOCOSM_PALETTE.active) 
-        : new THREE.Color(palette.nodeSelected);
+      if (isMirrorLink) {
+        linkColor = new THREE.Color(MIRROR_PALETTE.active);
+      } else if (isCryptoLink) {
+        linkColor = new THREE.Color(CRYPTOCOSM_PALETTE.active);
+      } else {
+        linkColor = new THREE.Color(palette.nodeSelected);
+      }
     } else {
-      linkColor = isCryptoLink
-        ? new THREE.Color(CRYPTOCOSM_PALETTE.link)
-        : new THREE.Color(palette.linkDefault);
+      if (isMirrorLink) {
+        linkColor = new THREE.Color(MIRROR_PALETTE.link);
+      } else if (isCryptoLink) {
+        linkColor = new THREE.Color(CRYPTOCOSM_PALETTE.link);
+      } else {
+        linkColor = new THREE.Color(palette.linkDefault);
+      }
     }
     
     const colors = line.geometry.getAttribute("color");
@@ -1731,8 +1779,8 @@ function updateNodeBreathing(timeMs) {
     const baseRadius = nodeBaseRadius.get(nodeId);
     if (!baseRadius) return;
     
-    // Cryptocosm и Universe узлы без пульсации — статичные
-    if (CRYPTOCOSM_NODE_IDS.has(nodeId) || nodeId === "universe") {
+    // Cryptocosm, Mirror и Universe узлы без пульсации — статичные
+    if (CRYPTOCOSM_NODE_IDS.has(nodeId) || MIRROR_NODE_IDS.has(nodeId) || nodeId === "universe") {
       mesh.scale.setScalar(baseRadius);
       return;
     }
@@ -2102,12 +2150,12 @@ function setRoute(route) {
     graph.cameraPosition({ x: 0, y: 0, z: initialDistance }, null, 800);
   }, 200);
   
-  // Зафиксировать позиции Cryptocosm узлов после стабилизации физики
+  // Зафиксировать позиции Cryptocosm и Mirror узлов после стабилизации физики
   // Это предотвращает дрейф при перемещении камеры
   setTimeout(() => {
     const gd = graph.graphData();
     for (const node of gd.nodes) {
-      if (CRYPTOCOSM_NODE_IDS.has(node.id)) {
+      if (CRYPTOCOSM_NODE_IDS.has(node.id) || MIRROR_NODE_IDS.has(node.id)) {
         node.fx = node.x;
         node.fy = node.y;
         node.fz = node.z;
@@ -2457,7 +2505,6 @@ function updateStoryWithPotential(panel, node) {
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
-  bindCabinButton(content);
 
   // Initialize octahedron in Narrative Screen shape area (only Vova for now)
   if (isVova) {
@@ -3833,50 +3880,6 @@ function bindEmblemSwap(container) {
   });
 }
 
-function bindCabinButton(container) {
-  const btn = container.querySelector(".cabin-link-btn");
-  if (!btn) return;
-  
-  const cabinId = btn.dataset.cabinId;
-  if (!cabinId) return;
-  
-  // Hover: подсветка кнопки + подсветка узла cabin-runa в графе
-  btn.addEventListener("mouseenter", () => {
-    btn.classList.add("cabin-link-btn--hover");
-    // Подсветить узел cabin-runa в графе
-    const cabinNode = nodesById.get(cabinId);
-    if (cabinNode) {
-      hoverNode = cabinNode;
-      refreshHighlights(cabinNode, "hover");
-      graph.refresh();
-    }
-  });
-  
-  btn.addEventListener("mouseleave", () => {
-    btn.classList.remove("cabin-link-btn--hover");
-    // Снять подсветку, вернуть к selected
-    hoverNode = null;
-    refreshHighlights(currentStep, "selected");
-    graph.refresh();
-  });
-  
-  // Click: приблизить камеру к узлу кабины
-  btn.addEventListener("click", () => {
-    registerInteraction();
-    const graphData = graph.graphData();
-    const targetNode = graphData.nodes.find(n => n.id === cabinId);
-    
-    if (targetNode && targetNode.x !== undefined) {
-      // Позиции Cryptocosm узлов уже зафиксированы при загрузке графа
-      const distance = 60;
-      const targetPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z };
-      const cameraPos = { x: targetNode.x, y: targetNode.y, z: targetNode.z + distance };
-      graph.cameraPosition(cameraPos, targetPos, 1500);
-    } else {
-      console.warn("[Cabin] Node not found or has no position");
-    }
-  });
-}
 
 function setScopeWidgetHighlight(container, isActive) {
   container.querySelectorAll(".highlight-widget").forEach((el) => {
