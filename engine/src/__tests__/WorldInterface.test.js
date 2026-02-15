@@ -390,6 +390,93 @@ describe("CatalogValidator", () => {
       expect(CatalogValidator.hasEntry(null, "vst", "serum")).toBe(false);
     });
   });
+  
+  describe("validateCatalogRefs", () => {
+    const testCatalogs = {
+      tools: {
+        id: "tools",
+        entries: [
+          { id: "vscode" },
+          { id: "cursor" },
+        ],
+      },
+    };
+    
+    it("should validate correct catalogRefs", () => {
+      const graph = {
+        getNodes: () => [
+          { id: "node1", catalogRefs: { tools: ["vscode", "cursor"] } },
+        ],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, testCatalogs);
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+      expect(result.warnings).toHaveLength(0);
+    });
+    
+    it("should warn about unknown catalog", () => {
+      const graph = {
+        getNodes: () => [
+          { id: "node1", catalogRefs: { unknown: ["entry1"] } },
+        ],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, testCatalogs);
+      expect(result.valid).toBe(true); // warnings don't fail validation
+      expect(result.warnings.some(w => w.includes("unknown catalog"))).toBe(true);
+    });
+    
+    it("should warn about unknown entry", () => {
+      const graph = {
+        getNodes: () => [
+          { id: "node1", catalogRefs: { tools: ["vscode", "unknown"] } },
+        ],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, testCatalogs);
+      expect(result.valid).toBe(true);
+      expect(result.warnings.some(w => w.includes("unknown entry"))).toBe(true);
+    });
+    
+    it("should error if catalogRefs value is not array", () => {
+      const graph = {
+        getNodes: () => [
+          { id: "node1", catalogRefs: { tools: "vscode" } }, // should be array
+        ],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, testCatalogs);
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("must be an array"))).toBe(true);
+    });
+    
+    it("should skip nodes without catalogRefs", () => {
+      const graph = {
+        getNodes: () => [
+          { id: "node1" },
+          { id: "node2", catalogRefs: { tools: ["vscode"] } },
+        ],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, testCatalogs);
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should return valid for null graph", () => {
+      const result = CatalogValidator.validateCatalogRefs(null, testCatalogs);
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should return valid for null catalogs", () => {
+      const graph = {
+        getNodes: () => [{ id: "node1", catalogRefs: { tools: ["vscode"] } }],
+        getEdges: () => [],
+      };
+      const result = CatalogValidator.validateCatalogRefs(graph, null);
+      expect(result.valid).toBe(true);
+    });
+  });
 });
 
 // ═══════════════════════════════════════════════════════════════════════════

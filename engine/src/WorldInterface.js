@@ -336,6 +336,62 @@ export class CatalogValidator {
     if (!Array.isArray(catalog.entries)) return false;
     return catalog.entries.some(e => e.id === entryId);
   }
+  
+  /**
+   * Валидирует catalogRefs в узлах графа против каталогов.
+   * Проверяет, что все ссылки указывают на существующие каталоги и записи.
+   * 
+   * @param {object} graph - Граф (должен иметь getNodes())
+   * @param {object} catalogs - Реестр каталогов
+   * @returns {{ valid: boolean, errors: string[], warnings: string[] }}
+   */
+  static validateCatalogRefs(graph, catalogs) {
+    const errors = [];
+    const warnings = [];
+    
+    if (!graph || typeof graph.getNodes !== "function") {
+      return { valid: true, errors, warnings };
+    }
+    
+    if (!catalogs || typeof catalogs !== "object") {
+      return { valid: true, errors, warnings };
+    }
+    
+    const nodes = graph.getNodes();
+    
+    for (const node of nodes) {
+      if (!node.catalogRefs || typeof node.catalogRefs !== "object") {
+        continue;
+      }
+      
+      for (const [catalogId, entryIds] of Object.entries(node.catalogRefs)) {
+        // Проверяем существование каталога
+        if (!this.hasCatalog(catalogs, catalogId)) {
+          warnings.push(`Node "${node.id}": catalogRefs references unknown catalog "${catalogId}"`);
+          continue;
+        }
+        
+        // Проверяем, что entryIds — массив
+        if (!Array.isArray(entryIds)) {
+          errors.push(`Node "${node.id}": catalogRefs["${catalogId}"] must be an array`);
+          continue;
+        }
+        
+        // Проверяем существование каждой записи
+        for (const entryId of entryIds) {
+          if (!this.hasEntry(catalogs, catalogId, entryId)) {
+            warnings.push(`Node "${node.id}": catalogRefs["${catalogId}"] references unknown entry "${entryId}"`);
+          }
+        }
+      }
+    }
+    
+    return {
+      valid: errors.length === 0,
+      errors,
+      warnings,
+    };
+  }
 }
 
 /**
@@ -394,9 +450,10 @@ export class WorldValidator {
     }
     
     // 6. Проверяем каталоги (опционально)
+    let catalogs = null;
     if (typeof world.getCatalogs === "function") {
       try {
-        const catalogs = world.getCatalogs();
+        catalogs = world.getCatalogs();
         if (catalogs !== null) {
           const catalogValidation = CatalogValidator.validate(catalogs);
           errors.push(...catalogValidation.errors);
@@ -406,6 +463,13 @@ export class WorldValidator {
       }
     } else {
       warnings.push("world.getCatalogs() is not implemented (optional)");
+    }
+    
+    // 7. Проверяем catalogRefs в графе против каталогов
+    if (graph && catalogs) {
+      const refsValidation = CatalogValidator.validateCatalogRefs(graph, catalogs);
+      errors.push(...refsValidation.errors);
+      warnings.push(...refsValidation.warnings);
     }
     
     return {
