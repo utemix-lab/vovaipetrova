@@ -2,7 +2,9 @@
 
 **Дата:** 15 февраля 2026
 **Статус:** Набросок / Поиск аллегорий
-**Track:** 4 — PROJECTION/UI (см. `repair-shop/ROADMAP.md`)
+**Track:** 4 — PROJECTION/UI
+
+> **Статус системы:** [`STATUS.md`](../STATUS.md) — главная точка входа.
 
 ---
 
