@@ -33,13 +33,24 @@ const testSchemaData = {
 const testSeedData = {
   nodes: [
     { id: "root-1", type: "root", label: "Root Node" },
-    { id: "item-1", type: "item", label: "Item 1" },
-    { id: "item-2", type: "item", label: "Item 2" },
+    { id: "item-1", type: "item", label: "Item 1", catalogRefs: { tools: ["vscode", "cursor"] }, tags: ["editor"] },
+    { id: "item-2", type: "item", label: "Item 2", pointerTags: ["cap:ai"] },
   ],
   edges: [
     { id: "e1", source: "root-1", target: "item-1", type: "contains" },
     { id: "e2", source: "root-1", target: "item-2", type: "contains" },
   ],
+};
+
+const testCatalogs = {
+  tools: {
+    id: "tools",
+    entries: [
+      { id: "vscode", name: "VS Code", tags: ["editor", "free"] },
+      { id: "cursor", name: "Cursor", tags: ["editor", "ai"] },
+      { id: "claude", name: "Claude", tags: ["ai", "llm"] },
+    ],
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -364,6 +375,124 @@ describe("MeaningEngine", () => {
       expect(ctx).toHaveProperty("capabilities");
       expect(ctx).toHaveProperty("constraints");
       expect(ctx.engine_version).toBe("0.5.0");
+    });
+  });
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CATALOGS & OPERATORS (T3.0)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  describe("Catalogs & Operators (T3.0)", () => {
+    describe("without catalogs", () => {
+      const world = new WorldAdapter({ schemaData: testSchemaData, seedData: testSeedData });
+      const engine = new MeaningEngine(world);
+      
+      it("hasCatalogs() returns false", () => {
+        expect(engine.hasCatalogs()).toBe(false);
+      });
+      
+      it("getCatalogs() returns null", () => {
+        expect(engine.getCatalogs()).toBeNull();
+      });
+      
+      it("hasOperators() returns false", () => {
+        expect(engine.hasOperators()).toBe(false);
+      });
+      
+      it("getOperators() returns null", () => {
+        expect(engine.getOperators()).toBeNull();
+      });
+      
+      it("project() returns empty array", () => {
+        expect(engine.project("item-1", "tools")).toEqual([]);
+      });
+      
+      it("filter() returns empty array", () => {
+        expect(engine.filter([{ id: "1" }], { id: "1" })).toEqual([]);
+      });
+      
+      it("projectAndFilter() returns empty array", () => {
+        expect(engine.projectAndFilter("item-1", "tools", {})).toEqual([]);
+      });
+      
+      it("getStats() shows hasCatalogs: false", () => {
+        const stats = engine.getStats();
+        expect(stats.hasCatalogs).toBe(false);
+        expect(stats.hasOperators).toBe(false);
+      });
+    });
+    
+    describe("with catalogs", () => {
+      const worldAdapter = new WorldAdapter({ schemaData: testSchemaData, seedData: testSeedData });
+      const worldWithCatalogs = {
+        getSchema: () => worldAdapter.getSchema(),
+        getGraph: () => worldAdapter.getGraph(),
+        getSeed: () => null,
+        getConfig: () => null,
+        getCatalogs: () => testCatalogs,
+      };
+      
+      const engine = new MeaningEngine(worldWithCatalogs);
+      
+      it("hasCatalogs() returns true", () => {
+        expect(engine.hasCatalogs()).toBe(true);
+      });
+      
+      it("getCatalogs() returns CatalogRegistry", () => {
+        const catalogs = engine.getCatalogs();
+        expect(catalogs).not.toBeNull();
+        expect(catalogs.has("tools")).toBe(true);
+      });
+      
+      it("hasOperators() returns true", () => {
+        expect(engine.hasOperators()).toBe(true);
+      });
+      
+      it("getOperators() returns OperatorEngine", () => {
+        const operators = engine.getOperators();
+        expect(operators).not.toBeNull();
+        expect(typeof operators.project).toBe("function");
+      });
+      
+      it("project() returns entries by catalogRefs", () => {
+        const entries = engine.project("item-1", "tools", { useTags: false });
+        expect(entries.length).toBeGreaterThan(0);
+        expect(entries.some(e => e.id === "vscode")).toBe(true);
+        expect(entries.some(e => e.id === "cursor")).toBe(true);
+      });
+      
+      it("project() returns entries by tags", () => {
+        const entries = engine.project("item-1", "tools", { useRefs: false });
+        expect(entries.length).toBeGreaterThan(0);
+        expect(entries.some(e => e.tags.includes("editor"))).toBe(true);
+      });
+      
+      it("project() returns entries by pointer-tags (cap:X)", () => {
+        const entries = engine.project("item-2", "tools");
+        expect(entries.length).toBeGreaterThan(0);
+        expect(entries.some(e => e.tags.includes("ai"))).toBe(true);
+      });
+      
+      it("filter() filters entries", () => {
+        const all = engine.getCatalogs().getEntries("tools");
+        const filtered = engine.filter(all, { tags: "free" });
+        expect(filtered).toHaveLength(1);
+        expect(filtered[0].id).toBe("vscode");
+      });
+      
+      it("projectAndFilter() combines project and filter", () => {
+        const entries = engine.projectAndFilter("item-1", "tools", { tags: "ai" });
+        expect(entries.some(e => e.id === "cursor")).toBe(true);
+      });
+      
+      it("getStats() includes catalog stats", () => {
+        const stats = engine.getStats();
+        expect(stats.hasCatalogs).toBe(true);
+        expect(stats.hasOperators).toBe(true);
+        expect(stats.catalogs).toBeDefined();
+        expect(stats.catalogs.catalogCount).toBe(1);
+        expect(stats.catalogs.totalEntries).toBe(3);
+      });
     });
   });
 });

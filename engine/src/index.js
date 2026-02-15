@@ -38,9 +38,16 @@ export { WorldAdapter } from "./WorldAdapter.js";
 // P6.0b — Specification Reader
 export { SpecificationReader } from "./SpecificationReader.js";
 
+// T3.0 — Epistemic Operators
+export { CatalogRegistry } from "./CatalogRegistry.js";
+export { OperatorEngine } from "./OperatorEngine.js";
+export { CatalogValidator } from "./WorldInterface.js";
+
 // Internal import for MeaningEngine
 import { WorldValidator } from "./WorldInterface.js";
 import { SpecificationReader } from "./SpecificationReader.js";
+import { CatalogRegistry } from "./CatalogRegistry.js";
+import { OperatorEngine } from "./OperatorEngine.js";
 
 export const ENGINE_VERSION = "0.1.0";
 
@@ -74,6 +81,8 @@ export class MeaningEngine {
     this._world = world;
     this._schema = world.getSchema();
     this._graph = null;
+    this._catalogs = null;
+    this._operators = null;
     this._initialized = false;
     
     // Попытка получить граф (может быть недоступен)
@@ -81,6 +90,29 @@ export class MeaningEngine {
       this._graph = world.getGraph();
     } catch {
       // Граф недоступен — это нормально для пустого мира
+    }
+    
+    // Попытка получить каталоги (опционально)
+    this._initCatalogs();
+  }
+  
+  /**
+   * Инициализирует каталоги и операторы.
+   * @private
+   */
+  _initCatalogs() {
+    try {
+      if (typeof this._world.getCatalogs === "function") {
+        const catalogsData = this._world.getCatalogs();
+        if (catalogsData) {
+          this._catalogs = new CatalogRegistry(catalogsData);
+          if (this._graph) {
+            this._operators = new OperatorEngine(this._graph, this._catalogs);
+          }
+        }
+      }
+    } catch {
+      // Каталоги недоступны — это нормально
     }
   }
   
@@ -218,6 +250,90 @@ export class MeaningEngine {
   }
   
   // ═══════════════════════════════════════════════════════════════════════════
+  // CATALOGS & OPERATORS (T3.0)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  /**
+   * Проверяет, есть ли каталоги в мире.
+   * @returns {boolean}
+   */
+  hasCatalogs() {
+    return this._catalogs !== null;
+  }
+  
+  /**
+   * Возвращает реестр каталогов.
+   * @returns {CatalogRegistry|null}
+   */
+  getCatalogs() {
+    return this._catalogs;
+  }
+  
+  /**
+   * Проверяет, доступны ли операторы.
+   * @returns {boolean}
+   */
+  hasOperators() {
+    return this._operators !== null;
+  }
+  
+  /**
+   * Возвращает движок операторов.
+   * @returns {OperatorEngine|null}
+   */
+  getOperators() {
+    return this._operators;
+  }
+  
+  /**
+   * Проецирует каталог через узел графа.
+   * Shortcut для engine.getOperators().project()
+   * 
+   * @param {string} nodeId - ID узла
+   * @param {string} catalogId - ID каталога
+   * @param {object} options - Опции проекции
+   * @returns {object[]} - Записи каталога
+   */
+  project(nodeId, catalogId, options = {}) {
+    if (!this._operators) {
+      return [];
+    }
+    return this._operators.project(nodeId, catalogId, options);
+  }
+  
+  /**
+   * Фильтрует записи по предикату или атрибутам.
+   * Shortcut для engine.getOperators().filter()
+   * 
+   * @param {object[]} entries - Записи
+   * @param {function|object} predicate - Фильтр
+   * @returns {object[]}
+   */
+  filter(entries, predicate) {
+    if (!this._operators) {
+      return [];
+    }
+    return this._operators.filter(entries, predicate);
+  }
+  
+  /**
+   * Проецирует и фильтрует за один вызов.
+   * Shortcut для engine.getOperators().projectAndFilter()
+   * 
+   * @param {string} nodeId - ID узла
+   * @param {string} catalogId - ID каталога
+   * @param {function|object} predicate - Фильтр
+   * @param {object} projectOptions - Опции проекции
+   * @returns {object[]}
+   */
+  projectAndFilter(nodeId, catalogId, predicate, projectOptions = {}) {
+    if (!this._operators) {
+      return [];
+    }
+    return this._operators.projectAndFilter(nodeId, catalogId, predicate, projectOptions);
+  }
+  
+  // ═══════════════════════════════════════════════════════════════════════════
   // STATS
   // ═══════════════════════════════════════════════════════════════════════════
   
@@ -226,7 +342,7 @@ export class MeaningEngine {
    * @returns {object}
    */
   getStats() {
-    return {
+    const stats = {
       engineVersion: ENGINE_VERSION,
       worldName: this.getWorldName(),
       worldVersion: this.getWorldVersion(),
@@ -235,7 +351,15 @@ export class MeaningEngine {
       nodeCount: this.getNodeCount(),
       edgeCount: this.getEdgeCount(),
       hasGraph: this._graph !== null,
+      hasCatalogs: this._catalogs !== null,
+      hasOperators: this._operators !== null,
     };
+    
+    if (this._catalogs) {
+      stats.catalogs = this._catalogs.getStats();
+    }
+    
+    return stats;
   }
   
   // ═══════════════════════════════════════════════════════════════════════════
