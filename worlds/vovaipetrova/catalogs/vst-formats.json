@@ -1,0 +1,20 @@
+{
+  "id": "vst-formats",
+  "version": "1.0.0",
+  "description": "Форматы плагинов (VST2, VST3, AU, AAX, etc.)",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "developer": "string",
+    "platform": "string[]",
+    "tags": "string[]"
+  },
+  "entries": [
+    { "id": "vst2", "name": "VST2", "developer": "Steinberg", "platform": ["windows", "macos"], "tags": ["legacy", "universal"] },
+    { "id": "vst3", "name": "VST3", "developer": "Steinberg", "platform": ["windows", "macos", "linux"], "tags": ["modern", "universal"] },
+    { "id": "au", "name": "Audio Units", "developer": "Apple", "platform": ["macos"], "tags": ["apple", "logic"] },
+    { "id": "aax", "name": "AAX", "developer": "Avid", "platform": ["windows", "macos"], "tags": ["protools"] },
+    { "id": "standalone", "name": "Standalone", "developer": null, "platform": ["windows", "macos"], "tags": ["independent"] },
+    { "id": "clap", "name": "CLAP", "developer": "Bitwig/u-he", "platform": ["windows", "macos", "linux"], "tags": ["modern", "open"] }
+  ]
+}

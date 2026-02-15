@@ -1,0 +1,22 @@
+{
+  "id": "companies",
+  "version": "1.0.0",
+  "description": "Компании-производители софта (VST, AI, etc.)",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "country": "string (→ countries.id)",
+    "url": "string",
+    "tags": "string[]"
+  },
+  "entries": [
+    { "id": "ample-sound", "name": "Ample Sound", "country": "cn", "url": "https://www.amplesound.net", "tags": ["guitar", "realistic"] },
+    { "id": "xfer", "name": "Xfer Records", "country": "us", "url": "https://xferrecords.com", "tags": ["synth", "serum"] },
+    { "id": "native-instruments", "name": "Native Instruments", "country": "de", "url": "https://www.native-instruments.com", "tags": ["sampler", "synth", "kontakt"] },
+    { "id": "spectrasonics", "name": "Spectrasonics", "country": "us", "url": "https://www.spectrasonics.net", "tags": ["synth", "omnisphere"] },
+    { "id": "arturia", "name": "Arturia", "country": "fr", "url": "https://www.arturia.com", "tags": ["synth", "analog", "vintage"] },
+    { "id": "izotope", "name": "iZotope", "country": "us", "url": "https://www.izotope.com", "tags": ["mastering", "mixing", "ai"] },
+    { "id": "fabfilter", "name": "FabFilter", "country": "nl", "url": "https://www.fabfilter.com", "tags": ["eq", "compressor", "pro"] },
+    { "id": "u-he", "name": "u-he", "country": "de", "url": "https://u-he.com", "tags": ["synth", "modular"] }
+  ]
+}

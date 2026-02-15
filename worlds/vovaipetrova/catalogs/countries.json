@@ -1,0 +1,21 @@
+{
+  "id": "countries",
+  "version": "1.0.0",
+  "description": "Страны — универсальный каталог для привязки компаний, фестивалей и других сущностей",
+  "schema": {
+    "id": "string (ISO 3166-1 alpha-2)",
+    "name": "string",
+    "name_ru": "string",
+    "region": "string"
+  },
+  "entries": [
+    { "id": "cn", "name": "China", "name_ru": "Китай", "region": "asia" },
+    { "id": "us", "name": "United States", "name_ru": "США", "region": "north-america" },
+    { "id": "de", "name": "Germany", "name_ru": "Германия", "region": "europe" },
+    { "id": "uk", "name": "United Kingdom", "name_ru": "Великобритания", "region": "europe" },
+    { "id": "fr", "name": "France", "name_ru": "Франция", "region": "europe" },
+    { "id": "jp", "name": "Japan", "name_ru": "Япония", "region": "asia" },
+    { "id": "se", "name": "Sweden", "name_ru": "Швеция", "region": "europe" },
+    { "id": "ru", "name": "Russia", "name_ru": "Россия", "region": "europe" }
+  ]
+}

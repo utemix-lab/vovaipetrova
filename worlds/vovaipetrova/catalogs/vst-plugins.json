@@ -1,0 +1,62 @@
+{
+  "id": "vst-plugins",
+  "version": "1.0.0",
+  "description": "VST-плагины (инструменты и эффекты)",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "company": "string (→ companies.id)",
+    "categories": "string[] (→ vst-categories.id)",
+    "formats": "string[] (→ vst-formats.id)",
+    "features": "string[] (→ vst-features.id)",
+    "year": "number | null",
+    "size_gb": "number | null",
+    "tags": "string[]"
+  },
+  "entries": [
+    {
+      "id": "ample-guitar-m",
+      "name": "Ample Guitar M",
+      "company": "ample-sound",
+      "categories": ["guitar", "acoustic-guitar"],
+      "formats": ["vst2", "vst3", "au", "aax", "standalone"],
+      "features": ["riffer", "strummer", "tab-reader", "legato", "humanization", "round-robin"],
+      "year": 2020,
+      "size_gb": 5.83,
+      "tags": ["martin-d41", "steel-string", "realistic"]
+    },
+    {
+      "id": "serum",
+      "name": "Serum",
+      "company": "xfer",
+      "categories": ["synth", "wavetable"],
+      "formats": ["vst2", "vst3", "au", "aax"],
+      "features": ["wavetable-editor", "modulation-matrix"],
+      "year": 2014,
+      "size_gb": 0.2,
+      "tags": ["popular", "modern", "edm"]
+    },
+    {
+      "id": "kontakt",
+      "name": "Kontakt",
+      "company": "native-instruments",
+      "categories": ["sampler"],
+      "formats": ["vst2", "vst3", "au", "aax", "standalone"],
+      "features": ["round-robin", "velocity-layers", "sequencer"],
+      "year": 2002,
+      "size_gb": 0.5,
+      "tags": ["industry-standard", "libraries"]
+    },
+    {
+      "id": "omnisphere",
+      "name": "Omnisphere",
+      "company": "spectrasonics",
+      "categories": ["synth"],
+      "formats": ["vst2", "vst3", "au", "aax"],
+      "features": ["wavetable-editor", "modulation-matrix", "arpeggiator"],
+      "year": 2008,
+      "size_gb": 64,
+      "tags": ["cinematic", "massive", "flagship"]
+    }
+  ]
+}

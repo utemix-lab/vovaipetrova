@@ -2,6 +2,12 @@
   "version": "1.0.0",
   "description": "Каталоги мира VovaIPetrova — внешние данные вне графа",
   "catalogs": {
-    "tools": "./catalogs/tools.json"
+    "tools": "./catalogs/tools.json",
+    "countries": "./catalogs/countries.json",
+    "companies": "./catalogs/companies.json",
+    "vst-categories": "./catalogs/vst-categories.json",
+    "vst-formats": "./catalogs/vst-formats.json",
+    "vst-features": "./catalogs/vst-features.json",
+    "vst-plugins": "./catalogs/vst-plugins.json"
   }
 }
