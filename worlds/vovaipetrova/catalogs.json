@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "description": "Каталоги мира VovaIPetrova — внешние данные вне графа",
+  "catalogs": {
+    "tools": "./catalogs/tools.json"
+  }
+}

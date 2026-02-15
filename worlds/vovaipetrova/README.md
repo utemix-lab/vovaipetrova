@@ -12,6 +12,9 @@
 worlds/vovaipetrova/
 ├── schema.json      ← типы узлов и рёбер
 ├── seed.json        ← начальные данные графа
+├── catalogs.json    ← реестр каталогов (Track 3)
+├── catalogs/        ← каталоги внешних данных
+│   └── tools.json   ← инструменты и технологии
 ├── world.md         ← описание мира
 └── README.md        ← этот файл
 ```

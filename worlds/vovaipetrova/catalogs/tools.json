@@ -1,0 +1,94 @@
+{
+  "id": "tools",
+  "version": "1.0.0",
+  "description": "Инструменты и технологии, используемые в проекте",
+  "schema": {
+    "name": "string",
+    "type": "string",
+    "category": "string",
+    "tags": "string[]",
+    "url": "string?"
+  },
+  "entries": [
+    {
+      "id": "vscode",
+      "name": "VS Code",
+      "type": "ide",
+      "category": "development",
+      "tags": ["editor", "free", "extensions"],
+      "url": "https://code.visualstudio.com"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "type": "ide",
+      "category": "development",
+      "tags": ["editor", "ai", "coding"],
+      "url": "https://cursor.sh"
+    },
+    {
+      "id": "windsurf",
+      "name": "Windsurf",
+      "type": "ide",
+      "category": "development",
+      "tags": ["editor", "ai", "coding"],
+      "url": "https://codeium.com/windsurf"
+    },
+    {
+      "id": "threejs",
+      "name": "Three.js",
+      "type": "library",
+      "category": "visualization",
+      "tags": ["3d", "webgl", "graphics"],
+      "url": "https://threejs.org"
+    },
+    {
+      "id": "forcegraph",
+      "name": "3D Force Graph",
+      "type": "library",
+      "category": "visualization",
+      "tags": ["3d", "graph", "force-directed"],
+      "url": "https://github.com/vasturiano/3d-force-graph"
+    },
+    {
+      "id": "vite",
+      "name": "Vite",
+      "type": "bundler",
+      "category": "development",
+      "tags": ["build", "fast", "esm"],
+      "url": "https://vitejs.dev"
+    },
+    {
+      "id": "vitest",
+      "name": "Vitest",
+      "type": "testing",
+      "category": "development",
+      "tags": ["testing", "fast", "vite"],
+      "url": "https://vitest.dev"
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "type": "vcs",
+      "category": "development",
+      "tags": ["vcs", "versioning"],
+      "url": "https://git-scm.com"
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "type": "llm",
+      "category": "ai",
+      "tags": ["llm", "assistant", "anthropic"],
+      "url": "https://claude.ai"
+    },
+    {
+      "id": "cascade",
+      "name": "Cascade",
+      "type": "agent",
+      "category": "ai",
+      "tags": ["agent", "coding", "windsurf"],
+      "url": "https://codeium.com/windsurf"
+    }
+  ]
+}
