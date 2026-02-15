@@ -8,6 +8,7 @@
     "vst-categories": "./catalogs/vst-categories.json",
     "vst-formats": "./catalogs/vst-formats.json",
     "vst-features": "./catalogs/vst-features.json",
-    "vst-plugins": "./catalogs/vst-plugins.json"
+    "vst-plugins": "./catalogs/vst-plugins.json",
+    "tags": "./catalogs/tags.json"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "id": "tags",
+  "version": "1.0.0",
+  "description": "Термины и теги, не входящие в другие каталоги. Служат для связей и навигации.",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "name_ru": "string",
+    "domain": "string (music | ai | design | software | media | games | knowledge)",
+    "related": "string[] (→ tags.id | *-categories.id)"
+  },
+  "entries": []
+}
