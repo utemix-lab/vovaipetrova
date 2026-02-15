@@ -1020,6 +1020,7 @@ P4.4 — LLMReflectionEngine
 - TRACK 2 — SCHEMA/ENGINE            ← Частично реализован
 - TRACK 3 — OPERATORS (Epistemic)    ← Концептуализируется
 - TRACK 4 — PROJECTION/UI            ← Активно проектируется
+  └── Cryptocosm Concept (художественный набросок) — см. docs/CRYPTOCOSM_CONCEPT.md
 
 Всего: 808 тестов (152 engine + 656 render).
 
