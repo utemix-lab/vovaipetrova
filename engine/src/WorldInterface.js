@@ -57,6 +57,17 @@ export class WorldInterface {
   getConfig() {
     return null;
   }
+  
+  /**
+   * Возвращает каталоги мира (опционально).
+   * Каталоги — это внешние данные, живущие вне графа.
+   * 
+   * @returns {CatalogRegistry|null}
+   * @see docs/OPERATORS_CONCEPT.md
+   */
+  getCatalogs() {
+    return null;
+  }
 }
 
 /**
@@ -223,6 +234,111 @@ export class GraphValidator {
 }
 
 /**
+ * Валидатор каталогов мира.
+ * Проверяет, что каталоги соответствуют контракту.
+ * 
+ * @see docs/OPERATORS_CONCEPT.md
+ */
+export class CatalogValidator {
+  /**
+   * Валидирует реестр каталогов.
+   * @param {object} catalogs - Реестр каталогов для валидации
+   * @returns {{ valid: boolean, errors: string[] }}
+   */
+  static validate(catalogs) {
+    const errors = [];
+    
+    // Каталоги опциональны
+    if (catalogs === null || catalogs === undefined) {
+      return { valid: true, errors };
+    }
+    
+    // Если есть, должен быть объектом
+    if (typeof catalogs !== "object" || Array.isArray(catalogs)) {
+      errors.push("Catalogs must be an object (registry)");
+      return { valid: false, errors };
+    }
+    
+    // Проверяем каждый каталог
+    for (const [catalogId, catalog] of Object.entries(catalogs)) {
+      const catalogErrors = this.validateCatalog(catalogId, catalog);
+      errors.push(...catalogErrors);
+    }
+    
+    return {
+      valid: errors.length === 0,
+      errors,
+    };
+  }
+  
+  /**
+   * Валидирует отдельный каталог.
+   * @param {string} catalogId - ID каталога
+   * @param {object} catalog - Каталог для валидации
+   * @returns {string[]} - Массив ошибок
+   */
+  static validateCatalog(catalogId, catalog) {
+    const errors = [];
+    const prefix = `catalog[${catalogId}]`;
+    
+    if (!catalog || typeof catalog !== "object") {
+      errors.push(`${prefix} must be an object`);
+      return errors;
+    }
+    
+    // Обязательные поля
+    if (typeof catalog.id !== "string") {
+      errors.push(`${prefix}.id must be a string`);
+    } else if (catalog.id !== catalogId) {
+      errors.push(`${prefix}.id must match registry key "${catalogId}"`);
+    }
+    
+    // Схема (опционально, но если есть — должна быть объектом)
+    if (catalog.schema !== undefined && typeof catalog.schema !== "object") {
+      errors.push(`${prefix}.schema must be an object if provided`);
+    }
+    
+    // Записи
+    if (!Array.isArray(catalog.entries)) {
+      errors.push(`${prefix}.entries must be an array`);
+    } else {
+      catalog.entries.forEach((entry, i) => {
+        if (typeof entry.id !== "string") {
+          errors.push(`${prefix}.entries[${i}].id must be a string`);
+        }
+      });
+    }
+    
+    return errors;
+  }
+  
+  /**
+   * Проверяет, что каталог с указанным ID существует.
+   * @param {object} catalogs - Реестр каталогов
+   * @param {string} catalogId - ID каталога
+   * @returns {boolean}
+   */
+  static hasCatalog(catalogs, catalogId) {
+    if (!catalogs || typeof catalogs !== "object") return false;
+    return catalogId in catalogs;
+  }
+  
+  /**
+   * Проверяет, что запись с указанным ID существует в каталоге.
+   * @param {object} catalogs - Реестр каталогов
+   * @param {string} catalogId - ID каталога
+   * @param {string} entryId - ID записи
+   * @returns {boolean}
+   */
+  static hasEntry(catalogs, catalogId, entryId) {
+    if (!this.hasCatalog(catalogs, catalogId)) return false;
+    const catalog = catalogs[catalogId];
+    if (!Array.isArray(catalog.entries)) return false;
+    return catalog.entries.some(e => e.id === entryId);
+  }
+}
+
+/**
  * Валидатор мира.
  * Проверяет, что мир соответствует контракту.
  */
@@ -275,6 +391,21 @@ export class WorldValidator {
     
     if (typeof world.getConfig !== "function") {
       warnings.push("world.getConfig() is not implemented (optional)");
+    }
+    
+    // 6. Проверяем каталоги (опционально)
+    if (typeof world.getCatalogs === "function") {
+      try {
+        const catalogs = world.getCatalogs();
+        if (catalogs !== null) {
+          const catalogValidation = CatalogValidator.validate(catalogs);
+          errors.push(...catalogValidation.errors);
+        }
+      } catch (e) {
+        errors.push(`world.getCatalogs() threw: ${e.message}`);
+      }
+    } else {
+      warnings.push("world.getCatalogs() is not implemented (optional)");
     }
     
     return {

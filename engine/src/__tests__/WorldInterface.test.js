@@ -15,6 +15,7 @@ import {
   WorldInterface,
   SchemaValidator,
   GraphValidator,
+  CatalogValidator,
   WorldValidator,
 } from "../WorldInterface.js";
 
@@ -52,6 +53,28 @@ const validGraph = {
   },
 };
 
+const validCatalogs = {
+  vst: {
+    id: "vst",
+    schema: {
+      name: "string",
+      manufacturer: "string",
+      year: "number",
+    },
+    entries: [
+      { id: "serum", name: "Serum", manufacturer: "Xfer", year: 2014 },
+      { id: "massive", name: "Massive X", manufacturer: "NI", year: 2019 },
+    ],
+  },
+  tools: {
+    id: "tools",
+    entries: [
+      { id: "vscode", name: "VS Code" },
+      { id: "cursor", name: "Cursor" },
+    ],
+  },
+};
+
 // ═══════════════════════════════════════════════════════════════════════════
 // WORLD INTERFACE
 // ═══════════════════════════════════════════════════════════════════════════
@@ -75,6 +98,11 @@ describe("WorldInterface", () => {
   it("should return null for optional getConfig()", () => {
     const world = new WorldInterface();
     expect(world.getConfig()).toBeNull();
+  });
+  
+  it("should return null for optional getCatalogs()", () => {
+    const world = new WorldInterface();
+    expect(world.getCatalogs()).toBeNull();
   });
 });
 
@@ -252,6 +280,119 @@ describe("GraphValidator", () => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// CATALOG VALIDATOR
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe("CatalogValidator", () => {
+  describe("validate", () => {
+    it("should validate correct catalogs", () => {
+      const result = CatalogValidator.validate(validCatalogs);
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+    
+    it("should accept null catalogs (optional)", () => {
+      const result = CatalogValidator.validate(null);
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should accept undefined catalogs (optional)", () => {
+      const result = CatalogValidator.validate(undefined);
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should reject array instead of object", () => {
+      const result = CatalogValidator.validate([]);
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("must be an object"))).toBe(true);
+    });
+    
+    it("should reject catalog without id", () => {
+      const result = CatalogValidator.validate({
+        test: { entries: [] }
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes(".id must be a string"))).toBe(true);
+    });
+    
+    it("should reject catalog with mismatched id", () => {
+      const result = CatalogValidator.validate({
+        test: { id: "wrong", entries: [] }
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("must match registry key"))).toBe(true);
+    });
+    
+    it("should reject catalog without entries", () => {
+      const result = CatalogValidator.validate({
+        test: { id: "test" }
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes(".entries must be an array"))).toBe(true);
+    });
+    
+    it("should reject entry without id", () => {
+      const result = CatalogValidator.validate({
+        test: { id: "test", entries: [{ name: "no id" }] }
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("entries[0].id must be a string"))).toBe(true);
+    });
+    
+    it("should accept catalog with schema", () => {
+      const result = CatalogValidator.validate({
+        test: { 
+          id: "test", 
+          schema: { name: "string" },
+          entries: [{ id: "1", name: "Test" }] 
+        }
+      });
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should reject invalid schema type", () => {
+      const result = CatalogValidator.validate({
+        test: { id: "test", schema: "invalid", entries: [] }
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes(".schema must be an object"))).toBe(true);
+    });
+  });
+  
+  describe("hasCatalog", () => {
+    it("should return true for existing catalog", () => {
+      expect(CatalogValidator.hasCatalog(validCatalogs, "vst")).toBe(true);
+    });
+    
+    it("should return false for non-existing catalog", () => {
+      expect(CatalogValidator.hasCatalog(validCatalogs, "unknown")).toBe(false);
+    });
+    
+    it("should return false for null catalogs", () => {
+      expect(CatalogValidator.hasCatalog(null, "vst")).toBe(false);
+    });
+  });
+  
+  describe("hasEntry", () => {
+    it("should return true for existing entry", () => {
+      expect(CatalogValidator.hasEntry(validCatalogs, "vst", "serum")).toBe(true);
+    });
+    
+    it("should return false for non-existing entry", () => {
+      expect(CatalogValidator.hasEntry(validCatalogs, "vst", "unknown")).toBe(false);
+    });
+    
+    it("should return false for non-existing catalog", () => {
+      expect(CatalogValidator.hasEntry(validCatalogs, "unknown", "serum")).toBe(false);
+    });
+    
+    it("should return false for null catalogs", () => {
+      expect(CatalogValidator.hasEntry(null, "vst", "serum")).toBe(false);
+    });
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
 // WORLD VALIDATOR
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -321,6 +462,72 @@ describe("WorldValidator", () => {
       const result = WorldValidator.validate(world);
       expect(result.valid).toBe(false);
       expect(result.errors.some(e => e.includes("invalid type"))).toBe(true);
+    });
+    
+    it("should validate world with valid catalogs", () => {
+      const world = {
+        getSchema: () => validSchema,
+        getGraph: () => validGraph,
+        getSeed: () => null,
+        getConfig: () => null,
+        getCatalogs: () => validCatalogs,
+      };
+      const result = WorldValidator.validate(world);
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+    
+    it("should validate world with null catalogs", () => {
+      const world = {
+        getSchema: () => validSchema,
+        getGraph: () => validGraph,
+        getSeed: () => null,
+        getConfig: () => null,
+        getCatalogs: () => null,
+      };
+      const result = WorldValidator.validate(world);
+      expect(result.valid).toBe(true);
+    });
+    
+    it("should reject world with invalid catalogs", () => {
+      const world = {
+        getSchema: () => validSchema,
+        getGraph: () => validGraph,
+        getSeed: () => null,
+        getConfig: () => null,
+        getCatalogs: () => ({
+          broken: { entries: [] } // missing id
+        }),
+      };
+      const result = WorldValidator.validate(world);
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("catalog"))).toBe(true);
+    });
+    
+    it("should reject world with throwing getCatalogs", () => {
+      const world = {
+        getSchema: () => validSchema,
+        getGraph: () => validGraph,
+        getSeed: () => null,
+        getConfig: () => null,
+        getCatalogs: () => { throw new Error("Catalog error"); },
+      };
+      const result = WorldValidator.validate(world);
+      expect(result.valid).toBe(false);
+      expect(result.errors.some(e => e.includes("getCatalogs"))).toBe(true);
+    });
+    
+    it("should warn about missing getCatalogs (optional)", () => {
+      const world = {
+        getSchema: () => validSchema,
+        getGraph: () => validGraph,
+        getSeed: () => null,
+        getConfig: () => null,
+        // no getCatalogs
+      };
+      const result = WorldValidator.validate(world);
+      expect(result.valid).toBe(true);
+      expect(result.warnings.some(w => w.includes("getCatalogs"))).toBe(true);
     });
   });
 });
