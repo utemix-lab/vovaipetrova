@@ -2320,6 +2320,148 @@ function bindPracticeButtons(container) {
   });
 }
 
+// === Node Glow Effect (свечение узла) ===
+let glowingNodeId = null;
+let glowMesh = null;
+
+/**
+ * Привязывает обработчик к кнопке "Свечение"
+ */
+function bindGlowToggleButton(container) {
+  const btn = container.querySelector(".glow-toggle-btn");
+  if (!btn) return;
+  
+  const nodeId = btn.dataset.nodeId;
+  
+  // Обновить состояние кнопки при загрузке
+  if (glowingNodeId === nodeId) {
+    btn.classList.add("practice-btn--active");
+  }
+  
+  btn.addEventListener("click", () => {
+    if (glowingNodeId === nodeId) {
+      // Выключить свечение
+      hideNodeGlow();
+      btn.classList.remove("practice-btn--active");
+    } else {
+      // Включить свечение
+      showNodeGlow(nodeId);
+      btn.classList.add("practice-btn--active");
+    }
+  });
+}
+
+/**
+ * Создаёт градиентную текстуру для свечения (яркий центр, прозрачные края)
+ */
+function createGlowTexture(color = 0xfbbf24, size = 128) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  
+  const centerX = size / 2;
+  const centerY = size / 2;
+  const radius = size / 2;
+  
+  // Радиальный градиент: яркий центр → прозрачные края
+  const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+  
+  // Конвертируем hex в rgb
+  const r = (color >> 16) & 255;
+  const g = (color >> 8) & 255;
+  const b = color & 255;
+  
+  gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 1)`);
+  gradient.addColorStop(0.2, `rgba(${r}, ${g}, ${b}, 0.7)`);
+  gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.3)`);
+  gradient.addColorStop(0.8, `rgba(${r}, ${g}, ${b}, 0.1)`);
+  gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+  
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
+let glowTexture = null;
+
+/**
+ * Показывает свечение вокруг узла (градиентное, от центра в прозрачность)
+ */
+function showNodeGlow(nodeId) {
+  hideNodeGlow(); // Убрать предыдущее свечение
+  
+  const node = nodesById.get(nodeId);
+  if (!node || !graph || !graph.scene()) return;
+  
+  glowingNodeId = nodeId;
+  
+  // Создаём спрайт с градиентной текстурой (пересоздаём для обновления)
+  if (glowTexture) {
+    glowTexture.dispose();
+  }
+  glowTexture = createGlowTexture(0xfbbf24, 256);
+  
+  const baseRadius = nodeBaseRadius.get(nodeId) || 5;
+  const glowSize = baseRadius * 6;
+  
+  const material = new THREE.SpriteMaterial({
+    map: glowTexture,
+    transparent: true,
+    opacity: 1,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  });
+  
+  glowMesh = new THREE.Sprite(material);
+  glowMesh.scale.set(glowSize, glowSize, 1);
+  glowMesh.position.set(node.x || 0, node.y || 0, node.z || 0);
+  glowMesh.userData.nodeId = nodeId;
+  glowMesh.renderOrder = -2; // За узлами
+  
+  graph.scene().add(glowMesh);
+  
+  console.log("[Glow] Enabled for node:", nodeId);
+}
+
+/**
+ * Скрывает свечение узла
+ */
+function hideNodeGlow() {
+  if (glowMesh) {
+    graph.scene().remove(glowMesh);
+    glowMesh.geometry.dispose();
+    glowMesh.material.dispose();
+    glowMesh = null;
+  }
+  glowingNodeId = null;
+}
+
+/**
+ * Обновляет позицию свечения (вызывается в animation loop)
+ */
+function updateNodeGlow() {
+  if (!glowMesh || !glowingNodeId) return;
+  
+  const node = nodesById.get(glowingNodeId);
+  if (!node) return;
+  
+  glowMesh.position.set(node.x || 0, node.y || 0, node.z || 0);
+  
+  // Пульсация свечения через opacity и scale
+  const t = performance.now() * 0.002;
+  const pulse = 0.7 + Math.sin(t) * 0.3;
+  glowMesh.material.opacity = pulse;
+  
+  // Лёгкая пульсация размера
+  const baseRadius = nodeBaseRadius.get(glowingNodeId) || 5;
+  const baseSize = baseRadius * 6;
+  const scalePulse = 1 + Math.sin(t * 0.5) * 0.1;
+  glowMesh.scale.set(baseSize * scalePulse, baseSize * scalePulse, 1);
+}
+
 // === Загрузка маршрута ===
 let currentRoutePath = null;
 
@@ -3435,6 +3577,15 @@ function updateStoryWithHub(panel, node) {
           </button>`;
       }
       
+      // Кнопка "Свечение" для включения glow-эффекта узла-хаба
+      html += `
+        <button class="practice-btn glow-toggle-btn" 
+                data-node-id="${node.id}"
+                style="--practice-color: #fbbf24"
+                title="Включить свечение узла">
+          Свечение
+        </button>`;
+      
       html += `</div>`;
       html += `</div>`;
     }
@@ -3448,6 +3599,7 @@ function updateStoryWithHub(panel, node) {
   // Привязать обработчики кнопок практик
   if (node.id === "domains") {
     bindPracticeButtons(content);
+    bindGlowToggleButton(content);
   }
 
   // Инициализация фигуры в shape area
@@ -3629,6 +3781,15 @@ function updateStoryWithDomainWidgets(panel, data) {
         </button>`;
     }
     
+    // Кнопка "Свечение" для включения glow-эффекта узла-хаба
+    html += `
+      <button class="practice-btn glow-toggle-btn" 
+              data-node-id="domains"
+              style="--practice-color: #fbbf24"
+              title="Включить свечение узла">
+        Свечение
+      </button>`;
+    
     html += `</div>`;
     html += `</div>`;
   }
@@ -3637,6 +3798,7 @@ function updateStoryWithDomainWidgets(panel, data) {
   bindTagPills(content);
   bindEmblemSwap(content);
   bindPracticeButtons(content); // Привязать обработчики кнопок практик
+  bindGlowToggleButton(content); // Привязать обработчик кнопки свечения
 
   // Initialize mini cube
   const cubeContainer = document.getElementById("mini-cube-container");
@@ -5239,6 +5401,7 @@ function tickAnimation() {
   updateAutoRotate(visualTime);
   updatePracticePolygons(); // Обновление позиций полигонов практик
   updateBadgeSprites(); // Обновление позиций и opacity бейджей
+  updateNodeGlow(); // Обновление позиции и пульсации свечения
   controls.update();
   requestAnimationFrame(tickAnimation);
 }
