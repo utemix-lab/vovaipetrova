@@ -67,37 +67,34 @@ export const VISUAL_CONFIG = {
   // Практика = способ мышления, соединяющий несколько доменов
   // Визуализируется как полигон (меш) между узлами доменов
   // ═══════════════════════════════════════════════════════════════════════════
+  // Вершины: 2=линия, 3=треугольник, 4=четырёхугольник, 5=пентагон
   practices: [
-    {
-      id: "systems-thinking",
-      label: "Системное мышление",
-      domains: ["domain-knowledge", "domain-dev", "domain-design"],
-      color: "#a78bfa"
-    },
+    // ─── ЛИНИИ (2 домена) ───
     {
       id: "antitaxonomic-navigation",
       label: "Антитаксономическая навигация",
-      domains: ["domain-knowledge", "domain-ai", "domain-interactive"],
+      domains: ["domain-knowledge", "domain-ai"],
       color: "#f472b6"
     },
     {
-      id: "research-thinking",
-      label: "Исследовательское мышление",
-      domains: ["domain-knowledge", "domain-ai", "domain-music"],
-      color: "#60a5fa"
+      id: "visual-thinking",
+      label: "Визуальное мышление",
+      domains: ["domain-visual", "domain-design"],
+      color: "#fb923c"
     },
     {
-      id: "directing",
-      label: "Режиссура",
-      domains: ["domain-visual", "domain-music", "domain-interactive"],
-      color: "#f97316"
+      id: "sound-thinking",
+      label: "Звуковое мышление",
+      domains: ["domain-music", "domain-ai"],
+      color: "#c084fc"
     },
     {
-      id: "system-design",
-      label: "Дизайн систем",
-      domains: ["domain-design", "domain-dev", "domain-knowledge"],
-      color: "#22d3ee"
+      id: "reflection",
+      label: "Рефлексия и фиксация",
+      domains: ["domain-knowledge", "domain-ai"],
+      color: "#94a3b8"
     },
+    // ─── ТРЕУГОЛЬНИКИ (3 домена) ───
     {
       id: "architectural-design",
       label: "Архитектурное проектирование",
@@ -105,51 +102,59 @@ export const VISUAL_CONFIG = {
       color: "#a3e635"
     },
     {
-      id: "visual-thinking",
-      label: "Визуальное мышление",
-      domains: ["domain-visual", "domain-design", "domain-knowledge"],
-      color: "#fb923c"
-    },
-    {
-      id: "sound-thinking",
-      label: "Звуковое мышление",
-      domains: ["domain-music", "domain-ai", "domain-interactive"],
-      color: "#c084fc"
-    },
-    {
-      id: "interactive-thinking",
-      label: "Интерактивное мышление",
-      domains: ["domain-interactive", "domain-dev", "domain-design"],
-      color: "#4ade80"
-    },
-    {
       id: "branding",
       label: "Брендинг",
       domains: ["domain-design", "domain-visual", "domain-knowledge"],
       color: "#fbbf24"
     },
+    // ─── ЧЕТЫРЁХУГОЛЬНИКИ (4 домена) ───
     {
-      id: "ecosystem-thinking",
-      label: "Экосистемное мышление",
-      domains: ["domain-knowledge", "domain-dev", "domain-physical", "domain-ai"],
-      color: "#2dd4bf"
+      id: "systems-thinking",
+      label: "Системное мышление",
+      domains: ["domain-knowledge", "domain-dev", "domain-design", "domain-ai"],
+      color: "#a78bfa"
+    },
+    {
+      id: "research-thinking",
+      label: "Исследовательское мышление",
+      domains: ["domain-knowledge", "domain-ai", "domain-music", "domain-visual"],
+      color: "#60a5fa"
+    },
+    {
+      id: "directing",
+      label: "Режиссура",
+      domains: ["domain-visual", "domain-music", "domain-interactive", "domain-design"],
+      color: "#f97316"
+    },
+    {
+      id: "system-design",
+      label: "Дизайн систем",
+      domains: ["domain-design", "domain-dev", "domain-knowledge", "domain-physical"],
+      color: "#22d3ee"
+    },
+    {
+      id: "interactive-thinking",
+      label: "Интерактивное мышление",
+      domains: ["domain-interactive", "domain-dev", "domain-design", "domain-ai"],
+      color: "#4ade80"
     },
     {
       id: "curation",
       label: "Кураторство и отбор",
-      domains: ["domain-knowledge", "domain-music", "domain-visual"],
+      domains: ["domain-knowledge", "domain-music", "domain-visual", "domain-interactive"],
       color: "#e879f9"
     },
+    // ─── ПЕНТАГОНЫ (5 доменов) ───
     {
-      id: "reflection",
-      label: "Рефлексия и фиксация",
-      domains: ["domain-knowledge", "domain-ai", "domain-dev"],
-      color: "#94a3b8"
+      id: "ecosystem-thinking",
+      label: "Экосистемное мышление",
+      domains: ["domain-knowledge", "domain-dev", "domain-physical", "domain-ai", "domain-design"],
+      color: "#2dd4bf"
     },
     {
       id: "opportunity-navigation",
       label: "Навигация по возможностям",
-      domains: ["domain-knowledge", "domain-interactive", "domain-ai"],
+      domains: ["domain-knowledge", "domain-interactive", "domain-ai", "domain-dev", "domain-design"],
       color: "#38bdf8"
     }
   ],

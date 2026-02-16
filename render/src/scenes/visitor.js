@@ -1818,19 +1818,45 @@ function registerInteraction() {
 /**
  * Создаёт полигон (меш) для практики между узлами доменов
  * @param {Object} practice - объект практики из VISUAL_CONFIG.practices
- * @returns {THREE.Mesh|null} - меш полигона или null если узлы не найдены
+ * @returns {THREE.Mesh|THREE.Line|null} - меш/линия или null если узлы не найдены
  */
 function createPracticePolygon(practice) {
   const domainNodes = practice.domains
     .map(id => nodesById.get(id))
     .filter(Boolean);
   
-  if (domainNodes.length < 3) {
+  if (domainNodes.length < 2) {
     console.warn(`[Practice] Not enough domain nodes for ${practice.id}:`, practice.domains);
     return null;
   }
 
-  // Создаём геометрию из позиций узлов
+  const color = new THREE.Color(practice.color || "#a78bfa");
+
+  // Линия (2 вершины) — особый случай
+  if (domainNodes.length === 2) {
+    const positions = new Float32Array([
+      domainNodes[0].x || 0, domainNodes[0].y || 0, domainNodes[0].z || 0,
+      domainNodes[1].x || 0, domainNodes[1].y || 0, domainNodes[1].z || 0
+    ]);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    
+    const material = new THREE.LineBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0,
+      linewidth: 2
+    });
+    
+    const line = new THREE.Line(geometry, material);
+    line.userData.practiceId = practice.id;
+    line.userData.domainIds = practice.domains;
+    line.userData.isLine = true;
+    line.renderOrder = -1;
+    return line;
+  }
+
+  // Полигон (3+ вершины)
   const positions = [];
   domainNodes.forEach(node => {
     positions.push(node.x || 0, node.y || 0, node.z || 0);
@@ -1839,16 +1865,14 @@ function createPracticePolygon(practice) {
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
 
-  // Для полигонов с 4+ вершинами нужна триангуляция
-  if (domainNodes.length === 3) {
-    geometry.setIndex([0, 1, 2]);
-  } else if (domainNodes.length === 4) {
-    geometry.setIndex([0, 1, 2, 0, 2, 3]);
+  // Триангуляция для разного количества вершин (fan triangulation)
+  const indices = [];
+  for (let i = 1; i < domainNodes.length - 1; i++) {
+    indices.push(0, i, i + 1);
   }
-
+  geometry.setIndex(indices);
   geometry.computeVertexNormals();
 
-  const color = new THREE.Color(practice.color || "#a78bfa");
   const material = new THREE.MeshBasicMaterial({
     color: color,
     transparent: true,
