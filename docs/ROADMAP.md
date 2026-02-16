@@ -1,7 +1,91 @@
 # Universe Roadmap
 
 > Единый документ целей и этапов развития системы.
-> Обновляется по мере продвижения.
+> **Последнее обновление:** 16 февраля 2026
+
+---
+
+## Карта треков и документов
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           ARCHITECTURE TRACKS                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  Track 1: WORLD LAYER (Онтология)                                           │
+│  ├── docs/ARCHITECTURE_PRINCIPLES.md                                        │
+│  ├── docs/ARCHITECTURE_TRACKS.md                                            │
+│  ├── worlds/vovaipetrova/schema.json                                        │
+│  └── Статус: ✅ Завершён (P5.0 Separation)                                  │
+│                                                                             │
+│  Track 2: NARRATIVE LAYER (Контент)                                         │
+│  ├── docs/TERMINOLOGY_CONCEPT.md                                            │
+│  ├── worlds/vovaipetrova/catalogs/*.json                                    │
+│  └── Статус: 🔄 В работе (каталоги заполняются)                             │
+│                                                                             │
+│  Track 3: EPISTEMIC OPERATORS (Операторы)                                   │
+│  ├── docs/OPERATORS_CONCEPT.md                                              │
+│  ├── engine/src/operators/                                                  │
+│  └── Статус: ✅ Завершён (194 теста)                                        │
+│                                                                             │
+│  Track 4: PROJECTION (UI/Render)                                            │
+│  ├── docs/windows.md                                                        │
+│  ├── docs/bridges.md                                                        │
+│  ├── render/src/scenes/visitor.js                                           │
+│  └── Статус: 🔄 В работе (визуальные механики)                              │
+│                                                                             │
+│  Track 5: AUTOMATION/AGENCY (LLM)                                           │
+│  ├── docs/AUTOMATION_CONCEPT.md                                             │
+│  ├── docs/CATALOG_GRAPH_CONCEPT.md                                          │
+│  └── Статус: 📋 Концепт утверждён                                           │
+│                                                                             │
+│  Track 6: CRYPTOCOSM (Рефлексия)                                            │
+│  ├── docs/CRYPTOCOSM_CONCEPT.md                                             │
+│  └── Статус: 🔮 Вектор (отложен)                                            │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Индекс документов
+
+| Документ | Трек | Описание | Статус |
+|----------|------|----------|--------|
+| `ARCHITECTURE_TRACKS.md` | 1 | Полное описание 6 треков | ✅ |
+| `ARCHITECTURE_PRINCIPLES.md` | 1 | Архитектурные принципы | ✅ |
+| `OPERATORS_CONCEPT.md` | 3 | Эпистемические операторы | ✅ |
+| `TERMINOLOGY_CONCEPT.md` | 2 | Термины и туториалы | 🔄 |
+| `AUTOMATION_CONCEPT.md` | 5 | LLM-автоматизация | 📋 |
+| `CATALOG_GRAPH_CONCEPT.md` | 5 | Граф каталогов vs онтология | 📋 |
+| `CRYPTOCOSM_CONCEPT.md` | 6 | Рефлексивная машина | 🔮 |
+| `windows.md` | 4 | Система окон | 🔄 |
+| `bridges.md` | 4 | Мосты между слоями | 🔄 |
+| `TECH_DEBT.md` | — | Технический долг | 🔄 |
+| `CHANGELOG.md` | — | История изменений | 🔄 |
+
+**Легенда:** ✅ Завершён | 🔄 В работе | 📋 Концепт | 🔮 Вектор
+
+---
+
+## Текущий фокус (февраль 2026)
+
+### Активные задачи
+
+| Задача | Трек | Статус |
+|--------|------|--------|
+| Practice Polygons | 4 | ✅ Заготовка |
+| Context Menu | 4 | ✅ Заготовка |
+| Sprite Badges | 4 | ✅ Заготовка |
+| Node Glow Effect | 4 | ✅ Заготовка |
+| Каталоги (companies, categories, countries) | 2 | ✅ Заполнены |
+| vst-plugins.json | 2 | ⏳ Ожидает диск |
+
+### Следующие шаги
+
+1. **Track 2:** Подключить диск с VST-библиотекой → заполнить `vst-plugins.json`
+2. **Track 5:** Прототип GraphRAG для каталогов
+3. **Track 4:** Интеграция каталогов в UI (таблицы, фильтры)
 
 ---
 
@@ -181,7 +265,21 @@
 
 ## Связанные документы
 
+### По трекам
+
+| Трек | Документы |
+|------|-----------|
+| **Track 1** | `ARCHITECTURE_TRACKS.md`, `ARCHITECTURE_PRINCIPLES.md` |
+| **Track 2** | `TERMINOLOGY_CONCEPT.md`, `catalogs/*.json` |
+| **Track 3** | `OPERATORS_CONCEPT.md` |
+| **Track 4** | `windows.md`, `bridges.md` |
+| **Track 5** | `AUTOMATION_CONCEPT.md`, `CATALOG_GRAPH_CONCEPT.md` |
+| **Track 6** | `CRYPTOCOSM_CONCEPT.md` |
+
+### Служебные
+
 - `author/ontology-map.md` — человекочитаемая карта графа
-- `docs/ARCHITECTURE_PRINCIPLES.md` — архитектурные принципы
 - `docs/CHANGELOG.md` — история изменений
+- `docs/TECH_DEBT.md` — технический долг
+- `docs/INDEX.md` — старый индекс (deprecated)
 - `docs/archive/` — завершённые планы
