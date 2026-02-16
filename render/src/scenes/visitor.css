@@ -1509,3 +1509,84 @@ body.focus-service #service-panel::before {
   vertical-align: middle;
 }
 
+/* === Context Menu (контекстное меню по правому клику) === */
+.context-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 160px;
+  padding: 8px 0;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--btn-radius);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 1px var(--panel-border-thick),
+    inset 0 0 30px rgba(34, 211, 238, 0.03);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-body);
+}
+
+.context-menu__item {
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: default;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.context-menu__item--button,
+.context-menu__item--icon {
+  cursor: pointer;
+}
+
+.context-menu__item--button:hover,
+.context-menu__item--icon:hover {
+  background: var(--color-semi-active-soft);
+  color: var(--text-primary);
+}
+
+.context-menu__item--icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.context-menu__icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.context-menu__item--icon:hover .context-menu__icon {
+  opacity: 1;
+}
+
+.context-menu__btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.context-menu__item--button:hover .context-menu__btn {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2);
+}
+
+.context-menu__item--text {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-top: 1px solid rgba(34, 211, 238, 0.1);
+  margin-top: 4px;
+}
+

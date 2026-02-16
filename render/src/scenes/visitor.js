@@ -611,6 +611,243 @@ let practicePolygons = new Map(); // practiceId -> THREE.Mesh
 let activePracticeId = null; // Зафиксированная практика (по клику)
 let hoveredPracticeId = null; // Практика под курсором (hover)
 
+// === Context Menu (контекстное меню по правому клику) ===
+let contextMenuElement = null;
+let contextMenuNode = null;
+
+// === Sprite Badges (бейджи-метаданные рядом с узлами) ===
+// Пути формируются динамически через getBadgeAssetPath()
+const BADGE_ASSET_NAMES = [
+  "author-plug.png",
+  "character-plug.png",
+  "collab-plug.png",
+  "domain-plug.png",
+  "hub-plug.png",
+  "practice-plug.png",
+  "root-plug.png",
+  "workbench-plug.png"
+];
+
+function getBadgeAssetPath(name) {
+  return `${CONFIG.contractsPath}/assets/widgets/${name}`;
+}
+let nodeBadgeSprites = new Map(); // nodeId -> THREE.Sprite
+let nodeBadgeTextures = new Map(); // nodeId -> texture path (для рандомного назначения)
+let badgesVisible = false;
+
+/**
+ * Показывает контекстное меню для узла
+ * @param {Object} node - узел графа
+ * @param {number} x - координата X (clientX)
+ * @param {number} y - координата Y (clientY)
+ */
+function showContextMenu(node, x, y) {
+  hideContextMenu();
+  contextMenuNode = node;
+
+  const menu = document.createElement("div");
+  menu.className = "context-menu";
+  menu.innerHTML = `
+    <div class="context-menu__item context-menu__item--button">
+      <button class="context-menu__btn">Кнопка</button>
+    </div>
+    <div class="context-menu__item context-menu__item--icon">
+      <img src="/assets/widgets/domain-ai.png" alt="" class="context-menu__icon" />
+      <span>Иконка</span>
+    </div>
+    <div class="context-menu__item context-menu__item--text">
+      Текст
+    </div>
+  `;
+
+  // Позиционирование
+  menu.style.left = `${x}px`;
+  menu.style.top = `${y}px`;
+
+  document.body.appendChild(menu);
+  contextMenuElement = menu;
+
+  // Корректировка позиции если выходит за экран
+  const rect = menu.getBoundingClientRect();
+  if (rect.right > window.innerWidth) {
+    menu.style.left = `${x - rect.width}px`;
+  }
+  if (rect.bottom > window.innerHeight) {
+    menu.style.top = `${y - rect.height}px`;
+  }
+
+  // Закрытие по клику вне меню
+  setTimeout(() => {
+    document.addEventListener("click", handleContextMenuOutsideClick);
+    document.addEventListener("contextmenu", handleContextMenuOutsideClick);
+  }, 0);
+}
+
+/**
+ * Скрывает контекстное меню
+ */
+function hideContextMenu() {
+  if (contextMenuElement) {
+    contextMenuElement.remove();
+    contextMenuElement = null;
+    contextMenuNode = null;
+    document.removeEventListener("click", handleContextMenuOutsideClick);
+    document.removeEventListener("contextmenu", handleContextMenuOutsideClick);
+  }
+}
+
+/**
+ * Обработчик клика вне контекстного меню
+ */
+function handleContextMenuOutsideClick(event) {
+  if (contextMenuElement && !contextMenuElement.contains(event.target)) {
+    hideContextMenu();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SPRITE BADGES — бейджи-метаданные рядом с узлами
+// ═══════════════════════════════════════════════════════════════════════════
+
+const textureLoader = new THREE.TextureLoader();
+const badgeTextureCache = new Map(); // path -> THREE.Texture
+
+/**
+ * Загружает текстуру с кэшированием
+ */
+function loadBadgeTexture(path) {
+  if (badgeTextureCache.has(path)) {
+    return Promise.resolve(badgeTextureCache.get(path));
+  }
+  return new Promise((resolve) => {
+    textureLoader.load(path, (texture) => {
+      badgeTextureCache.set(path, texture);
+      resolve(texture);
+    });
+  });
+}
+
+/**
+ * Инициализирует бейджи для всех узлов (рандомное назначение текстур)
+ */
+function initBadgeSprites() {
+  if (!graph || !graph.scene()) return;
+  
+  const nodes = graph.graphData().nodes;
+  nodes.forEach(node => {
+    // Рандомно назначаем текстуру каждому узлу
+    const randomIndex = Math.floor(Math.random() * BADGE_ASSET_NAMES.length);
+    const assetName = BADGE_ASSET_NAMES[randomIndex];
+    nodeBadgeTextures.set(node.id, getBadgeAssetPath(assetName));
+  });
+}
+
+/**
+ * Создаёт спрайт-бейдж для узла
+ */
+async function createBadgeSprite(nodeId) {
+  if (nodeBadgeSprites.has(nodeId)) return nodeBadgeSprites.get(nodeId);
+  
+  // Ленивое назначение текстуры если ещё не назначена
+  if (!nodeBadgeTextures.has(nodeId)) {
+    const randomIndex = Math.floor(Math.random() * BADGE_ASSET_NAMES.length);
+    const assetName = BADGE_ASSET_NAMES[randomIndex];
+    nodeBadgeTextures.set(nodeId, getBadgeAssetPath(assetName));
+  }
+  
+  const texturePath = nodeBadgeTextures.get(nodeId);
+  if (!texturePath) return null;
+  
+  const texture = await loadBadgeTexture(texturePath);
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    opacity: 0,
+    depthTest: false
+  });
+  
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(6, 6, 1); // Размер бейджа
+  sprite.renderOrder = 100; // Поверх узлов
+  sprite.userData.nodeId = nodeId;
+  sprite.userData.targetOpacity = 0;
+  
+  nodeBadgeSprites.set(nodeId, sprite);
+  graph.scene().add(sprite);
+  
+  return sprite;
+}
+
+/**
+ * Показывает все бейджи (плавное появление)
+ */
+async function showAllBadges() {
+  if (badgesVisible) return;
+  badgesVisible = true;
+  
+  console.log("[Badges] showAllBadges called, nodeBadgeTextures size:", nodeBadgeTextures.size);
+  
+  const nodes = graph.graphData().nodes;
+  for (const node of nodes) {
+    const sprite = await createBadgeSprite(node.id);
+    if (sprite) {
+      sprite.userData.targetOpacity = 0.9;
+    }
+  }
+  
+  console.log("[Badges] Created sprites:", nodeBadgeSprites.size);
+}
+
+/**
+ * Скрывает все бейджи (плавное исчезание)
+ */
+function hideAllBadges() {
+  if (!badgesVisible) return;
+  badgesVisible = false;
+  
+  nodeBadgeSprites.forEach(sprite => {
+    sprite.userData.targetOpacity = 0;
+  });
+}
+
+/**
+ * Обновляет позиции и opacity бейджей (вызывается в animation loop)
+ */
+function updateBadgeSprites() {
+  if (nodeBadgeSprites.size === 0) return;
+  
+  nodeBadgeSprites.forEach((sprite, nodeId) => {
+    const node = nodesById.get(nodeId);
+    if (!node) return;
+    
+    // Позиция: справа-сверху от узла
+    const baseRadius = nodeBaseRadius.get(nodeId) || 4;
+    sprite.position.set(
+      (node.x || 0) + baseRadius * 1.2,
+      (node.y || 0) + baseRadius * 1.2,
+      (node.z || 0)
+    );
+    
+    // Плавное изменение opacity
+    const currentOpacity = sprite.material.opacity;
+    const targetOpacity = sprite.userData.targetOpacity;
+    const diff = targetOpacity - currentOpacity;
+    
+    if (Math.abs(diff) > 0.01) {
+      sprite.material.opacity = currentOpacity + diff * 0.1;
+    } else {
+      sprite.material.opacity = targetOpacity;
+    }
+    
+    // Удалить спрайт если полностью невидим
+    if (targetOpacity === 0 && sprite.material.opacity < 0.01) {
+      graph.scene().remove(sprite);
+      sprite.material.dispose();
+      nodeBadgeSprites.delete(nodeId);
+    }
+  });
+}
+
 const highlightNodes = new Set();
 const highlightLinks = new Set();      // Set<link object> — для совместимости
 const halfHighlightLinks = new Set();  // Set<link object> — для совместимости
@@ -1757,6 +1994,14 @@ graph.onNodeClick((node) => {
   motionSound.resumeIfNeeded();
   window.dispatchEvent(new CustomEvent("graph-node-selected", { detail: { node } }));
   goToStepById(node.id);
+  // Скрыть бейджи при клике на узел
+  hideAllBadges();
+});
+
+graph.onNodeRightClick((node, event) => {
+  event.preventDefault();
+  registerInteraction();
+  showContextMenu(node, event.clientX, event.clientY);
 });
 
 graph.onNodeDrag((node) => {
@@ -1765,6 +2010,9 @@ graph.onNodeDrag((node) => {
   node.fx = node.x;
   node.fy = node.y;
   node.fz = node.z;
+  // Показать бейджи при толкании узла
+  console.log("[Badges] onNodeDrag triggered for:", node.id);
+  showAllBadges();
 });
 
 graph.onNodeDragEnd((node) => {
@@ -2429,6 +2677,8 @@ function setRoute(route) {
     }
     // Инициализировать полигоны практик после стабилизации графа
     initPracticePolygons();
+    // Инициализировать бейджи (рандомное назначение текстур)
+    initBadgeSprites();
   }, 3000); // После полной стабилизации физики
 
   console.log("[Visitor] Route loaded:", route.title);
@@ -4988,6 +5238,7 @@ function tickAnimation() {
   updateNodeBreathing(visualTime);
   updateAutoRotate(visualTime);
   updatePracticePolygons(); // Обновление позиций полигонов практик
+  updateBadgeSprites(); // Обновление позиций и opacity бейджей
   controls.update();
   requestAnimationFrame(tickAnimation);
 }
