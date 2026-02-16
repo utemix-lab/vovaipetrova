@@ -61,6 +61,98 @@ export const VISUAL_CONFIG = {
       tooltip: "{label}"
     }
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ПРАКТИКИ (practices)
+  // Практика = способ мышления, соединяющий несколько доменов
+  // Визуализируется как полигон (меш) между узлами доменов
+  // ═══════════════════════════════════════════════════════════════════════════
+  practices: [
+    {
+      id: "systems-thinking",
+      label: "Системное мышление",
+      domains: ["domain-knowledge", "domain-dev", "domain-design"],
+      color: "#a78bfa"
+    },
+    {
+      id: "antitaxonomic-navigation",
+      label: "Антитаксономическая навигация",
+      domains: ["domain-knowledge", "domain-ai", "domain-interactive"],
+      color: "#f472b6"
+    },
+    {
+      id: "research-thinking",
+      label: "Исследовательское мышление",
+      domains: ["domain-knowledge", "domain-ai", "domain-music"],
+      color: "#60a5fa"
+    },
+    {
+      id: "directing",
+      label: "Режиссура",
+      domains: ["domain-visual", "domain-music", "domain-interactive"],
+      color: "#f97316"
+    },
+    {
+      id: "system-design",
+      label: "Дизайн систем",
+      domains: ["domain-design", "domain-dev", "domain-knowledge"],
+      color: "#22d3ee"
+    },
+    {
+      id: "architectural-design",
+      label: "Архитектурное проектирование",
+      domains: ["domain-physical", "domain-design", "domain-dev"],
+      color: "#a3e635"
+    },
+    {
+      id: "visual-thinking",
+      label: "Визуальное мышление",
+      domains: ["domain-visual", "domain-design", "domain-knowledge"],
+      color: "#fb923c"
+    },
+    {
+      id: "sound-thinking",
+      label: "Звуковое мышление",
+      domains: ["domain-music", "domain-ai", "domain-interactive"],
+      color: "#c084fc"
+    },
+    {
+      id: "interactive-thinking",
+      label: "Интерактивное мышление",
+      domains: ["domain-interactive", "domain-dev", "domain-design"],
+      color: "#4ade80"
+    },
+    {
+      id: "branding",
+      label: "Брендинг",
+      domains: ["domain-design", "domain-visual", "domain-knowledge"],
+      color: "#fbbf24"
+    },
+    {
+      id: "ecosystem-thinking",
+      label: "Экосистемное мышление",
+      domains: ["domain-knowledge", "domain-dev", "domain-physical", "domain-ai"],
+      color: "#2dd4bf"
+    },
+    {
+      id: "curation",
+      label: "Кураторство и отбор",
+      domains: ["domain-knowledge", "domain-music", "domain-visual"],
+      color: "#e879f9"
+    },
+    {
+      id: "reflection",
+      label: "Рефлексия и фиксация",
+      domains: ["domain-knowledge", "domain-ai", "domain-dev"],
+      color: "#94a3b8"
+    },
+    {
+      id: "opportunity-navigation",
+      label: "Навигация по возможностям",
+      domains: ["domain-knowledge", "domain-interactive", "domain-ai"],
+      color: "#38bdf8"
+    }
+  ],
   node: {
     minRadius: 2.2,
     maxRadius: 6.5

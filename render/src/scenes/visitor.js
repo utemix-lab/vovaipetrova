@@ -606,6 +606,11 @@ let lastInteractionAt = 0;
 let sceneRotation = 0;
 let isDragging = false;
 
+// === Practice Polygons (полигоны практик между доменами) ===
+let practicePolygons = new Map(); // practiceId -> THREE.Mesh
+let activePracticeId = null; // Зафиксированная практика (по клику)
+let hoveredPracticeId = null; // Практика под курсором (hover)
+
 const highlightNodes = new Set();
 const highlightLinks = new Set();      // Set<link object> — для совместимости
 const halfHighlightLinks = new Set();  // Set<link object> — для совместимости
@@ -1806,6 +1811,243 @@ function registerInteraction() {
   controls.autoRotate = false;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PRACTICE POLYGONS — полигоны практик между доменами
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Создаёт полигон (меш) для практики между узлами доменов
+ * @param {Object} practice - объект практики из VISUAL_CONFIG.practices
+ * @returns {THREE.Mesh|null} - меш полигона или null если узлы не найдены
+ */
+function createPracticePolygon(practice) {
+  const domainNodes = practice.domains
+    .map(id => nodesById.get(id))
+    .filter(Boolean);
+  
+  if (domainNodes.length < 3) {
+    console.warn(`[Practice] Not enough domain nodes for ${practice.id}:`, practice.domains);
+    return null;
+  }
+
+  // Создаём геометрию из позиций узлов
+  const positions = [];
+  domainNodes.forEach(node => {
+    positions.push(node.x || 0, node.y || 0, node.z || 0);
+  });
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+
+  // Для полигонов с 4+ вершинами нужна триангуляция
+  if (domainNodes.length === 3) {
+    geometry.setIndex([0, 1, 2]);
+  } else if (domainNodes.length === 4) {
+    geometry.setIndex([0, 1, 2, 0, 2, 3]);
+  }
+
+  geometry.computeVertexNormals();
+
+  const color = new THREE.Color(practice.color || "#a78bfa");
+  const material = new THREE.MeshBasicMaterial({
+    color: color,
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide,
+    depthWrite: false
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.practiceId = practice.id;
+  mesh.userData.domainIds = practice.domains;
+  mesh.renderOrder = -1; // Рендерить за узлами
+
+  return mesh;
+}
+
+/**
+ * Обновляет позиции вершин полигона из текущих позиций узлов
+ * @param {THREE.Mesh} mesh - меш полигона
+ */
+function updatePracticePolygonPositions(mesh) {
+  if (!mesh || !mesh.userData.domainIds) return;
+
+  const positions = mesh.geometry.attributes.position.array;
+  mesh.userData.domainIds.forEach((domainId, i) => {
+    const node = nodesById.get(domainId);
+    if (node) {
+      positions[i * 3] = node.x || 0;
+      positions[i * 3 + 1] = node.y || 0;
+      positions[i * 3 + 2] = node.z || 0;
+    }
+  });
+  mesh.geometry.attributes.position.needsUpdate = true;
+  mesh.geometry.computeVertexNormals();
+}
+
+/**
+ * Показывает полигон практики (fade in)
+ * @param {string} practiceId - ID практики
+ * @param {boolean} fixed - зафиксировать (true) или временно показать (false)
+ */
+function showPracticePolygon(practiceId, fixed = false) {
+  const mesh = practicePolygons.get(practiceId);
+  if (!mesh) return;
+
+  if (fixed) {
+    activePracticeId = practiceId;
+  }
+  hoveredPracticeId = practiceId;
+
+  // Fade in
+  mesh.material.opacity = fixed ? 0.35 : 0.25;
+}
+
+/**
+ * Скрывает полигон практики (fade out)
+ * @param {string} practiceId - ID практики
+ * @param {boolean} force - скрыть даже если зафиксирован
+ */
+function hidePracticePolygon(practiceId, force = false) {
+  const mesh = practicePolygons.get(practiceId);
+  if (!mesh) return;
+
+  // Не скрывать зафиксированный полигон
+  if (practiceId === activePracticeId && !force) {
+    return;
+  }
+
+  if (practiceId === hoveredPracticeId) {
+    hoveredPracticeId = null;
+  }
+
+  // Если это активный и force=true, сбросить активный
+  if (practiceId === activePracticeId && force) {
+    activePracticeId = null;
+  }
+
+  // Fade out (или оставить если активный)
+  mesh.material.opacity = practiceId === activePracticeId ? 0.35 : 0;
+}
+
+/**
+ * Переключает фиксацию полигона практики
+ * @param {string} practiceId - ID практики
+ */
+function togglePracticePolygon(practiceId) {
+  if (activePracticeId === practiceId) {
+    // Снять фиксацию
+    hidePracticePolygon(practiceId, true);
+  } else {
+    // Скрыть предыдущий активный
+    if (activePracticeId) {
+      hidePracticePolygon(activePracticeId, true);
+    }
+    // Зафиксировать новый
+    showPracticePolygon(practiceId, true);
+  }
+}
+
+/**
+ * Инициализирует все полигоны практик и добавляет их в сцену
+ */
+function initPracticePolygons() {
+  if (!graph || !graph.scene()) return;
+
+  const scene = graph.scene();
+  const practices = VISUAL_CONFIG.practices || [];
+
+  practices.forEach(practice => {
+    const mesh = createPracticePolygon(practice);
+    if (mesh) {
+      practicePolygons.set(practice.id, mesh);
+      scene.add(mesh);
+    }
+  });
+
+  console.log(`[Practice] Initialized ${practicePolygons.size} practice polygons`);
+}
+
+/**
+ * Обновляет позиции всех полигонов практик (вызывается в animation loop)
+ */
+function updatePracticePolygons() {
+  practicePolygons.forEach((mesh) => {
+    updatePracticePolygonPositions(mesh);
+  });
+
+  // Пульсация активного полигона
+  if (activePracticeId) {
+    const mesh = practicePolygons.get(activePracticeId);
+    if (mesh) {
+      const t = performance.now() * 0.001;
+      const pulse = 0.30 + Math.sin(t * 2) * 0.08;
+      mesh.material.opacity = pulse;
+    }
+  }
+}
+
+/**
+ * Удаляет все полигоны практик из сцены
+ */
+function destroyPracticePolygons() {
+  if (!graph || !graph.scene()) return;
+
+  const scene = graph.scene();
+  practicePolygons.forEach((mesh) => {
+    scene.remove(mesh);
+    mesh.geometry.dispose();
+    mesh.material.dispose();
+  });
+  practicePolygons.clear();
+  activePracticeId = null;
+  hoveredPracticeId = null;
+}
+
+/**
+ * Привязывает обработчики событий к кнопкам практик
+ * @param {HTMLElement} container - контейнер с кнопками
+ */
+function bindPracticeButtons(container) {
+  const buttons = container.querySelectorAll(".practice-btn");
+  
+  buttons.forEach(btn => {
+    const practiceId = btn.dataset.practiceId;
+    if (!practiceId) return;
+    
+    // Hover: показать полигон временно
+    btn.addEventListener("mouseenter", () => {
+      if (practiceId !== activePracticeId) {
+        showPracticePolygon(practiceId, false);
+      }
+      btn.classList.add("practice-btn--hover");
+    });
+    
+    // Mouse leave: скрыть полигон (если не зафиксирован)
+    btn.addEventListener("mouseleave", () => {
+      if (practiceId !== activePracticeId) {
+        hidePracticePolygon(practiceId);
+      }
+      btn.classList.remove("practice-btn--hover");
+    });
+    
+    // Click: зафиксировать/снять фиксацию полигона
+    btn.addEventListener("click", () => {
+      const wasActive = activePracticeId === practiceId;
+      togglePracticePolygon(practiceId);
+      
+      // Обновить классы всех кнопок
+      buttons.forEach(b => {
+        b.classList.remove("practice-btn--active");
+      });
+      
+      if (!wasActive) {
+        btn.classList.add("practice-btn--active");
+      }
+    });
+  });
+}
+
 // === Загрузка маршрута ===
 let currentRoutePath = null;
 
@@ -2161,6 +2403,8 @@ function setRoute(route) {
         node.fz = node.z;
       }
     }
+    // Инициализировать полигоны практик после стабилизации графа
+    initPracticePolygons();
   }, 3000); // После полной стабилизации физики
 
   console.log("[Visitor] Route loaded:", route.title);
@@ -2898,10 +3142,39 @@ function updateStoryWithHub(panel, node) {
     html += `</div>`;
   }
 
+  // Секция практик (только для страницы Domains)
+  if (node.id === "domains") {
+    const practices = VISUAL_CONFIG.practices || [];
+    if (practices.length > 0) {
+      html += `<div class="practices-section">`;
+      html += `<div class="section-title">${getSectionLabel("practice")}</div>`;
+      html += `<div class="practice-buttons">`;
+      
+      for (const practice of practices) {
+        const isActive = activePracticeId === practice.id;
+        html += `
+          <button class="practice-btn${isActive ? " practice-btn--active" : ""}" 
+                  data-practice-id="${practice.id}"
+                  style="--practice-color: ${practice.color}"
+                  title="${escapeHtml(practice.label)}">
+            ${escapeHtml(practice.label)}
+          </button>`;
+      }
+      
+      html += `</div>`;
+      html += `</div>`;
+    }
+  }
+
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  
+  // Привязать обработчики кнопок практик
+  if (node.id === "domains") {
+    bindPracticeButtons(content);
+  }
 
   // Инициализация фигуры в shape area
   const shapeArea = content.querySelector(".narrative-screen__shape-area");
@@ -3064,9 +3337,32 @@ function updateStoryWithDomainWidgets(panel, data) {
   }
   html += `</div>`;
 
+  // Секция практик (кнопки для полигонов)
+  const practices = VISUAL_CONFIG.practices || [];
+  if (practices.length > 0) {
+    html += `<div class="practices-section">`;
+    html += `<div class="section-title">${getSectionLabel("practice")}</div>`;
+    html += `<div class="practice-buttons">`;
+    
+    for (const practice of practices) {
+      const isActive = activePracticeId === practice.id;
+      html += `
+        <button class="practice-btn${isActive ? " practice-btn--active" : ""}" 
+                data-practice-id="${practice.id}"
+                style="--practice-color: ${practice.color}"
+                title="${escapeHtml(practice.label)}">
+          ${escapeHtml(practice.label)}
+        </button>`;
+    }
+    
+    html += `</div>`;
+    html += `</div>`;
+  }
+
   content.innerHTML = html;
   bindTagPills(content);
   bindEmblemSwap(content);
+  bindPracticeButtons(content); // Привязать обработчики кнопок практик
 
   // Initialize mini cube
   const cubeContainer = document.getElementById("mini-cube-container");
@@ -4667,6 +4963,7 @@ function tickAnimation() {
   visualTime = performance.now();
   updateNodeBreathing(visualTime);
   updateAutoRotate(visualTime);
+  updatePracticePolygons(); // Обновление позиций полигонов практик
   controls.update();
   requestAnimationFrame(tickAnimation);
 }

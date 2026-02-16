@@ -1458,4 +1458,54 @@ body.focus-service #service-panel::before {
   padding: 0;
 }
 
+/* === Practice Buttons (полигоны практик) === */
+.practices-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.practice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.practice-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border: 1px solid var(--practice-color, var(--panel-border));
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.practice-btn:hover,
+.practice-btn--hover {
+  background: color-mix(in srgb, var(--practice-color, var(--accent-cyan)) 20%, transparent);
+  border-color: var(--practice-color, var(--accent-cyan));
+  color: var(--text-primary);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--practice-color, var(--accent-cyan)) 30%, transparent);
+}
+
+.practice-btn--active {
+  background: color-mix(in srgb, var(--practice-color, var(--accent-cyan)) 35%, transparent);
+  border-color: var(--practice-color, var(--accent-cyan));
+  color: #fff;
+  box-shadow: 
+    0 0 12px color-mix(in srgb, var(--practice-color, var(--accent-cyan)) 40%, transparent),
+    inset 0 0 8px color-mix(in srgb, var(--practice-color, var(--accent-cyan)) 15%, transparent);
+}
+
+.practice-btn--active::before {
+  content: "◆ ";
+  font-size: 8px;
+  vertical-align: middle;
+}
 
