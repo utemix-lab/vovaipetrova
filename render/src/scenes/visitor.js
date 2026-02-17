@@ -3184,6 +3184,91 @@ function updateStoryWithPotential(panel, node) {
   }
 }
 
+// === CHLADNI PATTERN SCREEN (VSTablichment) ===
+let chladniSimulation = null;
+let ChladniSimulationClass = null;
+
+function renderChladniScreen() {
+  // Используем тот же layout как narrative-screen на странице Вовы
+  // Левая часть — canvas с Chladni, правая — фоновый ассет
+  return `
+    <div class="narrative-screen chladni-screen" data-expanded="false" data-index="0">
+      <div class="narrative-screen__hud">
+        <div class="narrative-screen__dots" aria-hidden="true"></div>
+      </div>
+      <div class="narrative-screen__shape-area" aria-hidden="true">
+        <canvas class="chladni-canvas"></canvas>
+      </div>
+      <div class="narrative-screen__viewport" aria-hidden="true"></div>
+      <div class="narrative-screen__text" aria-live="polite">
+        <div class="narrative-screen__title"></div>
+        <div class="narrative-screen__detail"></div>
+      </div>
+    </div>
+    <div class="chladni-controls">
+        <button class="chladni-test-btn" type="button">
+          Резонанс
+        </button>
+    </div>
+  `;
+}
+
+async function bindChladniScreen(container) {
+  const screen = container.querySelector(".chladni-screen");
+  if (!screen) return;
+  
+  const canvas = screen.querySelector(".chladni-canvas");
+  const testBtn = container.querySelector(".chladni-test-btn"); // Кнопка теперь вне screen
+  const viewport = screen.querySelector(".narrative-screen__viewport");
+  const shapeArea = screen.querySelector(".narrative-screen__shape-area");
+  
+  if (!testBtn || !canvas) return;
+  
+  // Устанавливаем фоновый ассет (как на странице Вовы)
+  if (viewport) {
+    viewport.style.backgroundImage = `url('${buildAssetPath("story/narrative/vova-01.png")}')`;
+    viewport.style.backgroundSize = "cover";
+    viewport.style.backgroundPosition = "center";
+  }
+  
+  // Показываем shape area
+  if (shapeArea) {
+    shapeArea.style.display = "block";
+  }
+  
+  // Уничтожаем предыдущую симуляцию
+  if (chladniSimulation) {
+    chladniSimulation.destroy();
+    chladniSimulation = null;
+  }
+  
+  // Динамический импорт
+  if (!ChladniSimulationClass) {
+    const module = await import("../effects/ChladniSimulation.js");
+    ChladniSimulationClass = module.ChladniSimulation;
+  }
+  
+  // Создаём симуляцию (белые частицы на прозрачном фоне)
+  chladniSimulation = new ChladniSimulationClass(canvas, {
+    particleCount: 2000,
+    particleColor: "#ffffff",
+    speed: 0.5,
+    friction: 0.94,
+    m: 3,
+    n: 5,
+    patternDuration: 5000 // 5 секунд на паттерн, потом рассеивание
+  });
+  
+  // Сразу запускаем в режиме idle (облако)
+  chladniSimulation.start();
+  
+  // Кнопка запускает формирование паттерна
+  testBtn.addEventListener("click", () => {
+    if (!chladniSimulation) return;
+    chladniSimulation.triggerPattern();
+  });
+}
+
 function renderNarrativeScreen() {
   const iconPrev = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
@@ -3434,12 +3519,22 @@ function updateStoryWithWorkbench(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  html += renderNarrativeScreen();
+  // Специальная обработка для VSTablichment — Chladni-эффект
+  if (node.id === "workbench-vova-vstablishment") {
+    html += renderChladniScreen();
+  } else {
+    html += renderNarrativeScreen();
+  }
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  
+  if (node.id === "workbench-vova-vstablishment") {
+    bindChladniScreen(content);
+  } else {
+    bindNarrativeScreen(content);
+  }
   bindEmblemSwap(content);
 }
 
