@@ -1,0 +1,348 @@
+[
+  {
+    "instrument": {
+      "id": "best-service-ethno-world-6",
+      "name": "Ethno World 6 Complete",
+      "description": "Крупная этническая библиотека инструментов и голосов со всего мира, включающая фолклорные инструменты и ансамбли разных культур."
+    },
+    "manufacturer": {
+      "id": "best-service",
+      "name": "Best Service",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": ["sustain", "staccato", "legato"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["world", "cinematic", "ambient"],
+      "HAS_CHARACTER": ["organic", "rich", "atmospheric"],
+      "EVOKES_MOOD": ["mysterious", "epic", "playful", "nostalgic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Более 30 ГБ сэмплов этнических инструментов и голосов из Азии, Африки, Европы и обеих Америк [web:55][web:58]",
+      "Две отдельные части: Instruments и Voices, обе для Kontakt/Kontakt Player [web:54][web:58]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "impact-soundworks-sitar-nation",
+      "name": "Sitar Nation",
+      "description": "Библиотека индийских инструментов (ситар, тамбура, табла, бая) с глубокой выборкой и множеством техник игры."
+    },
+    "manufacturer": {
+      "id": "impact-soundworks",
+      "name": "Impact Soundworks",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "plucked", "struck"],
+      "SUPPORTS": [
+        "sustain",
+        "staccato",
+        "tremolo",
+        "glissando",
+        "legato"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["world", "cinematic", "ambient"],
+      "HAS_CHARACTER": ["organic", "bright", "rich"],
+      "EVOKES_MOOD": ["mysterious", "romantic", "playful"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Включает ситар, тамбуру и связку табла/бая с большим количеством техник и фраз [web:56]",
+      "Поддерживает TACT для кастомного маппинга артикуляций, микширование микрофонов и микротюнинг [web:56][web:59]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "eduardo-tarilonte-era-2-medieval-legends",
+      "name": "ERA II Medieval Legends",
+      "description": "Медиевальная и фэнтези-библиотека с историческими инструментами, голосами и атмосферными слоями."
+    },
+    "manufacturer": {
+      "id": "eduardo-tarilonte",
+      "name": "Eduardo Tarilonte",
+      "country": "es"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": ["sustain", "staccato", "legato", "tremolo"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "world", "ambient", "trailer"],
+      "HAS_CHARACTER": ["dark", "ethereal", "organic", "atmospheric"],
+      "EVOKES_MOOD": ["mysterious", "epic", "melancholic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Фокус на средневековых/фэнтези-инструментах, голосах и саунд-дизайне для исторического звучания",
+      "Характерная для Tarilonte смесь фолклорных записей и атмосферных падов"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "soundiron-voice-of-gaia",
+      "name": "Voice of Gaia",
+      "description": "Серия солирующих вокальных библиотек Soundiron с детальными legato и фразами для кино и игр."
+    },
+    "manufacturer": {
+      "id": "soundiron",
+      "name": "Soundiron",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": ["sustain", "legato", "staccato", "vibrato"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "ambient", "world"],
+      "HAS_CHARACTER": ["ethereal", "lush", "organic"],
+      "EVOKES_MOOD": ["intimate", "romantic", "mysterious"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "vocal",
+        "functional": "vocal"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Линейка включает нескольких разных вокалистов (например, Francesca G., Bryn и др.)",
+      "Комбинирует фразы, true legato и сингл-ноты для гибкого вокального слоя"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "strezov-balkan-ethnic-orchestra",
+      "name": "Balkan Ethnic Orchestra",
+      "description": "Этнический оркестр Балкан с духовых, струнных, ударных и вокального квартета, записанный в Sofia Session Studio."
+    },
+    "manufacturer": {
+      "id": "strezov-sampling",
+      "name": "Strezov Sampling",
+      "country": "bg"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "bowed", "plucked", "air-driven", "struck"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "tremolo",
+        "trill",
+        "marcato",
+        "pizzicato"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["world", "cinematic", "trailer", "orchestral"],
+      "HAS_CHARACTER": ["organic", "rich", "aggressive", "atmospheric"],
+      "EVOKES_MOOD": ["epic", "playful", "mysterious", "heroic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Более 40 этнических солистов: духовые, смычковые, щипковые, медные, вокал и перкуссия [web:61][web:65][web:68]",
+      "Включает True Polyphonic Legato хор, Balkan brass band и секцию перкуссии на X3M Engine [web:61][web:65]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "cinesamples-cineperc",
+      "name": "CinePerc",
+      "description": "Обширная оркестровая перкуссионная библиотека, записанная на MGM Scoring Stage, охватывающая оркестровую, вспомогательную и этническую перкуссию."
+    },
+    "manufacturer": {
+      "id": "cinesamples",
+      "name": "Cinesamples",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "struck"],
+      "SUPPORTS": ["sustain", "staccato"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "trailer", "orchestral"],
+      "HAS_CHARACTER": ["punchy", "aggressive", "bright"],
+      "EVOKES_MOOD": ["epic", "tense", "dramatic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "idiophone",
+        "functional": "rhythm"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Порядка 100 ГБ оркестровой, вспомогательной и этнической перкуссии, записанной на MGM Scoring Stage [web:57][web:60]",
+      "Работает в Kontakt Player и подходит как основная оркестровая перкуссионная библиотека [web:57][web:60]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "projectsam-symphobia",
+      "name": "Symphobia (Series)",
+      "description": "Серия оркестровых библиотек с акцентом на готовые ансамблевые оркестровые комбинации и киношные эффекты."
+    },
+    "manufacturer": {
+      "id": "projectsam",
+      "name": "ProjectSAM",
+      "country": "nl"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": [
+        "sustain",
+        "staccato",
+        "tremolo",
+        "marcato",
+        "trill"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "trailer", "orchestral"],
+      "HAS_CHARACTER": ["lush", "rich", "dark", "atmospheric"],
+      "EVOKES_MOOD": ["epic", "dramatic", "tense", "heroic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["kontakt"],
+      "REQUIRES_ENGINE": "kontakt"
+    },
+    "notes": [
+      "Фокус на true ensemble записях секций и полного оркестра вместо одиночных инструментов [web:66][web:69]",
+      "Идеальна для быстрых кинематографических скетчей и трейлерных оркестровых текстур [web:69]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "orchestral-tools-berlin-woodwinds",
+      "name": "Berlin Woodwinds",
+      "description": "Подробная оркестровая библиотека деревянных духовых инструментов с множеством ансамблей и солистов."
+    },
+    "manufacturer": {
+      "id": "orchestral-tools",
+      "name": "Orchestral Tools",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "air-driven"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "trill",
+        "marcato"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "orchestral", "classical", "trailer"],
+      "HAS_CHARACTER": ["warm", "organic", "rich"],
+      "EVOKES_MOOD": ["heroic", "intimate", "dramatic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "aerophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["kontakt", "sine-player"],
+      "REQUIRES_ENGINE": "other"
+    },
+    "notes": [
+      "Ориентирована на реалистичные соло и секционные деревянные духовые с множеством артикуляций",
+      "Постепенно переносится в SINE Player как отдельные коллекции"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "vsl-vienna-instruments",
+      "name": "Vienna Instruments",
+      "description": "Платформа и серия оркестровых библиотек Vienna Symphonic Library с сухими многомикрофонными записями."
+    },
+    "manufacturer": {
+      "id": "vienna-symphonic-library",
+      "name": "Vienna Symphonic Library",
+      "country": "at"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "tremolo",
+        "trill",
+        "pizzicato",
+        "marcato"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "orchestral", "classical"],
+      "HAS_CHARACTER": ["clean", "rich", "modern"],
+      "EVOKES_MOOD": ["epic", "dramatic", "intimate"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "other"
+    },
+    "notes": [
+      "Сухие записи в Silent Stage с возможностью последующей пространственной обработки (MIR, etc.)",
+      "Vienna Instruments выступает как плеер/движок для оркестровых коллекций VSL"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "eastwest-hollywood-orchestra",
+      "name": "Hollywood Orchestra Opus Edition",
+      "description": "Полный симфонический оркестр (струнные, духовые, медные, перкуссия и солисты), записанный в студии EastWest Studio 1 и обновлённый для OPUS Engine."
+    },
+    "manufacturer": {
+      "id": "eastwest",
+      "name": "EastWest",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "tremolo",
+        "pizzicato",
+        "spiccato",
+        "marcato",
+        "trill"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "trailer", "orchestral", "classical"],
+      "HAS_CHARACTER": ["lush", "rich", "dark", "epic"],
+      "EVOKES_MOOD": ["epic", "dramatic", "heroic", "tense"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "other"
+    },
+    "notes": [
+      "Opus Edition добавляет 130+ ГБ нового контента, новые ансамбли и MOOD-пресеты [web:67][web:70]",
+      "Работает в собственном OPUS Engine, включает Hollywood Orchestrator для быстрого создания паттернов [web:67][web:70]"
+    ]
+  }
+]
+
+
+
