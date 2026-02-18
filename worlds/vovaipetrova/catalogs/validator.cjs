@@ -317,6 +317,92 @@ function validateRelationConstraints(catalogs, relationTypesRegistry, nodeTypesR
 }
 
 /**
+ * Validate ContentLibrary must have requires field
+ */
+function validateContentLibraryRequires(catalogs, result) {
+  for (const [filename, catalog] of Object.entries(catalogs)) {
+    if (!catalog.entries) continue;
+    
+    for (const entry of catalog.entries) {
+      if (entry.node_type === 'ContentLibrary') {
+        if (!entry.requires) {
+          result.error(`ContentLibrary must have 'requires' field`, { 
+            file: filename, 
+            node: entry.id 
+          });
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Validate ContentUnit must have exactly one parent via contains
+ */
+function validateContentUnitParent(catalogs, result) {
+  // Build map of all content units and their parents
+  const contentUnitParents = new Map();
+  
+  for (const [filename, catalog] of Object.entries(catalogs)) {
+    if (!catalog.entries) continue;
+    
+    for (const entry of catalog.entries) {
+      // Track content units
+      if (entry.node_type === 'ContentUnit') {
+        if (!contentUnitParents.has(entry.id)) {
+          contentUnitParents.set(entry.id, []);
+        }
+      }
+      
+      // Track contains relationships
+      if (entry.contains && Array.isArray(entry.contains)) {
+        for (const childId of entry.contains) {
+          if (!contentUnitParents.has(childId)) {
+            contentUnitParents.set(childId, []);
+          }
+          contentUnitParents.get(childId).push({ parent: entry.id, file: filename });
+        }
+      }
+    }
+  }
+  
+  // Validate each content unit has exactly one parent
+  for (const [unitId, parents] of contentUnitParents.entries()) {
+    if (parents.length === 0) {
+      result.error(`ContentUnit has no parent (must be contained by VSTPlugin or ContentLibrary)`, { 
+        node: unitId 
+      });
+    } else if (parents.length > 1) {
+      result.error(`ContentUnit has multiple parents (must have exactly one)`, { 
+        node: unitId,
+        parents: parents.map(p => p.parent)
+      });
+    }
+  }
+}
+
+/**
+ * Validate that ContentUnit and ContentLibrary cannot have mechanism
+ */
+function validateNoMechanismOnContent(catalogs, result) {
+  for (const [filename, catalog] of Object.entries(catalogs)) {
+    if (!catalog.entries) continue;
+    
+    for (const entry of catalog.entries) {
+      if (entry.node_type === 'ContentUnit' || entry.node_type === 'ContentLibrary') {
+        if (entry.mechanisms && entry.mechanisms.length > 0) {
+          result.error(`${entry.node_type} cannot have mechanisms (only VSTPlugin can)`, { 
+            file: filename, 
+            node: entry.id,
+            mechanisms: entry.mechanisms
+          });
+        }
+      }
+    }
+  }
+}
+
+/**
  * Check for duplicate node IDs across catalogs
  */
 function validateNoDuplicateIds(catalogs, result) {
@@ -437,6 +523,11 @@ function runValidation(options = {}) {
   validateNoStringArrays(catalogs, result);
   validateArticulationApplicability(catalogs, result);
   validateNoDuplicateIds(catalogs, result);
+  
+  // Composition and dependency validations
+  validateContentLibraryRequires(catalogs, result);
+  validateContentUnitParent(catalogs, result);
+  validateNoMechanismOnContent(catalogs, result);
   
   if (relationTypesRegistry.relations) {
     validateRelationTypes(catalogs, relationTypesRegistry, result);

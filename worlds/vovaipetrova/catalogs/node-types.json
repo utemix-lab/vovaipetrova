@@ -111,6 +111,32 @@
       "required_fields": ["id", "node_type", "name", "definition"],
       "optional_fields": ["name_ru", "developer", "year"],
       "allowed_outgoing": ["RELATED_TO", "SUCCESSOR_OF"]
+    },
+    
+    "ContentUnit": {
+      "description": "Отдельный инструмент или звуковая сущность внутри VSTPlugin или ContentLibrary",
+      "domain": null,
+      "abstraction_level": 1,
+      "required_fields": ["id", "node_type", "name"],
+      "optional_fields": ["name_ru", "definition", "typical_for_genre", "produces_character", "evokes_mood", "classification"],
+      "allowed_outgoing": ["BELONGS_TO_GENRE", "HAS_CHARACTER", "EVOKES_MOOD", "CLASSIFIED_AS"],
+      "constraints": {
+        "must_have_parent": true,
+        "cannot_have_mechanism": true
+      }
+    },
+    
+    "ContentLibrary": {
+      "description": "Контент-пакет без собственного звукового движка, требующий host",
+      "domain": null,
+      "abstraction_level": 1,
+      "required_fields": ["id", "node_type", "name", "requires"],
+      "optional_fields": ["name_ru", "definition", "developer", "typical_for_genre", "produces_character", "evokes_mood"],
+      "allowed_outgoing": ["REQUIRES", "EXTENDS", "CONTAINS", "BELONGS_TO_GENRE", "HAS_CHARACTER", "EVOKES_MOOD"],
+      "constraints": {
+        "must_have_requires": true,
+        "cannot_have_mechanism": true
+      }
     }
   },
   

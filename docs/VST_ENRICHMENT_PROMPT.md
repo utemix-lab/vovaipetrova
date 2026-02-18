@@ -262,6 +262,86 @@ rhythm, harmony, melody, texture, vocal
 
 ---
 
+## Композиция и зависимости (v2.2)
+
+### Многоинструментальные продукты
+
+Если один VST содержит несколько независимых инструментов:
+
+```json
+{
+  "instrument": {
+    "id": "native-instruments-komplete-kontrol",
+    "node_type": "VSTPlugin",
+    "name": "Komplete Kontrol"
+  },
+  "contains": [
+    {
+      "id": "kk-piano",
+      "node_type": "ContentUnit",
+      "name": "Piano",
+      "typical_for_genre": ["classical", "jazz"],
+      "produces_character": ["warm", "rich"]
+    },
+    {
+      "id": "kk-strings",
+      "node_type": "ContentUnit",
+      "name": "Strings",
+      "typical_for_genre": ["orchestral", "cinematic"]
+    }
+  ]
+}
+```
+
+**Правила:**
+- Создать 1 `VSTPlugin` + N `ContentUnit`
+- `ContentUnit` НЕ имеет `mechanisms` (наследует от родителя)
+- `ContentUnit` МОЖЕТ иметь свои `typical_for_genre`, `produces_character`, `evokes_mood`
+
+### Библиотеки без engine
+
+Если продукт требует другой VST для работы:
+
+```json
+{
+  "library": {
+    "id": "orchestral-tools-berlin-strings-exp-a",
+    "node_type": "ContentLibrary",
+    "name": "Berlin Strings EXP A",
+    "requires": "sine-player",
+    "extends": "orchestral-tools-berlin-strings"
+  }
+}
+```
+
+**Правила:**
+- `ContentLibrary` ОБЯЗАТЕЛЬНО имеет `requires` → host VSTPlugin
+- `ContentLibrary` НЕ имеет `mechanisms`
+- `extends` — опционально, для expansion packs
+
+### Запрещено
+
+| Действие | Почему |
+|----------|--------|
+| `ContentUnit` → `mechanisms` | Механизм принадлежит только VSTPlugin |
+| `ContentLibrary` → `mechanisms` | Механизм принадлежит host |
+| Создавать `kontakt-library` тип | Онтологическая инфляция |
+| `ContentUnit` для каждого пресета | Избыточная декомпозиция |
+
+### Когда создавать ContentUnit?
+
+✅ Создавать:
+- Инструмент имеет самостоятельную идентичность
+- Имеет отдельный тип/категорию
+- Может быть описан независимо
+
+❌ НЕ создавать:
+- Для каждого пресета
+- Для вариаций одного инструмента
+- Если различия только в настройках
+
+---
+
 ## Связь с архитектурой
 
 - **Track 1.5** — типы узлов и связей (VST_SEMANTIC_GRAPH.md)

@@ -6,59 +6,59 @@
   "relations": {
     "HAS_MECHANISM": {
       "description": "Инструмент использует механизм звукоизвлечения",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin"],
       "to": ["SoundProductionMechanism"],
       "cardinality": "many-to-many",
       "required": true
     },
     "SUPPORTS": {
       "description": "Инструмент поддерживает артикуляцию (валидируется через механизм)",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin"],
       "to": ["PerformanceArticulation"],
       "cardinality": "many-to-many",
       "validation": "articulation.applicable_to_mechanisms INTERSECTS instrument.mechanisms"
     },
     "USES_SYNTHESIS": {
       "description": "Инструмент использует метод синтеза",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin"],
       "to": ["SynthesisMethod"],
       "cardinality": "many-to-one",
       "domain_constraint": "synthetic"
     },
     "BELONGS_TO_GENRE": {
       "description": "Инструмент типичен для жанра",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin", "ContentUnit", "ContentLibrary"],
       "to": ["Genre"],
       "cardinality": "many-to-many"
     },
     "HAS_CHARACTER": {
       "description": "Инструмент имеет характер звучания",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin", "ContentUnit", "ContentLibrary"],
       "to": ["Character"],
       "cardinality": "many-to-many"
     },
     "EVOKES_MOOD": {
       "description": "Инструмент вызывает настроение",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin", "ContentUnit", "ContentLibrary"],
       "to": ["Mood"],
       "cardinality": "many-to-many"
     },
     "CLASSIFIED_AS": {
       "description": "Инструмент классифицирован в системе",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin", "ContentUnit", "ContentLibrary"],
       "to": ["SystemCategory"],
       "cardinality": "many-to-many"
     },
     "MADE_BY": {
       "description": "Инструмент произведён компанией",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin", "ContentLibrary"],
       "to": ["Manufacturer"],
       "cardinality": "many-to-one",
       "required": true
     },
     "RUNS_ON": {
       "description": "Инструмент работает на платформе",
-      "from": ["Instrument"],
+      "from": ["VSTPlugin"],
       "to": ["Platform"],
       "cardinality": "many-to-many"
     },
@@ -141,10 +141,35 @@
       "from": ["Character", "SynthesisMethod", "Genre"],
       "to": ["Mood"],
       "cardinality": "many-to-many"
+    },
+    "CONTAINS": {
+      "description": "Продукт содержит контент-единицу",
+      "from": ["VSTPlugin", "ContentLibrary"],
+      "to": ["ContentUnit"],
+      "cardinality": "one-to-many",
+      "constraints": {
+        "no_cycles": true,
+        "child_must_have_exactly_one_parent": true
+      }
+    },
+    "REQUIRES": {
+      "description": "Библиотека требует host-инструмент",
+      "from": ["ContentLibrary"],
+      "to": ["VSTPlugin"],
+      "cardinality": "many-to-one",
+      "required": true
+    },
+    "EXTENDS": {
+      "description": "Библиотека расширяет другой продукт",
+      "from": ["ContentLibrary"],
+      "to": ["VSTPlugin", "ContentLibrary"],
+      "cardinality": "many-to-many"
     }
   },
   "node_types": [
-    "Instrument",
+    "VSTPlugin",
+    "ContentUnit",
+    "ContentLibrary",
     "PerformanceArticulation",
     "SoundProductionMechanism",
     "SynthesisMethod",
