@@ -1,0 +1,371 @@
+[
+  {
+    "instrument": {
+      "id": "xfer-serum",
+      "name": "Serum",
+      "description": "Wavetable-синтезатор с визуальным редактированием волновых таблиц."
+    },
+    "manufacturer": {
+      "id": "xfer-records",
+      "name": "Xfer Records",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["wavetable-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "wavetable",
+      "BELONGS_TO_GENRE": ["edm", "dubstep", "pop", "electronic"],
+      "HAS_CHARACTER": ["bright", "clean", "modern", "aggressive"],
+      "EVOKES_MOOD": ["energetic", "aggressive", "uplifting"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Индустриальный стандарт для EDM",
+      "Импорт и рисование собственных wavetables"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "spectrasonics-omnisphere",
+      "name": "Omnisphere",
+      "description": "Флагманский гибридный синтезатор, сочетающий сэмплирующий движок и множество типов синтеза."
+    },
+    "manufacturer": {
+      "id": "spectrasonics",
+      "name": "Spectrasonics",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": [
+        "sample-playback",
+        "wavetable-oscillation",
+        "subtractive-oscillation",
+        "fm-modulation",
+        "granular-resynthesis",
+        "additive-synthesis"
+      ],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": [
+        "cinematic",
+        "edm",
+        "ambient",
+        "electronic",
+        "trailer",
+        "synthwave"
+      ],
+      "HAS_CHARACTER": ["rich", "modern", "atmospheric", "synthetic"],
+      "EVOKES_MOOD": ["epic", "mysterious", "dark", "uplifting"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Глубокий модульный патчинг и расширенная FX-секция",
+      "Тесная интеграция с аппаратными синтезаторами как контроллерами"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "native-instruments-kontakt",
+      "name": "Kontakt",
+      "description": "Универсальный сэмплер и платформа для библиотек, используемая как хост для тысяч виртуальных инструментов."
+    },
+    "manufacturer": {
+      "id": "native-instruments",
+      "name": "Native Instruments",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": [
+        "cinematic",
+        "orchestral",
+        "edm",
+        "ambient",
+        "electronic",
+        "pop",
+        "rock",
+        "jazz",
+        "world",
+        "trailer",
+        "hip-hop",
+        "classical"
+      ],
+      "HAS_CHARACTER": ["rich", "modern", "organic"],
+      "EVOKES_MOOD": ["epic", "dramatic", "calm", "mysterious"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Платформа-хост для сторонних библиотек",
+      "Скриптовый движок KSP для сложной артикуляционной логики"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "spitfire-bbc-symphony",
+      "name": "BBC Symphony Orchestra",
+      "description": "Полный симфонический оркестр, записанный в Maida Vale Studios."
+    },
+    "manufacturer": {
+      "id": "spitfire-audio",
+      "name": "Spitfire Audio",
+      "country": "gb"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback"],
+      "SUPPORTS": [
+        "legato",
+        "staccato",
+        "pizzicato",
+        "tremolo",
+        "spiccato",
+        "con-sordino",
+        "sul-tasto",
+        "sul-ponticello",
+        "harmonics",
+        "col-legno",
+        "vibrato",
+        "marcato",
+        "trill",
+        "arco",
+        "sustain"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "orchestral", "classical", "trailer"],
+      "HAS_CHARACTER": ["warm", "rich", "lush", "organic"],
+      "EVOKES_MOOD": ["epic", "dramatic", "romantic", "heroic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Несколько уровней изданий (Discover/Core/Professional)",
+      "Требует значительного объёма дискового пространства и RAM"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "uhe-diva",
+      "name": "Diva",
+      "description": "Аналог-моделирующий синтезатор с модулярной архитектурой осцилляторов и фильтров."
+    },
+    "manufacturer": {
+      "id": "uhe",
+      "name": "u-he",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["subtractive-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "subtractive",
+      "BELONGS_TO_GENRE": ["edm", "synthwave", "electronic", "pop"],
+      "HAS_CHARACTER": ["warm", "vintage", "rich", "punchy"],
+      "EVOKES_MOOD": ["nostalgic", "energetic", "romantic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Высокая нагрузка на CPU в режимах высокого качества",
+      "Ориентирован на классический аналоговый звук"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "toontrack-ezdrummer",
+      "name": "EZdrummer",
+      "description": "Барабанный инструмент с готовыми наборами и MIDI-грувами для быстрого производства треков."
+    },
+    "manufacturer": {
+      "id": "toontrack",
+      "name": "Toontrack",
+      "country": "se"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "struck"],
+      "SUPPORTS": ["sustain", "staccato"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["rock", "pop", "edm", "hip-hop"],
+      "HAS_CHARACTER": ["punchy", "modern", "bright"],
+      "EVOKES_MOOD": ["energetic", "aggressive", "playful"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "idiophone",
+        "functional": "rhythm"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Содержит MIDI-грувы и готовые миксы",
+      "Упрощённый интерфейс по сравнению с Superior Drummer"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "audio-modeling-swam-violin",
+      "name": "SWAM Violin",
+      "description": "Физически моделируемая виртуальная скрипка с детальным управлением параметрами игры в реальном времени."
+    },
+    "manufacturer": {
+      "id": "audio-modeling",
+      "name": "Audio Modeling",
+      "country": "it"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["physical-modeling", "bowed"],
+      "SUPPORTS": [
+        "legato",
+        "portamento",
+        "glissando",
+        "vibrato",
+        "tremolo",
+        "pizzicato",
+        "harmonics",
+        "sustain",
+        "arco",
+        "trill"
+      ],
+      "USES_SYNTHESIS": "physical-modeling",
+      "BELONGS_TO_GENRE": ["cinematic", "orchestral", "classical", "jazz"],
+      "HAS_CHARACTER": ["organic", "expressive", "warm", "modern"],
+      "EVOKES_MOOD": ["intimate", "romantic", "melancholic", "heroic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Использует физическое моделирование SWAM, без сэмплов [web:11][web:19]",
+      "Требует выразимого MIDI-контроллера для раскрытия потенциала [web:11][web:12]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "spectrasonics-keyscape",
+      "name": "Keyscape",
+      "description": "Коллекция виртуальных клавишных инструментов с глубоко сэмплированными моделями пианино и электропиано."
+    },
+    "manufacturer": {
+      "id": "spectrasonics",
+      "name": "Spectrasonics",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "struck"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["cinematic", "jazz", "pop", "rock", "ambient", "classical"],
+      "HAS_CHARACTER": ["warm", "rich", "clean", "vintage"],
+      "EVOKES_MOOD": ["nostalgic", "romantic", "intimate", "calm"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Содержит 30+ моделей клавишных и гибридные Duo-патчи [web:16][web:20]",
+      "Глубокое сэмплирование с высокой скоростной детализацией и моделированием шумов механики [web:16][web:20]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "musiclab-realguitar",
+      "name": "RealGuitar",
+      "description": "Сэмплируемый виртуальный акустический гитарный инструмент с развитой системой артикуляций и паттернов."
+    },
+    "manufacturer": {
+      "id": "musiclab",
+      "name": "MusicLab",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "plucked"],
+      "SUPPORTS": ["sustain", "legato", "staccato", "pizzicato"],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["pop", "rock", "world", "ambient"],
+      "HAS_CHARACTER": ["organic", "bright", "clean"],
+      "EVOKES_MOOD": ["uplifting", "romantic", "playful"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Содержит Song Sequencer и набор готовых ритмических паттернов [web:17]",
+      "Оптимизирован под игру с MIDI-клавиатуры с множеством гитарных приёмов [web:17]"
+    ]
+  },
+  {
+    "instrument": {
+      "id": "uvi-falcon",
+      "name": "Falcon",
+      "description": "Гибридный модульный инструмент, сочетающий множество типов синтеза и сэмплирование."
+    },
+    "manufacturer": {
+      "id": "uvi",
+      "name": "UVI",
+      "country": "fr"
+    },
+    "edges": {
+      "HAS_MECHANISM": [
+        "sample-playback",
+        "wavetable-oscillation",
+        "subtractive-oscillation",
+        "fm-modulation",
+        "granular-resynthesis",
+        "physical-modeling",
+        "additive-synthesis"
+      ],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": [
+        "edm",
+        "ambient",
+        "cinematic",
+        "electronic",
+        "trailer",
+        "synthwave"
+      ],
+      "HAS_CHARACTER": ["modern", "synthetic", "rich", "atmospheric"],
+      "EVOKES_MOOD": ["mysterious", "epic", "tense"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Содержит порядка 20 типов осцилляторов, включая гранулярный и wavetable [web:18]",
+      "Служит движком для UVI Powered инструментов и сторонних библиотек [web:18]"
+    ]
+  }
+]

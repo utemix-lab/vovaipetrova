@@ -2,8 +2,176 @@
   "id": "vst-plugins",
   "version": "2.1.0",
   "description": "Виртуальные музыкальные инструменты как узлы графа",
-  "node_type": "VSTPlugin",
-  "domain": "synthetic",
-  "abstraction_level": 1,
-  "entries": []
+  "entries": [
+    {
+      "id": "xfer-serum",
+      "node_type": "VSTPlugin",
+      "name": "Serum",
+      "developer": "xfer-records",
+      "definition": "Wavetable-синтезатор с визуальным редактированием волновых таблиц.",
+      "mechanisms": ["wavetable-oscillation"],
+      "synthesis_method": "wavetable",
+      "typical_for_genre": ["edm", "dubstep", "pop", "electronic"],
+      "produces_character": ["bright", "clean", "modern", "aggressive"],
+      "evokes_mood": ["mood-energetic", "mood-aggressive", "mood-uplifting"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "spectrasonics-omnisphere",
+      "node_type": "VSTPlugin",
+      "name": "Omnisphere",
+      "developer": "spectrasonics",
+      "definition": "Флагманский гибридный синтезатор, сочетающий сэмплирующий движок и множество типов синтеза.",
+      "mechanisms": ["sample-playback", "wavetable-oscillation", "subtractive-oscillation", "fm-modulation", "granular-resynthesis", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["cinematic", "edm", "ambient", "electronic", "trailer", "synthwave"],
+      "produces_character": ["rich", "modern", "atmospheric", "synthetic"],
+      "evokes_mood": ["mood-epic", "mood-mysterious", "mood-dark", "mood-uplifting"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "native-instruments-kontakt",
+      "node_type": "VSTPlugin",
+      "name": "Kontakt",
+      "developer": "native-instruments",
+      "definition": "Универсальный сэмплер и платформа для библиотек, используемая как хост для тысяч виртуальных инструментов.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "orchestral", "edm", "ambient", "electronic", "pop", "rock", "jazz", "world", "trailer", "hip-hop", "classical"],
+      "produces_character": ["rich", "modern", "organic"],
+      "evokes_mood": ["mood-epic", "mood-dramatic", "mood-calm", "mood-mysterious"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "spitfire-bbc-symphony",
+      "node_type": "VSTPlugin",
+      "name": "BBC Symphony Orchestra",
+      "developer": "spitfire-audio",
+      "definition": "Полный симфонический оркестр, записанный в Maida Vale Studios.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "orchestral", "classical", "trailer"],
+      "produces_character": ["warm", "rich", "lush", "organic"],
+      "evokes_mood": ["mood-epic", "mood-dramatic", "mood-romantic", "mood-heroic"],
+      "supports_articulation": ["legato", "staccato", "pizzicato", "tremolo", "spiccato", "con-sordino", "sul-tasto", "sul-ponticello", "harmonics", "col-legno", "vibrato", "marcato", "trill", "arco", "sustain"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "uhe-diva",
+      "node_type": "VSTPlugin",
+      "name": "Diva",
+      "developer": "u-he",
+      "definition": "Аналог-моделирующий синтезатор с модулярной архитектурой осцилляторов и фильтров.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["edm", "synthwave", "electronic", "pop"],
+      "produces_character": ["warm", "vintage", "rich", "punchy"],
+      "evokes_mood": ["mood-nostalgic", "mood-energetic", "mood-romantic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "toontrack-ezdrummer",
+      "node_type": "VSTPlugin",
+      "name": "EZdrummer",
+      "developer": "toontrack",
+      "definition": "Барабанный инструмент с готовыми наборами и MIDI-грувами для быстрого производства треков.",
+      "mechanisms": ["sample-playback", "struck"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["rock", "pop", "edm", "hip-hop"],
+      "produces_character": ["punchy", "modern", "bright"],
+      "evokes_mood": ["mood-energetic", "mood-aggressive", "mood-playful"],
+      "supports_articulation": ["sustain", "staccato"],
+      "classification": {
+        "hornbostel-sachs": "idiophone",
+        "functional": "rhythm"
+      }
+    },
+    {
+      "id": "audio-modeling-swam-violin",
+      "node_type": "VSTPlugin",
+      "name": "SWAM Violin",
+      "developer": "audio-modeling",
+      "definition": "Физически моделируемая виртуальная скрипка с детальным управлением параметрами игры в реальном времени.",
+      "mechanisms": ["algorithmic-modeling", "bowed"],
+      "synthesis_method": "physical-modeling",
+      "typical_for_genre": ["cinematic", "orchestral", "classical", "jazz"],
+      "produces_character": ["organic", "warm", "modern"],
+      "evokes_mood": ["mood-intimate", "mood-romantic", "mood-melancholic", "mood-heroic"],
+      "supports_articulation": ["legato", "portamento", "glissando", "vibrato", "tremolo", "pizzicato", "harmonics", "sustain", "arco", "trill"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "spectrasonics-keyscape",
+      "node_type": "VSTPlugin",
+      "name": "Keyscape",
+      "developer": "spectrasonics",
+      "definition": "Коллекция виртуальных клавишных инструментов с глубоко сэмплированными моделями пианино и электропиано.",
+      "mechanisms": ["sample-playback", "struck"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "jazz", "pop", "rock", "ambient", "classical"],
+      "produces_character": ["warm", "rich", "clean", "vintage"],
+      "evokes_mood": ["mood-nostalgic", "mood-romantic", "mood-intimate", "mood-calm"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "musiclab-realguitar",
+      "node_type": "VSTPlugin",
+      "name": "RealGuitar",
+      "developer": "musiclab",
+      "definition": "Сэмплируемый виртуальный акустический гитарный инструмент с развитой системой артикуляций и паттернов.",
+      "mechanisms": ["sample-playback", "plucked"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["pop", "rock", "world", "ambient"],
+      "produces_character": ["organic", "bright", "clean"],
+      "evokes_mood": ["mood-uplifting", "mood-romantic", "mood-playful"],
+      "supports_articulation": ["sustain", "legato", "staccato", "pizzicato"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "uvi-falcon",
+      "node_type": "VSTPlugin",
+      "name": "Falcon",
+      "developer": "uvi",
+      "definition": "Гибридный модульный инструмент, сочетающий множество типов синтеза и сэмплирование.",
+      "mechanisms": ["sample-playback", "wavetable-oscillation", "subtractive-oscillation", "fm-modulation", "granular-resynthesis", "algorithmic-modeling", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "ambient", "cinematic", "electronic", "trailer", "synthwave"],
+      "produces_character": ["modern", "synthetic", "rich", "atmospheric"],
+      "evokes_mood": ["mood-mysterious", "mood-epic", "mood-tense"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    }
+  ]
 }
