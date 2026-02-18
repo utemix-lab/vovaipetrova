@@ -342,6 +342,176 @@
         "hornbostel-sachs": "electrophone",
         "functional": "melody"
       }
+    },
+    {
+      "id": "vital-audio-vital",
+      "node_type": "VSTPlugin",
+      "name": "Vital",
+      "developer": "vital-audio",
+      "definition": "Spectral-warping wavetable-синтезатор с визуальным интерфейсом и гибкой модульной системой модуляций.",
+      "mechanisms": ["wavetable-oscillation"],
+      "synthesis_method": "wavetable",
+      "typical_for_genre": ["edm", "dubstep", "synthwave", "electronic"],
+      "produces_character": ["modern", "bright", "synthetic", "aggressive"],
+      "evokes_mood": ["mood-energetic", "mood-tense", "mood-dark"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "kilohearts-phase-plant",
+      "node_type": "VSTPlugin",
+      "name": "Phase Plant",
+      "developer": "kilohearts",
+      "definition": "Мультинаграждённый полумодульный синтезатор с открытой архитектурой генераторов, модуляторов и эффектов.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation", "fm-modulation", "granular-resynthesis", "sample-playback", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "dubstep", "electronic", "synthwave"],
+      "produces_character": ["modern", "synthetic", "rich", "aggressive"],
+      "evokes_mood": ["mood-energetic", "mood-tense", "mood-epic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "uhe-zebra-2",
+      "node_type": "VSTPlugin",
+      "name": "Zebra 2",
+      "developer": "u-he",
+      "definition": "Модульный гибридный синтезатор с wavetable/VA-осцилляторами, комплексной модуляцией и гибкой архитектурой.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation", "fm-modulation", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["cinematic", "edm", "ambient", "electronic", "trailer"],
+      "produces_character": ["modern", "rich", "atmospheric", "synthetic"],
+      "evokes_mood": ["mood-mysterious", "mood-epic", "mood-tense"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "reveal-sound-spire",
+      "node_type": "VSTPlugin",
+      "name": "Spire",
+      "developer": "reveal-sound",
+      "definition": "Гибридный синтезатор, сочетающий wavetable и аналоговый стиль осцилляторов с мощной матрицей модуляции.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation", "fm-modulation"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "trailer", "synthwave", "electronic", "dubstep"],
+      "produces_character": ["aggressive", "bright", "modern", "punchy"],
+      "evokes_mood": ["mood-energetic", "mood-tense", "mood-dark"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "lennar-digital-sylenth1",
+      "node_type": "VSTPlugin",
+      "name": "Sylenth1",
+      "developer": "lennar-digital",
+      "definition": "Классический виртуальный аналоговый синтезатор с фокусом на плотных лидах, басах и плуках для EDM.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["edm", "trance", "electronic", "pop"],
+      "produces_character": ["bright", "punchy", "modern", "aggressive"],
+      "evokes_mood": ["mood-energetic", "mood-uplifting"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "cableguys-curve-2",
+      "node_type": "VSTPlugin",
+      "name": "Curve 2",
+      "developer": "cableguys",
+      "definition": "Виртуальный аналоговый синтезатор с рисуемыми огибающими и LFO, ориентированный на гибкую модуляцию.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["edm", "electronic", "synthwave"],
+      "produces_character": ["modern", "clean", "bright"],
+      "evokes_mood": ["mood-playful", "mood-energetic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "tal-tal-u-no-lx",
+      "node_type": "VSTPlugin",
+      "name": "TAL-U-NO-LX",
+      "developer": "tal-software",
+      "definition": "Эмулирует классический полифонический аналоговый синтезатор Juno-60 c характерным хорусом.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["synthwave", "electronic", "pop", "ambient"],
+      "produces_character": ["warm", "vintage", "lush"],
+      "evokes_mood": ["mood-nostalgic", "mood-romantic", "mood-calm"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "cherry-audio-voltage-modular",
+      "node_type": "VSTPlugin",
+      "name": "Voltage Modular",
+      "developer": "cherry-audio",
+      "definition": "Виртуальная модульная синтезаторная платформа в стиле Eurorack с большим выбором модулей.",
+      "mechanisms": ["subtractive-oscillation", "wavetable-oscillation", "fm-modulation", "additive-synthesis", "granular-resynthesis", "sample-playback"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "ambient", "electronic", "experimental"],
+      "produces_character": ["synthetic", "modern", "rich", "atmospheric"],
+      "evokes_mood": ["mood-mysterious", "mood-tense", "mood-epic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "synapse-audio-dune-3",
+      "node_type": "VSTPlugin",
+      "name": "Dune 3",
+      "developer": "synapse-audio",
+      "definition": "Гибридный синтезатор с многоголосым unison-движком и поддержкой VA, wavetable и FM.",
+      "mechanisms": ["subtractive-oscillation", "wavetable-oscillation", "fm-modulation", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "trance", "synthwave", "electronic"],
+      "produces_character": ["rich", "modern", "aggressive", "bright"],
+      "evokes_mood": ["mood-energetic", "mood-uplifting", "mood-epic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "rob-papen-blade-2",
+      "node_type": "VSTPlugin",
+      "name": "Blade 2",
+      "developer": "rob-papen",
+      "definition": "Продвинутый аддитивный синтезатор с Harmolator/Additive режимами и XY-пэдом для морфинга волн.",
+      "mechanisms": ["additive-synthesis", "subtractive-oscillation"],
+      "synthesis_method": "additive",
+      "typical_for_genre": ["electronic", "edm", "ambient", "experimental"],
+      "produces_character": ["synthetic", "modern", "atmospheric"],
+      "evokes_mood": ["mood-mysterious", "mood-dark", "mood-tense"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
     }
   ]
 }
