@@ -172,6 +172,176 @@
         "hornbostel-sachs": "electrophone",
         "functional": "texture"
       }
+    },
+    {
+      "id": "arturia-pigments",
+      "node_type": "VSTPlugin",
+      "name": "Pigments",
+      "developer": "arturia",
+      "definition": "Гибридный синтезатор с несколькими движками (VA, wavetable, granular, sample и др.) и продвинутой модульной архитектурой.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation", "granular-resynthesis", "sample-playback", "additive-synthesis", "algorithmic-modeling"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "ambient", "electronic", "synthwave", "dubstep"],
+      "produces_character": ["modern", "synthetic", "rich", "atmospheric"],
+      "evokes_mood": ["mood-energetic", "mood-mysterious", "mood-tense", "mood-dark"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "spectrasonics-trilian",
+      "node_type": "VSTPlugin",
+      "name": "Trilian",
+      "developer": "spectrasonics",
+      "definition": "Виртуальный бас-инструмент с большой библиотекой акустических, электрических и синтезаторных басов.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["edm", "rock", "pop", "hip-hop", "electronic"],
+      "produces_character": ["rich", "warm", "punchy", "modern"],
+      "evokes_mood": ["mood-energetic", "mood-aggressive", "mood-tense"],
+      "supports_articulation": ["sustain", "legato", "staccato", "vibrato", "glissando", "trill"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "output-substance",
+      "node_type": "VSTPlugin",
+      "name": "Substance",
+      "developer": "output",
+      "definition": "Глубоко продюсированный басовый движок на базе Kontakt с трёхслойной архитектурой источников.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["edm", "dubstep", "electronic", "trailer"],
+      "produces_character": ["aggressive", "modern", "punchy", "dark"],
+      "evokes_mood": ["mood-tense", "mood-epic", "mood-energetic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "heavyocity-damage-2",
+      "node_type": "VSTPlugin",
+      "name": "Damage 2",
+      "developer": "heavyocity",
+      "definition": "Эпический оркестровый и гибридный ударный инструмент с ансамблями, соло-ударными и sound design слоями.",
+      "mechanisms": ["sample-playback", "struck"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "trailer", "ambient", "electronic"],
+      "produces_character": ["aggressive", "dark", "punchy", "metallic"],
+      "evokes_mood": ["mood-epic", "mood-tense", "mood-dramatic", "mood-dark"],
+      "supports_articulation": ["sustain", "staccato"],
+      "classification": {
+        "hornbostel-sachs": "idiophone",
+        "functional": "rhythm"
+      }
+    },
+    {
+      "id": "soundiron-olympus-choir",
+      "node_type": "VSTPlugin",
+      "name": "Olympus Symphonic Choir",
+      "developer": "soundiron",
+      "definition": "Полноценный симфонический хор с мужскими и женскими секциями, легато и расширенной системой слогов.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "orchestral", "trailer", "classical"],
+      "produces_character": ["lush", "rich", "warm", "atmospheric"],
+      "evokes_mood": ["mood-epic", "mood-heroic", "mood-dramatic", "mood-mysterious"],
+      "supports_articulation": ["sustain", "legato", "staccato", "marcato", "trill"],
+      "classification": {
+        "hornbostel-sachs": "aerophone",
+        "functional": "vocal"
+      }
+    },
+    {
+      "id": "8dio-century-strings",
+      "node_type": "VSTPlugin",
+      "name": "Century Strings",
+      "developer": "8dio",
+      "definition": "Современная оркестровая струнная библиотека с широким набором артикуляций и динамик.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "orchestral", "trailer", "classical"],
+      "produces_character": ["warm", "lush", "rich", "organic"],
+      "evokes_mood": ["mood-epic", "mood-romantic", "mood-dramatic", "mood-intimate"],
+      "supports_articulation": ["sustain", "legato", "staccato", "pizzicato", "tremolo", "spiccato", "con-sordino", "sul-tasto", "harmonics", "marcato", "trill", "arco"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "orange-tree-evolution-acoustic-guitar",
+      "node_type": "VSTPlugin",
+      "name": "Evolution Acoustic Guitar",
+      "developer": "orange-tree-samples",
+      "definition": "Серия виртуальных акустических гитар с детальным сэмплированием и продвинутым движком артикуляций.",
+      "mechanisms": ["sample-playback", "plucked"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["pop", "rock", "world", "ambient"],
+      "produces_character": ["organic", "warm", "clean"],
+      "evokes_mood": ["mood-romantic", "mood-intimate", "mood-uplifting"],
+      "supports_articulation": ["sustain", "legato", "staccato", "pizzicato"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "fabfilter-twin-3",
+      "node_type": "VSTPlugin",
+      "name": "Twin 3",
+      "developer": "fabfilter",
+      "definition": "Виртуальный аналоговый синтезатор с четырьмя осцилляторами, четырьмя фильтрами и мощной модульной системой.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["edm", "electronic", "pop", "rock"],
+      "produces_character": ["bright", "modern", "clean", "punchy"],
+      "evokes_mood": ["mood-energetic", "mood-uplifting", "mood-playful"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "spitfire-albion-one",
+      "node_type": "VSTPlugin",
+      "name": "Albion One",
+      "developer": "spitfire-audio",
+      "definition": "Комплексный кинематографический оркестровый инструмент с оркестром, перкуссией, синтами и loop-материалом.",
+      "mechanisms": ["sample-playback"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["cinematic", "trailer", "orchestral", "ambient"],
+      "produces_character": ["lush", "rich", "dark", "atmospheric"],
+      "evokes_mood": ["mood-epic", "mood-dramatic", "mood-heroic", "mood-mysterious"],
+      "supports_articulation": ["sustain", "legato", "staccato", "pizzicato", "tremolo", "spiccato", "marcato", "trill", "arco"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "native-instruments-massive-x",
+      "node_type": "VSTPlugin",
+      "name": "Massive X",
+      "developer": "native-instruments",
+      "definition": "Современный wavetable-синтезатор с гибким роутингом, модуляцией и богатой библиотекой пресетов.",
+      "mechanisms": ["wavetable-oscillation"],
+      "synthesis_method": "wavetable",
+      "typical_for_genre": ["edm", "dubstep", "synthwave", "electronic"],
+      "produces_character": ["aggressive", "modern", "bright", "synthetic"],
+      "evokes_mood": ["mood-energetic", "mood-tense", "mood-dark"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
     }
   ]
 }
