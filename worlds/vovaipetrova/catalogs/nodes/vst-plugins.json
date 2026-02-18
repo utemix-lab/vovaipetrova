@@ -682,6 +682,176 @@
         "hornbostel-sachs": "chordophone",
         "functional": "texture"
       }
+    },
+    {
+      "id": "ample-sound-ample-guitar-m",
+      "node_type": "VSTPlugin",
+      "name": "Ample Guitar M",
+      "developer": "ample-sound",
+      "definition": "Глубоко сэмплированная акустическая гитара Martin D-41 с отдельными Finger, Pick и Strum библиотеками.",
+      "mechanisms": ["sample-playback", "plucked"],
+      "synthesis_method": "sample-based",
+      "typical_for_genre": ["pop", "rock", "ambient", "world"],
+      "produces_character": ["organic", "warm", "rich", "clean"],
+      "evokes_mood": ["mood-romantic", "mood-intimate", "mood-uplifting"],
+      "supports_articulation": ["sustain", "legato", "staccato", "pizzicato", "harmonics", "glissando", "portamento"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "modartt-pianoteq-8",
+      "node_type": "VSTPlugin",
+      "name": "Pianoteq 8",
+      "developer": "modartt",
+      "definition": "Физически моделируемый фортепианный инструмент с моделями роялей, upright, исторических и электропиано.",
+      "mechanisms": ["algorithmic-modeling", "struck"],
+      "synthesis_method": "physical-modeling",
+      "typical_for_genre": ["classical", "jazz", "cinematic", "ambient", "pop"],
+      "produces_character": ["organic", "clean", "modern", "rich"],
+      "evokes_mood": ["mood-intimate", "mood-romantic", "mood-calm", "mood-epic"],
+      "supports_articulation": ["sustain", "legato", "staccato", "tremolo", "harmonics"],
+      "classification": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      }
+    },
+    {
+      "id": "sonic-academy-ana-2",
+      "node_type": "VSTPlugin",
+      "name": "ANA 2",
+      "developer": "sonic-academy",
+      "definition": "Гибридный синтезатор с wavetable, VA и sampler-движками и комплексной секцией эффектов.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation", "sample-playback"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "trance", "electronic", "synthwave"],
+      "produces_character": ["modern", "bright", "punchy", "synthetic"],
+      "evokes_mood": ["mood-energetic", "mood-uplifting"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "waldorf-largo",
+      "node_type": "VSTPlugin",
+      "name": "Largo",
+      "developer": "waldorf",
+      "definition": "Wavetable/VA синтезатор, перенимающий архитектуру аппаратных Waldorf с характерными фильтрами и таблицами волн.",
+      "mechanisms": ["wavetable-oscillation", "subtractive-oscillation"],
+      "synthesis_method": "wavetable",
+      "typical_for_genre": ["edm", "synthwave", "electronic", "ambient"],
+      "produces_character": ["bright", "modern", "synthetic", "atmospheric"],
+      "evokes_mood": ["mood-mysterious", "mood-tense", "mood-energetic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "gforce-minimonsta",
+      "node_type": "VSTPlugin",
+      "name": "Minimonsta",
+      "developer": "gforce-software",
+      "definition": "Монофонический/полифонический синтезатор, вдохновлённый Minimoog, с расширенной модуляцией и эффектами.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["rock", "edm", "synthwave", "electronic"],
+      "produces_character": ["warm", "vintage", "rich", "punchy"],
+      "evokes_mood": ["mood-nostalgic", "mood-energetic", "mood-heroic"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "air-vacuum-pro",
+      "node_type": "VSTPlugin",
+      "name": "Vacuum Pro",
+      "developer": "air-music-technology",
+      "definition": "Виртуальный аналоговый синтезатор с двойным осцилляторным стеком и «tube» характером.",
+      "mechanisms": ["subtractive-oscillation"],
+      "synthesis_method": "subtractive",
+      "typical_for_genre": ["edm", "electronic", "rock"],
+      "produces_character": ["warm", "aggressive", "vintage"],
+      "evokes_mood": ["mood-energetic", "mood-dark"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      }
+    },
+    {
+      "id": "korg-wavestate",
+      "node_type": "VSTPlugin",
+      "name": "Wavestate Native",
+      "developer": "korg",
+      "definition": "Софт-версия wave-sequencing синтезатора Korg Wavestate с многослойной архитектурой и комплексными секвенциями.",
+      "mechanisms": ["sample-playback", "wavetable-oscillation"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["ambient", "cinematic", "synthwave", "electronic"],
+      "produces_character": ["atmospheric", "modern", "rich", "synthetic"],
+      "evokes_mood": ["mood-mysterious", "mood-epic", "mood-playful"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "roland-zenology",
+      "node_type": "VSTPlugin",
+      "name": "ZENOLOGY",
+      "developer": "roland",
+      "definition": "Плагин на базе ZEN-Core, объединяющий множество Roland‑движков (VA, PCM, моделирование классических синтов).",
+      "mechanisms": ["subtractive-oscillation", "sample-playback"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["edm", "synthwave", "pop", "electronic"],
+      "produces_character": ["modern", "synthetic", "vintage", "clean"],
+      "evokes_mood": ["mood-nostalgic", "mood-energetic", "mood-uplifting"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "steinberg-halion",
+      "node_type": "VSTPlugin",
+      "name": "HALion",
+      "developer": "steinberg",
+      "definition": "Многофункциональная платформа сэмплирования и синтеза со множеством типов синтеза и скриптовым движком.",
+      "mechanisms": ["sample-playback", "wavetable-oscillation", "subtractive-oscillation", "fm-modulation", "granular-resynthesis", "additive-synthesis"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["cinematic", "edm", "ambient", "electronic", "pop", "rock", "classical"],
+      "produces_character": ["modern", "rich", "synthetic", "atmospheric"],
+      "evokes_mood": ["mood-epic", "mood-mysterious", "mood-tense", "mood-calm"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
+    },
+    {
+      "id": "ik-multimedia-sampletank-4",
+      "node_type": "VSTPlugin",
+      "name": "SampleTank 4",
+      "developer": "ik-multimedia",
+      "definition": "Гибридная рабочая станция сэмплов и синтеза с большой универсальной библиотекой инструментов.",
+      "mechanisms": ["sample-playback", "subtractive-oscillation"],
+      "synthesis_method": "hybrid",
+      "typical_for_genre": ["pop", "rock", "edm", "hip-hop", "cinematic", "jazz", "world"],
+      "produces_character": ["modern", "rich", "clean"],
+      "evokes_mood": ["mood-uplifting", "mood-energetic", "mood-calm"],
+      "supports_articulation": ["sustain"],
+      "classification": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      }
     }
   ]
 }

@@ -1,0 +1,344 @@
+[
+  {
+    "instrument": {
+      "id": "ample-sound-ample-guitar-m",
+      "name": "Ample Guitar M",
+      "description": "Глубоко сэмплированная акустическая гитара Martin D-41 с отдельными Finger, Pick и Strum библиотеками."
+    },
+    "manufacturer": {
+      "id": "ample-sound",
+      "name": "Ample Sound",
+      "country": "cn"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "plucked"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "pizzicato",
+        "harmonics",
+        "glissando",
+        "portamento"
+      ],
+      "USES_SYNTHESIS": "sample-based",
+      "BELONGS_TO_GENRE": ["pop", "rock", "ambient", "world"],
+      "HAS_CHARACTER": ["organic", "warm", "rich", "clean"],
+      "EVOKES_MOOD": ["romantic", "intimate", "uplifting"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Эмулирует Martin D-41 с отдельными Finger/Pick/Strum библиотеками [web:71][web:75][web:78].",
+      "Поддерживает полифонический legato, слайды, palm mute, harmonics и риффер-движок [web:75][web:78]."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "modartt-pianoteq-8",
+      "name": "Pianoteq 8",
+      "description": "Физически моделируемый фортепианный инструмент с моделями роялей, upright, исторических и электропиано."
+    },
+    "manufacturer": {
+      "id": "modartt",
+      "name": "Modartt",
+      "country": "fr"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["physical-modeling", "struck"],
+      "SUPPORTS": [
+        "sustain",
+        "legato",
+        "staccato",
+        "tremolo",
+        "harmonics"
+      ],
+      "USES_SYNTHESIS": "physical-modeling",
+      "BELONGS_TO_GENRE": ["classical", "jazz", "cinematic", "ambient", "pop"],
+      "HAS_CHARACTER": ["organic", "clean", "modern", "rich"],
+      "EVOKES_MOOD": ["intimate", "romantic", "calm", "epic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "chordophone",
+        "functional": "harmony"
+      },
+      "RUNS_ON": ["vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Использует real‑time physical modeling вместо сэмплов, моделируя молоточки, струны, деку и окружение [web:76][web:79].",
+      "Включает множество моделей роялей, upright, исторических и электропиано в лёгком по размеру плагине [web:76]."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "sonic-academy-ana-2",
+      "name": "ANA 2",
+      "description": "Гибридный синтезатор с wavetable, VA и sampler-движками и комплексной секцией эффектов."
+    },
+    "manufacturer": {
+      "id": "sonic-academy",
+      "name": "Sonic Academy",
+      "country": "gb"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["wavetable-oscillation", "subtractive-oscillation", "sample-playback"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": ["edm", "trance", "electronic", "synthwave"],
+      "HAS_CHARACTER": ["modern", "bright", "punchy", "synthetic"],
+      "EVOKES_MOOD": ["energetic", "uplifting"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Комбинирует классический VA-движок с wavetables и сэмплами для плотных EDM-звуков.",
+      "Содержит большие банки пресетов и удобную визуальную матрицу модуляции."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "waldorf-largo",
+      "name": "Largo",
+      "description": "Wavetable/VA синтезатор, перенимающий архитектуру аппаратных Waldorf с характерными фильтрами и таблицами волн."
+    },
+    "manufacturer": {
+      "id": "waldorf",
+      "name": "Waldorf",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["wavetable-oscillation", "subtractive-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "wavetable",
+      "BELONGS_TO_GENRE": ["edm", "synthwave", "electronic", "ambient"],
+      "HAS_CHARACTER": ["bright", "modern", "synthetic", "atmospheric"],
+      "EVOKES_MOOD": ["mysterious", "tense", "energetic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Фокус на классическом Waldorf wavetable-звуке (MicroWave/Blofeld lineage).",
+      "Подходит для сложных pads, evolving textures и цифровых лидов."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "gforce-minimonsta",
+      "name": "Minimonsta",
+      "description": "Монофонический/полифонический синтезатор, вдохновлённый Minimoog, с расширенной модуляцией и эффектами."
+    },
+    "manufacturer": {
+      "id": "gforce-software",
+      "name": "GForce Software",
+      "country": "gb"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["subtractive-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "subtractive",
+      "BELONGS_TO_GENRE": ["rock", "edm", "synthwave", "electronic"],
+      "HAS_CHARACTER": ["warm", "vintage", "rich", "punchy"],
+      "EVOKES_MOOD": ["nostalgic", "energetic", "heroic"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Эмулирует классический Minimoog с добавленной матрицей модуляции и полифонией.",
+      "Подходит для жирных басов и lead-звуков в ретро- и современном контексте."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "air-vacuum-pro",
+      "name": "Vacuum Pro",
+      "description": "Виртуальный аналоговый синтезатор с двойным осцилляторным стеком и «tube» характером."
+    },
+    "manufacturer": {
+      "id": "air-music-technology",
+      "name": "AIR Music Technology",
+      "country": "us"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["subtractive-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "subtractive",
+      "BELONGS_TO_GENRE": ["edm", "electronic", "rock"],
+      "HAS_CHARACTER": ["warm", "aggressive", "vintage"],
+      "EVOKES_MOOD": ["energetic", "dark"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "melody"
+      },
+      "RUNS_ON": ["vst2", "vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Моделирует трубоподобную сатурацию и drift для более живого аналогового характера.",
+      "Часто бандлится с DAW (Pro Tools/AIR Bundle) как основной VA-синт."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "korg-wavestate",
+      "name": "Wavestate Native",
+      "description": "Софт-версия wave-sequencing синтезатора Korg Wavestate с многослойной архитектурой и комплексными секвенциями."
+    },
+    "manufacturer": {
+      "id": "korg",
+      "name": "Korg",
+      "country": "jp"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "wavetable-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": ["ambient", "cinematic", "synthwave", "electronic"],
+      "HAS_CHARACTER": ["atmospheric", "modern", "rich", "synthetic"],
+      "EVOKES_MOOD": ["mysterious", "epic", "playful"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst3", "au", "aax"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Портирует Wave Sequencing 2.0 движок в плагин с несколькими слоями и lane‑секвенциями.",
+      "Идеален для evolving pads, rhythmic textures и кинематографических сцен."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "roland-zenology",
+      "name": "ZENOLOGY",
+      "description": "Плагин на базе ZEN-Core, объединяющий множество Roland‑движков (VA, PCM, моделирование классических синтов)."
+    },
+    "manufacturer": {
+      "id": "roland",
+      "name": "Roland",
+      "country": "jp"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["subtractive-oscillation", "sample-playback"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": ["edm", "synthwave", "pop", "electronic"],
+      "HAS_CHARACTER": ["modern", "synthetic", "vintage", "clean"],
+      "EVOKES_MOOD": ["nostalgic", "energetic", "uplifting"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst3", "au"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Шэрит ZEN-Core движок с Fantom, Jupiter‑X/Xm и др., включает множество Roland‑классик.",
+      "Интегрируется с Roland Cloud для расширений и пресетов."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "steinberg-halion",
+      "name": "HALion",
+      "description": "Многофункциональная платформа сэмплирования и синтеза со множеством типов синтеза и скриптовым движком."
+    },
+    "manufacturer": {
+      "id": "steinberg",
+      "name": "Steinberg",
+      "country": "de"
+    },
+    "edges": {
+      "HAS_MECHANISM": [
+        "sample-playback",
+        "wavetable-oscillation",
+        "subtractive-oscillation",
+        "fm-modulation",
+        "granular-resynthesis",
+        "additive-synthesis"
+      ],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": [
+        "cinematic",
+        "edm",
+        "ambient",
+        "electronic",
+        "pop",
+        "rock",
+        "classical"
+      ],
+      "HAS_CHARACTER": ["modern", "rich", "synthetic", "atmospheric"],
+      "EVOKES_MOOD": ["epic", "mysterious", "tense", "calm"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Включает 6 форм синтеза, мощный сэмплер и скриптовую систему на Lua [web:77][web:80].",
+      "35+ ГБ контента, 3700 пресетов и множество инструментов/эффектов [web:77]."
+    ]
+  },
+  {
+    "instrument": {
+      "id": "ik-multimedia-sampletank-4",
+      "name": "SampleTank 4",
+      "description": "Гибридная рабочая станция сэмплов и синтеза с большой универсальной библиотекой инструментов."
+    },
+    "manufacturer": {
+      "id": "ik-multimedia",
+      "name": "IK Multimedia",
+      "country": "it"
+    },
+    "edges": {
+      "HAS_MECHANISM": ["sample-playback", "subtractive-oscillation"],
+      "SUPPORTS": ["sustain"],
+      "USES_SYNTHESIS": "hybrid",
+      "BELONGS_TO_GENRE": [
+        "pop",
+        "rock",
+        "edm",
+        "hip-hop",
+        "cinematic",
+        "jazz",
+        "world"
+      ],
+      "HAS_CHARACTER": ["modern", "rich", "clean"],
+      "EVOKES_MOOD": ["uplifting", "energetic", "calm"],
+      "CLASSIFIED_AS": {
+        "hornbostel-sachs": "electrophone",
+        "functional": "texture"
+      },
+      "RUNS_ON": ["vst3", "au", "aax", "standalone"],
+      "REQUIRES_ENGINE": "native"
+    },
+    "notes": [
+      "Универсальный rompler/рабочая станция с широким охватом акустических и электронных тембров.",
+      "Содержит multi-слои, секвенсор паттернов и встроенные эффекты для быстрого продакшна."
+    ]
+  }
+]
+
+
+
+
+
