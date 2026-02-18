@@ -1,0 +1,156 @@
+{
+  "id": "classification-systems",
+  "version": "2.1.0",
+  "description": "Системы классификации как автономные узлы графа",
+  "node_type": "ClassificationSystem",
+  "domain": "systemic",
+  "abstraction_level": 5,
+  "entries": [
+    {
+      "id": "hornbostel-sachs",
+      "name": "Hornbostel-Sachs",
+      "name_ru": "Хорнбостель-Закс",
+      "definition": "Научная система классификации музыкальных инструментов по способу звукоизвлечения",
+      "created": 1914,
+      "creators": ["Erich von Hornbostel", "Curt Sachs"],
+      "top_categories": [
+        {
+          "id": "idiophone",
+          "name": "Idiophone",
+          "name_ru": "Идиофон",
+          "definition": "Инструменты, в которых звук производится вибрацией всего тела инструмента",
+          "examples": ["xylophone", "marimba", "kalimba", "gong", "bells"]
+        },
+        {
+          "id": "membranophone",
+          "name": "Membranophone",
+          "name_ru": "Мембранофон",
+          "definition": "Инструменты, в которых звук производится вибрацией натянутой мембраны",
+          "examples": ["drums", "timpani", "tabla", "djembe"]
+        },
+        {
+          "id": "chordophone",
+          "name": "Chordophone",
+          "name_ru": "Хордофон",
+          "definition": "Инструменты, в которых звук производится вибрацией натянутых струн",
+          "examples": ["guitar", "violin", "piano", "harp", "cello"]
+        },
+        {
+          "id": "aerophone",
+          "name": "Aerophone",
+          "name_ru": "Аэрофон",
+          "definition": "Инструменты, в которых звук производится вибрацией воздуха",
+          "examples": ["flute", "saxophone", "trumpet", "clarinet", "organ"]
+        },
+        {
+          "id": "electrophone",
+          "name": "Electrophone",
+          "name_ru": "Электрофон",
+          "definition": "Инструменты, в которых звук производится электронным способом",
+          "examples": ["synthesizer", "theremin", "electric-guitar", "sampler"]
+        }
+      ],
+      "used_by": ["ethnomusicology", "organology", "museums"],
+      "strengths": ["scientific", "comprehensive", "universal"],
+      "weaknesses": ["complex numbering", "not intuitive for musicians"]
+    },
+    {
+      "id": "general-midi",
+      "name": "General MIDI",
+      "name_ru": "General MIDI",
+      "definition": "Стандарт MIDI, определяющий 128 программ инструментов для совместимости",
+      "created": 1991,
+      "creators": ["MIDI Manufacturers Association"],
+      "top_categories": [
+        { "id": "piano", "range": "1-8", "name_ru": "Фортепиано" },
+        { "id": "chromatic-percussion", "range": "9-16", "name_ru": "Хроматическая перкуссия" },
+        { "id": "organ", "range": "17-24", "name_ru": "Орган" },
+        { "id": "guitar", "range": "25-32", "name_ru": "Гитара" },
+        { "id": "bass", "range": "33-40", "name_ru": "Бас" },
+        { "id": "strings", "range": "41-48", "name_ru": "Струнные" },
+        { "id": "ensemble", "range": "49-56", "name_ru": "Ансамбль" },
+        { "id": "brass", "range": "57-64", "name_ru": "Медные духовые" },
+        { "id": "reed", "range": "65-72", "name_ru": "Язычковые" },
+        { "id": "pipe", "range": "73-80", "name_ru": "Флейты" },
+        { "id": "synth-lead", "range": "81-88", "name_ru": "Синтезаторные лиды" },
+        { "id": "synth-pad", "range": "89-96", "name_ru": "Синтезаторные пэды" },
+        { "id": "synth-effects", "range": "97-104", "name_ru": "Синтезаторные эффекты" },
+        { "id": "ethnic", "range": "105-112", "name_ru": "Этнические" },
+        { "id": "percussive", "range": "113-120", "name_ru": "Перкуссия" },
+        { "id": "sound-effects", "range": "121-128", "name_ru": "Звуковые эффекты" }
+      ],
+      "used_by": ["daw", "hardware-synths", "karaoke"],
+      "strengths": ["universal compatibility", "simple numbering"],
+      "weaknesses": ["limited to 128 programs", "no articulations", "dated categories"]
+    },
+    {
+      "id": "functional",
+      "name": "Functional Classification",
+      "name_ru": "Функциональная классификация",
+      "definition": "Классификация инструментов по их роли в музыкальной аранжировке",
+      "created": null,
+      "creators": ["various"],
+      "top_categories": [
+        {
+          "id": "rhythm",
+          "name": "Rhythm Section",
+          "name_ru": "Ритм-секция",
+          "definition": "Инструменты, обеспечивающие ритмическую основу",
+          "examples": ["drums", "bass", "percussion", "rhythm-guitar"]
+        },
+        {
+          "id": "harmony",
+          "name": "Harmony",
+          "name_ru": "Гармония",
+          "definition": "Инструменты, обеспечивающие гармоническую поддержку",
+          "examples": ["piano", "guitar", "pads", "strings"]
+        },
+        {
+          "id": "melody",
+          "name": "Melody",
+          "name_ru": "Мелодия",
+          "definition": "Инструменты для ведения мелодической линии",
+          "examples": ["lead-synth", "violin", "flute", "voice"]
+        },
+        {
+          "id": "texture",
+          "name": "Texture",
+          "name_ru": "Текстура",
+          "definition": "Инструменты, создающие звуковое пространство и атмосферу",
+          "examples": ["pads", "ambience", "drones", "fx"]
+        },
+        {
+          "id": "vocal",
+          "name": "Vocal",
+          "name_ru": "Вокал",
+          "definition": "Голосовые инструменты и хоры",
+          "examples": ["choir", "solo-voice", "vocal-fx"]
+        }
+      ],
+      "used_by": ["arrangers", "producers", "composers"],
+      "strengths": ["practical", "intuitive", "production-oriented"],
+      "weaknesses": ["subjective", "overlapping categories"]
+    },
+    {
+      "id": "synthesis-based",
+      "name": "Synthesis-based Classification",
+      "name_ru": "Классификация по методу синтеза",
+      "definition": "Классификация виртуальных инструментов по методу генерации звука",
+      "created": null,
+      "creators": ["various"],
+      "top_categories": [
+        { "id": "sample-based", "name_ru": "Сэмплерные" },
+        { "id": "subtractive", "name_ru": "Субтрактивные" },
+        { "id": "wavetable", "name_ru": "Волновые" },
+        { "id": "fm", "name_ru": "FM" },
+        { "id": "granular", "name_ru": "Гранулярные" },
+        { "id": "physical-modeling", "name_ru": "Физическое моделирование" },
+        { "id": "additive", "name_ru": "Аддитивные" },
+        { "id": "hybrid", "name_ru": "Гибридные" }
+      ],
+      "used_by": ["sound-designers", "synth-enthusiasts"],
+      "strengths": ["technical precision", "useful for sound design"],
+      "weaknesses": ["not intuitive for non-technical users"]
+    }
+  ]
+}

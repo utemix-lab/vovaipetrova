@@ -1,0 +1,2993 @@
+{
+  "id": "vst-plugins",
+  "version": "1.0.0",
+  "description": "Каталог VST-инструментов и библиотек из M:\\",
+  "generated": "2026-02-16T21:12:49.025Z",
+  "count": 262,
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "company": "string (→ companies.id) | null",
+    "categories": "string[] (→ vst-categories.id)",
+    "tags": "string[]",
+    "path": "string",
+    "format": "string"
+  },
+  "entries": [
+    {
+      "id": "8dio",
+      "name": "8DIO",
+      "company": "8dio",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\8DIO",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-aura-studio-percussion-instrument",
+      "name": "8Dio - Aura Studio Percussion Instrument",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\8Dio - Aura Studio Percussion Instrument",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-aura-tonal-exotic-studio-percussion",
+      "name": "8Dio - Aura Tonal Exotic Studio Percussion",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\8Dio - Aura Tonal Exotic Studio Percussion (KONTAKT)",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-bazantar",
+      "name": "8Dio - Bazantar",
+      "company": "8dio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\8Dio - Bazantar",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-bulbul-tarang",
+      "name": "8Dio - Bulbul Tarang",
+      "company": "8dio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\8Dio - Bulbul Tarang",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-greek-percussion",
+      "name": "8Dio - Greek Percussion",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\8Dio - Greek Percussion",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-music-box",
+      "name": "8Dio - Music Box",
+      "company": "8dio",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\8Dio - Music Box",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-qanun",
+      "name": "8Dio - Qanun",
+      "company": "8dio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\8Dio - Qanun",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-santur",
+      "name": "8Dio - Santur",
+      "company": "8dio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\8Dio - Santur",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-wind-chimes",
+      "name": "8DIO - Wind Chimes",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\8DIO - Wind Chimes",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-aura-studio-exotic-percussion-vol-1",
+      "name": "8DIO Aura Studio Exotic Percussion Vol 1",
+      "company": "8dio",
+      "categories": [
+        "mallet-hand"
+      ],
+      "tags": [],
+      "path": "M:\\MALLET & HAND\\8DIO Aura Studio Exotic Percussion Vol 1",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-blendstrument-alive-percussion",
+      "name": "8DIO Blendstrument Alive Percussion",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\8DIO Blendstrument Alive Percussion",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-clay-vase-drum",
+      "name": "8Dio Clay Vase Drum",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\8Dio Clay Vase Drum (NKI KONTAKT, WAV)",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-hybrid-rhythms",
+      "name": "8Dio Hybrid Rhythms",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\8Dio Hybrid Rhythms",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-kokirikosfz",
+      "name": "8Dio KokirikoSFZ",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\8Dio Kokiriko KONTAKT SFZ-MAGNETRiXX [oddsox]",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-mandolin-strummer",
+      "name": "8Dio Mandolin Strummer",
+      "company": "8dio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\8Dio Mandolin Strummer",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-mini",
+      "name": "8Dio Mini",
+      "company": "8dio",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\8Dio Mini",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-polyphon",
+      "name": "8Dio Polyphon",
+      "company": "8dio",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\8Dio Polyphon",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-symphonic-shadows",
+      "name": "8Dio Symphonic Shadows",
+      "company": "8dio",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\8Dio Symphonic Shadows",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-the-new-solo-frame-drum",
+      "name": "8DIO The New Solo Frame Drum",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\PERCUSSION\\8DIO The New Solo Frame Drum",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-epic-dhol-ensemble",
+      "name": "8Dio.Epic.Dhol.Ensemble.",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt",
+        "ensemble"
+      ],
+      "path": "M:\\PERCUSSION\\8Dio.Epic.Dhol.Ensemble.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "8dio-solo-frame-drums-magnetrixx",
+      "name": "8Dio.Solo.Frame.Drums.MAGNETRiXX",
+      "company": "8dio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt",
+        "solo"
+      ],
+      "path": "M:\\PERCUSSION\\8Dio.Solo.Frame.Drums.KONTAKT-MAGNETRiXX",
+      "format": "kontakt"
+    },
+    {
+      "id": "ableton",
+      "name": "ABLETON",
+      "company": "ableton",
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\ABLETON",
+      "format": "kontakt"
+    },
+    {
+      "id": "acoustic",
+      "name": "ACOUSTIC",
+      "company": null,
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\ACOUSTIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "acoustic-drum",
+      "name": "ACOUSTIC",
+      "company": null,
+      "categories": [
+        "drum"
+      ],
+      "tags": [],
+      "path": "M:\\DRUM\\ACOUSTIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "acoustic-guitar",
+      "name": "ACOUSTIC",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\ACOUSTIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "allure-modern-upright",
+      "name": "ALLURE Modern Upright",
+      "company": null,
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\ALLURE Modern Upright",
+      "format": "kontakt"
+    },
+    {
+      "id": "alpine-concert-zither",
+      "name": "Alpine Concert Zither",
+      "company": "zither",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Alpine Concert Zither",
+      "format": "kontakt"
+    },
+    {
+      "id": "american-zither",
+      "name": "American Zither",
+      "company": "zither",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\American Zither",
+      "format": "kontakt"
+    },
+    {
+      "id": "atom-hub",
+      "name": "ATOM HUB",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\ATOM HUB",
+      "format": "kontakt"
+    },
+    {
+      "id": "attitudei-drums-vol1-exotic-percussion-multiformat",
+      "name": "Attitudei.Drums.Vol1.Exotic.Percussion.Multiformat",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Attitudei.Drums.Vol1.Exotic.Percussion.Multiformat-AMPLiFY",
+      "format": "kontakt"
+    },
+    {
+      "id": "audio-genetics-lab-music-boxsynthic4te",
+      "name": "Audio Genetics Lab Music BoxSYNTHiC4TE",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\TOY\\Audio Genetics Lab Music Box KONTAKT-SYNTHiC4TE",
+      "format": "kontakt"
+    },
+    {
+      "id": "audio-modeling-swam-solo-brass-bundle",
+      "name": "Audio Modeling - SWAM Solo Brass Bundle",
+      "company": "audio-modeling",
+      "categories": [
+        "brass"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\BRASS\\Audio Modeling - SWAM Solo Brass Bundle v3.7.2.5169",
+      "format": "kontakt"
+    },
+    {
+      "id": "audio-modeling-swam-solo-strings-bundle",
+      "name": "Audio Modeling - SWAM Solo Strings Bundle",
+      "company": "audio-modeling",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\ORCHESTRA\\Audio Modeling - SWAM Solo Strings Bundle v3.7.2.5169",
+      "format": "kontakt"
+    },
+    {
+      "id": "audiofier",
+      "name": "AUDIOFIER",
+      "company": "audiofier",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\AUDIOFIER",
+      "format": "kontakt"
+    },
+    {
+      "id": "audiofier-veevum-human",
+      "name": "Audiofier Veevum Human",
+      "company": "audiofier",
+      "categories": [
+        "voice"
+      ],
+      "tags": [],
+      "path": "M:\\VOICE\\Audiofier Veevum Human",
+      "format": "kontakt"
+    },
+    {
+      "id": "autoharp",
+      "name": "Autoharp",
+      "company": "autoharp",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Autoharp",
+      "format": "kontakt"
+    },
+    {
+      "id": "avant-modern-keys",
+      "name": "AVANT Modern Keys",
+      "company": null,
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\AVANT Modern Keys",
+      "format": "kontakt"
+    },
+    {
+      "id": "aviram-dayan-production-aviram-music-box-dvdr",
+      "name": "Aviram.Dayan.Production.Aviram.Music.Box..DVDR",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\TOY\\Aviram.Dayan.Production.Aviram.Music.Box.1.0.KONTAKT.DVDR-DISCOVER",
+      "format": "kontakt"
+    },
+    {
+      "id": "bad-cat-samples",
+      "name": "Bad.Cat.Samples",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\Bad.Cat.Samples",
+      "format": "kontakt"
+    },
+    {
+      "id": "bass",
+      "name": "BASS",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\BASS",
+      "format": "kontakt"
+    },
+    {
+      "id": "bernard-herrmann-composer-toolkit",
+      "name": "Bernard Herrmann Composer Toolkit",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Bernard Herrmann Composer Toolkit",
+      "format": "kontakt"
+    },
+    {
+      "id": "best-service",
+      "name": "BEST SERVICE",
+      "company": "best-service",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\BEST SERVICE",
+      "format": "kontakt"
+    },
+    {
+      "id": "best-service-klanghaus",
+      "name": "Best Service - Klanghaus",
+      "company": "best-service",
+      "categories": [
+        "engine"
+      ],
+      "tags": [],
+      "path": "M:\\# ENGINE\\Best Service - Klanghaus",
+      "format": "kontakt"
+    },
+    {
+      "id": "best-service-klanghaus-2",
+      "name": "Best Service - Klanghaus 2",
+      "company": "best-service",
+      "categories": [
+        "engine"
+      ],
+      "tags": [],
+      "path": "M:\\# ENGINE\\Best Service - Klanghaus 2",
+      "format": "kontakt"
+    },
+    {
+      "id": "big-fish-audio-suspense-cinematic-percussion-and-soundbeds",
+      "name": "Big Fish Audio - Suspense Cinematic Percussion and Soundbeds",
+      "company": "big-fish-audio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt",
+        "cinematic"
+      ],
+      "path": "M:\\PERCUSSION\\Big Fish Audio - Suspense Cinematic Percussion and Soundbeds KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "bizarre-sitar",
+      "name": "Bizarre Sitar",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Bizarre Sitar",
+      "format": "kontakt"
+    },
+    {
+      "id": "bolder-sounds-hammered-dulcimer-trilogy-complete",
+      "name": "Bolder.Sounds.Hammered.Dulcimer.Trilogy.Complete.",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\OTHER STRINGS\\Bolder.Sounds.Hammered.Dulcimer.Trilogy.Complete.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "bowed-gamelan",
+      "name": "Bowed Gamelan",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Bowed Gamelan",
+      "format": "kontakt"
+    },
+    {
+      "id": "bowed-psaltery",
+      "name": "Bowed Psaltery",
+      "company": "psaltery",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Bowed Psaltery",
+      "format": "kontakt"
+    },
+    {
+      "id": "bowed-psaltery-sound-design",
+      "name": "Bowed Psaltery",
+      "company": "psaltery",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Bowed Psaltery",
+      "format": "kontakt"
+    },
+    {
+      "id": "bundle",
+      "name": "BUNDLE",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\BUNDLE",
+      "format": "kontakt"
+    },
+    {
+      "id": "cct-vol-1-chant-tool-odd-vocal-samples-magnetrixx",
+      "name": "CCT-Vol.1.Chant.Tool.Odd.Vocal.Samples.MAGNETRiXX",
+      "company": null,
+      "categories": [
+        "voice"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\VOICE\\CCT-Vol.1.Chant.Tool.Odd.Vocal.Samples.KONTAKT-MAGNETRiXX",
+      "format": "kontakt"
+    },
+    {
+      "id": "cello",
+      "name": "CELLO",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\CELLO",
+      "format": "kontakt"
+    },
+    {
+      "id": "chamber-strings-essentials",
+      "name": "Chamber Strings Essentials",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Chamber Strings Essentials",
+      "format": "kontakt"
+    },
+    {
+      "id": "chris-hein-solo-strings-complete",
+      "name": "Chris Hein Solo Strings Complete",
+      "company": "best-service",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\ORCHESTRA\\Chris Hein Solo Strings Complete",
+      "format": "kontakt"
+    },
+    {
+      "id": "chris-hein-solo-strings-extended",
+      "name": "Chris Hein Solo Strings EXtended",
+      "company": "best-service",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\ORCHESTRA\\Chris Hein Solo Strings v2.0.2 EXtended",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments",
+      "name": "CINEMATIQUE INSTRUMENTS",
+      "company": "cinematique-instruments",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\CINEMATIQUE INSTRUMENTS",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-bowed-guitars-and-bass-2-repack",
+      "name": "Cinematique Instruments - Bowed Guitars and Bass 2 REPACK",
+      "company": "cinematique-instruments",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Cinematique Instruments - Bowed Guitars and Bass 2 REPACK",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-lute",
+      "name": "Cinematique Instruments - Lute",
+      "company": "cinematique-instruments",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Cinematique Instruments - Lute v2",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-mountain-dulcimer",
+      "name": "Cinematique Instruments - Mountain DULCIMER",
+      "company": "cinematique-instruments",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Cinematique Instruments - Mountain DULCIMER",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-oud",
+      "name": "Cinematique Instruments - OUD",
+      "company": "cinematique-instruments",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Cinematique Instruments - OUD v1.5",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-vertigo-glass-iron",
+      "name": "Cinematique Instruments - Vertigo Glass & Iron",
+      "company": "cinematique-instruments",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\Cinematique Instruments - Vertigo Glass & Iron",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-vertigo-strings",
+      "name": "Cinematique Instruments - Vertigo Strings",
+      "company": "cinematique-instruments",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Cinematique Instruments - Vertigo Strings",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-experimental-box-1",
+      "name": "Cinematique Instruments Experimental Box 1",
+      "company": "cinematique-instruments",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Cinematique Instruments Experimental Box 1",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-experimental-box2",
+      "name": "Cinematique Instruments Experimental Box2",
+      "company": "cinematique-instruments",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Cinematique Instruments Experimental Box2",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-fabrique",
+      "name": "Cinematique Instruments Fabrique",
+      "company": "cinematique-instruments",
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\Cinematique Instruments Fabrique KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-celtic-nylon-harp",
+      "name": "Cinematique.Instruments.Celtic.Nylon.Harp",
+      "company": "cinematique-instruments",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Cinematique.Instruments.Celtic.Nylon.Harp",
+      "format": "kontakt"
+    },
+    {
+      "id": "cinematique-instruments-charakter-piano-collection",
+      "name": "Cinematique.Instruments.Charakter.Piano.Collection.",
+      "company": "cinematique-instruments",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PIANO AND KEY\\Cinematique.Instruments.Charakter.Piano.Collection.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "collection",
+      "name": "COLLECTION",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\COLLECTION",
+      "format": "kontakt"
+    },
+    {
+      "id": "cremona-quartet-1-3",
+      "name": "Cremona Quartet 1.3",
+      "company": "cremona",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Cremona Quartet 1.3",
+      "format": "kontakt"
+    },
+    {
+      "id": "curio-cinematic-toy-piano",
+      "name": "Curio Cinematic Toy Piano",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [
+        "cinematic"
+      ],
+      "path": "M:\\TOY\\Curio Cinematic Toy Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "cymbology-vol-1-bowed",
+      "name": "Cymbology Vol 1 Bowed",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Cymbology Vol 1 Bowed",
+      "format": "kontakt"
+    },
+    {
+      "id": "decent-samples-wine-glasses-1",
+      "name": "Decent Samples - Wine Glasses-1",
+      "company": "decent-samples",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\Decent Samples - Wine Glasses-1.0.0",
+      "format": "kontakt"
+    },
+    {
+      "id": "dream-zither",
+      "name": "Dream Zither",
+      "company": "zither",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Dream Zither",
+      "format": "kontakt"
+    },
+    {
+      "id": "electric",
+      "name": "ELECTRIC",
+      "company": null,
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\ELECTRIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "electric-guitar",
+      "name": "ELECTRIC",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\ELECTRIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "electronik-sound-lab-horror-box-xl-vst3-x64-win",
+      "name": "Electronik.Sound.Lab.Horror.Box.XL.VST3.x64.WIN",
+      "company": null,
+      "categories": [
+        "fx"
+      ],
+      "tags": [],
+      "path": "M:\\DRONES & SFX\\Electronik.Sound.Lab.Horror.Box.XL.v1.4.0.VST3.x64.WIN",
+      "format": "kontakt"
+    },
+    {
+      "id": "embertone-jug-drums-complete",
+      "name": "Embertone - Jug Drums COMPLETE",
+      "company": "embertone",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Embertone - Jug Drums COMPLETE",
+      "format": "kontakt"
+    },
+    {
+      "id": "epic",
+      "name": "Epic",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Epic",
+      "format": "kontakt"
+    },
+    {
+      "id": "epic-tom-ensemble",
+      "name": "Epic Tom Ensemble",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "ensemble"
+      ],
+      "path": "M:\\PERCUSSION\\Epic Tom Ensemble",
+      "format": "kontakt"
+    },
+    {
+      "id": "exclusive",
+      "name": "EXCLUSIVE",
+      "company": null,
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\EXCLUSIVE",
+      "format": "kontakt"
+    },
+    {
+      "id": "finnish-concert-kantele",
+      "name": "Finnish Concert Kantele",
+      "company": "kantele",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Finnish Concert Kantele",
+      "format": "kontakt"
+    },
+    {
+      "id": "fractured",
+      "name": "FRACTURED",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\FRACTURED",
+      "format": "kontakt"
+    },
+    {
+      "id": "fractured-piano-key",
+      "name": "FRACTURED",
+      "company": null,
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\FRACTURED",
+      "format": "kontakt"
+    },
+    {
+      "id": "fractured-muted-harmonics",
+      "name": "FRACTURED, MUTED, HARMONICS",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\FRACTURED, MUTED, HARMONICS",
+      "format": "kontakt"
+    },
+    {
+      "id": "fracturesounds-singing-bowlth3rside",
+      "name": "FractureSounds.Singing.BowlTH3Rside",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\FractureSounds.Singing.Bowl.v1.0.KONTAKT-0TH3Rside",
+      "format": "kontakt"
+    },
+    {
+      "id": "frozen-vibes",
+      "name": "Frozen Vibes",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Frozen Vibes",
+      "format": "kontakt"
+    },
+    {
+      "id": "frozenplain-victorian-music-box-1-1",
+      "name": "FrozenPlain Victorian Music Box 1.1",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\FrozenPlain Victorian Music Box 1.1",
+      "format": "kontakt"
+    },
+    {
+      "id": "fx",
+      "name": "FX",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\FX",
+      "format": "kontakt"
+    },
+    {
+      "id": "garritan-gofriller-solo-cello",
+      "name": "Garritan - Gofriller Solo Cello",
+      "company": "garritan",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\OTHER STRINGS\\Garritan - Gofriller Solo Cello",
+      "format": "kontakt"
+    },
+    {
+      "id": "glassworks-library",
+      "name": "Glassworks Library",
+      "company": "audiobro",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\Glassworks Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "guitar-soft",
+      "name": "GUITAR SOFT",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\GUITAR SOFT",
+      "format": "kontakt"
+    },
+    {
+      "id": "hang",
+      "name": "HANG",
+      "company": null,
+      "categories": [
+        "mallet-hand"
+      ],
+      "tags": [],
+      "path": "M:\\MALLET & HAND\\HANG",
+      "format": "kontakt"
+    },
+    {
+      "id": "heavyocity",
+      "name": "HEAVYOCITY",
+      "company": "heavyocity",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\HEAVYOCITY",
+      "format": "kontakt"
+    },
+    {
+      "id": "heavyocity-synth",
+      "name": "HEAVYOCITY",
+      "company": "heavyocity",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\HEAVYOCITY",
+      "format": "kontakt"
+    },
+    {
+      "id": "heavyocity-vocalise-3",
+      "name": "Heavyocity Vocalise 3",
+      "company": "heavyocity",
+      "categories": [
+        "voice"
+      ],
+      "tags": [],
+      "path": "M:\\VOICE\\Heavyocity Vocalise 3",
+      "format": "kontakt"
+    },
+    {
+      "id": "highland-harps",
+      "name": "Highland Harps",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Highland Harps",
+      "format": "kontakt"
+    },
+    {
+      "id": "hopkin-instrumentarium-metaltines",
+      "name": "Hopkin Instrumentarium - Metaltines",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Hopkin Instrumentarium - Metaltines",
+      "format": "kontakt"
+    },
+    {
+      "id": "hopkin-instrumentarium-miago-trod",
+      "name": "Hopkin Instrumentarium - Miago Trod",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Hopkin Instrumentarium - Miago Trod",
+      "format": "kontakt"
+    },
+    {
+      "id": "hopkin-instrumentarium-woodentines",
+      "name": "Hopkin Instrumentarium - Woodentines",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Hopkin Instrumentarium - Woodentines",
+      "format": "kontakt"
+    },
+    {
+      "id": "hopkin-instrumentarium-rattletines",
+      "name": "Hopkin Instrumentarium Rattletines",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Hopkin Instrumentarium Rattletines",
+      "format": "kontakt"
+    },
+    {
+      "id": "hopkin-instrumentarium-tines-and-echoes",
+      "name": "Hopkin Instrumentarium Tines and Echoes",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Hopkin Instrumentarium Tines and Echoes",
+      "format": "kontakt"
+    },
+    {
+      "id": "hyperion-strings-elements",
+      "name": "Hyperion Strings Elements",
+      "company": "soundiron",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Hyperion Strings Elements",
+      "format": "kontakt"
+    },
+    {
+      "id": "icons",
+      "name": "ICONS",
+      "company": null,
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\ICONS",
+      "format": "kontakt"
+    },
+    {
+      "id": "ik-multimedia",
+      "name": "IK MULTIMEDIA",
+      "company": "ik-multimedia",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\IK MULTIMEDIA",
+      "format": "kontakt"
+    },
+    {
+      "id": "ilya-efimov-bass-bundle",
+      "name": "Ilya Efimov - Bass Bundle",
+      "company": "ilya-efimov",
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\Ilya Efimov - Bass Bundle",
+      "format": "kontakt"
+    },
+    {
+      "id": "impact-soundworks",
+      "name": "IMPACT SOUNDWORKS",
+      "company": "impact-soundworks",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\IMPACT SOUNDWORKS",
+      "format": "kontakt"
+    },
+    {
+      "id": "impact-soundworks-forest-frame-drums",
+      "name": "Impact Soundworks - Forest Frame Drums",
+      "company": "impact-soundworks",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Impact Soundworks - Forest Frame Drums",
+      "format": "kontakt"
+    },
+    {
+      "id": "izotope",
+      "name": "IZOTOPE",
+      "company": "izotope",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\IZOTOPE",
+      "format": "kontakt"
+    },
+    {
+      "id": "kantele",
+      "name": "Kantele",
+      "company": "kantele",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Kantele",
+      "format": "kontakt"
+    },
+    {
+      "id": "kazakh-dombra",
+      "name": "Kazakh Dombra",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Kazakh Dombra",
+      "format": "kontakt"
+    },
+    {
+      "id": "keepforest",
+      "name": "KEEPFOREST",
+      "company": "keepforest",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\KEEPFOREST",
+      "format": "kontakt"
+    },
+    {
+      "id": "keepforest-berserkr-pro-tribal-punk-folk-drums",
+      "name": "Keepforest - Berserkr Pro - Tribal Punk Folk Drums",
+      "company": "keepforest",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Keepforest - Berserkr Pro - Tribal Punk Folk Drums",
+      "format": "kontakt"
+    },
+    {
+      "id": "luftrum",
+      "name": "LUFTRUM",
+      "company": "luftrum",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\LUFTRUM",
+      "format": "kontakt"
+    },
+    {
+      "id": "lumina-library",
+      "name": "Lumina Library",
+      "company": "soundiron",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Lumina Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "lyra",
+      "name": "Lyra",
+      "company": "lyra",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Lyra",
+      "format": "kontakt"
+    },
+    {
+      "id": "metall",
+      "name": "METALL",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\METALL",
+      "format": "kontakt"
+    },
+    {
+      "id": "metall-mallet-hand",
+      "name": "METALL",
+      "company": null,
+      "categories": [
+        "mallet-hand"
+      ],
+      "tags": [],
+      "path": "M:\\MALLET & HAND\\METALL",
+      "format": "kontakt"
+    },
+    {
+      "id": "mike-dunn-digitiphony-vol-1",
+      "name": "Mike.Dunn.Digitiphony.Vol.1",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Mike.Dunn.Digitiphony.Vol.1",
+      "format": "kontakt"
+    },
+    {
+      "id": "miscellaneous",
+      "name": "MISCELLANEOUS",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\MISCELLANEOUS",
+      "format": "kontakt"
+    },
+    {
+      "id": "moldova-concert-cimbalom",
+      "name": "Moldova Concert Cimbalom",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Moldova Concert Cimbalom",
+      "format": "kontakt"
+    },
+    {
+      "id": "morphestra-library",
+      "name": "Morphestra Library",
+      "company": "sample-logic",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Morphestra Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "native-instruments",
+      "name": "NATIVE INSTRUMENTS",
+      "company": "native-instruments",
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\NATIVE INSTRUMENTS",
+      "format": "kontakt"
+    },
+    {
+      "id": "native-instruments-daw",
+      "name": "NATIVE INSTRUMENTS",
+      "company": "native-instruments",
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\NATIVE INSTRUMENTS",
+      "format": "kontakt"
+    },
+    {
+      "id": "native-instruments-west-africa",
+      "name": "Native Instruments West.Africa",
+      "company": "native-instruments",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Native Instruments West.Africa",
+      "format": "kontakt"
+    },
+    {
+      "id": "native-instruments-kinetic-metal",
+      "name": "Native.Instruments.KINETIC.METAL.",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\Native.Instruments.KINETIC.METAL.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "nevel",
+      "name": "Nevel",
+      "company": "nevel",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Nevel",
+      "format": "kontakt"
+    },
+    {
+      "id": "nexus",
+      "name": "NEXUS",
+      "company": null,
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\NEXUS",
+      "format": "kontakt"
+    },
+    {
+      "id": "noisefirm-complete-shaker-tambourine",
+      "name": "Noisefirm - Complete Shaker & Tambourine",
+      "company": "noisefirm",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Noisefirm - Complete Shaker & Tambourine",
+      "format": "kontakt"
+    },
+    {
+      "id": "nordicpsalmodikon",
+      "name": "NordicPsalmodikon",
+      "company": "nordic",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\NordicPsalmodikon",
+      "format": "kontakt"
+    },
+    {
+      "id": "nyckelharpas",
+      "name": "NyckelHarpas",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\NyckelHarpas",
+      "format": "kontakt"
+    },
+    {
+      "id": "old-tape-piano",
+      "name": "Old Tape Piano",
+      "company": null,
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\Old Tape Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "one",
+      "name": "ONE",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\ONE",
+      "format": "kontakt"
+    },
+    {
+      "id": "other",
+      "name": "OTHER",
+      "company": null,
+      "categories": [
+        "drum"
+      ],
+      "tags": [],
+      "path": "M:\\DRUM\\OTHER",
+      "format": "kontakt"
+    },
+    {
+      "id": "output",
+      "name": "OUTPUT",
+      "company": "output",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\OUTPUT",
+      "format": "kontakt"
+    },
+    {
+      "id": "output-exhale",
+      "name": "Output Exhale",
+      "company": "output",
+      "categories": [
+        "voice"
+      ],
+      "tags": [],
+      "path": "M:\\VOICE\\Output Exhale",
+      "format": "kontakt"
+    },
+    {
+      "id": "output-sounds-rev-x-loops",
+      "name": "Output Sounds - REV X-Loops",
+      "company": "output",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Output Sounds - REV X-Loops v1.2",
+      "format": "kontakt"
+    },
+    {
+      "id": "percussion",
+      "name": "PERCUSSION",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\PERCUSSION",
+      "format": "kontakt"
+    },
+    {
+      "id": "percussion-chimes",
+      "name": "Percussion Chimes",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Percussion Chimes",
+      "format": "kontakt"
+    },
+    {
+      "id": "plectra-series-1-8-string-acoustic-bouzouki",
+      "name": "Plectra Series 1 - 8-string Acoustic Bouzouki",
+      "company": "impact-soundworks",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Plectra Series 1 - 8-string Acoustic Bouzouki",
+      "format": "kontakt"
+    },
+    {
+      "id": "plectra-series-4-turkish-oud",
+      "name": "Plectra Series 4 - Turkish Oud",
+      "company": "impact-soundworks",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Plectra Series 4 - Turkish Oud",
+      "format": "kontakt"
+    },
+    {
+      "id": "precisionsound-swedish-key-harp",
+      "name": "Precisionsound - Swedish Key Harp",
+      "company": "precisionsound",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Precisionsound - Swedish Key Harp",
+      "format": "kontakt"
+    },
+    {
+      "id": "precisionsound-ukrainian-bandura",
+      "name": "Precisionsound - Ukrainian Bandura",
+      "company": "precisionsound",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Precisionsound - Ukrainian Bandura",
+      "format": "kontakt"
+    },
+    {
+      "id": "precisionsound-persian-santur-multiformat-scd-dvdr",
+      "name": "Precisionsound.Persian.Santur.MULTiFORMAT.SCD.DVDR",
+      "company": "precisionsound",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Precisionsound.Persian.Santur.MULTiFORMAT.SCD.DVDR-SPiRiT",
+      "format": "kontakt"
+    },
+    {
+      "id": "projectsam-concert-harp-exp-1-3",
+      "name": "ProjectSAM - Concert Harp EXP 1.3",
+      "company": "projectsam",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\ProjectSAM - Concert Harp EXP 1.3",
+      "format": "kontakt"
+    },
+    {
+      "id": "reed-keyboards-pneumatic",
+      "name": "REED KEYBOARDS PNEUMATIC",
+      "company": null,
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\REED KEYBOARDS PNEUMATIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "rev",
+      "name": "REV",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\REV",
+      "format": "kontakt"
+    },
+    {
+      "id": "rhythmic-loops",
+      "name": "RHYTHMIC & LOOPS",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\RHYTHMIC & LOOPS",
+      "format": "kontakt"
+    },
+    {
+      "id": "rhythmic-robot-audio-spaceman",
+      "name": "Rhythmic Robot Audio - SpaceMan",
+      "company": "rhythmic-robot",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Rhythmic Robot Audio - SpaceMan",
+      "format": "kontakt"
+    },
+    {
+      "id": "rhythmic-fractured-performance",
+      "name": "RHYTHMIC, FRACTURED, PERFORMANCE",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\RHYTHMIC, FRACTURED, PERFORMANCE",
+      "format": "kontakt"
+    },
+    {
+      "id": "rhythmic-loops-performance",
+      "name": "RHYTHMIC, LOOPS, PERFORMANCE",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\RHYTHMIC, LOOPS, PERFORMANCE",
+      "format": "kontakt"
+    },
+    {
+      "id": "riq-drums",
+      "name": "Riq Drums",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Riq Drums",
+      "format": "kontakt"
+    },
+    {
+      "id": "rr-music-box",
+      "name": "RR MUSIC BOX",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\RR MUSIC BOX",
+      "format": "kontakt"
+    },
+    {
+      "id": "russian-folk-series-domra-alto",
+      "name": "Russian Folk Series. Domra Alto",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Russian Folk Series. Domra Alto [39 EUR]",
+      "format": "kontakt"
+    },
+    {
+      "id": "sam-truestrike-2",
+      "name": "SAM TrueStrike-2",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\SAM TrueStrike-2",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-creepy-toy-piano",
+      "name": "SampleHero - Creepy Toy Piano",
+      "company": "samplehero",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\SampleHero - Creepy Toy Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-dbj-s-crime-scoring-toolkit",
+      "name": "SampleHero - DBJ's Crime Scoring Toolkit",
+      "company": "samplehero",
+      "categories": [
+        "fx"
+      ],
+      "tags": [],
+      "path": "M:\\DRONES & SFX\\SampleHero - DBJ's Crime Scoring Toolkit",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-eerie-1",
+      "name": "SampleHero - EERIE 1",
+      "company": "samplehero",
+      "categories": [
+        "fx"
+      ],
+      "tags": [],
+      "path": "M:\\DRONES & SFX\\SampleHero - EERIE 1",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-eerie-2",
+      "name": "SampleHero - EERIE 2",
+      "company": "samplehero",
+      "categories": [
+        "fx"
+      ],
+      "tags": [],
+      "path": "M:\\DRONES & SFX\\SampleHero - EERIE 2",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-japanese-chime-piano",
+      "name": "SampleHero - Japanese Chime Piano",
+      "company": "samplehero",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\SampleHero - Japanese Chime Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-eerie-3-chilling-drones-and-sfx",
+      "name": "SampleHero.EERIE.3.Chilling.Drones.and.SFX.",
+      "company": "samplehero",
+      "categories": [
+        "fx"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\DRONES & SFX\\SampleHero.EERIE.3.Chilling.Drones.and.SFX.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "samplehero-the-cabaret-piano-decibel",
+      "name": "SampleHero.The.Cabaret.Piano.DECiBEL",
+      "company": "samplehero",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PIANO AND KEY\\SampleHero.The.Cabaret.Piano.KONTAKT-DECiBEL",
+      "format": "kontakt"
+    },
+    {
+      "id": "sampleism-ls-small-percussion",
+      "name": "Sampleism - LS Small Percussion",
+      "company": "sampleism",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Sampleism - LS Small Percussion",
+      "format": "kontakt"
+    },
+    {
+      "id": "samulnori-percussion",
+      "name": "Samulnori Percussion",
+      "company": "soniccouture",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Samulnori Percussion",
+      "format": "kontakt"
+    },
+    {
+      "id": "sand-drum",
+      "name": "Sand Drum",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Sand Drum",
+      "format": "kontakt"
+    },
+    {
+      "id": "sc-grand-toy-piano",
+      "name": "SC Grand Toy Piano",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\SC Grand Toy Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "sc-xbow-guitars",
+      "name": "SC Xbow Guitars",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\SC Xbow Guitars",
+      "format": "kontakt"
+    },
+    {
+      "id": "sea-trumpets",
+      "name": "Sea Trumpets",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Sea Trumpets",
+      "format": "kontakt"
+    },
+    {
+      "id": "session-strings",
+      "name": "SESSION STRINGS",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\SESSION STRINGS",
+      "format": "kontakt"
+    },
+    {
+      "id": "shake-vol-1",
+      "name": "Shake Vol.1",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Shake Vol.1",
+      "format": "kontakt"
+    },
+    {
+      "id": "sick-noise-instruments",
+      "name": "SICK NOISE INSTRUMENTS",
+      "company": "sick-noise",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\SICK NOISE INSTRUMENTS",
+      "format": "kontakt"
+    },
+    {
+      "id": "simple-samples-audio-horror-harp",
+      "name": "Simple Samples Audio Horror Harp",
+      "company": "simple-samples",
+      "categories": [
+        "fx"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\DRONES & SFX\\Simple Samples Audio Horror Harp v2.0 KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-bowed-piano-for-ableton-live-x-alp",
+      "name": "SonicCouture - Bowed Piano for Ableton Live.x ALP",
+      "company": "ableton",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\SonicCouture - Bowed Piano for Ableton Live v9.x ALP",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-ddr-toy-piano",
+      "name": "SonicCouture - DDR Toy Piano",
+      "company": "soniccouture",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\SonicCouture - DDR Toy Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-eebow-guitar-for-ableton-live-x-alp",
+      "name": "Soniccouture - eEBow Guitar for Ableton Live.x ALP",
+      "company": "ableton",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\Soniccouture - eEBow Guitar for Ableton Live v9.x ALP",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-guzheng",
+      "name": "SonicCouture - Guzheng",
+      "company": "soniccouture",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\SonicCouture - Guzheng",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-music-boxes",
+      "name": "Soniccouture - Music Boxes",
+      "company": "soniccouture",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\Soniccouture - Music Boxes",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-thunder-drum",
+      "name": "Soniccouture - Thunder Drum",
+      "company": "soniccouture",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Soniccouture - Thunder Drum",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-kim",
+      "name": "Soniccouture.Kim",
+      "company": "soniccouture",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Soniccouture.Kim",
+      "format": "kontakt"
+    },
+    {
+      "id": "soniccouture-tube-drum-suniso",
+      "name": "SonicCouture.Tube.Drum.SUNiSO",
+      "company": "soniccouture",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\SonicCouture.Tube.Drum.KONTAKT-SUNiSO",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonivox-symphonic-harp-collection",
+      "name": "SONiVOX - Symphonic Harp Collection",
+      "company": "sonivox",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\SONiVOX - Symphonic Harp Collection",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonivox-sonic-implants-symphonic-strings-collection",
+      "name": "SONiVOX Sonic Implants Symphonic Strings Collection",
+      "company": "sonivox",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\ORCHESTRA\\SONiVOX Sonic Implants Symphonic Strings Collection (Kontakt)",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonokinetic-arpeggio",
+      "name": "Sonokinetic - Arpeggio",
+      "company": "sonokinetic",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Sonokinetic - Arpeggio",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonokinetic-kemence",
+      "name": "Sonokinetic - Kemence",
+      "company": "sonokinetic",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Sonokinetic - Kemence",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonokinetic-sultan-stringsonly",
+      "name": "Sonokinetic - Sultan StringsONLY",
+      "company": "sonokinetic",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\OTHER STRINGS\\Sonokinetic - Sultan Strings KONTAKT ONLY",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonokinetic-sultan-drums",
+      "name": "Sonokinetic Sultan Drums",
+      "company": "sonokinetic",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\Sonokinetic Sultan Drums KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonokinetic-h-i-p-p-highly-intuitive-performance-percussion",
+      "name": "Sonokinetic.H.I.P.P.Highly.Intuitive.Performance.Percussion.",
+      "company": "sonokinetic",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\PERCUSSION\\Sonokinetic.H.I.P.P.Highly.Intuitive.Performance.Percussion.KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonora-cinematic",
+      "name": "SONORA CINEMATIC",
+      "company": "sonora-cinematic",
+      "categories": [
+        "synth"
+      ],
+      "tags": [
+        "cinematic"
+      ],
+      "path": "M:\\SYNTH\\SONORA CINEMATIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonuscore-time-textures",
+      "name": "Sonuscore - Time Textures",
+      "company": "sonuscore",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Sonuscore - Time Textures",
+      "format": "kontakt"
+    },
+    {
+      "id": "sonuscore-origins",
+      "name": "Sonuscore Origins",
+      "company": "sonuscore",
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\Sonuscore Origins",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-hopkin-instrumentarium-weighted-strings",
+      "name": "Soundiron - Hopkin Instrumentarium Weighted Strings",
+      "company": "soundiron",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Soundiron - Hopkin Instrumentarium Weighted Strings",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-hyperion-strings-micro",
+      "name": "Soundiron - Hyperion Strings Micro",
+      "company": "soundiron",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Soundiron - Hyperion Strings Micro",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-solo-dhol-drum",
+      "name": "Soundiron - Solo Dhol Drum",
+      "company": "soundiron",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "solo"
+      ],
+      "path": "M:\\PERCUSSION\\Soundiron - Solo Dhol Drum",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-acoustic-saz",
+      "name": "Soundiron Acoustic Saz",
+      "company": "soundiron",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Soundiron Acoustic Saz",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-apocalypse-percussion-ensemble",
+      "name": "Soundiron Apocalypse Percussion Ensemble",
+      "company": "soundiron",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "ensemble"
+      ],
+      "path": "M:\\PERCUSSION\\Soundiron Apocalypse Percussion Ensemble V2",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-electric-saz",
+      "name": "Soundiron Electric Saz",
+      "company": "soundiron",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\OTHER STRINGS\\Soundiron Electric Saz KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-fountain-wires",
+      "name": "Soundiron Fountain Wires-",
+      "company": "soundiron",
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\Soundiron Fountain Wires-KONTAKT",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-kazoo",
+      "name": "Soundiron Kazoo",
+      "company": "soundiron",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Soundiron Kazoo v2.0",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-hopkin-instrumentarium-rumba-boxes",
+      "name": "Soundiron_Hopkin_Instrumentarium_Rumba_Boxes",
+      "company": "soundiron",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Soundiron_Hopkin_Instrumentarium_Rumba_Boxes",
+      "format": "kontakt"
+    },
+    {
+      "id": "soundiron-bowed-bucket-v3-merry-xmas",
+      "name": "Soundiron.Bowed.Bucket.v3..MERRY.XMAS",
+      "company": "soundiron",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\REVERSE & BOWED\\Soundiron.Bowed.Bucket.v3.KONTAKT.MERRY.XMAS",
+      "format": "kontakt"
+    },
+    {
+      "id": "spectrasinics",
+      "name": "SPECTRASINICS",
+      "company": null,
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\SPECTRASINICS",
+      "format": "kontakt"
+    },
+    {
+      "id": "spectrasonic",
+      "name": "SPECTRASONIC",
+      "company": null,
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\SPECTRASONIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "spectrasonics-omnisphere-2c-repack-by-vkdanilov-libraries-so",
+      "name": "Spectrasonics Omnisphere 2c RePack by vkDanilov+Libraries+Sonic Extensions",
+      "company": "spectrasonics",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\Spectrasonics Omnisphere 2.8.1c RePack by vkDanilov+Libraries+Sonic Extensions",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio",
+      "name": "SPITFIRE AUDIO",
+      "company": "spitfire-audio",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\SPITFIRE AUDIO",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-grand-cimbalom",
+      "name": "Spitfire Audio - Grand Cimbalom",
+      "company": "spitfire-audio",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Spitfire Audio - Grand Cimbalom",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-hg2o",
+      "name": "Spitfire Audio - Hg2O",
+      "company": "spitfire-audio",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Spitfire Audio - Hg2O",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-olafur-arnalds-chamber-evolutions",
+      "name": "Spitfire Audio - Olafur Arnalds Chamber Evolutions",
+      "company": "spitfire-audio",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Spitfire Audio - Olafur Arnalds Chamber Evolutions",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-olafur-arnalds-stratus",
+      "name": "Spitfire Audio - Olafur Arnalds Stratus",
+      "company": "spitfire-audio",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\Spitfire Audio - Olafur Arnalds Stratus",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-pp018-dc-noisemaker",
+      "name": "Spitfire Audio - PP018 DC Noisemaker",
+      "company": "spitfire-audio",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Spitfire Audio - PP018 DC Noisemaker",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-aska-matsumiya-crystal-bowls",
+      "name": "Spitfire Audio Aska Matsumiya Crystal Bowls",
+      "company": "spitfire-audio",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\Spitfire Audio Aska Matsumiya Crystal Bowls",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-hz01-hans-zimmer-percussion-london-ensemblesp",
+      "name": "Spitfire Audio HZ01 Hans Zimmer Percussion London EnsemblesPiRAT",
+      "company": "spitfire-audio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [
+        "kontakt",
+        "ensemble"
+      ],
+      "path": "M:\\PERCUSSION\\Spitfire Audio HZ01 Hans Zimmer Percussion London Ensembles KONTAKT-PiRAT",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-audio-joshua-meltzer-serendipity",
+      "name": "Spitfire Audio Joshua Meltzer Serendipity",
+      "company": "spitfire-audio",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\Spitfire Audio Joshua Meltzer Serendipity",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-glass-and-steel-library",
+      "name": "Spitfire Glass and Steel library",
+      "company": "spitfire-audio",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\Spitfire Glass and Steel library",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-percussion-redux-v",
+      "name": "Spitfire Percussion REDUX V",
+      "company": "spitfire-audio",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Spitfire Percussion REDUX V.1.3",
+      "format": "kontakt"
+    },
+    {
+      "id": "spitfire-pp014-thepetebox-vocal-beatbox-library",
+      "name": "Spitfire PP014 THePETEBOX Vocal Beatbox library",
+      "company": "spitfire-audio",
+      "categories": [
+        "voice"
+      ],
+      "tags": [],
+      "path": "M:\\VOICE\\Spitfire PP014 THePETEBOX Vocal Beatbox library",
+      "format": "kontakt"
+    },
+    {
+      "id": "studio-percussion-orchestral",
+      "name": "Studio_Percussion_Orchestral",
+      "company": null,
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Studio_Percussion_Orchestral",
+      "format": "kontakt"
+    },
+    {
+      "id": "symphobia-colours-orchestrator-library",
+      "name": "Symphobia Colours Orchestrator Library",
+      "company": "projectsam",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\Symphobia Colours Orchestrator Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "symphony-series-string-ensemble-library",
+      "name": "Symphony Series String Ensemble Library",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "ensemble"
+      ],
+      "path": "M:\\ORCHESTRA\\Symphony Series String Ensemble Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "synthetic",
+      "name": "SYNTHETIC",
+      "company": null,
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\SYNTHETIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "synthetic-drum",
+      "name": "SYNTHETIC",
+      "company": null,
+      "categories": [
+        "drum"
+      ],
+      "tags": [],
+      "path": "M:\\DRUM\\SYNTHETIC",
+      "format": "kontakt"
+    },
+    {
+      "id": "tape-rooms-by-peter-flint",
+      "name": "Tape Rooms by Peter Flint",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Tape Rooms by Peter Flint",
+      "format": "kontakt"
+    },
+    {
+      "id": "tapspace-virtual-drumline",
+      "name": "TapSpace - Virtual DrumLine",
+      "company": "tapspace",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\TapSpace - Virtual DrumLine v2.5.5",
+      "format": "kontakt"
+    },
+    {
+      "id": "tension",
+      "name": "Tension -",
+      "company": "tension",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\ORCHESTRA\\Tension - Kontakt",
+      "format": "kontakt"
+    },
+    {
+      "id": "the-u",
+      "name": "The_U",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\The_U",
+      "format": "kontakt"
+    },
+    {
+      "id": "the-cello-of-damascus-cinematic-multisampled-bowed-electric-",
+      "name": "The.Cello.of.Damascus.Cinematic.Multisampled.Bowed.Electric.Guitar.MAGNETRiXX",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [
+        "kontakt",
+        "cinematic"
+      ],
+      "path": "M:\\REVERSE & BOWED\\The.Cello.of.Damascus.Cinematic.Multisampled.Bowed.Electric.Guitar.KONTAKT-MAGNETRiXX",
+      "format": "kontakt"
+    },
+    {
+      "id": "tiny-music-box",
+      "name": "Tiny Music Box",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\Tiny Music Box",
+      "format": "kontakt"
+    },
+    {
+      "id": "tonehammer-cathedral-of-junk",
+      "name": "Tonehammer - Cathedral Of Junk",
+      "company": "tonehammer",
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\Tonehammer - Cathedral Of Junk (KONTAKT, NKI, WAV)",
+      "format": "kontakt"
+    },
+    {
+      "id": "toontrack",
+      "name": "TOONTRACK",
+      "company": "toontrack",
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\TOONTRACK",
+      "format": "kontakt"
+    },
+    {
+      "id": "toontrack-drum",
+      "name": "TOONTRACK",
+      "company": "toontrack",
+      "categories": [
+        "drum"
+      ],
+      "tags": [],
+      "path": "M:\\DRUM\\TOONTRACK",
+      "format": "kontakt"
+    },
+    {
+      "id": "toontrack-ezkeys",
+      "name": "TOONTRACK EZkeys",
+      "company": "toontrack",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\TOONTRACK EZkeys",
+      "format": "kontakt"
+    },
+    {
+      "id": "torrents",
+      "name": "TORRENTS",
+      "company": null,
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\TORRENTS",
+      "format": "kontakt"
+    },
+    {
+      "id": "toy-piano",
+      "name": "Toy Piano",
+      "company": null,
+      "categories": [
+        "toy"
+      ],
+      "tags": [],
+      "path": "M:\\TOY\\Toy Piano",
+      "format": "kontakt"
+    },
+    {
+      "id": "triple-spiral-audio-dreamcatcher",
+      "name": "Triple Spiral Audio - Dreamcatcher",
+      "company": "triple-spiral-audio",
+      "categories": [
+        "piano-key"
+      ],
+      "tags": [],
+      "path": "M:\\PIANO AND KEY\\Triple Spiral Audio - Dreamcatcher",
+      "format": "kontakt"
+    },
+    {
+      "id": "true-strike-library",
+      "name": "True Strike Library",
+      "company": "projectsam",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\True Strike Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "two-ancient-bowed-psaltery",
+      "name": "TWO Ancient Bowed Psaltery",
+      "company": "psaltery",
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [],
+      "path": "M:\\REVERSE & BOWED\\TWO Ancient Bowed Psaltery",
+      "format": "kontakt"
+    },
+    {
+      "id": "ukulele",
+      "name": "UKULELE",
+      "company": null,
+      "categories": [
+        "guitar"
+      ],
+      "tags": [],
+      "path": "M:\\GUITAR\\UKULELE",
+      "format": "kontakt"
+    },
+    {
+      "id": "unearthed-sampling-bowed-fences-synthic4te",
+      "name": "unEarthed.Sampling.Bowed.Fences.SYNTHiC4TE",
+      "company": null,
+      "categories": [
+        "sound-design"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\REVERSE & BOWED\\unEarthed.Sampling.Bowed.Fences.KONTAKT-SYNTHiC4TE",
+      "format": "kontakt"
+    },
+    {
+      "id": "unearthed-sampling-sawmonium-discover",
+      "name": "unEarthed.Sampling.SAWmonium.DISCOVER",
+      "company": null,
+      "categories": [
+        "strange"
+      ],
+      "tags": [
+        "kontakt"
+      ],
+      "path": "M:\\STRANGE\\unEarthed.Sampling.SAWmonium.KONTAKT-DISCOVER",
+      "format": "kontakt"
+    },
+    {
+      "id": "uvi",
+      "name": "UVI",
+      "company": "uvi",
+      "categories": [
+        "daw"
+      ],
+      "tags": [],
+      "path": "M:\\# SOFT MUSIC\\UVI",
+      "format": "kontakt"
+    },
+    {
+      "id": "versilian-studios-the-strumstick",
+      "name": "Versilian.Studios.The.Strumstick.",
+      "company": "versilian-studios",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Versilian.Studios.The.Strumstick.(SCENE)-DISCOVER",
+      "format": "kontakt"
+    },
+    {
+      "id": "viola",
+      "name": "VIOLA",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\VIOLA",
+      "format": "kontakt"
+    },
+    {
+      "id": "viola-da-gamba",
+      "name": "Viola da Gamba",
+      "company": null,
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Viola da Gamba",
+      "format": "kontakt"
+    },
+    {
+      "id": "violin",
+      "name": "VIOLIN",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\VIOLIN",
+      "format": "kontakt"
+    },
+    {
+      "id": "vir2-instruments-basis-1-1",
+      "name": "Vir2 Instruments - BASiS 1.1",
+      "company": "vir2",
+      "categories": [
+        "bass"
+      ],
+      "tags": [],
+      "path": "M:\\BASS\\Vir2 Instruments - BASiS 1.1",
+      "format": "kontakt"
+    },
+    {
+      "id": "vir2-instruments-elite-orchestral-percussion-1-2",
+      "name": "Vir2 Instruments - Elite Orchestral Percussion 1.2",
+      "company": "vir2",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Vir2 Instruments - Elite Orchestral Percussion 1.2",
+      "format": "kontakt"
+    },
+    {
+      "id": "vokal-processing",
+      "name": "VOKAL PROCESSING",
+      "company": null,
+      "categories": [
+        "effect"
+      ],
+      "tags": [],
+      "path": "M:\\# PROCESSING\\VOKAL PROCESSING",
+      "format": "kontakt"
+    },
+    {
+      "id": "w-flugelhorn",
+      "name": "W-Flugelhorn",
+      "company": null,
+      "categories": [
+        "brass"
+      ],
+      "tags": [],
+      "path": "M:\\BRASS\\W-Flugelhorn",
+      "format": "kontakt"
+    },
+    {
+      "id": "wavesfactory-body-percussion",
+      "name": "Wavesfactory - Body Percussion",
+      "company": "wavesfactory",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Wavesfactory - Body Percussion",
+      "format": "kontakt"
+    },
+    {
+      "id": "wavesfactory-marxophone",
+      "name": "Wavesfactory - Marxophone",
+      "company": "wavesfactory",
+      "categories": [
+        "other-strings"
+      ],
+      "tags": [],
+      "path": "M:\\OTHER STRINGS\\Wavesfactory - Marxophone",
+      "format": "kontakt"
+    },
+    {
+      "id": "wavesfactory-w-shaker",
+      "name": "Wavesfactory - W-Shaker",
+      "company": "wavesfactory",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Wavesfactory - W-Shaker",
+      "format": "kontakt"
+    },
+    {
+      "id": "wavesfactory-w-tambourine",
+      "name": "Wavesfactory - W-Tambourine",
+      "company": "wavesfactory",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Wavesfactory - W-Tambourine",
+      "format": "kontakt"
+    },
+    {
+      "id": "wavesfactory-w-timpani",
+      "name": "Wavesfactory - W-Timpani",
+      "company": "wavesfactory",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Wavesfactory - W-Timpani",
+      "format": "kontakt"
+    },
+    {
+      "id": "whistle",
+      "name": "WHISTLE",
+      "company": null,
+      "categories": [
+        "voice"
+      ],
+      "tags": [],
+      "path": "M:\\VOICE\\WHISTLE",
+      "format": "kontakt"
+    },
+    {
+      "id": "woodwinds",
+      "name": "WOODWINDS",
+      "company": null,
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [],
+      "path": "M:\\ORCHESTRA\\WOODWINDS",
+      "format": "kontakt"
+    },
+    {
+      "id": "world-impact-library",
+      "name": "World Impact Library",
+      "company": "vir2",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\World Impact Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "xsample-chamber-ensemble-de-library",
+      "name": "Xsample Chamber Ensemble DE Library",
+      "company": "xsample",
+      "categories": [
+        "orchestra"
+      ],
+      "tags": [
+        "ensemble"
+      ],
+      "path": "M:\\ORCHESTRA\\Xsample Chamber Ensemble DE Library",
+      "format": "kontakt"
+    },
+    {
+      "id": "zapzorn",
+      "name": "ZapZorn",
+      "company": "zapzorn",
+      "categories": [
+        "glass"
+      ],
+      "tags": [],
+      "path": "M:\\GLASS\\ZapZorn",
+      "format": "kontakt"
+    },
+    {
+      "id": "zapzorn-big-bowls",
+      "name": "Zapzorn - Big Bowls",
+      "company": "zapzorn",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\Zapzorn - Big Bowls",
+      "format": "kontakt"
+    },
+    {
+      "id": "zapzorn-elements",
+      "name": "ZapZorn Elements",
+      "company": "zapzorn",
+      "categories": [
+        "strange"
+      ],
+      "tags": [],
+      "path": "M:\\STRANGE\\ZapZorn Elements",
+      "format": "kontakt"
+    },
+    {
+      "id": "zero-g",
+      "name": "ZERO-G",
+      "company": "zero-g",
+      "categories": [
+        "synth"
+      ],
+      "tags": [],
+      "path": "M:\\SYNTH\\ZERO-G",
+      "format": "kontakt"
+    },
+    {
+      "id": "zero-g-beats-from-the-east-multiformat",
+      "name": "Zero-G Beats From The East MULTiFORMAT",
+      "company": "zero-g",
+      "categories": [
+        "percussion"
+      ],
+      "tags": [],
+      "path": "M:\\PERCUSSION\\Zero-G Beats From The East MULTiFORMAT",
+      "format": "kontakt"
+    }
+  ]
+}

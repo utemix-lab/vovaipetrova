@@ -1,0 +1,118 @@
+{
+  "id": "sound-production-mechanisms",
+  "version": "2.1.0",
+  "description": "Механизмы звукоизвлечения — как рождается звук",
+  "node_type": "SoundProductionMechanism",
+  "entries": [
+    {
+      "id": "bowed",
+      "node_type": "SoundProductionMechanism",
+      "name": "Bowed",
+      "name_ru": "Смычковый",
+      "definition": "Звук извлекается трением смычка о струну",
+      "domain": "physical",
+      "instrument_families": ["strings"],
+      "examples": ["violin", "cello", "viola", "double-bass"]
+    },
+    {
+      "id": "plucked",
+      "node_type": "SoundProductionMechanism",
+      "name": "Plucked",
+      "name_ru": "Щипковый",
+      "definition": "Звук извлекается щипком струны пальцем или плектром",
+      "domain": "physical",
+      "instrument_families": ["strings", "guitar"],
+      "examples": ["guitar", "harp", "bass", "banjo", "ukulele"]
+    },
+    {
+      "id": "struck",
+      "node_type": "SoundProductionMechanism",
+      "name": "Struck",
+      "name_ru": "Ударный",
+      "definition": "Звук извлекается ударом по поверхности или струне",
+      "domain": "physical",
+      "instrument_families": ["percussion", "keys"],
+      "examples": ["piano", "drums", "marimba", "xylophone", "timpani"]
+    },
+    {
+      "id": "air-driven",
+      "node_type": "SoundProductionMechanism",
+      "name": "Air-driven",
+      "name_ru": "Духовой",
+      "definition": "Звук извлекается вибрацией воздушного столба",
+      "domain": "physical",
+      "instrument_families": ["winds", "brass"],
+      "examples": ["flute", "clarinet", "saxophone", "trumpet", "trombone"]
+    },
+    {
+      "id": "sample-playback",
+      "node_type": "SoundProductionMechanism",
+      "name": "Sample Playback",
+      "name_ru": "Воспроизведение сэмплов",
+      "definition": "Воспроизведение записанных звуков с возможностью транспонирования",
+      "domain": "synthetic",
+      "instrument_families": ["sampler"],
+      "examples": ["Kontakt libraries", "PLAY libraries", "UVI instruments"]
+    },
+    {
+      "id": "wavetable-oscillation",
+      "node_type": "SoundProductionMechanism",
+      "name": "Wavetable Oscillation",
+      "name_ru": "Волновая осцилляция",
+      "definition": "Генерация звука путём морфинга между волновыми таблицами",
+      "domain": "synthetic",
+      "instrument_families": ["synth"],
+      "examples": ["Serum", "Vital", "Massive X"]
+    },
+    {
+      "id": "subtractive-oscillation",
+      "node_type": "SoundProductionMechanism",
+      "name": "Subtractive Oscillation",
+      "name_ru": "Субтрактивная осцилляция",
+      "definition": "Генерация базовых волн с последующей фильтрацией",
+      "domain": "synthetic",
+      "instrument_families": ["synth"],
+      "examples": ["Minimoog", "Diva", "Repro"]
+    },
+    {
+      "id": "fm-modulation",
+      "node_type": "SoundProductionMechanism",
+      "name": "FM Modulation",
+      "name_ru": "Частотная модуляция",
+      "definition": "Генерация звука путём модуляции частоты операторов",
+      "domain": "synthetic",
+      "instrument_families": ["synth"],
+      "examples": ["DX7", "FM8", "Operator"]
+    },
+    {
+      "id": "granular-resynthesis",
+      "node_type": "SoundProductionMechanism",
+      "name": "Granular Resynthesis",
+      "name_ru": "Гранулярный ресинтез",
+      "definition": "Разбиение звука на микро-частицы и их реорганизация",
+      "domain": "synthetic",
+      "instrument_families": ["synth", "fx"],
+      "examples": ["Granulator", "Padshop", "Portal"]
+    },
+    {
+      "id": "physical-modeling",
+      "node_type": "SoundProductionMechanism",
+      "name": "Physical Modeling",
+      "name_ru": "Физическое моделирование",
+      "definition": "Математическое моделирование физических свойств инструмента",
+      "domain": "synthetic",
+      "instrument_families": ["synth"],
+      "examples": ["Pianoteq", "SWAM", "Chromaphone"]
+    },
+    {
+      "id": "additive-synthesis",
+      "node_type": "SoundProductionMechanism",
+      "name": "Additive Synthesis",
+      "name_ru": "Аддитивный синтез",
+      "definition": "Построение звука из отдельных синусоидальных гармоник",
+      "domain": "synthetic",
+      "instrument_families": ["synth"],
+      "examples": ["Razor", "Harmor", "Alchemy"]
+    }
+  ]
+}

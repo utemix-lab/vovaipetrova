@@ -1,0 +1,29 @@
+{
+  "id": "vst-features",
+  "version": "1.0.0",
+  "description": "Фичи и технологии VST-плагинов",
+  "schema": {
+    "id": "string",
+    "name": "string",
+    "name_ru": "string",
+    "description": "string",
+    "tags": "string[]"
+  },
+  "entries": [
+    { "id": "riffer", "name": "Riffer", "name_ru": "Риффер", "description": "Редактор риффов и паттернов", "tags": ["guitar", "pattern"] },
+    { "id": "strummer", "name": "Strummer", "name_ru": "Страммер", "description": "Автоматическое бренчание аккордов", "tags": ["guitar", "chord"] },
+    { "id": "tab-reader", "name": "Tab Reader", "name_ru": "Читалка табулатур", "description": "Чтение и воспроизведение Guitar Pro файлов", "tags": ["guitar", "tab"] },
+    { "id": "legato", "name": "Legato", "name_ru": "Легато", "description": "Плавные переходы между нотами", "tags": ["articulation"] },
+    { "id": "humanization", "name": "Humanization", "name_ru": "Гуманизация", "description": "Рандомизация для реалистичности", "tags": ["realism"] },
+    { "id": "round-robin", "name": "Round Robin", "name_ru": "Round Robin", "description": "Чередование сэмплов для избежания повторов", "tags": ["sampling", "realism"] },
+    { "id": "velocity-layers", "name": "Velocity Layers", "name_ru": "Слои velocity", "description": "Разные сэмплы для разной силы удара", "tags": ["sampling", "dynamics"] },
+    { "id": "arpeggiator", "name": "Arpeggiator", "name_ru": "Арпеджиатор", "description": "Автоматическое арпеджио", "tags": ["synth", "pattern"] },
+    { "id": "sequencer", "name": "Sequencer", "name_ru": "Секвенсор", "description": "Встроенный секвенсор", "tags": ["pattern"] },
+    { "id": "modulation-matrix", "name": "Modulation Matrix", "name_ru": "Матрица модуляции", "description": "Гибкая маршрутизация модуляций", "tags": ["synth", "modular"] },
+    { "id": "wavetable-editor", "name": "Wavetable Editor", "name_ru": "Редактор wavetable", "description": "Создание и редактирование wavetable", "tags": ["synth", "wavetable"] },
+    { "id": "convolution", "name": "Convolution", "name_ru": "Свёртка", "description": "IR-ревербератор или эффект", "tags": ["reverb", "ir"] },
+    { "id": "multiband", "name": "Multiband", "name_ru": "Многополосный", "description": "Обработка по частотным полосам", "tags": ["dynamics", "eq"] },
+    { "id": "sidechain", "name": "Sidechain", "name_ru": "Сайдчейн", "description": "Внешний сигнал управления", "tags": ["dynamics", "routing"] },
+    { "id": "mid-side", "name": "Mid/Side", "name_ru": "Mid/Side", "description": "Обработка середины и сторон отдельно", "tags": ["stereo", "mastering"] }
+  ]
+}

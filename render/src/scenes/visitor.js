@@ -2970,7 +2970,12 @@ function updatePanels() {
       return;
     } else if (isWorkbenchNode(currentStep)) {
       updateStoryWithWorkbench(storyPanel, currentStep);
-      updatePanel(systemPanel, { text: "" });
+      // Специальная обработка для VSTablichment — 2D-граф в System
+      if (currentStep.id === "workbench-vova-vstablishment") {
+        updateSystemWithVSTGraph(systemPanel);
+      } else {
+        updatePanel(systemPanel, { text: "" });
+      }
       updateServicePanel(servicePanel, { text: "", actions: [] });
       appendPracticesToSystem();
       updateContextStrip();
@@ -3182,6 +3187,170 @@ function updateStoryWithPotential(panel, node) {
       initMiniShape("octa", shapeArea, octaNodeIds, node.id);
     }
   }
+}
+
+// === VST 2D GRAPH (VSTablichment System Panel) ===
+let vstGraph2D = null;
+let VSTGraph2DClass = null;
+
+async function updateSystemWithVSTGraph(panel) {
+  const content = panel?.querySelector(".panel-content");
+  if (!content) return;
+  
+  // Уничтожаем предыдущий граф
+  if (vstGraph2D) {
+    vstGraph2D.destroy();
+    vstGraph2D = null;
+  }
+  
+  // Создаём контейнер для графа
+  content.innerHTML = `
+    <div class="vst-graph-container" style="width: 100%; height: 100%; min-height: 200px;"></div>
+  `;
+  
+  const container = content.querySelector(".vst-graph-container");
+  if (!container) return;
+  
+  // Динамический импорт
+  if (!VSTGraph2DClass) {
+    const module = await import("../components/VSTGraph2D.js");
+    VSTGraph2DClass = module.VSTGraph2D;
+  }
+  
+  // Создаём и загружаем граф
+  vstGraph2D = new VSTGraph2DClass(container, {
+    showPlugins: true,
+    maxPlugins: 100 // Ограничиваем для производительности
+  });
+  
+  await vstGraph2D.loadData();
+  
+  // Повторный resize после полной отрисовки
+  setTimeout(() => vstGraph2D?.resize(), 100);
+}
+
+// === VST LAYER WIDGETS (VSTablichment Story Panel) ===
+// Слои графа для переключения
+
+const VST_GRAPH_LAYERS = {
+  instruments: { label: 'Инструменты', icon: '🎹', color: '#fbbf24' },
+  categories: { label: 'Категории', icon: '📂', color: '#a78bfa' },
+  manufacturers: { label: 'Производители', icon: '🏭', color: '#22d3ee' },
+  articulations: { label: 'Артикуляции', icon: '🎻', color: '#60a5fa' },
+  platforms: { label: 'Платформы', icon: '💻', color: '#9ca3af' }
+};
+
+function renderVSTLayerWidgets() {
+  const layersHtml = Object.entries(VST_GRAPH_LAYERS).map(([id, layer]) => `
+    <div class="vst-layer-widget" 
+         data-layer-id="${id}" 
+         data-active="${id === 'instruments' || id === 'categories' || id === 'manufacturers' ? 'true' : 'false'}"
+         title="${layer.label}"
+         style="--layer-color: ${layer.color}">
+      <div class="widget-frame">
+        <span class="vst-layer-icon">${layer.icon}</span>
+      </div>
+      <span class="vst-layer-label">${layer.label}</span>
+    </div>
+  `).join("");
+  
+  return `
+    <div class="widget-group vst-layers-group">
+      <div class="section-title">Слои графа</div>
+      <div class="vst-layer-widgets inline-widgets">
+        ${layersHtml}
+      </div>
+    </div>
+  `;
+}
+
+function bindVSTLayerWidgets(container) {
+  const widgetsContainer = container.querySelector(".vst-layer-widgets");
+  if (!widgetsContainer) return;
+  
+  widgetsContainer.querySelectorAll(".vst-layer-widget").forEach(widget => {
+    const layerId = widget.dataset.layerId;
+    
+    widget.addEventListener("click", () => {
+      // Переключаем слой
+      const isActive = widget.dataset.active === 'true';
+      widget.dataset.active = isActive ? 'false' : 'true';
+      
+      // Обновляем граф
+      if (vstGraph2D) {
+        vstGraph2D.toggleLayer(layerId);
+      }
+      
+      // Запускаем Chladni-паттерн при включении слоя
+      if (!isActive && chladniSimulation) {
+        chladniSimulation.triggerPattern();
+      }
+    });
+    
+    widget.addEventListener("mouseenter", () => {
+      // Hover-подсветка по типу
+      const layer = VST_GRAPH_LAYERS[layerId];
+      if (vstGraph2D && layer) {
+        // Подсвечиваем узлы этого слоя
+        const types = getLayerTypes(layerId);
+        highlightVSTByTypes(types);
+      }
+    });
+    
+    widget.addEventListener("mouseleave", () => {
+      clearVSTHighlight();
+    });
+  });
+}
+
+function getLayerTypes(layerId) {
+  const mapping = {
+    instruments: ['instrument'],
+    categories: ['category', 'system'],
+    manufacturers: ['manufacturer', 'country'],
+    articulations: ['articulation', 'method'],
+    platforms: ['platform']
+  };
+  return mapping[layerId] || [];
+}
+
+function highlightVSTByTypes(types) {
+  if (!vstGraph2D || !vstGraph2D.graph) return;
+  
+  const typeSet = new Set(types);
+  
+  vstGraph2D.graph
+    .nodeColor(node => {
+      if (typeSet.has(node.type)) {
+        // Возвращаем стандартный цвет для этого типа
+        const colors = {
+          root: '#22d3ee',
+          instrument: '#fbbf24',
+          category: '#a78bfa',
+          system: '#f87171',
+          manufacturer: '#22d3ee',
+          country: '#2dd4bf',
+          articulation: '#60a5fa',
+          method: '#fb923c',
+          platform: '#9ca3af'
+        };
+        return colors[node.type] || '#fff';
+      }
+      return 'rgba(100, 100, 100, 0.2)';
+    })
+    .linkColor(link => {
+      const sourceType = typeof link.source === 'object' ? link.source.type : null;
+      const targetType = typeof link.target === 'object' ? link.target.type : null;
+      if (typeSet.has(sourceType) || typeSet.has(targetType)) {
+        return 'rgba(255, 255, 255, 0.4)';
+      }
+      return 'rgba(255, 255, 255, 0.03)';
+    });
+}
+
+function clearVSTHighlight() {
+  if (!vstGraph2D) return;
+  vstGraph2D.clearHighlight();
 }
 
 // === CHLADNI PATTERN SCREEN (VSTablichment) ===
@@ -3519,9 +3688,10 @@ function updateStoryWithWorkbench(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  // Специальная обработка для VSTablichment — Chladni-эффект
+  // Специальная обработка для VSTablichment — Chladni-эффект + виджеты слоёв графа
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
+    html += renderVSTLayerWidgets();
   } else {
     html += renderNarrativeScreen();
   }
@@ -3532,6 +3702,7 @@ function updateStoryWithWorkbench(panel, node) {
   
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
+    bindVSTLayerWidgets(content);
   } else {
     bindNarrativeScreen(content);
   }

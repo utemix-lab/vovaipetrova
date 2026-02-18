@@ -1627,3 +1627,204 @@ body.focus-service #service-panel::before {
 .chladni-test-btn:active {
   transform: scale(0.96);
 }
+
+/* === VST 2D GRAPH === */
+#system-panel:has(.vst-graph-container) .panel-header {
+  display: none;
+}
+
+#system-panel .panel-content:has(.vst-graph-container) {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.vst-graph-container {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.vst-graph-container::before {
+  content: "SYSTEM";
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  font-family: var(--font-tech);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  opacity: 0.7;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.vst-graph-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* === VST CATEGORY WIDGETS === */
+.vst-categories-group {
+  margin-top: 12px;
+}
+
+.vst-categories-group .section-title {
+  margin-bottom: 8px;
+}
+
+.vst-category-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vst-category-widgets[data-loading="true"] {
+  opacity: 0.5;
+}
+
+.vst-category-widgets .loading-text {
+  font-size: 12px;
+  color: var(--accent-cyan);
+  opacity: 0.6;
+}
+
+.vst-category-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 48px;
+}
+
+.vst-category-widget:hover {
+  background: rgba(167, 139, 250, 0.15);
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateY(-2px);
+}
+
+.vst-category-widget--active {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.2);
+}
+
+.vst-category-widget .widget-frame {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.vst-category-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* === VST LAYER WIDGETS === */
+.vst-layers-group {
+  margin-top: 12px;
+}
+
+.vst-layers-group .section-title {
+  margin-bottom: 8px;
+}
+
+.vst-layer-widgets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vst-layer-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 56px;
+  position: relative;
+}
+
+.vst-layer-widget::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--layer-color, #666);
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.vst-layer-widget[data-active="true"]::before {
+  opacity: 1;
+  box-shadow: 0 0 6px var(--layer-color, #666);
+}
+
+.vst-layer-widget:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--layer-color, rgba(255, 255, 255, 0.3));
+  transform: translateY(-2px);
+}
+
+.vst-layer-widget[data-active="true"] {
+  background: color-mix(in srgb, var(--layer-color) 15%, transparent);
+  border-color: var(--layer-color, rgba(255, 255, 255, 0.5));
+}
+
+.vst-layer-widget .widget-frame {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.vst-layer-widget[data-active="true"] .widget-frame {
+  background: color-mix(in srgb, var(--layer-color) 20%, transparent);
+}
+
+.vst-layer-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.vst-layer-label {
+  font-size: 10px;
+  font-family: var(--font-tech);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vst-layer-widget[data-active="true"] .vst-layer-label {
+  color: var(--layer-color, rgba(255, 255, 255, 0.9));
+}

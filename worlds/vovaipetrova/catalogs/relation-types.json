@@ -1,0 +1,174 @@
+{
+  "id": "relation-types",
+  "version": "2.1.1",
+  "description": "Реестр допустимых типов связей между узлами графа — онтологически защищённый",
+  "validation_rule": "Нельзя использовать связь, которой нет в реестре. Агент валидирует допустимость from → to.",
+  "relations": {
+    "HAS_MECHANISM": {
+      "description": "Инструмент использует механизм звукоизвлечения",
+      "from": ["Instrument"],
+      "to": ["SoundProductionMechanism"],
+      "cardinality": "many-to-many",
+      "required": true
+    },
+    "SUPPORTS": {
+      "description": "Инструмент поддерживает артикуляцию (валидируется через механизм)",
+      "from": ["Instrument"],
+      "to": ["PerformanceArticulation"],
+      "cardinality": "many-to-many",
+      "validation": "articulation.applicable_to_mechanisms INTERSECTS instrument.mechanisms"
+    },
+    "USES_SYNTHESIS": {
+      "description": "Инструмент использует метод синтеза",
+      "from": ["Instrument"],
+      "to": ["SynthesisMethod"],
+      "cardinality": "many-to-one",
+      "domain_constraint": "synthetic"
+    },
+    "BELONGS_TO_GENRE": {
+      "description": "Инструмент типичен для жанра",
+      "from": ["Instrument"],
+      "to": ["Genre"],
+      "cardinality": "many-to-many"
+    },
+    "HAS_CHARACTER": {
+      "description": "Инструмент имеет характер звучания",
+      "from": ["Instrument"],
+      "to": ["Character"],
+      "cardinality": "many-to-many"
+    },
+    "EVOKES_MOOD": {
+      "description": "Инструмент вызывает настроение",
+      "from": ["Instrument"],
+      "to": ["Mood"],
+      "cardinality": "many-to-many"
+    },
+    "CLASSIFIED_AS": {
+      "description": "Инструмент классифицирован в системе",
+      "from": ["Instrument"],
+      "to": ["SystemCategory"],
+      "cardinality": "many-to-many"
+    },
+    "MADE_BY": {
+      "description": "Инструмент произведён компанией",
+      "from": ["Instrument"],
+      "to": ["Manufacturer"],
+      "cardinality": "many-to-one",
+      "required": true
+    },
+    "RUNS_ON": {
+      "description": "Инструмент работает на платформе",
+      "from": ["Instrument"],
+      "to": ["Platform"],
+      "cardinality": "many-to-many"
+    },
+    "REQUIRES_ENGINE": {
+      "description": "Инструмент требует движок",
+      "from": ["Instrument"],
+      "to": ["Engine"],
+      "cardinality": "many-to-one"
+    },
+    "PART_OF_SYSTEM": {
+      "description": "Категория принадлежит системе классификации",
+      "from": ["SystemCategory"],
+      "to": ["ClassificationSystem"],
+      "cardinality": "many-to-one"
+    },
+    "PARENT_OF": {
+      "description": "Иерархическая связь категорий",
+      "from": ["SystemCategory", "Genre"],
+      "to": ["SystemCategory", "Genre"],
+      "cardinality": "one-to-many"
+    },
+    "APPLICABLE_TO": {
+      "description": "Артикуляция применима к механизму",
+      "from": ["PerformanceArticulation"],
+      "to": ["SoundProductionMechanism"],
+      "cardinality": "many-to-many"
+    },
+    "TYPICAL_FOR": {
+      "description": "Концепт типичен для жанра/категории",
+      "from": ["PerformanceArticulation", "SynthesisMethod", "Character", "Mood"],
+      "to": ["Genre"],
+      "cardinality": "many-to-many"
+    },
+    "PRODUCES": {
+      "description": "Метод синтеза производит характер",
+      "from": ["SynthesisMethod"],
+      "to": ["Character"],
+      "cardinality": "many-to-many"
+    },
+    "OPPOSITE_OF": {
+      "description": "Противоположные концепты",
+      "from": ["PerformanceArticulation", "Character", "Mood"],
+      "to": ["PerformanceArticulation", "Character", "Mood"],
+      "cardinality": "many-to-many",
+      "symmetric": true
+    },
+    "RELATED_TO": {
+      "description": "Связанные концепты",
+      "from": ["*"],
+      "to": ["*"],
+      "cardinality": "many-to-many",
+      "symmetric": true
+    },
+    "INFLUENCES": {
+      "description": "Концепт влияет на другой концепт",
+      "from": ["*"],
+      "to": ["*"],
+      "cardinality": "many-to-many"
+    },
+    "PRODUCES_CHARACTER": {
+      "description": "Метод/механизм производит характер звучания",
+      "from": ["SynthesisMethod", "SoundProductionMechanism"],
+      "to": ["Character"],
+      "cardinality": "many-to-many"
+    },
+    "TYPICAL_FOR_GENRE": {
+      "description": "Концепт типичен для жанра",
+      "from": ["SynthesisMethod", "PerformanceArticulation", "Character", "Mood", "SoundProductionMechanism"],
+      "to": ["Genre"],
+      "cardinality": "many-to-many"
+    },
+    "COMMON_IN": {
+      "description": "Артикуляция/техника распространена в жанре",
+      "from": ["PerformanceArticulation"],
+      "to": ["Genre"],
+      "cardinality": "many-to-many"
+    },
+    "EVOKES": {
+      "description": "Концепт вызывает настроение",
+      "from": ["Character", "SynthesisMethod", "Genre"],
+      "to": ["Mood"],
+      "cardinality": "many-to-many"
+    }
+  },
+  "node_types": [
+    "Instrument",
+    "PerformanceArticulation",
+    "SoundProductionMechanism",
+    "SynthesisMethod",
+    "Genre",
+    "Mood",
+    "Character",
+    "ClassificationSystem",
+    "SystemCategory",
+    "Manufacturer",
+    "Platform",
+    "Engine"
+  ],
+  "domains": [
+    "physical",
+    "synthetic",
+    "aesthetic",
+    "functional",
+    "systemic"
+  ],
+  "abstraction_levels": {
+    "1": "Конкретный элемент (нота, сэмпл)",
+    "2": "Техника исполнения (артикуляция)",
+    "3": "Метод/механизм (синтез, звукоизвлечение)",
+    "4": "Категория (жанр, характер)",
+    "5": "Система (классификация, онтология)"
+  }
+}
