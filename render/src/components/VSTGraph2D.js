@@ -10,46 +10,45 @@
 
 import ForceGraph from 'force-graph';
 
-// Цвета для типов узлов (по спецификации)
+// Цвета для типов узлов (новая онтология)
 const NODE_COLORS = {
   root: '#22d3ee',           // Cyan — корень
-  instrument: '#fbbf24',     // Amber — инструменты
-  attribute: '#34d399',      // Green — атрибуты
-  category: '#a78bfa',       // Purple — категории
-  system: '#f87171',         // Red — системы классификации
-  method: '#fb923c',         // Orange — методики
-  articulation: '#60a5fa',   // Blue — артикуляции
-  term: '#c084fc',           // Violet — терминология
-  manufacturer: '#22d3ee',   // Cyan — производители
+  VSTPlugin: '#fbbf24',      // Amber — плагины
+  Mechanism: '#34d399',      // Green — механизмы
+  SynthesisMethod: '#10b981',// Emerald — методы синтеза
+  Genre: '#a78bfa',          // Purple — жанры
+  Character: '#f472b6',      // Pink — характеры
+  Mood: '#c084fc',           // Violet — настроения
+  Articulation: '#60a5fa',   // Blue — артикуляции
+  ClassificationSystem: '#f87171', // Red — системы классификации
+  Company: '#22d3ee',        // Cyan — производители
   country: '#2dd4bf',        // Teal — страны
-  platform: '#9ca3af',       // Gray — платформы
-  note: '#f472b6',           // Pink — заметки
-  dimension: '#818cf8'       // Indigo — кастомные измерения
+  platform: '#9ca3af'        // Gray — платформы
 };
 
 const NODE_SIZES = {
   root: 10,
-  instrument: 3,
-  attribute: 2,
-  category: 5,
-  system: 6,
-  method: 4,
-  articulation: 4,
-  term: 2,
-  manufacturer: 5,
+  VSTPlugin: 4,
+  Mechanism: 5,
+  SynthesisMethod: 5,
+  Genre: 4,
+  Character: 3,
+  Mood: 3,
+  Articulation: 4,
+  ClassificationSystem: 6,
+  Company: 5,
   country: 6,
-  platform: 3,
-  note: 2,
-  dimension: 3
+  platform: 3
 };
 
-// Слои графа (для фильтрации)
+// Слои графа (для фильтрации) — новая онтология
 export const GRAPH_LAYERS = {
-  instruments: { label: 'Инструменты', types: ['instrument'], icon: '🎹' },
-  categories: { label: 'Категории', types: ['category', 'system'], icon: '📂' },
-  manufacturers: { label: 'Производители', types: ['manufacturer', 'country'], icon: '🏭' },
-  articulations: { label: 'Артикуляции', types: ['articulation', 'method'], icon: '🎻' },
-  platforms: { label: 'Платформы', types: ['platform'], icon: '💻' }
+  plugins: { label: 'Плагины', types: ['VSTPlugin'], icon: '🎹' },
+  mechanisms: { label: 'Механизмы', types: ['Mechanism', 'SynthesisMethod'], icon: '⚙️' },
+  genres: { label: 'Жанры', types: ['Genre'], icon: '🎵' },
+  aesthetics: { label: 'Эстетика', types: ['Character', 'Mood'], icon: '✨' },
+  articulations: { label: 'Артикуляции', types: ['Articulation'], icon: '🎻' },
+  companies: { label: 'Производители', types: ['Company', 'country'], icon: '🏭' }
 };
 
 export class VSTGraph2D {
@@ -61,7 +60,7 @@ export class VSTGraph2D {
     
     // Опции
     this.maxInstruments = options.maxInstruments ?? 100;
-    this.activeLayers = new Set(['instruments', 'categories', 'manufacturers']);
+    this.activeLayers = new Set(['plugins', 'mechanisms', 'genres']);
     
     // Callback для внешнего UI
     this.onLayerChange = options.onLayerChange || null;
@@ -106,23 +105,36 @@ export class VSTGraph2D {
   async loadData() {
     try {
       const basePath = import.meta.env.BASE_URL || '/';
+      const nodesPath = `${basePath}graph/catalogs/nodes/`;
       
-      // Загружаем все каталоги
-      const [categoriesRes, pluginsRes, companiesRes] = await Promise.all([
-        fetch(`${basePath}graph/catalogs/vst-categories.json`),
-        fetch(`${basePath}graph/catalogs/vst-plugins.json`),
+      // Загружаем все каталоги новой онтологии
+      const [
+        pluginsRes, mechanismsRes, synthesisRes, genresRes,
+        charactersRes, moodsRes, articulationsRes, companiesRes
+      ] = await Promise.all([
+        fetch(`${nodesPath}vst-plugins.json`),
+        fetch(`${nodesPath}sound-production-mechanisms.json`),
+        fetch(`${nodesPath}synthesis-methods.json`),
+        fetch(`${nodesPath}genres.json`),
+        fetch(`${nodesPath}characters.json`),
+        fetch(`${nodesPath}moods.json`),
+        fetch(`${nodesPath}articulations.json`),
         fetch(`${basePath}graph/catalogs/companies.json`)
       ]);
       
-      const categoriesData = await categoriesRes.json();
-      const pluginsData = await pluginsRes.json();
-      const companiesData = await companiesRes.json();
+      const plugins = (await pluginsRes.json()).entries;
+      const mechanisms = (await mechanismsRes.json()).entries;
+      const synthesis = (await synthesisRes.json()).entries;
+      const genres = (await genresRes.json()).entries;
+      const characters = (await charactersRes.json()).entries;
+      const moods = (await moodsRes.json()).entries;
+      const articulations = (await articulationsRes.json()).entries;
+      const companies = (await companiesRes.json()).entries;
       
-      this.buildFullGraph(
-        categoriesData.entries,
-        pluginsData.entries,
-        companiesData.entries
-      );
+      this.buildFullGraph({
+        plugins, mechanisms, synthesis, genres,
+        characters, moods, articulations, companies
+      });
     } catch (err) {
       console.error('[VSTGraph2D] Failed to load data:', err);
       this.data = {
@@ -133,77 +145,62 @@ export class VSTGraph2D {
     }
   }
   
-  buildFullGraph(categories, plugins, companies) {
+  buildFullGraph(data) {
+    const { plugins, mechanisms, synthesis, genres, characters, moods, articulations, companies } = data;
     const nodes = [];
     const links = [];
     const nodeIds = new Set();
     
     // === ROOT ===
-    nodes.push({
-      id: 'vst-root',
-      label: 'VST Каталог',
-      type: 'root'
-    });
+    nodes.push({ id: 'vst-root', label: 'VST Каталог', type: 'root' });
     nodeIds.add('vst-root');
     
-    // === SYSTEMS (системы классификации) ===
-    const systems = [
-      { id: 'system-internal', name: 'Internal', label: 'Внутренняя' },
-      { id: 'system-hornbostel', name: 'Hornbostel-Sachs', label: 'Хорнбостель-Закс' },
-      { id: 'system-functional', name: 'Functional', label: 'Функциональная' }
-    ];
-    
-    for (const sys of systems) {
-      nodes.push({
-        id: sys.id,
-        label: sys.label,
-        type: 'system',
-        data: sys
-      });
-      nodeIds.add(sys.id);
-      links.push({
-        source: 'vst-root',
-        target: sys.id,
-        relation: 'has_system'
-      });
+    // === MECHANISMS ===
+    for (const mech of mechanisms) {
+      nodes.push({ id: mech.id, label: mech.name, type: 'Mechanism', data: mech });
+      nodeIds.add(mech.id);
+      links.push({ source: 'vst-root', target: mech.id, relation: 'has_mechanism' });
     }
     
-    // === CATEGORIES ===
-    const categoryMap = new Map();
-    for (const cat of categories) {
-      categoryMap.set(cat.id, cat);
-      
-      nodes.push({
-        id: `cat-${cat.id}`,
-        label: cat.name_ru || cat.name,
-        type: 'category',
-        data: cat
-      });
-      nodeIds.add(`cat-${cat.id}`);
-      
-      // Связь с родительской категорией или системой
-      if (cat.parent && cat.parent !== 'instrument' && cat.parent !== 'effect') {
-        links.push({
-          source: `cat-${cat.parent}`,
-          target: `cat-${cat.id}`,
-          relation: 'has_subcategory'
-        });
-      } else {
-        // Корневые категории связаны с Internal системой
-        links.push({
-          source: 'system-internal',
-          target: `cat-${cat.id}`,
-          relation: 'categorized_by'
-        });
-      }
+    // === SYNTHESIS METHODS ===
+    for (const syn of synthesis) {
+      nodes.push({ id: syn.id, label: syn.name, type: 'SynthesisMethod', data: syn });
+      nodeIds.add(syn.id);
     }
     
-    // === COUNTRIES ===
+    // === GENRES ===
+    for (const genre of genres) {
+      nodes.push({ id: genre.id, label: genre.name, type: 'Genre', data: genre });
+      nodeIds.add(genre.id);
+    }
+    
+    // === CHARACTERS ===
+    for (const char of characters) {
+      nodes.push({ id: char.id, label: char.name, type: 'Character', data: char });
+      nodeIds.add(char.id);
+    }
+    
+    // === MOODS ===
+    for (const mood of moods) {
+      nodes.push({ id: mood.id, label: mood.name, type: 'Mood', data: mood });
+      nodeIds.add(mood.id);
+    }
+    
+    // === ARTICULATIONS ===
+    for (const art of articulations) {
+      nodes.push({ id: art.id, label: art.name, type: 'Articulation', data: art });
+      nodeIds.add(art.id);
+    }
+    
+    // === COMPANIES ===
     const countrySet = new Set();
     for (const company of companies) {
+      nodes.push({ id: company.id, label: company.name, type: 'Company', data: company });
+      nodeIds.add(company.id);
       if (company.country) countrySet.add(company.country);
     }
     
+    // === COUNTRIES ===
     const countryNames = {
       'us': '🇺🇸 США', 'de': '🇩🇪 Германия', 'gb': '🇬🇧 Великобритания',
       'fr': '🇫🇷 Франция', 'it': '🇮🇹 Италия', 'nl': '🇳🇱 Нидерланды',
@@ -212,94 +209,70 @@ export class VSTGraph2D {
       'ua': '🇺🇦 Украина', 'pl': '🇵🇱 Польша', 'es': '🇪🇸 Испания',
       'br': '🇧🇷 Бразилия', 'gr': '🇬🇷 Греция', 'dk': '🇩🇰 Дания'
     };
-    
     for (const countryId of countrySet) {
-      nodes.push({
-        id: `country-${countryId}`,
-        label: countryNames[countryId] || countryId.toUpperCase(),
-        type: 'country',
-        data: { id: countryId }
-      });
-      nodeIds.add(`country-${countryId}`);
+      const cid = `country-${countryId}`;
+      nodes.push({ id: cid, label: countryNames[countryId] || countryId.toUpperCase(), type: 'country' });
+      nodeIds.add(cid);
     }
     
-    // === MANUFACTURERS ===
-    const companyMap = new Map();
+    // Company → Country links
     for (const company of companies) {
-      companyMap.set(company.id, company);
-      
-      nodes.push({
-        id: `mfr-${company.id}`,
-        label: company.name,
-        type: 'manufacturer',
-        data: company
-      });
-      nodeIds.add(`mfr-${company.id}`);
-      
-      // Связь со страной
-      if (company.country) {
-        links.push({
-          source: `mfr-${company.id}`,
-          target: `country-${company.country}`,
-          relation: 'made_in'
-        });
+      if (company.country && nodeIds.has(`country-${company.country}`)) {
+        links.push({ source: company.id, target: `country-${company.country}`, relation: 'made_in' });
       }
     }
     
-    // === INSTRUMENTS (плагины) ===
+    // === VST PLUGINS ===
     const limitedPlugins = plugins.slice(0, this.maxInstruments);
-    
     for (const plugin of limitedPlugins) {
-      const pluginId = `inst-${plugin.id}`;
-      nodes.push({
-        id: pluginId,
-        label: plugin.name,
-        type: 'instrument',
-        data: plugin
-      });
-      nodeIds.add(pluginId);
+      nodes.push({ id: plugin.id, label: plugin.name, type: 'VSTPlugin', data: plugin });
+      nodeIds.add(plugin.id);
       
-      // Связь с категориями
-      for (const catId of plugin.categories || []) {
-        const catNodeId = `cat-${catId}`;
-        if (nodeIds.has(catNodeId)) {
-          links.push({
-            source: pluginId,
-            target: catNodeId,
-            relation: 'belongs_to_category'
-          });
+      // Plugin → Mechanisms
+      for (const mechId of plugin.mechanisms || []) {
+        if (nodeIds.has(mechId)) {
+          links.push({ source: plugin.id, target: mechId, relation: 'has_mechanism' });
         }
       }
       
-      // Связь с производителем
-      if (plugin.company && nodeIds.has(`mfr-${plugin.company}`)) {
-        links.push({
-          source: pluginId,
-          target: `mfr-${plugin.company}`,
-          relation: 'produced_by'
-        });
+      // Plugin → Genres
+      for (const genreId of plugin.typical_for_genre || []) {
+        if (nodeIds.has(genreId)) {
+          links.push({ source: plugin.id, target: genreId, relation: 'typical_for' });
+        }
+      }
+      
+      // Plugin → Characters
+      for (const charId of plugin.produces_character || []) {
+        if (nodeIds.has(charId)) {
+          links.push({ source: plugin.id, target: charId, relation: 'produces' });
+        }
+      }
+      
+      // Plugin → Moods
+      for (const moodId of plugin.evokes_mood || []) {
+        if (nodeIds.has(moodId)) {
+          links.push({ source: plugin.id, target: moodId, relation: 'evokes' });
+        }
+      }
+      
+      // Plugin → Articulations
+      for (const artId of plugin.supports_articulation || []) {
+        if (nodeIds.has(artId)) {
+          links.push({ source: plugin.id, target: artId, relation: 'supports' });
+        }
+      }
+      
+      // Plugin → Company (developer)
+      if (plugin.developer && nodeIds.has(plugin.developer)) {
+        links.push({ source: plugin.id, target: plugin.developer, relation: 'developed_by' });
       }
     }
     
-    // === PLATFORMS ===
-    const platforms = ['VST2', 'VST3', 'AU', 'AAX', 'Kontakt', 'Standalone'];
-    for (const plat of platforms) {
-      nodes.push({
-        id: `plat-${plat.toLowerCase()}`,
-        label: plat,
-        type: 'platform',
-        data: { id: plat }
-      });
-      nodeIds.add(`plat-${plat.toLowerCase()}`);
-    }
-    
     // Фильтруем связи
-    const validLinks = links.filter(link => 
-      nodeIds.has(link.source) && nodeIds.has(link.target)
-    );
+    const validLinks = links.filter(link => nodeIds.has(link.source) && nodeIds.has(link.target));
     
     this.fullData = { nodes, links: validLinks };
-    
     console.log(`[VSTGraph2D] Built full graph: ${nodes.length} nodes, ${validLinks.length} links`);
     
     // Применяем фильтр по активным слоям

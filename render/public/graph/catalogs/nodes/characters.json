@@ -1,0 +1,422 @@
+{
+  "id": "characters",
+  "version": "2.1.0",
+  "description": "Характеры звучания как автономные узлы графа",
+  "node_type": "Character",
+  "domain": "aesthetic",
+  "abstraction_level": 4,
+  "entries": [
+    {
+      "id": "warm",
+      "node_type": "Character",
+      "name": "Warm",
+      "name_ru": "Тёплый",
+      "definition": "Мягкий, насыщенный тембр с преобладанием низких и средних частот",
+      "domain": "aesthetic",
+      "abstraction_level": 4,
+      "frequency_profile": "low-mid emphasis",
+      "produced_by_synthesis": [
+        "sample-based",
+        "subtractive",
+        "physical-modeling"
+      ],
+      "typical_for_genre": [
+        "orchestral",
+        "jazz",
+        "ambient"
+      ],
+      "evokes_mood": [
+        "calm",
+        "intimate",
+        "nostalgic"
+      ],
+      "opposite": [
+        "bright",
+        "cold"
+      ],
+      "related": [
+        "rich",
+        "organic",
+        "vintage"
+      ]
+    },
+    {
+      "id": "bright",
+      "node_type": "Character",
+      "name": "Bright",
+      "name_ru": "Яркий",
+      "definition": "Звонкий тембр с выраженными высокими частотами",
+      "frequency_profile": "high emphasis",
+      "typical_synthesis": [
+        "wavetable",
+        "fm",
+        "additive"
+      ],
+      "typical_genres": [
+        "edm",
+        "pop",
+        "trance"
+      ],
+      "opposite": [
+        "warm",
+        "dark"
+      ],
+      "related": [
+        "clean",
+        "crisp",
+        "sparkling"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "dark",
+      "node_type": "Character",
+      "name": "Dark",
+      "name_ru": "Тёмный",
+      "definition": "Глубокий тембр с приглушёнными высокими частотами",
+      "frequency_profile": "low emphasis, rolled-off highs",
+      "typical_synthesis": [
+        "subtractive",
+        "granular"
+      ],
+      "typical_genres": [
+        "ambient",
+        "cinematic",
+        "dubstep"
+      ],
+      "opposite": [
+        "bright",
+        "airy"
+      ],
+      "related": [
+        "deep",
+        "heavy",
+        "ominous"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "aggressive",
+      "node_type": "Character",
+      "name": "Aggressive",
+      "name_ru": "Агрессивный",
+      "definition": "Резкий, напористый звук с выраженной атакой и дисторшном",
+      "frequency_profile": "mid-high emphasis, distortion",
+      "typical_synthesis": [
+        "wavetable",
+        "fm"
+      ],
+      "typical_genres": [
+        "dubstep",
+        "metal",
+        "trailer"
+      ],
+      "opposite": [
+        "soft",
+        "gentle"
+      ],
+      "related": [
+        "harsh",
+        "powerful",
+        "intense"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "ethereal",
+      "node_type": "Character",
+      "name": "Ethereal",
+      "name_ru": "Эфирный",
+      "definition": "Воздушный, нематериальный звук, создающий ощущение пространства",
+      "frequency_profile": "high emphasis, reverb-heavy",
+      "typical_synthesis": [
+        "granular",
+        "spectral",
+        "wavetable"
+      ],
+      "typical_genres": [
+        "ambient",
+        "new-age",
+        "cinematic"
+      ],
+      "opposite": [
+        "heavy",
+        "grounded"
+      ],
+      "related": [
+        "atmospheric",
+        "dreamy",
+        "floating"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "organic",
+      "node_type": "Character",
+      "name": "Organic",
+      "name_ru": "Органический",
+      "definition": "Естественный, живой звук с характерными несовершенствами",
+      "frequency_profile": "natural spectrum",
+      "typical_synthesis": [
+        "sample-based",
+        "physical-modeling"
+      ],
+      "typical_genres": [
+        "orchestral",
+        "world",
+        "jazz"
+      ],
+      "opposite": [
+        "synthetic",
+        "digital"
+      ],
+      "related": [
+        "natural",
+        "acoustic",
+        "human"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "synthetic",
+      "node_type": "Character",
+      "name": "Synthetic",
+      "name_ru": "Синтетический",
+      "definition": "Явно электронный, искусственный звук",
+      "frequency_profile": "varies",
+      "typical_synthesis": [
+        "wavetable",
+        "fm",
+        "subtractive"
+      ],
+      "typical_genres": [
+        "edm",
+        "synthwave",
+        "electronic"
+      ],
+      "opposite": [
+        "organic",
+        "natural"
+      ],
+      "related": [
+        "digital",
+        "electronic",
+        "artificial"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "rich",
+      "node_type": "Character",
+      "name": "Rich",
+      "name_ru": "Насыщенный",
+      "definition": "Полный, многослойный звук с богатым гармоническим содержанием",
+      "frequency_profile": "full spectrum",
+      "typical_synthesis": [
+        "sample-based",
+        "hybrid"
+      ],
+      "typical_genres": [
+        "orchestral",
+        "cinematic"
+      ],
+      "opposite": [
+        "thin",
+        "sparse"
+      ],
+      "related": [
+        "warm",
+        "full",
+        "lush"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "clean",
+      "node_type": "Character",
+      "name": "Clean",
+      "name_ru": "Чистый",
+      "definition": "Прозрачный звук без искажений и лишних гармоник",
+      "frequency_profile": "balanced, no distortion",
+      "typical_synthesis": [
+        "wavetable",
+        "additive"
+      ],
+      "typical_genres": [
+        "pop",
+        "electronic"
+      ],
+      "opposite": [
+        "dirty",
+        "distorted"
+      ],
+      "related": [
+        "bright",
+        "crisp",
+        "transparent"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "punchy",
+      "node_type": "Character",
+      "name": "Punchy",
+      "name_ru": "Пробивной",
+      "definition": "Звук с выраженной атакой и ударным характером",
+      "frequency_profile": "transient emphasis",
+      "typical_synthesis": [
+        "sample-based",
+        "subtractive"
+      ],
+      "typical_genres": [
+        "hip-hop",
+        "edm",
+        "rock"
+      ],
+      "opposite": [
+        "soft",
+        "smooth"
+      ],
+      "related": [
+        "tight",
+        "snappy",
+        "impactful"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "lush",
+      "node_type": "Character",
+      "name": "Lush",
+      "name_ru": "Пышный",
+      "definition": "Богатый, обволакивающий звук с множеством слоёв",
+      "frequency_profile": "full, chorus/reverb",
+      "typical_synthesis": [
+        "sample-based",
+        "wavetable"
+      ],
+      "typical_genres": [
+        "cinematic",
+        "ambient",
+        "orchestral"
+      ],
+      "opposite": [
+        "sparse",
+        "dry"
+      ],
+      "related": [
+        "rich",
+        "full",
+        "layered"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "metallic",
+      "node_type": "Character",
+      "name": "Metallic",
+      "name_ru": "Металлический",
+      "definition": "Звенящий, колокольный тембр с негармоническими обертонами",
+      "frequency_profile": "inharmonic partials",
+      "typical_synthesis": [
+        "fm",
+        "physical-modeling"
+      ],
+      "typical_genres": [
+        "experimental",
+        "industrial"
+      ],
+      "opposite": [
+        "warm",
+        "soft"
+      ],
+      "related": [
+        "bell-like",
+        "glassy",
+        "cold"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "vintage",
+      "node_type": "Character",
+      "name": "Vintage",
+      "name_ru": "Винтажный",
+      "definition": "Звук, характерный для аналоговых инструментов прошлого",
+      "frequency_profile": "rolled-off highs, analog character",
+      "typical_synthesis": [
+        "subtractive",
+        "sample-based"
+      ],
+      "typical_genres": [
+        "synthwave",
+        "lo-fi",
+        "jazz"
+      ],
+      "opposite": [
+        "modern",
+        "digital"
+      ],
+      "related": [
+        "analog",
+        "retro",
+        "classic"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "modern",
+      "node_type": "Character",
+      "name": "Modern",
+      "name_ru": "Современный",
+      "definition": "Актуальный, технологичный звук с чёткой артикуляцией",
+      "frequency_profile": "extended highs, precise",
+      "typical_synthesis": [
+        "wavetable",
+        "hybrid"
+      ],
+      "typical_genres": [
+        "edm",
+        "pop",
+        "trailer"
+      ],
+      "opposite": [
+        "vintage",
+        "retro"
+      ],
+      "related": [
+        "clean",
+        "polished",
+        "hi-fi"
+      ],
+      "domain": "aesthetic"
+    },
+    {
+      "id": "atmospheric",
+      "node_type": "Character",
+      "name": "Atmospheric",
+      "name_ru": "Атмосферный",
+      "definition": "Звук, создающий ощущение пространства и окружения",
+      "frequency_profile": "reverb-heavy, evolving",
+      "typical_synthesis": [
+        "granular",
+        "spectral"
+      ],
+      "typical_genres": [
+        "ambient",
+        "cinematic",
+        "experimental"
+      ],
+      "opposite": [
+        "dry",
+        "direct"
+      ],
+      "related": [
+        "ethereal",
+        "spacious",
+        "immersive"
+      ],
+      "domain": "aesthetic"
+    }
+  ]
+}
