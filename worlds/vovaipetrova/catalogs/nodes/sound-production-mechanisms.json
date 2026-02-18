@@ -95,9 +95,9 @@
       "examples": ["Granulator", "Padshop", "Portal"]
     },
     {
-      "id": "physical-modeling",
+      "id": "algorithmic-modeling",
       "node_type": "SoundProductionMechanism",
-      "name": "Physical Modeling",
+      "name": "Algorithmic Modeling",
       "name_ru": "Физическое моделирование",
       "definition": "Математическое моделирование физических свойств инструмента",
       "domain": "synthetic",

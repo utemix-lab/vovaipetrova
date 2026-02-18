@@ -8,213 +8,518 @@
   "entries": [
     {
       "id": "epic",
+      "node_type": "Mood",
       "name": "Epic",
       "name_ru": "Эпический",
       "definition": "Грандиозный, величественный характер звучания",
       "intensity": "high",
       "energy": "high",
       "valence": "positive",
-      "typical_genres": ["cinematic", "trailer", "orchestral"],
-      "typical_articulations": ["staccato", "marcato", "tremolo"],
-      "typical_characters": ["powerful", "rich", "massive"],
-      "opposite": ["intimate", "minimal"],
-      "related": ["dramatic", "heroic", "majestic"]
+      "typical_genres": [
+        "cinematic",
+        "trailer",
+        "orchestral"
+      ],
+      "typical_articulations": [
+        "staccato",
+        "marcato",
+        "tremolo"
+      ],
+      "typical_characters": [
+        "powerful",
+        "rich",
+        "massive"
+      ],
+      "opposite": [
+        "intimate",
+        "minimal"
+      ],
+      "related": [
+        "dramatic",
+        "heroic",
+        "majestic"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "dramatic",
+      "node_type": "Mood",
       "name": "Dramatic",
       "name_ru": "Драматический",
       "definition": "Напряжённый, эмоционально насыщенный характер",
       "intensity": "high",
       "energy": "medium-high",
       "valence": "neutral",
-      "typical_genres": ["cinematic", "classical", "trailer"],
-      "typical_articulations": ["legato", "tremolo", "spiccato"],
-      "typical_characters": ["rich", "dark", "intense"],
-      "opposite": ["calm", "peaceful"],
-      "related": ["epic", "tense", "emotional"]
+      "typical_genres": [
+        "cinematic",
+        "classical",
+        "trailer"
+      ],
+      "typical_articulations": [
+        "legato",
+        "tremolo",
+        "spiccato"
+      ],
+      "typical_characters": [
+        "rich",
+        "dark",
+        "intense"
+      ],
+      "opposite": [
+        "calm",
+        "peaceful"
+      ],
+      "related": [
+        "epic",
+        "tense",
+        "emotional"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "tense",
+      "node_type": "Mood",
       "name": "Tense",
       "name_ru": "Напряжённый",
       "definition": "Создающий ощущение тревоги и ожидания",
       "intensity": "medium-high",
       "energy": "medium",
       "valence": "negative",
-      "typical_genres": ["cinematic", "horror", "thriller"],
-      "typical_articulations": ["tremolo", "sul-ponticello", "col-legno"],
-      "typical_characters": ["dark", "dissonant", "unsettling"],
-      "opposite": ["relaxed", "calm"],
-      "related": ["suspenseful", "anxious", "ominous"]
+      "typical_genres": [
+        "cinematic",
+        "horror",
+        "thriller"
+      ],
+      "typical_articulations": [
+        "tremolo",
+        "sul-ponticello",
+        "col-legno"
+      ],
+      "typical_characters": [
+        "dark",
+        "dissonant",
+        "unsettling"
+      ],
+      "opposite": [
+        "relaxed",
+        "calm"
+      ],
+      "related": [
+        "suspenseful",
+        "anxious",
+        "ominous"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "calm",
+      "node_type": "Mood",
       "name": "Calm",
       "name_ru": "Спокойный",
       "definition": "Умиротворённый, расслабляющий характер",
       "intensity": "low",
       "energy": "low",
       "valence": "positive",
-      "typical_genres": ["ambient", "new-age", "classical"],
-      "typical_articulations": ["legato", "sustain"],
-      "typical_characters": ["warm", "soft", "gentle"],
-      "opposite": ["tense", "energetic"],
-      "related": ["peaceful", "serene", "meditative"]
+      "typical_genres": [
+        "ambient",
+        "new-age",
+        "classical"
+      ],
+      "typical_articulations": [
+        "legato",
+        "sustain"
+      ],
+      "typical_characters": [
+        "warm",
+        "soft",
+        "gentle"
+      ],
+      "opposite": [
+        "tense",
+        "energetic"
+      ],
+      "related": [
+        "peaceful",
+        "serene",
+        "meditative"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "energetic",
+      "node_type": "Mood",
       "name": "Energetic",
       "name_ru": "Энергичный",
       "definition": "Динамичный, заряжающий энергией характер",
       "intensity": "high",
       "energy": "high",
       "valence": "positive",
-      "typical_genres": ["edm", "rock", "pop"],
-      "typical_articulations": ["staccato", "marcato"],
-      "typical_characters": ["bright", "punchy", "aggressive"],
-      "opposite": ["calm", "laid-back"],
-      "related": ["uplifting", "driving", "powerful"]
+      "typical_genres": [
+        "edm",
+        "rock",
+        "pop"
+      ],
+      "typical_articulations": [
+        "staccato",
+        "marcato"
+      ],
+      "typical_characters": [
+        "bright",
+        "punchy",
+        "aggressive"
+      ],
+      "opposite": [
+        "calm",
+        "laid-back"
+      ],
+      "related": [
+        "uplifting",
+        "driving",
+        "powerful"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "melancholic",
+      "node_type": "Mood",
       "name": "Melancholic",
       "name_ru": "Меланхоличный",
       "definition": "Грустный, задумчивый характер с оттенком ностальгии",
       "intensity": "medium",
       "energy": "low",
       "valence": "negative",
-      "typical_genres": ["classical", "ambient", "cinematic"],
-      "typical_articulations": ["legato", "vibrato"],
-      "typical_characters": ["warm", "dark", "intimate"],
-      "opposite": ["joyful", "uplifting"],
-      "related": ["sad", "nostalgic", "wistful"]
+      "typical_genres": [
+        "classical",
+        "ambient",
+        "cinematic"
+      ],
+      "typical_articulations": [
+        "legato",
+        "vibrato"
+      ],
+      "typical_characters": [
+        "warm",
+        "dark",
+        "intimate"
+      ],
+      "opposite": [
+        "joyful",
+        "uplifting"
+      ],
+      "related": [
+        "sad",
+        "nostalgic",
+        "wistful"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "mysterious",
+      "node_type": "Mood",
       "name": "Mysterious",
       "name_ru": "Таинственный",
       "definition": "Загадочный, интригующий характер",
       "intensity": "medium",
       "energy": "low-medium",
       "valence": "neutral",
-      "typical_genres": ["ambient", "cinematic", "experimental"],
-      "typical_articulations": ["sul-ponticello", "harmonics", "tremolo"],
-      "typical_characters": ["dark", "ethereal", "atmospheric"],
-      "opposite": ["obvious", "straightforward"],
-      "related": ["enigmatic", "otherworldly", "haunting"]
+      "typical_genres": [
+        "ambient",
+        "cinematic",
+        "experimental"
+      ],
+      "typical_articulations": [
+        "sul-ponticello",
+        "harmonics",
+        "tremolo"
+      ],
+      "typical_characters": [
+        "dark",
+        "ethereal",
+        "atmospheric"
+      ],
+      "opposite": [
+        "obvious",
+        "straightforward"
+      ],
+      "related": [
+        "enigmatic",
+        "otherworldly",
+        "haunting"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "uplifting",
+      "node_type": "Mood",
       "name": "Uplifting",
       "name_ru": "Воодушевляющий",
       "definition": "Вдохновляющий, поднимающий настроение характер",
       "intensity": "medium-high",
       "energy": "medium-high",
       "valence": "positive",
-      "typical_genres": ["pop", "trance", "cinematic"],
-      "typical_articulations": ["legato", "staccato"],
-      "typical_characters": ["bright", "warm", "rich"],
-      "opposite": ["depressing", "dark"],
-      "related": ["inspiring", "hopeful", "triumphant"]
+      "typical_genres": [
+        "pop",
+        "trance",
+        "cinematic"
+      ],
+      "typical_articulations": [
+        "legato",
+        "staccato"
+      ],
+      "typical_characters": [
+        "bright",
+        "warm",
+        "rich"
+      ],
+      "opposite": [
+        "depressing",
+        "dark"
+      ],
+      "related": [
+        "inspiring",
+        "hopeful",
+        "triumphant"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "nostalgic",
+      "node_type": "Mood",
       "name": "Nostalgic",
       "name_ru": "Ностальгический",
       "definition": "Вызывающий воспоминания о прошлом",
       "intensity": "medium",
       "energy": "low-medium",
       "valence": "mixed",
-      "typical_genres": ["synthwave", "lo-fi", "ambient"],
-      "typical_articulations": ["legato", "vibrato"],
-      "typical_characters": ["warm", "vintage", "soft"],
-      "opposite": ["futuristic", "modern"],
-      "related": ["melancholic", "wistful", "dreamy"]
+      "typical_genres": [
+        "synthwave",
+        "lo-fi",
+        "ambient"
+      ],
+      "typical_articulations": [
+        "legato",
+        "vibrato"
+      ],
+      "typical_characters": [
+        "warm",
+        "vintage",
+        "soft"
+      ],
+      "opposite": [
+        "futuristic",
+        "modern"
+      ],
+      "related": [
+        "melancholic",
+        "wistful",
+        "dreamy"
+      ],
+      "domain": "aesthetic"
     },
     {
-      "id": "aggressive",
+      "id": "mood-aggressive",
+      "node_type": "Mood",
       "name": "Aggressive",
       "name_ru": "Агрессивный",
       "definition": "Напористый, атакующий характер",
       "intensity": "high",
       "energy": "high",
       "valence": "negative",
-      "typical_genres": ["metal", "dubstep", "trailer"],
-      "typical_articulations": ["staccato", "marcato"],
-      "typical_characters": ["aggressive", "harsh", "powerful"],
-      "opposite": ["gentle", "soft"],
-      "related": ["intense", "fierce", "brutal"]
+      "typical_genres": [
+        "metal",
+        "dubstep",
+        "trailer"
+      ],
+      "typical_articulations": [
+        "staccato",
+        "marcato"
+      ],
+      "typical_characters": [
+        "aggressive",
+        "harsh",
+        "powerful"
+      ],
+      "opposite": [
+        "gentle",
+        "soft"
+      ],
+      "related": [
+        "intense",
+        "fierce",
+        "brutal"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "romantic",
+      "node_type": "Mood",
       "name": "Romantic",
       "name_ru": "Романтический",
       "definition": "Нежный, любовный характер",
       "intensity": "medium",
       "energy": "low-medium",
       "valence": "positive",
-      "typical_genres": ["classical", "pop", "jazz"],
-      "typical_articulations": ["legato", "vibrato"],
-      "typical_characters": ["warm", "lush", "intimate"],
-      "opposite": ["cold", "harsh"],
-      "related": ["tender", "passionate", "intimate"]
+      "typical_genres": [
+        "classical",
+        "pop",
+        "jazz"
+      ],
+      "typical_articulations": [
+        "legato",
+        "vibrato"
+      ],
+      "typical_characters": [
+        "warm",
+        "lush",
+        "intimate"
+      ],
+      "opposite": [
+        "cold",
+        "harsh"
+      ],
+      "related": [
+        "tender",
+        "passionate",
+        "intimate"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "playful",
+      "node_type": "Mood",
       "name": "Playful",
       "name_ru": "Игривый",
       "definition": "Лёгкий, весёлый, шутливый характер",
       "intensity": "medium",
       "energy": "medium-high",
       "valence": "positive",
-      "typical_genres": ["pop", "jazz", "world"],
-      "typical_articulations": ["staccato", "pizzicato"],
-      "typical_characters": ["bright", "light", "bouncy"],
-      "opposite": ["serious", "heavy"],
-      "related": ["fun", "whimsical", "cheerful"]
+      "typical_genres": [
+        "pop",
+        "jazz",
+        "world"
+      ],
+      "typical_articulations": [
+        "staccato",
+        "pizzicato"
+      ],
+      "typical_characters": [
+        "bright",
+        "light",
+        "bouncy"
+      ],
+      "opposite": [
+        "serious",
+        "heavy"
+      ],
+      "related": [
+        "fun",
+        "whimsical",
+        "cheerful"
+      ],
+      "domain": "aesthetic"
     },
     {
-      "id": "dark",
+      "id": "mood-dark",
+      "node_type": "Mood",
       "name": "Dark",
       "name_ru": "Мрачный",
       "definition": "Тёмный, угрожающий характер",
       "intensity": "medium-high",
       "energy": "varies",
       "valence": "negative",
-      "typical_genres": ["ambient", "cinematic", "metal"],
-      "typical_articulations": ["tremolo", "sul-ponticello"],
-      "typical_characters": ["dark", "heavy", "ominous"],
-      "opposite": ["bright", "cheerful"],
-      "related": ["ominous", "sinister", "foreboding"]
+      "typical_genres": [
+        "ambient",
+        "cinematic",
+        "metal"
+      ],
+      "typical_articulations": [
+        "tremolo",
+        "sul-ponticello"
+      ],
+      "typical_characters": [
+        "dark",
+        "heavy",
+        "ominous"
+      ],
+      "opposite": [
+        "bright",
+        "cheerful"
+      ],
+      "related": [
+        "ominous",
+        "sinister",
+        "foreboding"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "heroic",
+      "node_type": "Mood",
       "name": "Heroic",
       "name_ru": "Героический",
       "definition": "Торжественный, победный характер",
       "intensity": "high",
       "energy": "high",
       "valence": "positive",
-      "typical_genres": ["cinematic", "trailer", "orchestral"],
-      "typical_articulations": ["marcato", "staccato", "legato"],
-      "typical_characters": ["powerful", "bright", "rich"],
-      "opposite": ["defeated", "weak"],
-      "related": ["epic", "triumphant", "majestic"]
+      "typical_genres": [
+        "cinematic",
+        "trailer",
+        "orchestral"
+      ],
+      "typical_articulations": [
+        "marcato",
+        "staccato",
+        "legato"
+      ],
+      "typical_characters": [
+        "powerful",
+        "bright",
+        "rich"
+      ],
+      "opposite": [
+        "defeated",
+        "weak"
+      ],
+      "related": [
+        "epic",
+        "triumphant",
+        "majestic"
+      ],
+      "domain": "aesthetic"
     },
     {
       "id": "intimate",
+      "node_type": "Mood",
       "name": "Intimate",
       "name_ru": "Интимный",
       "definition": "Камерный, личный, близкий характер",
       "intensity": "low",
       "energy": "low",
       "valence": "positive",
-      "typical_genres": ["jazz", "classical", "ambient"],
-      "typical_articulations": ["legato", "con-sordino"],
-      "typical_characters": ["warm", "soft", "delicate"],
-      "opposite": ["epic", "massive"],
-      "related": ["personal", "tender", "quiet"]
+      "typical_genres": [
+        "jazz",
+        "classical",
+        "ambient"
+      ],
+      "typical_articulations": [
+        "legato",
+        "con-sordino"
+      ],
+      "typical_characters": [
+        "warm",
+        "soft",
+        "delicate"
+      ],
+      "opposite": [
+        "epic",
+        "massive"
+      ],
+      "related": [
+        "personal",
+        "tender",
+        "quiet"
+      ],
+      "domain": "aesthetic"
     }
   ]
 }

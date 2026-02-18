@@ -1,0 +1,155 @@
+{
+  "id": "node-types",
+  "version": "1.0.0",
+  "description": "Реестр типов узлов VST Semantic Graph",
+  "last_updated": "2026-02-18",
+  
+  "types": {
+    "Instrument": {
+      "description": "Конкретный VST-инструмент",
+      "domain": null,
+      "abstraction_level": 1,
+      "required_fields": ["id", "name", "manufacturer"],
+      "optional_fields": ["name_ru", "description", "version", "url", "local_features"],
+      "allowed_outgoing": ["HAS_MECHANISM", "USES_SYNTHESIS", "SUPPORTS", "BELONGS_TO_CATEGORY", "BELONGS_TO_GENRE", "HAS_CHARACTER", "EVOKES_MOOD", "PRODUCED_BY", "REQUIRES_PLATFORM"]
+    },
+    
+    "SoundProductionMechanism": {
+      "description": "Механизм звукоизвлечения (как рождается звук)",
+      "domain": "physical",
+      "abstraction_level": 3,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "typical_instruments", "related", "opposite"],
+      "allowed_outgoing": ["RELATED_TO", "ENABLES"]
+    },
+    
+    "SynthesisMethod": {
+      "description": "Метод генерации/обработки звука",
+      "domain": "synthetic",
+      "abstraction_level": 3,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "produces_character", "typical_for_genre", "evokes_mood", "related"],
+      "allowed_outgoing": ["PRODUCES_CHARACTER", "TYPICAL_FOR_GENRE", "EVOKES", "RELATED_TO"]
+    },
+    
+    "PerformanceArticulation": {
+      "description": "Техника исполнения (механика игры)",
+      "domain": "physical",
+      "abstraction_level": 2,
+      "required_fields": ["id", "node_type", "name", "definition", "domain", "applicable_to_mechanisms"],
+      "optional_fields": ["name_ru", "abstraction_level", "family", "notation", "difficulty", "related", "opposite"],
+      "allowed_outgoing": ["APPLICABLE_TO", "COMMON_IN", "RELATED_TO"]
+    },
+    
+    "Genre": {
+      "description": "Музыкальный жанр/контекст",
+      "domain": "aesthetic",
+      "abstraction_level": 4,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "typical_synthesis", "typical_articulations", "typical_characters", "evokes_mood", "related", "parent_genre"],
+      "allowed_outgoing": ["EVOKES", "PARENT_OF", "RELATED_TO"]
+    },
+    
+    "Character": {
+      "description": "Звуковая характеристика (тембральное качество)",
+      "domain": "aesthetic",
+      "abstraction_level": 4,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "frequency_profile", "produced_by_synthesis", "typical_for_genre", "evokes_mood", "related", "opposite"],
+      "allowed_outgoing": ["EVOKES", "RELATED_TO", "OPPOSITE_OF"]
+    },
+    
+    "Mood": {
+      "description": "Эмоциональная окраска звучания",
+      "domain": "aesthetic",
+      "abstraction_level": 4,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "intensity", "energy", "valence", "typical_genres", "typical_characters", "related", "opposite"],
+      "allowed_outgoing": ["RELATED_TO", "OPPOSITE_OF"]
+    },
+    
+    "ClassificationSystem": {
+      "description": "Система классификации инструментов",
+      "domain": "systemic",
+      "abstraction_level": 5,
+      "required_fields": ["id", "node_type", "name", "definition", "domain"],
+      "optional_fields": ["name_ru", "abstraction_level", "created", "creators", "top_categories", "strengths", "weaknesses"],
+      "allowed_outgoing": ["DEFINES_CATEGORY", "RELATED_TO"]
+    },
+    
+    "SystemCategory": {
+      "description": "Категория внутри системы классификации",
+      "domain": "systemic",
+      "abstraction_level": 4,
+      "required_fields": ["id", "node_type", "name", "definition", "domain", "system"],
+      "optional_fields": ["name_ru", "abstraction_level", "code", "parent_category", "examples"],
+      "allowed_outgoing": ["BELONGS_TO_SYSTEM", "PARENT_OF", "RELATED_TO"]
+    },
+    
+    "Manufacturer": {
+      "description": "Производитель VST-инструментов",
+      "domain": "functional",
+      "abstraction_level": 3,
+      "required_fields": ["id", "node_type", "name"],
+      "optional_fields": ["country", "url", "founded", "description", "tags"],
+      "allowed_outgoing": ["LOCATED_IN", "RELATED_TO"]
+    },
+    
+    "Country": {
+      "description": "Страна производителя",
+      "domain": "functional",
+      "abstraction_level": 4,
+      "required_fields": ["id", "node_type", "name"],
+      "optional_fields": ["name_ru", "code", "flag"],
+      "allowed_outgoing": ["RELATED_TO"]
+    },
+    
+    "Platform": {
+      "description": "Платформа/формат плагина (VST2, VST3, AU, AAX)",
+      "domain": "functional",
+      "abstraction_level": 3,
+      "required_fields": ["id", "node_type", "name", "definition"],
+      "optional_fields": ["name_ru", "developer", "year"],
+      "allowed_outgoing": ["RELATED_TO", "SUCCESSOR_OF"]
+    }
+  },
+  
+  "domains": {
+    "physical": {
+      "description": "Физические свойства звукоизвлечения",
+      "color": "#ef4444"
+    },
+    "synthetic": {
+      "description": "Методы цифрового синтеза",
+      "color": "#8b5cf6"
+    },
+    "aesthetic": {
+      "description": "Субъективные характеристики звука",
+      "color": "#f59e0b"
+    },
+    "functional": {
+      "description": "Роли, функции, организационные единицы",
+      "color": "#22d3ee"
+    },
+    "systemic": {
+      "description": "Мета-уровень, системы классификации",
+      "color": "#10b981"
+    }
+  },
+  
+  "abstraction_levels": {
+    "1": "Конкретный элемент (инструмент, сэмпл)",
+    "2": "Техника исполнения (артикуляция)",
+    "3": "Метод/механизм (синтез, производитель)",
+    "4": "Категория (жанр, характер, настроение)",
+    "5": "Мета-система (система классификации)"
+  },
+  
+  "validation_rules": {
+    "node_type_required": true,
+    "domain_required_for_concepts": true,
+    "definition_required_for_concepts": true,
+    "string_arrays_forbidden": ["articulations", "genres", "characters", "moods", "synthesis_methods"],
+    "edges_must_be_registered": true
+  }
+}
