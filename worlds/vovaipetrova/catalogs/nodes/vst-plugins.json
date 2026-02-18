@@ -1,0 +1,9 @@
+{
+  "id": "vst-plugins",
+  "version": "2.1.0",
+  "description": "Виртуальные музыкальные инструменты как узлы графа",
+  "node_type": "VSTPlugin",
+  "domain": "synthetic",
+  "abstraction_level": 1,
+  "entries": []
+}

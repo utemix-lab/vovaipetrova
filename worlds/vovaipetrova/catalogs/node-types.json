@@ -5,12 +5,12 @@
   "last_updated": "2026-02-18",
   
   "types": {
-    "Instrument": {
-      "description": "Конкретный VST-инструмент",
+    "VSTPlugin": {
+      "description": "Виртуальный музыкальный инструмент (VST/AU/AAX)",
       "domain": null,
       "abstraction_level": 1,
-      "required_fields": ["id", "name", "manufacturer"],
-      "optional_fields": ["name_ru", "description", "version", "url", "local_features"],
+      "required_fields": ["id", "node_type", "name", "developer", "definition", "mechanisms"],
+      "optional_fields": ["name_ru", "version", "url", "synthesis_method", "typical_for_genre", "produces_character", "evokes_mood", "supports_articulation", "classification", "local_features"],
       "allowed_outgoing": ["HAS_MECHANISM", "USES_SYNTHESIS", "SUPPORTS", "BELONGS_TO_CATEGORY", "BELONGS_TO_GENRE", "HAS_CHARACTER", "EVOKES_MOOD", "PRODUCED_BY", "REQUIRES_PLATFORM"]
     },
     
