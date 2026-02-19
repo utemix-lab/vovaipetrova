@@ -143,7 +143,7 @@ body.visitor-mode {
   background:
     var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
-  transform-origin: left center;
+  transform-origin: center center;
 }
 
 #story-panel .panel-content {
@@ -169,7 +169,7 @@ body.visitor-mode {
   background:
     var(--panel-system-url) center/cover no-repeat,
     var(--panel-bg);
-  transform-origin: right top;
+  transform-origin: center center;
 }
 
 #system-panel .panel-content {
@@ -186,7 +186,7 @@ body.visitor-mode {
   background:
     var(--panel-service-url) center/cover no-repeat,
     var(--panel-bg);
-  transform-origin: right bottom;
+  transform-origin: center center;
 }
 
 /* Graph Area — центр (пустой, граф просвечивает) */
