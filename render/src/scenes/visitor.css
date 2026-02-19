@@ -254,15 +254,21 @@ body.visitor-mode {
   position: relative;
 }
 
-/* Segment mini-screen (16:9) */
+/* Segment mini-screen (16:9) — должен соответствовать .narrative-screen */
 .segment-screen {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 12px;
-  overflow: hidden;
   position: relative;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(34, 211, 238, 0.2);
+  width: 100%;
+  margin: 0 0 16px;
+  background: rgba(8, 12, 20, 0.65);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.segment-screen::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
 }
 
 .segment-screen__viewport {
