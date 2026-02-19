@@ -1330,10 +1330,13 @@ body.focus-service #service-panel::before {
 }
 
 /* Node TOC widget (non-clickable) */
+/* !CRITICAL: Фиксированная высота для выравнивания мини-окон */
 .node-toc {
   display: flex;
   align-items: center;
+  height: 56px; /* Фиксированная высота = размер виджета (56px) */
   margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .vova-root-info {
