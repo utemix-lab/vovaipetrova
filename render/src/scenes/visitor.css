@@ -80,12 +80,35 @@ body.visitor-mode {
   pointer-events: auto;
 }
 
+/* =============================================================================
+   !CRITICAL: КОМПОЗИЦИЯ ПАНЕЛЕЙ 16:9
+   
+   Эти правила определяют базовую композицию из 4 окон.
+   НЕ ИЗМЕНЯТЬ без согласования — это сломает визуальную целостность.
+   
+   Структура:
+   - Grid 3 колонки: Story (1fr) | Graph/Segment (1fr) | Right-column (1fr)
+   - Right-column содержит System + Service (по 1fr каждая)
+   - Все панели вписываются в композицию 16:9
+   
+   Поведение при hover:
+   - Активная панель: scale(1.02), opacity: 1, z-index: 12
+   - Неактивные панели: БЕЗ scale (остаются в исходном размере), opacity: 0.5
+   - transform-origin: center center для всех панелей
+   
+   При narrative-expanded:
+   - Все панели: transform: none, opacity: 1
+   - Narrative-screen перекрывает всю композицию
+   
+   См. docs/windows.md для полной спецификации.
+   ============================================================================= */
+
 /* Контейнер панелей */
 #panels-container {
   position: absolute;
   inset: var(--gap);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; /* !CRITICAL: 3 равные колонки */
   gap: var(--gap);
   pointer-events: none;
   z-index: 12;
@@ -106,6 +129,7 @@ body.visitor-mode {
   border-radius: 18px;
   transition: transform 0.35s ease, opacity 0.35s ease;
   min-height: 0;
+  transform-origin: center center; /* !CRITICAL: масштабирование от центра */
 }
 
 /* Простая тонкая подсветка на hover */
@@ -284,9 +308,19 @@ body.visitor-mode {
   display: none;
 }
 
-/* Focus states (panel emphasis) — только активная панель увеличивается */
+/* =============================================================================
+   !CRITICAL: FOCUS STATES — ПОВЕДЕНИЕ ПРИ HOVER
+   
+   Правила:
+   - Активная панель: scale(1.02), opacity: 1, z-index: 12
+   - Неактивные панели: НЕ УМЕНЬШАЮТСЯ (без scale), только opacity: 0.5
+   - Это сохраняет композицию 16:9 для неактивных панелей
+   
+   НЕ ДОБАВЛЯТЬ scale к неактивным панелям — это сломает выравнивание!
+   ============================================================================= */
+
 body.focus-story #story-panel {
-  transform: scale(1.02);
+  transform: scale(1.02); /* !CRITICAL: только активная панель увеличивается */
   opacity: 1;
   z-index: 12;
 }
