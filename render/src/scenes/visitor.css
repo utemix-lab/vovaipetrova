@@ -1328,6 +1328,48 @@ body.focus-service #service-panel::before {
   border-color: var(--accent-cyan);
 }
 
+/* === ВИДЖЕТЫ ПОТЕНЦИАЛА (фильтры, группировки) === */
+.potential-widgets {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  justify-content: center;
+}
+
+.node-widget--potential {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.15s ease;
+}
+
+.node-widget--potential:hover {
+  transform: translateY(-4px);
+}
+
+.node-widget--potential .widget-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.node-widget--potential .widget-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.node-widget--potential.potential-active .widget-frame {
+  border-color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+}
+
 .node-widget--lever {
   --lever-shift: 10px;
   --lever-offset: 0px;

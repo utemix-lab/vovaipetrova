@@ -3283,6 +3283,32 @@ async function bindChladniScreen(container) {
   
 }
 
+// === ВИДЖЕТЫ ПОТЕНЦИАЛА (фильтры, группировки) ===
+// Виджеты для раскрытия потенциала воркбенча
+// Поведение: подсветка рамки при hover, подпрыгивание
+function bindPotentialWidgets(container) {
+  const widgets = container.querySelectorAll(".node-widget--potential");
+  
+  widgets.forEach(widget => {
+    const potentialId = widget.dataset.potentialId;
+    
+    // Hover: подсветка рамки
+    widget.addEventListener("mouseenter", () => {
+      widget.classList.add("potential-active");
+    });
+    
+    widget.addEventListener("mouseleave", () => {
+      widget.classList.remove("potential-active");
+    });
+    
+    // Click: пока только логируем
+    widget.addEventListener("click", () => {
+      console.log(`[Potential] Widget clicked: ${potentialId}`);
+      // TODO: реализовать функционал фильтрации
+    });
+  });
+}
+
 function renderNarrativeScreen() {
   const iconPrev = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
@@ -3533,10 +3559,19 @@ function updateStoryWithWorkbench(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  // Специальная обработка для VSTablichment — Chladni-эффект
+  // Специальная обработка для VSTablichment — Chladni-эффект + виджеты потенциала
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
-    // Виджеты слоёв графа удалены (Track 6: Expressive Stacks)
+    // Виджеты потенциала (фильтры, группировки)
+    html += `
+      <div class="potential-widgets">
+        <div class="node-widget node-widget--potential" data-potential-id="countries" title="Страны">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страны" class="widget-image" />
+          </div>
+        </div>
+      </div>
+    `;
   } else {
     html += renderNarrativeScreen();
   }
@@ -3547,7 +3582,7 @@ function updateStoryWithWorkbench(panel, node) {
   
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
-    // bindVSTLayerWidgets удалён
+    bindPotentialWidgets(content);
   } else {
     bindNarrativeScreen(content);
   }
