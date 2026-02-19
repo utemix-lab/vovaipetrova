@@ -284,7 +284,7 @@ body.visitor-mode {
   display: none;
 }
 
-/* Focus states (panel emphasis) — scale + opacity */
+/* Focus states (panel emphasis) — только активная панель увеличивается */
 body.focus-story #story-panel {
   transform: scale(1.02);
   opacity: 1;
@@ -293,7 +293,6 @@ body.focus-story #story-panel {
 body.focus-story #segment-panel,
 body.focus-story #system-panel,
 body.focus-story #service-panel {
-  transform: scale(0.98);
   opacity: 0.5;
 }
 
@@ -305,7 +304,6 @@ body.focus-segment #segment-panel {
 body.focus-segment #story-panel,
 body.focus-segment #system-panel,
 body.focus-segment #service-panel {
-  transform: scale(0.98);
   opacity: 0.5;
 }
 
@@ -317,7 +315,6 @@ body.focus-system #system-panel {
 body.focus-system #story-panel,
 body.focus-system #segment-panel,
 body.focus-system #service-panel {
-  transform: scale(0.98);
   opacity: 0.5;
 }
 
@@ -329,7 +326,6 @@ body.focus-service #service-panel {
 body.focus-service #story-panel,
 body.focus-service #segment-panel,
 body.focus-service #system-panel {
-  transform: scale(0.98);
   opacity: 0.5;
 }
 
