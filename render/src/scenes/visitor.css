@@ -278,10 +278,13 @@ body.visitor-mode {
   background-position: center;
 }
 
-/* Segment widget placeholder — должен соответствовать .widget-frame (52px) */
+/* Segment widget placeholder — должен соответствовать .node-widget + .widget-frame */
+/* .node-widget имеет padding: 2px, итого: 52px + 4px = 56px */
 .segment-widget-placeholder {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
+  padding: 2px;
+  box-sizing: border-box;
   border-radius: 12px;
   border: 1px solid rgba(34, 211, 238, 0.2);
   background: rgba(34, 211, 238, 0.08);
