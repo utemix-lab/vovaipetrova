@@ -3302,10 +3302,10 @@ function bindPotentialWidgets(container) {
       widget.classList.remove("potential-active");
     });
     
-    // Click: пока только логируем
+    // Click: открыть Segment панель
     widget.addEventListener("click", () => {
       console.log(`[Potential] Widget clicked: ${potentialId}`);
-      // TODO: реализовать функционал фильтрации
+      showSegmentPanel();
     });
   });
 }
@@ -3601,7 +3601,8 @@ function updateStoryWithWorkbench(panel, node) {
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
     bindPotentialWidgets(content);
-    showSegmentPanel();
+    // Segment панель открывается по клику на виджет, не автоматически
+    hideSegmentPanel();
   } else {
     bindNarrativeScreen(content);
     hideSegmentPanel();
@@ -3610,11 +3611,65 @@ function updateStoryWithWorkbench(panel, node) {
 }
 
 // === SEGMENT PANEL (центральная панель для VSTablishment) ===
+function renderSegmentControls() {
+  const el = document.getElementById("segment-controls");
+  if (!el) return;
+  
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconClose = `
+    <svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  
+  el.innerHTML = [
+    {
+      label: iconPrev,
+      action: "segment-back",
+      title: "Назад",
+    },
+    {
+      label: iconClose,
+      action: "segment-close",
+      title: "Закрыть",
+    },
+  ]
+    .map(({ label, action, title }) => {
+      const titleAttr = title ? ` title="${title}"` : "";
+      return `<button class="scene-dot scene-dot--control" type="button" data-action="${action}"${titleAttr}>${label}</button>`;
+    })
+    .join("");
+}
+
+function bindSegmentControls() {
+  const controlsEl = document.getElementById("segment-controls");
+  if (!controlsEl) return;
+  
+  controlsEl.addEventListener("click", (ev) => {
+    const btn = ev.target.closest("[data-action]");
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === "segment-back") {
+      // TODO: навигация назад в истории Segment
+      hideSegmentPanel();
+    } else if (action === "segment-close") {
+      hideSegmentPanel();
+    }
+  });
+}
+
 function showSegmentPanel() {
   const segmentPanel = document.getElementById("segment-panel");
   if (!segmentPanel) return;
   
   segmentPanel.classList.add("segment-visible");
+  
+  // Рендерим точки управления
+  renderSegmentControls();
   
   // Заполняем содержимое
   const content = segmentPanel.querySelector(".panel-content");
@@ -5470,7 +5525,7 @@ function createUI() {
     <div class="graph-spacer">
       <div id="segment-panel" class="panel-3s panel-segment">
         <div class="panel-inner">
-          <div class="panel-header">Segment</div>
+          <div class="panel-header"><span class="panel-title-text">Segment</span><span id="segment-controls" aria-hidden="true"></span></div>
           <div class="panel-content"></div>
         </div>
       </div>
@@ -5589,6 +5644,9 @@ function createUI() {
 
   // expose initializer to be invoked after global state is ready
   window.__initSceneDotsUI = initSceneDotsUI;
+
+  // Bind Segment panel controls (back, close)
+  bindSegmentControls();
 
   // Panel focus behavior (hover to focus, default Story)
   const storyPanel = document.getElementById("story-panel");
