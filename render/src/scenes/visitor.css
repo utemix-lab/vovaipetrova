@@ -143,6 +143,7 @@ body.visitor-mode {
   background:
     var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
+  transform-origin: top left;
 }
 
 #story-panel .panel-content {
@@ -206,6 +207,7 @@ body.visitor-mode {
     var(--panel-bg);
   pointer-events: auto;
   transition: transform 0.35s ease, opacity 0.35s ease;
+  transform-origin: center center;
 }
 
 #segment-panel.segment-visible {
@@ -269,11 +271,13 @@ body.visitor-mode {
 #system-panel {
   flex: 1;
   margin-top: 0;
+  transform-origin: top right;
 }
 
 #service-panel {
   flex: 1;
   margin-bottom: 0;
+  transform-origin: bottom right;
 }
 
 #service-panel.panel-react-overlay .panel-content {
