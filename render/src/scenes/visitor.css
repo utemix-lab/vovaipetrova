@@ -1328,6 +1328,17 @@ body.focus-service #service-panel::before {
   border-color: var(--accent-cyan);
 }
 
+/* Track 6: Scene toggle active state — yellow glow when workbench scene is active */
+.node-widget--root.vova-scope-widget.scene-toggle-active .widget-frame {
+  background: rgba(251, 191, 36, 0.25);
+  --widget-frame-border-color: #fbbf24;
+}
+
+.node-widget--root.vova-scope-widget.scene-toggle-active .widget-frame::before {
+  border-color: #fbbf24;
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
+}
+
 .node-widget--lever {
   --lever-shift: 10px;
   --lever-offset: 0px;
