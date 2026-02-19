@@ -17,8 +17,9 @@
   
   /* !CRITICAL: Единые отступы для ВСЕХ элементов панелей */
   --panel-inset: 16px;        /* Края большого окна, вертикальные отступы между элементами */
-  --panel-inset-inner: 12px;  /* Края мини-окна, горизонтальные внутренние отступы (виджет→текст) */
+  --panel-inset-inner: 12px;  /* Края мини-окна, между группами виджетов */
   --panel-inset-dots: 8px;    /* Расстояние между точками */
+  --panel-inset-widgets: 6px; /* Расстояние между виджетами в группе */
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -1187,7 +1188,7 @@ body.focus-service #service-panel::before {
 .widget-group .domain-widgets {
   display: flex;
   flex-direction: row;
-  gap: var(--panel-inset-dots); /* 8px между виджетами в группе */
+  gap: var(--panel-inset-widgets); /* 6px между виджетами в группе */
 }
 
 /* Cabin Link Button — Cryptocosm style */
