@@ -14,6 +14,9 @@
   --text-secondary: #8899aa;
   --text-muted: #556677;
   --gap: 32px;
+  
+  /* !CRITICAL: Единый отступ для всех элементов панелей */
+  --panel-inset: 16px;
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -148,12 +151,12 @@ body.visitor-mode {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--accent-cyan);
-  padding: 12px 22px 0;
+  padding: var(--panel-inset) var(--panel-inset) 0;
   opacity: 0.7;
 }
 
 .panel-3s .panel-content {
-  padding: 18px 22px;
+  padding: var(--panel-inset);
   flex: 1;
   overflow-y: auto;
 }
@@ -171,14 +174,14 @@ body.visitor-mode {
 }
 
 #story-panel .panel-content {
-  --story-gap: 8px;
+  --story-gap: var(--panel-inset);
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--story-gap);
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: var(--panel-inset);
+  padding-right: var(--panel-inset);
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
@@ -241,14 +244,14 @@ body.visitor-mode {
 }
 
 #segment-panel .panel-content {
-  --story-gap: 8px;
+  --story-gap: var(--panel-inset);
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--story-gap);
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: var(--panel-inset);
+  padding-right: var(--panel-inset);
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
@@ -258,7 +261,7 @@ body.visitor-mode {
 .segment-screen {
   position: relative;
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 var(--panel-inset);
   background: rgba(8, 12, 20, 0.65);
   border: 1px solid var(--panel-border);
   border-radius: 16px;
@@ -440,7 +443,7 @@ body.focus-service #service-panel::before {
 .narrative-screen {
   position: relative;
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 var(--panel-inset);
   background: rgba(8, 12, 20, 0.65);
   border: 1px solid var(--panel-border);
   border-radius: 16px;
@@ -454,7 +457,7 @@ body.focus-service #service-panel::before {
 
 .narrative-screen-placeholder {
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 var(--panel-inset);
   position: relative;
 }
 
@@ -1335,7 +1338,7 @@ body.focus-service #service-panel::before {
   display: flex;
   align-items: center;
   height: 56px; /* Фиксированная высота = размер виджета (56px) */
-  margin-bottom: 10px;
+  margin-bottom: var(--panel-inset);
   flex-shrink: 0;
 }
 
@@ -1345,7 +1348,7 @@ body.focus-service #service-panel::before {
   justify-content: center;
   gap: 2px;
   max-height: var(--widget-frame-size, 52px);
-  margin-left: 6px;
+  margin-left: var(--panel-inset);
   font-family: var(--font-body);
   font-size: 12px;
   line-height: 1.25;

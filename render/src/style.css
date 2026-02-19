@@ -552,7 +552,8 @@ body {
 }
 
 /* Scene stack dots */
-#scene-stack { display: inline-flex; gap: 6px; align-items: center; }
+#scene-stack,
+#segment-controls { display: inline-flex; gap: var(--panel-inset, 16px); align-items: center; }
 .scene-dot {
   width: 14px;
   height: 14px;
