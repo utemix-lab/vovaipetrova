@@ -1167,6 +1167,7 @@ body.focus-service #service-panel::before {
   justify-content: space-between;
   width: 100%;
   align-items: flex-end;
+  margin-top: -6px; /* Компенсация подпрыгивания виджетов (widget-bounce: -6px) */
 }
 
 .widget-group {
