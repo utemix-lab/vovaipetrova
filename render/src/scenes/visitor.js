@@ -3448,11 +3448,30 @@ function bindNarrativeScreen(container) {
     event.stopPropagation();
     const overlay = document.getElementById("scene-overlay");
     if (!overlay) return;
-    const expanded = screen.classList.toggle("narrative-screen--expanded");
-    screen.dataset.expanded = expanded ? "true" : "false";
-    toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
-    toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
-    if (expanded) {
+    const wasExpanded = screen.classList.contains("narrative-screen--expanded");
+    if (wasExpanded) {
+      // Сворачиваем
+      screen.classList.remove("narrative-screen--expanded");
+      screen.dataset.expanded = "false";
+      toggle.setAttribute("aria-label", "Развернуть");
+      toggle.setAttribute("title", "Развернуть");
+      document.body.classList.remove("narrative-expanded");
+      overlay.classList.remove("scene-overlay--active");
+      const placeholder = document.querySelector(".narrative-screen-placeholder");
+      if (placeholder && placeholder.parentElement) {
+        placeholder.parentElement.insertBefore(screen, placeholder);
+        placeholder.remove();
+      }
+      screen.style.left = "";
+      screen.style.top = "";
+      screen.style.width = "";
+      screen.style.height = "";
+    } else {
+      // Разворачиваем
+      screen.classList.add("narrative-screen--expanded");
+      screen.dataset.expanded = "true";
+      toggle.setAttribute("aria-label", "Свернуть");
+      toggle.setAttribute("title", "Свернуть");
       document.body.classList.add("narrative-expanded");
       document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
       overlay.classList.add("scene-overlay--active");
@@ -3462,8 +3481,6 @@ function bindNarrativeScreen(container) {
       screen.parentElement?.insertBefore(placeholder, screen);
       overlay.appendChild(screen);
       syncExpandedBounds();
-    } else {
-      collapseScreen();
     }
     setSlide(Number(screen.dataset.index || 0));
   });
