@@ -219,8 +219,8 @@ body.visitor-mode {
   grid-row: 1;
   pointer-events: none;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch; /* Segment панель растягивается на всю высоту */
+  justify-content: stretch; /* Segment панель растягивается на всю ширину */
 }
 
 /* Segment Panel — центральная панель (только VSTablishment) */
