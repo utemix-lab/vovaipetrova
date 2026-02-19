@@ -15,8 +15,9 @@
   --text-muted: #556677;
   --gap: 32px;
   
-  /* !CRITICAL: Единый отступ для ВСЕХ элементов панелей */
-  --panel-inset: 16px;
+  /* !CRITICAL: Единые отступы для ВСЕХ элементов панелей */
+  --panel-inset: 16px;        /* Края окна, вертикальные отступы между элементами */
+  --panel-inset-inner: 12px;  /* Горизонтальные внутренние отступы (виджет→текст, между точками, края мини-окна) */
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -473,14 +474,14 @@ body.focus-service #service-panel::before {
 
 .narrative-screen__hud {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: var(--panel-inset-inner);
+  left: var(--panel-inset-inner);
+  right: var(--panel-inset-inner);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 10px 12px;
-  gap: 12px;
+  padding: 0;
+  gap: var(--panel-inset-inner);
   z-index: 2;
   pointer-events: auto;
 }
@@ -488,7 +489,7 @@ body.focus-service #service-panel::before {
 .narrative-screen__dots {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--panel-inset-inner);
 }
 
 .narrative-dot {
@@ -563,14 +564,14 @@ body.focus-service #service-panel::before {
 
 .narrative-screen__text {
   position: absolute;
-  top: 30px;
-  left: 12px;
+  top: var(--panel-inset-inner);
+  left: var(--panel-inset-inner);
   right: auto;
   bottom: auto;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--panel-inset-inner);
   padding: 0;
   background: transparent;
   border: none;
@@ -1341,7 +1342,7 @@ body.focus-service #service-panel::before {
   justify-content: center;
   gap: 2px;
   max-height: var(--widget-frame-size, 52px);
-  margin-left: var(--panel-inset);
+  margin-left: var(--panel-inset-inner);
   font-family: var(--font-body);
   font-size: 12px;
   line-height: 1.25;
