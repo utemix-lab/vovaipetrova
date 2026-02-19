@@ -1639,6 +1639,68 @@ body.focus-service #service-panel::before {
   transform: scale(0.96);
 }
 
+/* === RADIAL MORPH FIELD CONTROLS === */
+.radial-morph-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.radial-morph-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.radial-morph-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.radial-morph-plugin-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-yellow);
+}
+
+.radial-morph-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.radial-morph-prev-btn,
+.radial-morph-next-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radial-morph-prev-btn:hover,
+.radial-morph-next-btn:hover {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(251, 191, 36, 0.15));
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
+}
+
+.radial-morph-prev-btn:active,
+.radial-morph-next-btn:active {
+  transform: scale(0.96);
+}
+
 /* === VST 2D GRAPH === */
 #system-panel:has(.vst-graph-container) .panel-header {
   display: none;

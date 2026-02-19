@@ -152,6 +152,7 @@ import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
 import { initRegistry, validateConfigAgainstRules, initToolCatalog, getPracticesByDomain } from "../ontology";
 import { computeHighlight, createContextFromState, INTENSITY } from "../ontology/highlightModel.js";
+import { RadialMorphField } from "../components/RadialMorphField.js";
 
 // === Константы ===
 const CONFIG = {
@@ -3220,6 +3221,16 @@ function renderChladniScreen() {
           Резонанс
         </button>
     </div>
+    <div class="radial-morph-controls" style="display: none;">
+        <div class="radial-morph-header">
+          <span class="radial-morph-label">Radial Field</span>
+          <span class="radial-morph-plugin-name">—</span>
+        </div>
+        <div class="radial-morph-nav">
+          <button class="radial-morph-prev-btn" type="button" title="Предыдущий плагин">◀</button>
+          <button class="radial-morph-next-btn" type="button" title="Следующий плагин">▶</button>
+        </div>
+    </div>
   `;
 }
 
@@ -3277,6 +3288,26 @@ async function bindChladniScreen(container) {
     if (!chladniSimulation) return;
     chladniSimulation.triggerPattern();
   });
+  
+  // Bind RadialMorphField controls
+  bindRadialMorphControls(container);
+}
+
+function bindRadialMorphControls(container) {
+  const prevBtn = container.querySelector(".radial-morph-prev-btn");
+  const nextBtn = container.querySelector(".radial-morph-next-btn");
+  
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      radialMorphPrevPlugin();
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      radialMorphNextPlugin();
+    });
+  }
 }
 
 function renderNarrativeScreen() {
@@ -4617,10 +4648,15 @@ function bindHighlightWidgets(container) {
 
 // === SCENE TOGGLE STATE (Track 6: Expressive Stacks) ===
 let workbenchSceneActive = false; // true = 3D-граф скрыт, сцена уступила место
+let radialMorphField = null; // Instance of RadialMorphField
+let radialMorphContainer = null; // Container for RadialMorphField
 
 function bindWorkbenchSceneToggle(container, node) {
   const scopeWidget = container.querySelector(".vova-scope-widget");
   if (!scopeWidget || !node) return;
+  
+  // Only for VSTablishment
+  if (node.id !== "workbench-vova-vstablishment") return;
   
   // Клик по корневому виджету воркбенча переключает сцену
   scopeWidget.addEventListener("click", (e) => {
@@ -4631,9 +4667,11 @@ function bindWorkbenchSceneToggle(container, node) {
       // Активируем режим: виджет подсвечивается жёлтым, 3D-граф скрывается
       scopeWidget.classList.add("scene-toggle-active");
       hideMainGraph();
+      showRadialMorphField();
     } else {
       // Деактивируем: возвращаем 3D-граф
       scopeWidget.classList.remove("scene-toggle-active");
+      hideRadialMorphField();
       showMainGraph();
     }
   });
@@ -4657,6 +4695,92 @@ function showMainGraph() {
     graphRenderer.domElement.style.pointerEvents = "auto";
   }
   console.log("[Track 6] Scene toggled: 3D graph visible");
+}
+
+function showRadialMorphField() {
+  // Create container if not exists
+  if (!radialMorphContainer) {
+    radialMorphContainer = document.createElement("div");
+    radialMorphContainer.id = "radial-morph-field";
+    radialMorphContainer.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: auto;
+    `;
+    document.body.appendChild(radialMorphContainer);
+  }
+  
+  radialMorphContainer.style.display = "block";
+  
+  // Create RadialMorphField instance if not exists
+  if (!radialMorphField) {
+    radialMorphField = new RadialMorphField(radialMorphContainer, {
+      onPluginSelect: (plugin) => {
+        console.log("[Track 6] Plugin selected:", plugin.name);
+        updateRadialMorphControls(plugin);
+      }
+    });
+    radialMorphField.loadData();
+  }
+  
+  // Show controls in Story panel
+  const controls = document.querySelector(".radial-morph-controls");
+  if (controls) {
+    controls.style.display = "block";
+  }
+  
+  // Hide Chladni controls
+  const chladniControls = document.querySelector(".chladni-controls");
+  if (chladniControls) {
+    chladniControls.style.display = "none";
+  }
+  
+  console.log("[Track 6] RadialMorphField shown");
+}
+
+function hideRadialMorphField() {
+  if (radialMorphContainer) {
+    radialMorphContainer.style.display = "none";
+  }
+  
+  // Hide controls in Story panel
+  const controls = document.querySelector(".radial-morph-controls");
+  if (controls) {
+    controls.style.display = "none";
+  }
+  
+  // Show Chladni controls
+  const chladniControls = document.querySelector(".chladni-controls");
+  if (chladniControls) {
+    chladniControls.style.display = "block";
+  }
+  
+  console.log("[Track 6] RadialMorphField hidden");
+}
+
+function updateRadialMorphControls(plugin) {
+  // Update plugin name in Story panel if controls exist
+  const pluginNameEl = document.querySelector(".radial-morph-plugin-name");
+  if (pluginNameEl && plugin) {
+    pluginNameEl.textContent = plugin.name;
+  }
+}
+
+// Navigation functions for RadialMorphField
+function radialMorphNextPlugin() {
+  if (radialMorphField) {
+    radialMorphField.selectNextPlugin();
+  }
+}
+
+function radialMorphPrevPlugin() {
+  if (radialMorphField) {
+    radialMorphField.selectPrevPlugin();
+  }
 }
 
 function bindVovaScopeWidget(container, node) {
