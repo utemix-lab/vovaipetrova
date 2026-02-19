@@ -3603,12 +3603,12 @@ function showSegmentPanel() {
   const content = segmentPanel.querySelector(".panel-content");
   if (content) {
     content.innerHTML = `
-      <div class="segment-toc">
+      <div class="node-toc">
         <div class="segment-widget-placeholder"></div>
-        <div class="segment-info">
-          <p class="text">Текст</p>
-          <p class="text">Текст</p>
-          <p class="text">Текст</p>
+        <div class="vova-root-info">
+          <div>Текст</div>
+          <div>Текст</div>
+          <div>Текст</div>
         </div>
       </div>
       <div class="segment-screen">
