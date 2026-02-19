@@ -3169,6 +3169,7 @@ function updateStoryWithPotential(panel, node) {
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  hideSegmentPanel();
 
   // Initialize octahedron in Narrative Screen shape area (only Vova for now)
   if (isVova) {
@@ -3583,10 +3584,45 @@ function updateStoryWithWorkbench(panel, node) {
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
     bindPotentialWidgets(content);
+    showSegmentPanel();
   } else {
     bindNarrativeScreen(content);
+    hideSegmentPanel();
   }
   bindEmblemSwap(content);
+}
+
+// === SEGMENT PANEL (центральная панель для VSTablishment) ===
+function showSegmentPanel() {
+  const segmentPanel = document.getElementById("segment-panel");
+  if (!segmentPanel) return;
+  
+  segmentPanel.classList.add("segment-visible");
+  
+  // Заполняем содержимое
+  const content = segmentPanel.querySelector(".panel-content");
+  if (content) {
+    content.innerHTML = `
+      <div class="segment-toc">
+        <div class="segment-widget-placeholder"></div>
+        <div class="segment-info">
+          <p class="text">Текст</p>
+          <p class="text">Текст</p>
+          <p class="text">Текст</p>
+        </div>
+      </div>
+      <div class="segment-screen">
+        <div class="segment-screen__viewport" style="background-image: url('${buildAssetPath("story/narrative/vova-01.png")}');"></div>
+      </div>
+    `;
+  }
+}
+
+function hideSegmentPanel() {
+  const segmentPanel = document.getElementById("segment-panel");
+  if (!segmentPanel) return;
+  
+  segmentPanel.classList.remove("segment-visible");
 }
 
 // === ШАБЛОН СТРАНИЦЫ КОЛЛАБА ===
@@ -3619,6 +3655,7 @@ function updateStoryWithCollab(panel, node) {
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  hideSegmentPanel();
 }
 
 // === ШАБЛОН СТРАНИЦЫ ХАБА ===
@@ -3741,6 +3778,7 @@ function updateStoryWithHub(panel, node) {
   bindHighlightWidgets(content);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  hideSegmentPanel();
   
   // Привязать обработчики кнопок практик
   if (node.id === "domains") {
@@ -3843,6 +3881,7 @@ function updateStoryWithRoot(panel, node) {
   bindHighlightWidgets(content);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  hideSegmentPanel();
 
   // Инициализация фигуры в shape area (октаэдр для root)
   const shapeArea = content.querySelector(".narrative-screen__shape-area");
@@ -3882,6 +3921,7 @@ function updateStoryWithDomainFocus(panel, node) {
   bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
+  hideSegmentPanel();
 }
 
 function updateStoryWithDomainWidgets(panel, data) {
@@ -5409,7 +5449,14 @@ function createUI() {
         <div class="panel-content"></div>
       </div>
     </div>
-    <div class="graph-spacer"></div>
+    <div class="graph-spacer">
+      <div id="segment-panel" class="panel-3s panel-segment">
+        <div class="panel-inner">
+          <div class="panel-header">Segment</div>
+          <div class="panel-content"></div>
+        </div>
+      </div>
+    </div>
     <div id="right-column">
       <div id="system-panel" class="panel-3s">
         <div class="panel-inner">

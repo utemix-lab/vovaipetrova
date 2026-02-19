@@ -202,6 +202,85 @@ body.visitor-mode {
   grid-column: 2;
   grid-row: 1;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Segment Panel — центральная панель (только VSTablishment) */
+#segment-panel {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background:
+    var(--panel-story-url) center/cover no-repeat,
+    var(--panel-bg);
+  pointer-events: auto;
+}
+
+#segment-panel.segment-visible {
+  display: flex;
+}
+
+#segment-panel .panel-content {
+  --story-gap: 8px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--story-gap);
+  padding-left: 16px;
+  padding-right: 16px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Segment mini-screen (16:9) */
+.segment-screen {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.segment-screen__viewport {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Segment widget placeholder */
+.segment-widget-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+/* Segment info text */
+.segment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.segment-info .text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Segment TOC (widget + info) */
+.segment-toc {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 /* Правая колонка — System + Service */
