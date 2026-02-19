@@ -3070,7 +3070,7 @@ function updatePanels() {
 // === ШАБЛОН СТРАНИЦЫ ПЕРСОНАЖА ===
 // pageTemplate: "character" в VISUAL_CONFIG.nodeTypes
 // Редактируя эту функцию, изменяешь все страницы персонажей
-// Октаэдр пока только у Вовы (isVova)
+// Октаэдр у всех персонажей, количество шаров = количество виджетов
 function updateStoryWithPotential(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -3079,7 +3079,6 @@ function updateStoryWithPotential(panel, node) {
   content.classList.remove("story-compact");
 
   const widgetIcon = getNodeWidgetIcon(node);
-  const isVova = node?.id === "character-vova";
   const domainNodeIds = getRelatedNodeIdsByType(node?.id, "domain");
   const practiceNodeIds = getRelatedNodeIdsByType(node?.id, "practice");
   const workbenchNodeIds = getRelatedNodeIdsByType(node?.id, "workbench");
@@ -3171,20 +3170,22 @@ function updateStoryWithPotential(panel, node) {
   bindEmblemSwap(content);
   hideSegmentPanel();
 
-  // Initialize octahedron in Narrative Screen shape area (only Vova for now)
-  if (isVova) {
-    const shapeArea = content.querySelector(".narrative-screen__shape-area");
-    if (shapeArea) {
-      // Collect exactly 6 widget node IDs for octahedron vertices
-      // Priority: domains, workbenches, collabs, practices
-      const allWidgetIds = [
-        ...domainNodeIds,
-        ...workbenchNodeIds,
-        ...collabNodeIds,
-        ...practiceNodeIds
-      ];
-      const octaNodeIds = allWidgetIds.slice(0, 6);
-      initMiniShape("octa", shapeArea, octaNodeIds, node.id);
+  // Initialize octahedron in Narrative Screen shape area for ALL characters
+  // Количество шаров = количество виджетов на странице персонажа
+  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  if (shapeArea) {
+    // Collect all widget node IDs for octahedron vertices
+    // Priority: domains, workbenches, collabs, practices
+    const allWidgetIds = [
+      ...domainNodeIds,
+      ...workbenchNodeIds,
+      ...collabNodeIds,
+      ...practiceNodeIds
+    ];
+    // Используем все виджеты (или максимум 12 для icosahedron)
+    const shapeNodeIds = allWidgetIds.slice(0, Math.min(allWidgetIds.length, 12));
+    if (shapeNodeIds.length > 0) {
+      initMiniShape("octa", shapeArea, shapeNodeIds, node.id);
     }
   }
 }
@@ -4395,20 +4396,26 @@ function initMiniShape(type, container, nodeIds, hubId) {
   }
   miniCubeScene.add(miniCubeGroup);
 
+  // Генерируем позиции динамически в зависимости от количества виджетов
+  const numVertices = nodeIds.length;
   let positions = [];
-  if (type === "cube") {
+  
+  if (type === "cube" && numVertices >= 8) {
     const cubeSize = 0.85;
     positions = [
       [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
       [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
     ].map(p => p.map(v => v * cubeSize));
   } else if (type === "octa") {
+    // Октаэдр с динамическим количеством вершин (от 1 до 6)
     const octaSize = 1.2;
-    positions = [
+    const allOctaPositions = [
       [1, 0, 0], [-1, 0, 0],
       [0, 1, 0], [0, -1, 0],
       [0, 0, 1], [0, 0, -1]
     ].map(p => p.map(v => v * octaSize));
+    // Берём столько позиций, сколько виджетов (максимум 6)
+    positions = allOctaPositions.slice(0, Math.min(numVertices, 6));
   } else {
     const geom = new THREE.IcosahedronGeometry(1);
     const arr = geom.getAttribute("position").array;
