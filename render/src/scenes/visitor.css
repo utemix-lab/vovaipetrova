@@ -15,9 +15,8 @@
   --text-muted: #556677;
   --gap: 32px;
   
-  /* !CRITICAL: Единые отступы для всех элементов панелей */
-  --panel-inset: 16px;       /* Основной отступ между элементами */
-  --panel-inset-small: 8px;  /* Малый отступ между виджетами и точками */
+  /* !CRITICAL: Единый отступ для ВСЕХ элементов панелей */
+  --panel-inset: 16px;
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -153,13 +152,11 @@ body.visitor-mode {
   letter-spacing: 0.15em;
   color: var(--accent-cyan);
   padding: var(--panel-inset);
-  padding-bottom: 0;
   opacity: 0.7;
 }
 
 .panel-3s .panel-content {
-  padding: var(--panel-inset);
-  padding-top: 0;
+  padding: 0 var(--panel-inset) var(--panel-inset);
   flex: 1;
   overflow-y: auto;
   display: flex;
@@ -1176,7 +1173,7 @@ body.focus-service #service-panel::before {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--panel-inset-small);
+  gap: var(--panel-inset);
 }
 
 .widget-group .section-title {
@@ -1187,7 +1184,7 @@ body.focus-service #service-panel::before {
 .widget-group .domain-widgets {
   display: flex;
   flex-direction: row;
-  gap: var(--panel-inset-small);
+  gap: var(--panel-inset);
 }
 
 .widget-groups-row .widget-group:last-child {
@@ -1530,25 +1527,25 @@ body.focus-service #service-panel::before {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
-  margin: 0 0 var(--panel-inset-small);
+  margin: 0;
 }
 
 #story-panel .section-title {
-  margin: 0 0 var(--panel-inset-small);
+  margin: 0;
 }
 
 .inline-widgets {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--panel-inset-small);
-  margin: 0 0 var(--panel-inset-small);
+  gap: var(--panel-inset);
+  margin: 0;
   padding: 0;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
 #story-panel .inline-widgets {
-  margin: 0 0 var(--story-gap, 8px);
+  margin: 0;
 }
 
 /* widget labels removed */
