@@ -3580,7 +3580,7 @@ function updateStoryWithWorkbench(panel, node) {
   // Специальная обработка для VSTablichment — Chladni-эффект + виджеты потенциала
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
-    // Виджеты потенциала (фильтры, группировки) — 7 флагов равномерно
+    // Виджеты потенциала (фильтры, группировки) — 6 флагов равномерно
     html += `
       <div class="potential-widgets potential-widgets--flags">
         <div class="node-widget node-widget--potential" data-potential-id="country-1" title="Страна 1">
@@ -3611,11 +3611,6 @@ function updateStoryWithWorkbench(panel, node) {
         <div class="node-widget node-widget--potential" data-potential-id="country-6" title="Страна 6">
           <div class="widget-frame">
             <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 6" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-7" title="Страна 7">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 7" class="widget-image" />
           </div>
         </div>
       </div>

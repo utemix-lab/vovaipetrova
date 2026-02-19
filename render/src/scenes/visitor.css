@@ -1441,6 +1441,7 @@ body.focus-service #service-panel::before {
 .potential-widgets--flags {
   justify-content: space-between;
   width: 100%;
+  gap: 0; /* Без стандартного gap — space-between распределяет равномерно */
 }
 
 .node-widget--potential {
