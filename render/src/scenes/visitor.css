@@ -15,8 +15,9 @@
   --text-muted: #556677;
   --gap: 32px;
   
-  /* !CRITICAL: Единый отступ для всех элементов панелей */
-  --panel-inset: 16px;
+  /* !CRITICAL: Единые отступы для всех элементов панелей */
+  --panel-inset: 16px;       /* Основной отступ между элементами */
+  --panel-inset-small: 8px;  /* Малый отступ между виджетами и точками */
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -174,14 +175,12 @@ body.visitor-mode {
 }
 
 #story-panel .panel-content {
-  --story-gap: var(--panel-inset);
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--story-gap);
-  padding-left: var(--panel-inset);
-  padding-right: var(--panel-inset);
+  gap: var(--panel-inset);
+  padding: 0 var(--panel-inset) var(--panel-inset);
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
@@ -244,14 +243,12 @@ body.visitor-mode {
 }
 
 #segment-panel .panel-content {
-  --story-gap: var(--panel-inset);
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--story-gap);
-  padding-left: var(--panel-inset);
-  padding-right: var(--panel-inset);
+  gap: var(--panel-inset);
+  padding: 0 var(--panel-inset) var(--panel-inset);
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
@@ -261,7 +258,7 @@ body.visitor-mode {
 .segment-screen {
   position: relative;
   width: 100%;
-  margin: 0 0 var(--panel-inset);
+  /* margin управляется через gap в .panel-content */
   background: rgba(8, 12, 20, 0.65);
   border: 1px solid var(--panel-border);
   border-radius: 16px;
@@ -443,7 +440,7 @@ body.focus-service #service-panel::before {
 .narrative-screen {
   position: relative;
   width: 100%;
-  margin: 0 0 var(--panel-inset);
+  /* margin управляется через gap в .panel-content */
   background: rgba(8, 12, 20, 0.65);
   border: 1px solid var(--panel-border);
   border-radius: 16px;
@@ -457,7 +454,7 @@ body.focus-service #service-panel::before {
 
 .narrative-screen-placeholder {
   width: 100%;
-  margin: 0 0 var(--panel-inset);
+  /* margin управляется через gap в .panel-content */
   position: relative;
 }
 
@@ -1180,7 +1177,7 @@ body.focus-service #service-panel::before {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: var(--panel-inset-small);
 }
 
 .widget-group .section-title {
@@ -1191,7 +1188,7 @@ body.focus-service #service-panel::before {
 .widget-group .domain-widgets {
   display: flex;
   flex-direction: row;
-  gap: 4px;
+  gap: var(--panel-inset-small);
 }
 
 .widget-groups-row .widget-group:last-child {
@@ -1338,8 +1335,8 @@ body.focus-service #service-panel::before {
   display: flex;
   align-items: center;
   height: 56px; /* Фиксированная высота = размер виджета (56px) */
-  margin-bottom: var(--panel-inset);
   flex-shrink: 0;
+  /* margin управляется через gap в .panel-content */
 }
 
 .vova-root-info {
@@ -1534,18 +1531,18 @@ body.focus-service #service-panel::before {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
-  margin: 8px 0;
+  margin: 0 0 var(--panel-inset-small);
 }
 
 #story-panel .section-title {
-  margin: var(--story-gap, 8px) 0;
+  margin: 0 0 var(--panel-inset-small);
 }
 
 .inline-widgets {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin: 0 0 8px;
+  gap: var(--panel-inset-small);
+  margin: 0 0 var(--panel-inset-small);
   padding: 0;
   justify-content: flex-start;
   align-items: flex-start;
