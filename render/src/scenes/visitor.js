@@ -152,8 +152,9 @@ import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
 import { initRegistry, validateConfigAgainstRules, initToolCatalog, getPracticesByDomain } from "../ontology";
 import { computeHighlight, createContextFromState, INTENSITY } from "../ontology/highlightModel.js";
-import { RadialMorphField } from "../components/RadialMorphField.js";
-import { ConstellationField } from "../components/ConstellationField.js";
+// Track 6: Expressive Stacks - компоненты сохранены как примеры в components/
+// import { RadialMorphField } from "../components/RadialMorphField.js";
+// import { ConstellationField } from "../components/ConstellationField.js";
 
 // === Константы ===
 const CONFIG = {
@@ -3217,20 +3218,10 @@ function renderChladniScreen() {
         <div class="narrative-screen__detail"></div>
       </div>
     </div>
-    <div class="chladni-controls">
+    <div class="chladni-controls" style="display: none;">
         <button class="chladni-test-btn" type="button">
           Резонанс
         </button>
-    </div>
-    <div class="radial-morph-controls">
-        <div class="radial-morph-header">
-          <button class="radial-morph-toggle-btn" type="button" title="Показать Radial Field">Radial Field</button>
-          <span class="radial-morph-plugin-name" style="display: none;">—</span>
-        </div>
-        <div class="radial-morph-nav" style="display: none;">
-          <button class="radial-morph-prev-btn" type="button" title="Предыдущий плагин">◀</button>
-          <button class="radial-morph-next-btn" type="button" title="Следующий плагин">▶</button>
-        </div>
     </div>
   `;
 }
@@ -3290,43 +3281,6 @@ async function bindChladniScreen(container) {
     chladniSimulation.triggerPattern();
   });
   
-  // Bind RadialMorphField controls
-  bindRadialMorphControls(container);
-}
-
-function bindRadialMorphControls(container) {
-  const toggleBtn = container.querySelector(".radial-morph-toggle-btn");
-  const prevBtn = container.querySelector(".radial-morph-prev-btn");
-  const nextBtn = container.querySelector(".radial-morph-next-btn");
-  const navEl = container.querySelector(".radial-morph-nav");
-  const pluginNameEl = container.querySelector(".radial-morph-plugin-name");
-  
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const isActive = toggleBtn.classList.toggle("active");
-      if (isActive) {
-        showRadialMorphField();
-        if (navEl) navEl.style.display = "flex";
-        if (pluginNameEl) pluginNameEl.style.display = "block";
-      } else {
-        hideRadialMorphField();
-        if (navEl) navEl.style.display = "none";
-        if (pluginNameEl) pluginNameEl.style.display = "none";
-      }
-    });
-  }
-  
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      radialMorphPrevPlugin();
-    });
-  }
-  
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      radialMorphNextPlugin();
-    });
-  }
 }
 
 function renderNarrativeScreen() {
@@ -3590,7 +3544,6 @@ function updateStoryWithWorkbench(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindWorkbenchSceneToggle(content, node); // Клик по виджету переключает сцену
   
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
@@ -4665,185 +4618,9 @@ function bindHighlightWidgets(container) {
   });
 }
 
-// === SCENE TOGGLE STATE (Track 6: Expressive Stacks) ===
-let workbenchSceneActive = false; // true = 3D-граф скрыт, сцена уступила место
-let radialMorphField = null; // Instance of RadialMorphField
-let radialMorphContainer = null; // Container for RadialMorphField
-let constellationField = null; // Instance of ConstellationField
-let constellationContainer = null; // Container for ConstellationField
-
-function bindWorkbenchSceneToggle(container, node) {
-  const scopeWidget = container.querySelector(".vova-scope-widget");
-  if (!scopeWidget || !node) return;
-  
-  // Only for VSTablishment
-  if (node.id !== "workbench-vova-vstablishment") return;
-  
-  // Клик по корневому виджету воркбенча переключает сцену на Constellation (инструменто-центричный)
-  scopeWidget.addEventListener("click", (e) => {
-    e.stopPropagation();
-    workbenchSceneActive = !workbenchSceneActive;
-    
-    if (workbenchSceneActive) {
-      // Активируем режим: виджет подсвечивается жёлтым, 3D-граф скрывается
-      scopeWidget.classList.add("scene-toggle-active");
-      hideMainGraph();
-      showConstellationField();
-    } else {
-      // Деактивируем: возвращаем 3D-граф
-      scopeWidget.classList.remove("scene-toggle-active");
-      hideConstellationField();
-      hideRadialMorphField(); // Also hide RadialMorphField if active
-      resetRadialMorphToggle();
-      showMainGraph();
-    }
-  });
-}
-
-function hideMainGraph() {
-  // Скрываем 3D-граф через graph.renderer()
-  const graphRenderer = graph?.renderer?.();
-  if (graphRenderer && graphRenderer.domElement) {
-    graphRenderer.domElement.style.opacity = "0";
-    graphRenderer.domElement.style.pointerEvents = "none";
-  }
-  console.log("[Track 6] Scene toggled: 3D graph hidden");
-}
-
-function showMainGraph() {
-  // Показываем 3D-граф
-  const graphRenderer = graph?.renderer?.();
-  if (graphRenderer && graphRenderer.domElement) {
-    graphRenderer.domElement.style.opacity = "1";
-    graphRenderer.domElement.style.pointerEvents = "auto";
-  }
-  console.log("[Track 6] Scene toggled: 3D graph visible");
-}
-
-function showRadialMorphField() {
-  // Create container if not exists
-  if (!radialMorphContainer) {
-    radialMorphContainer = document.createElement("div");
-    radialMorphContainer.id = "radial-morph-field";
-    radialMorphContainer.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 2;
-      pointer-events: auto;
-    `;
-    document.body.appendChild(radialMorphContainer);
-  }
-  
-  radialMorphContainer.style.display = "block";
-  
-  // Create RadialMorphField instance if not exists
-  if (!radialMorphField) {
-    radialMorphField = new RadialMorphField(radialMorphContainer, {
-      onPluginSelect: (plugin) => {
-        console.log("[Track 6] Plugin selected:", plugin.name);
-        updateRadialMorphControls(plugin);
-      }
-    });
-    radialMorphField.loadData();
-  }
-  
-  // Hide constellation if visible (RadialMorphField takes over)
-  if (constellationContainer) {
-    constellationContainer.style.display = "none";
-  }
-  
-  console.log("[Track 6] RadialMorphField shown");
-}
-
-function hideRadialMorphField() {
-  if (radialMorphContainer) {
-    radialMorphContainer.style.display = "none";
-  }
-  
-  // Show constellation back if workbench scene is active
-  if (workbenchSceneActive && constellationContainer) {
-    constellationContainer.style.display = "block";
-  }
-  
-  console.log("[Track 6] RadialMorphField hidden");
-}
-
-function updateRadialMorphControls(plugin) {
-  // Update plugin name in Story panel if controls exist
-  const pluginNameEl = document.querySelector(".radial-morph-plugin-name");
-  if (pluginNameEl && plugin) {
-    pluginNameEl.textContent = plugin.name;
-  }
-}
-
-// Navigation functions for RadialMorphField
-function radialMorphNextPlugin() {
-  if (radialMorphField) {
-    radialMorphField.selectNextPlugin();
-  }
-}
-
-function radialMorphPrevPlugin() {
-  if (radialMorphField) {
-    radialMorphField.selectPrevPlugin();
-  }
-}
-
-function resetRadialMorphToggle() {
-  const toggleBtn = document.querySelector(".radial-morph-toggle-btn");
-  const navEl = document.querySelector(".radial-morph-nav");
-  const pluginNameEl = document.querySelector(".radial-morph-plugin-name");
-  
-  if (toggleBtn) toggleBtn.classList.remove("active");
-  if (navEl) navEl.style.display = "none";
-  if (pluginNameEl) pluginNameEl.style.display = "none";
-}
-
-// === CONSTELLATION FIELD (Instrument-centric) ===
-function showConstellationField() {
-  // Create container if not exists
-  if (!constellationContainer) {
-    constellationContainer = document.createElement("div");
-    constellationContainer.id = "constellation-field";
-    constellationContainer.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      pointer-events: auto;
-    `;
-    document.body.appendChild(constellationContainer);
-  }
-  
-  constellationContainer.style.display = "block";
-  
-  // Create ConstellationField instance if not exists
-  if (!constellationField) {
-    constellationField = new ConstellationField(constellationContainer, {
-      onPluginSelect: (plugin) => {
-        console.log("[Track 6] Constellation plugin selected:", plugin.name);
-      },
-      onPluginHover: (plugin) => {
-        // Could update UI here
-      }
-    });
-    constellationField.loadData();
-  }
-  
-  console.log("[Track 6] ConstellationField shown");
-}
-
-function hideConstellationField() {
-  if (constellationContainer) {
-    constellationContainer.style.display = "none";
-  }
-  console.log("[Track 6] ConstellationField hidden");
-}
+// === Track 6: Expressive Stacks ===
+// Код стеков RadialMorphField и ConstellationField сохранён в components/
+// как примеры реализации. Временно отключен до переосмысления архитектуры.
 
 function bindVovaScopeWidget(container, node) {
   const scopeWidget = container.querySelector(".vova-scope-widget");
