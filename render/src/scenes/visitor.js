@@ -4640,19 +4640,21 @@ function bindWorkbenchSceneToggle(container, node) {
 }
 
 function hideMainGraph() {
-  // Скрываем 3D-граф (renderer)
-  if (renderer && renderer.domElement) {
-    renderer.domElement.style.opacity = "0";
-    renderer.domElement.style.pointerEvents = "none";
+  // Скрываем 3D-граф через graph.renderer()
+  const graphRenderer = graph?.renderer?.();
+  if (graphRenderer && graphRenderer.domElement) {
+    graphRenderer.domElement.style.opacity = "0";
+    graphRenderer.domElement.style.pointerEvents = "none";
   }
   console.log("[Track 6] Scene toggled: 3D graph hidden");
 }
 
 function showMainGraph() {
   // Показываем 3D-граф
-  if (renderer && renderer.domElement) {
-    renderer.domElement.style.opacity = "1";
-    renderer.domElement.style.pointerEvents = "auto";
+  const graphRenderer = graph?.renderer?.();
+  if (graphRenderer && graphRenderer.domElement) {
+    graphRenderer.domElement.style.opacity = "1";
+    graphRenderer.domElement.style.pointerEvents = "auto";
   }
   console.log("[Track 6] Scene toggled: 3D graph visible");
 }
