@@ -1433,9 +1433,14 @@ body.focus-service #service-panel::before {
 /* === ВИДЖЕТЫ ПОТЕНЦИАЛА (фильтры, группировки) === */
 .potential-widgets {
   display: flex;
-  gap: 12px;
-  padding: 16px 0;
+  gap: var(--panel-inset);
   justify-content: center;
+}
+
+/* Флаги на VSTablishment — равномерное распределение */
+.potential-widgets--flags {
+  justify-content: space-between;
+  width: 100%;
 }
 
 .node-widget--potential {

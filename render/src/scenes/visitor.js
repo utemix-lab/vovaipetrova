@@ -3580,12 +3580,42 @@ function updateStoryWithWorkbench(panel, node) {
   // Специальная обработка для VSTablichment — Chladni-эффект + виджеты потенциала
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
-    // Виджеты потенциала (фильтры, группировки)
+    // Виджеты потенциала (фильтры, группировки) — 7 флагов равномерно
     html += `
-      <div class="potential-widgets">
-        <div class="node-widget node-widget--potential" data-potential-id="countries" title="Страны">
+      <div class="potential-widgets potential-widgets--flags">
+        <div class="node-widget node-widget--potential" data-potential-id="country-1" title="Страна 1">
           <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страны" class="widget-image" />
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 1" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-2" title="Страна 2">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 2" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-3" title="Страна 3">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 3" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-4" title="Страна 4">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 4" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-5" title="Страна 5">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 5" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-6" title="Страна 6">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 6" class="widget-image" />
+          </div>
+        </div>
+        <div class="node-widget node-widget--potential" data-potential-id="country-7" title="Страна 7">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 7" class="widget-image" />
           </div>
         </div>
       </div>
