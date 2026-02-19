@@ -3454,7 +3454,7 @@ function bindNarrativeScreen(container) {
     toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
     if (expanded) {
       document.body.classList.add("narrative-expanded");
-      document.body.classList.remove("focus-story", "focus-system", "focus-service");
+      document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
       overlay.classList.add("scene-overlay--active");
       const placeholder = document.createElement("div");
       placeholder.className = "narrative-screen-placeholder";
@@ -5390,8 +5390,9 @@ function getActionIcon(type) {
 
 // Panel focus (visual emphasis)
 function setPanelFocus(panelId) {
-  document.body.classList.remove("focus-story", "focus-system", "focus-service");
+  document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
   if (panelId === "story-panel") document.body.classList.add("focus-story");
+  if (panelId === "segment-panel") document.body.classList.add("focus-segment");
   if (panelId === "system-panel") document.body.classList.add("focus-system");
   if (panelId === "service-panel") document.body.classList.add("focus-service");
   window.dispatchEvent(new CustomEvent("graph-focus-changed", { detail: { panelId } }));
@@ -5574,6 +5575,7 @@ function createUI() {
 
   // Panel focus behavior (hover to focus, default Story)
   const storyPanel = document.getElementById("story-panel");
+  const segmentPanel = document.getElementById("segment-panel");
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
 
@@ -5581,11 +5583,13 @@ function createUI() {
   setPanelFocus("story-panel");
 
   // Hover focus
+  storyPanel?.addEventListener("mouseenter", () => setPanelFocus("story-panel"));
+  segmentPanel?.addEventListener("mouseenter", () => setPanelFocus("segment-panel"));
   systemPanel?.addEventListener("mouseenter", () => setPanelFocus("system-panel"));
   servicePanel?.addEventListener("mouseenter", () => setPanelFocus("service-panel"));
-  storyPanel?.addEventListener("mouseenter", () => setPanelFocus("story-panel"));
 
-  // Return to Story on leaving right column
+  // Return to Story on leaving any panel
+  segmentPanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
   systemPanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
   servicePanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
 

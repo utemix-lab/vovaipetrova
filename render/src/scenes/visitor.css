@@ -145,15 +145,6 @@ body.visitor-mode {
     var(--panel-bg);
 }
 
-#story-panel:hover {
-  transform: scale(1.01);
-}
-
-#story-panel.panel-dimmed:hover {
-  transform: scale(1.01);
-  opacity: 1;
-}
-
 #story-panel .panel-content {
   --story-gap: 8px;
   text-align: left;
@@ -216,10 +207,7 @@ body.visitor-mode {
     var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
   pointer-events: auto;
-}
-
-#segment-panel:hover {
-  transform: scale(1.01);
+  transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
 #segment-panel.segment-visible {
@@ -300,22 +288,21 @@ body.focus-story #story-panel {
   opacity: 1;
   z-index: 12;
 }
-
-body.narrative-expanded #story-panel,
-body.narrative-expanded #system-panel,
-body.narrative-expanded #service-panel {
-  transform: none !important;
-  opacity: 1;
-}
-
-body.narrative-expanded #story-panel:hover,
-body.narrative-expanded #system-panel:hover,
-body.narrative-expanded #service-panel:hover {
-  transform: none !important;
-  box-shadow: none;
-}
+body.focus-story #segment-panel,
 body.focus-story #system-panel,
 body.focus-story #service-panel {
+  transform: scale(0.97);
+  opacity: 0.5;
+}
+
+body.focus-segment #segment-panel {
+  transform: scale(1.02);
+  opacity: 1;
+  z-index: 12;
+}
+body.focus-segment #story-panel,
+body.focus-segment #system-panel,
+body.focus-segment #service-panel {
   transform: scale(0.97);
   opacity: 0.5;
 }
@@ -326,6 +313,7 @@ body.focus-system #system-panel {
   z-index: 12;
 }
 body.focus-system #story-panel,
+body.focus-system #segment-panel,
 body.focus-system #service-panel {
   transform: scale(0.97);
   opacity: 0.5;
@@ -337,13 +325,31 @@ body.focus-service #service-panel {
   z-index: 12;
 }
 body.focus-service #story-panel,
+body.focus-service #segment-panel,
 body.focus-service #system-panel {
   transform: scale(0.97);
   opacity: 0.5;
 }
 
+body.narrative-expanded #story-panel,
+body.narrative-expanded #segment-panel,
+body.narrative-expanded #system-panel,
+body.narrative-expanded #service-panel {
+  transform: none !important;
+  opacity: 1;
+}
+
+body.narrative-expanded #story-panel:hover,
+body.narrative-expanded #segment-panel:hover,
+body.narrative-expanded #system-panel:hover,
+body.narrative-expanded #service-panel:hover {
+  transform: none !important;
+  box-shadow: none;
+}
+
 /* Focus glow (no opacity change) */
 body.focus-story #story-panel::before,
+body.focus-segment #segment-panel::before,
 body.focus-system #system-panel::before,
 body.focus-service #service-panel::before {
   border-color: var(--accent-cyan);
