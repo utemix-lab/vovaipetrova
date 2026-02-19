@@ -143,6 +143,7 @@ body.visitor-mode {
   background:
     var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
+  transform-origin: left center;
 }
 
 #story-panel .panel-content {
@@ -168,6 +169,7 @@ body.visitor-mode {
   background:
     var(--panel-system-url) center/cover no-repeat,
     var(--panel-bg);
+  transform-origin: right top;
 }
 
 #system-panel .panel-content {
@@ -184,6 +186,7 @@ body.visitor-mode {
   background:
     var(--panel-service-url) center/cover no-repeat,
     var(--panel-bg);
+  transform-origin: right bottom;
 }
 
 /* Graph Area — центр (пустой, граф просвечивает) */
@@ -205,7 +208,8 @@ body.visitor-mode {
     var(--panel-story-url) center/cover no-repeat,
     var(--panel-bg);
   pointer-events: auto;
-  transition: opacity 0.35s ease;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  transform-origin: center center;
 }
 
 #segment-panel.segment-visible {
@@ -280,44 +284,52 @@ body.visitor-mode {
   display: none;
 }
 
-/* Focus states (panel emphasis) — без scale, только opacity и glow */
+/* Focus states (panel emphasis) — scale + opacity */
 body.focus-story #story-panel {
+  transform: scale(1.02);
   opacity: 1;
   z-index: 12;
 }
 body.focus-story #segment-panel,
 body.focus-story #system-panel,
 body.focus-story #service-panel {
+  transform: scale(0.98);
   opacity: 0.5;
 }
 
 body.focus-segment #segment-panel {
+  transform: scale(1.02);
   opacity: 1;
   z-index: 12;
 }
 body.focus-segment #story-panel,
 body.focus-segment #system-panel,
 body.focus-segment #service-panel {
+  transform: scale(0.98);
   opacity: 0.5;
 }
 
 body.focus-system #system-panel {
+  transform: scale(1.02);
   opacity: 1;
   z-index: 12;
 }
 body.focus-system #story-panel,
 body.focus-system #segment-panel,
 body.focus-system #service-panel {
+  transform: scale(0.98);
   opacity: 0.5;
 }
 
 body.focus-service #service-panel {
+  transform: scale(1.02);
   opacity: 1;
   z-index: 12;
 }
 body.focus-service #story-panel,
 body.focus-service #segment-panel,
 body.focus-service #system-panel {
+  transform: scale(0.98);
   opacity: 0.5;
 }
 
@@ -325,6 +337,7 @@ body.narrative-expanded #story-panel,
 body.narrative-expanded #segment-panel,
 body.narrative-expanded #system-panel,
 body.narrative-expanded #service-panel {
+  transform: none !important;
   opacity: 1;
 }
 
