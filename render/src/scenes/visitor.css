@@ -1166,15 +1166,16 @@ body.focus-service #service-panel::before {
 .widget-groups-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   align-items: flex-end;
+  gap: var(--panel-inset-inner); /* 12px между группами */
 }
 
 .widget-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-start; /* Все названия по левому краю виджетов */
   gap: calc(var(--panel-inset) - 6px); /* 16px - 6px = 10px, компенсация подпрыгивания */
 }
 
@@ -1186,15 +1187,7 @@ body.focus-service #service-panel::before {
 .widget-group .domain-widgets {
   display: flex;
   flex-direction: row;
-  gap: var(--panel-inset);
-}
-
-.widget-groups-row .widget-group:last-child {
-  align-items: flex-end;
-}
-
-.widget-groups-row .widget-group:last-child .section-title {
-  align-self: flex-end;
+  gap: var(--panel-inset-dots); /* 8px между виджетами в группе */
 }
 
 /* Cabin Link Button — Cryptocosm style */
