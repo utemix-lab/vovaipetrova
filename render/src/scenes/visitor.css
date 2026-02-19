@@ -1167,7 +1167,6 @@ body.focus-service #service-panel::before {
   justify-content: space-between;
   width: 100%;
   align-items: flex-end;
-  margin-top: -6px; /* Компенсация подпрыгивания виджетов (widget-bounce: -6px) */
 }
 
 .widget-group {
@@ -1186,6 +1185,7 @@ body.focus-service #service-panel::before {
   display: flex;
   flex-direction: row;
   gap: var(--panel-inset);
+  margin-top: -6px; /* Компенсация подпрыгивания виджетов (widget-bounce: -6px) */
 }
 
 .widget-groups-row .widget-group:last-child {
