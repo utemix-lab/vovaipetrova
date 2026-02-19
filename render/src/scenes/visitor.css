@@ -165,7 +165,6 @@ body.visitor-mode {
 
 #system-panel {
   flex: 1;
-  margin-top: -12px;
   background:
     var(--panel-system-url) center/cover no-repeat,
     var(--panel-bg);
@@ -182,7 +181,6 @@ body.visitor-mode {
 
 #service-panel {
   flex: 1;
-  margin-bottom: -12px;
   background:
     var(--panel-service-url) center/cover no-repeat,
     var(--panel-bg);
