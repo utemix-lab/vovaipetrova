@@ -152,14 +152,19 @@ body.visitor-mode {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--accent-cyan);
-  padding: var(--panel-inset) var(--panel-inset) 0;
+  padding: var(--panel-inset);
+  padding-bottom: 0;
   opacity: 0.7;
 }
 
 .panel-3s .panel-content {
   padding: var(--panel-inset);
+  padding-top: 0;
   flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-inset);
 }
 
 /* Story Panel — левая колонка */
@@ -176,11 +181,8 @@ body.visitor-mode {
 
 #story-panel .panel-content {
   text-align: left;
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: var(--panel-inset);
-  padding: 0 var(--panel-inset) var(--panel-inset);
+  /* gap и padding наследуются от .panel-3s .panel-content */
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
@@ -244,11 +246,8 @@ body.visitor-mode {
 
 #segment-panel .panel-content {
   text-align: left;
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: var(--panel-inset);
-  padding: 0 var(--panel-inset) var(--panel-inset);
+  /* gap и padding наследуются от .panel-3s .panel-content */
   overflow-y: hidden;
   overflow-x: hidden;
   position: relative;
