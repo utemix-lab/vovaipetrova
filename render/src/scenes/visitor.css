@@ -16,8 +16,9 @@
   --gap: 32px;
   
   /* !CRITICAL: Единые отступы для ВСЕХ элементов панелей */
-  --panel-inset: 16px;        /* Края окна, вертикальные отступы между элементами */
-  --panel-inset-inner: 12px;  /* Горизонтальные внутренние отступы (виджет→текст, между точками, края мини-окна) */
+  --panel-inset: 16px;        /* Края большого окна, вертикальные отступы между элементами */
+  --panel-inset-inner: 12px;  /* Края мини-окна, горизонтальные внутренние отступы (виджет→текст) */
+  --panel-inset-dots: 8px;    /* Расстояние между точками */
 
   /* Fonts */
   --font-tech: 'Orbitron', monospace;
@@ -481,7 +482,7 @@ body.focus-service #service-panel::before {
   align-items: center;
   justify-content: flex-end;
   padding: 0;
-  gap: var(--panel-inset-inner);
+  gap: var(--panel-inset-dots);
   z-index: 2;
   pointer-events: auto;
 }
@@ -489,7 +490,7 @@ body.focus-service #service-panel::before {
 .narrative-screen__dots {
   display: inline-flex;
   align-items: center;
-  gap: var(--panel-inset-inner);
+  gap: var(--panel-inset-dots);
 }
 
 .narrative-dot {
