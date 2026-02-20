@@ -3066,6 +3066,33 @@ function updatePanels() {
   emitQueryModeChange();
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// ШАБЛОНЫ СТРАНИЦ — Единая структура для всех типов узлов
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// Все страницы Story-панели следуют единому шаблону из 3 блоков:
+// 
+// БЛОК 1: Header (.node-toc)
+//   - Корневой виджет (.vova-scope-widget) + текст (nodeInfoHtml)
+//   - При hover на корневой виджет → Scope Highlight (сумма всех виджетов)
+// 
+// БЛОК 2: Narrative Screen (.narrative-screen)
+//   - 3D-фигура (shape-area) + ассет (asset-area) + точки навигации
+// 
+// БЛОК 3: Widget Groups (.widget-groups-row)
+//   - Группы виджетов (.widget-group) с заголовками (.section-title)
+//   - Каждый виджет (.highlight-widget) подсвечивает свой узел + соседей
+// 
+// ОБЯЗАТЕЛЬНЫЕ ВЫЗОВЫ в конце каждой функции:
+//   1. bindHighlightWidgets(content)   — подсветка виджетов
+//   2. bindVovaScopeWidget(content, node) — Scope Highlight корневого виджета
+//   3. bindNarrativeScreen(content)    — интерактивность Narrative Screen
+//   4. bindEmblemSwap(content)         — смена эмблем
+//   5. hideSegmentPanel()              — скрыть сегмент-панель
+// 
+// Документация: docs/UI_STANDARDS.md → "Шаблон страницы"
+// ═══════════════════════════════════════════════════════════════════════════
+
 // === ШАБЛОН СТРАНИЦЫ ПЕРСОНАЖА ===
 // pageTemplate: "character" в VISUAL_CONFIG.nodeTypes
 // Редактируя эту функцию, изменяешь все страницы персонажей
