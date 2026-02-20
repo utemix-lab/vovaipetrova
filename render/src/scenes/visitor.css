@@ -1220,11 +1220,14 @@ body.focus-service #service-panel::before {
 }
 
 .widget-group--full .inline-widgets--grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px !important; /* 12px между виджетами как у флагов */
   width: 100%;
-  gap: 12px !important; /* 12px между виджетами по горизонтали и вертикали */
+}
+
+.widget-group--full .inline-widgets--grid .domain-widget {
+  justify-self: center;
 }
 
 /* Cabin Link Button — Cryptocosm style */
