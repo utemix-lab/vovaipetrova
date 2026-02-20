@@ -4654,6 +4654,8 @@ const HighlightManager = {
       // Graph scope - highlight all nodes in scope AND their neighbors' links
       activateScopeHighlight(scopeIds);
       highlightNodeById(hubId, true);
+      // Refresh graph to update edge rendering
+      graph.refresh();
     } else {
       // Clear hub widget
       if (vovaWidget) vovaWidget.classList.remove("scope-active");
@@ -4663,6 +4665,8 @@ const HighlightManager = {
       // Clear graph scope
       clearScopeHighlight();
       highlightNodeById(hubId, false);
+      // Refresh graph to update edge rendering
+      graph.refresh();
     }
   }
 };
