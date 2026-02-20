@@ -2953,8 +2953,6 @@ function updatePanels() {
       updateStoryWithDomainWidgets(storyPanel, currentStep.story);
     } else if (currentStep.id === "practices") {
       updateStoryWithPracticeWidgets(storyPanel, currentStep.story);
-    } else if (currentStep.id === "characters") {
-      updateStoryWithCharacterWidgets(storyPanel, currentStep.story);
     } else if (isRootNode(currentStep)) {
       updateStoryWithRoot(storyPanel, currentStep);
       updatePanel(systemPanel, { text: "" });
