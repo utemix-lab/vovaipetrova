@@ -19,8 +19,8 @@ export const VISUAL_CONFIG = {
       size: 4,
       pageTemplate: "hub",
       tooltipById: {
-        characters: "Персонажи",
-        domains: "Домены"
+        characters: "Characters",
+        domains: "Domains"
       }
     },
     // Персонажи — полная страница с виджет-группами

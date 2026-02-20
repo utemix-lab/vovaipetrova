@@ -90,8 +90,19 @@
 | **Workbench** | ✅ | ✅ Narrative/Chladni | ❌ (пока нет) |
 | **Collab** | ✅ | ✅ Narrative | ❌ (пока нет) |
 | **Domain** | ✅ | ✅ Narrative | ✅ characters, practices |
-| **Hub** | ✅ | ✅ Narrative | ✅ characters/domains |
+| **Hub** | ✅ | ✅ Narrative | ✅ characters/domains (без заголовка секции) |
 | **Root** | ✅ | ✅ Narrative | ✅ hubs, roots |
+
+### Таблица соответствия имён и подсказок (tooltips)
+
+| Node ID | Tooltip (hover) | Секция виджетов | Примечание |
+|---------|-----------------|-----------------|------------|
+| `characters` | Characters | — (без заголовка) | Hub |
+| `domains` | Domains | Домены | Hub |
+| `universe` | Universe | — | Root |
+| `cryptocosm` | Cryptocosm | — | Root |
+
+**Источник:** `VISUAL_CONFIG.nodeTypes.hub.tooltipById` в `visual/config.js`
 
 ---
 

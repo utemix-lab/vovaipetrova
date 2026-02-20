@@ -3799,11 +3799,10 @@ function updateStoryWithHub(panel, node) {
   if (hasWidgets) {
     html += `<div class="widget-groups-row">`;
     
-    // Секция персонажей (интервал 12px для растягивания)
+    // Секция персонажей (без заголовка, растянута на всю ширину)
     if (characterNodes.length > 0) {
-      html += `<div class="widget-group widget-group--wide">`;
-      html += `<div class="section-title">${getSectionLabel("character")}</div>`;
-      html += `<div class="domain-widgets inline-widgets inline-widgets--wide">`;
+      html += `<div class="widget-group widget-group--full">`;
+      html += `<div class="domain-widgets inline-widgets inline-widgets--grid">`;
       
       for (const childNode of characterNodes) {
         html += `

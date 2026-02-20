@@ -1214,10 +1214,16 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset-widgets); /* 4px между виджетами в группе */
 }
 
-/* Модификатор для широких групп (персонажи на странице Hub) */
-.inline-widgets--wide {
-  gap: var(--panel-inset-inner); /* 12px между виджетами */
+/* Модификатор для полноширинной группы (персонажи на странице Hub) */
+.widget-group--full {
+  width: 100%;
+}
+
+.inline-widgets--grid {
+  display: flex;
   flex-wrap: wrap;
+  gap: 8px; /* 8px между виджетами по горизонтали и вертикали */
+  width: 100%;
 }
 
 /* Cabin Link Button — Cryptocosm style */
