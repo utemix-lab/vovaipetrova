@@ -176,10 +176,8 @@ const getNodeInfoHtml = (node) => {
   const lines = templates
     .map(t => t.replace("{label}", node.label || node.id))
     .filter(line => line.trim() !== "");
-  // Класс-модификатор: если меньше 3 строк — притягиваем к верху
-  const modifierClass = lines.length < 3 ? "vova-root-info--short" : "";
   return `
-    <div class="vova-root-info ${modifierClass}">
+    <div class="vova-root-info">
       ${lines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
     </div>`;
 };

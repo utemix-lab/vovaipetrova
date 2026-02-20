@@ -1355,22 +1355,17 @@ body.focus-service #service-panel::before {
 }
 
 .vova-root-info {
-  /* T2: Node Header Info — 3 строки по высоте виджета */
+  /* T2: Node Header Info — строки привязаны к верху виджета */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 4px;
   height: var(--widget-frame-size, 52px);
   margin-left: var(--panel-inset-inner);
   font-family: var(--typo-t2-font);
   font-size: var(--typo-t2-size);
-  line-height: 1; /* Убираем half-leading для точного выравнивания */
+  line-height: 1;
   color: var(--typo-t2-color);
-}
-
-.vova-root-info--short {
-  /* Меньше 3 строк — притягиваем к верху */
-  justify-content: flex-start;
-  gap: 4px;
 }
 
 .node-toc-row {
