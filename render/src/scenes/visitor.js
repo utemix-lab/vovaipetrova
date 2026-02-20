@@ -3781,7 +3781,7 @@ function updateStoryWithHub(panel, node) {
   // Заголовок с виджетом хаба
   html += `
     <div class="node-toc">
-      <div class="node-widget node-widget--scope node-widget--root" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+      <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(widgetIcon, "hub", { isRoot: true })}
         </div>
@@ -3867,6 +3867,7 @@ function updateStoryWithHub(panel, node) {
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
+  bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
@@ -3911,7 +3912,7 @@ function updateStoryWithRoot(panel, node) {
   // Заголовок с виджетом root
   html += `
     <div class="node-toc">
-      <div class="node-widget node-widget--scope node-widget--root" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
+      <div class="node-widget node-widget--scope node-widget--root vova-scope-widget" data-node-id="${escapeHtml(node.id)}" title="${escapeHtml(node.label || node.id)}">
         <div class="widget-frame">
           ${getWidgetImageHtml(widgetIcon, "root", { isRoot: true })}
         </div>
@@ -3970,6 +3971,7 @@ function updateStoryWithRoot(panel, node) {
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
+  bindVovaScopeWidget(content, node);
   bindNarrativeScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
@@ -4628,44 +4630,40 @@ const HighlightManager = {
     highlightMiniShapeNode(nodeId, active);
   },
 
+  // ═══════════════════════════════════════════════════════════════════════
+  // scope() — СУММА подсветок всех виджетов на странице (НЕ ТРОГАТЬ)
+  // ═══════════════════════════════════════════════════════════════════════
+  // Собирает ВСЕ nodeId виджетов (.highlight-widget) на странице.
+  // applyScope() в highlightModel.js подсвечивает:
+  // - Все эти узлы
+  // - Все рёбра, связанные с ними
+  // - Всех соседей этих рёбер
+  // ═══════════════════════════════════════════════════════════════════════
   scope(hubId, active) {
     const vovaWidget = document.querySelector(`.vova-scope-widget[data-node-id="${hubId}"]`);
     const container = vovaWidget?.closest(".panel-content");
 
-    // Collect ALL widget node IDs from the page
-    // applyScope in highlightModel.js will highlight their edges and neighbors
+    // Собираем ВСЕ nodeId виджетов на странице
     const scopeIds = new Set([hubId]);
-    
-    // Find all widgets on the page and add their node IDs
     const widgets = container?.querySelectorAll(".highlight-widget[data-node-id]") || [];
     widgets.forEach(widget => {
       const nodeId = widget.dataset.nodeId;
-      if (nodeId) {
-        scopeIds.add(nodeId);
-      }
+      if (nodeId) scopeIds.add(nodeId);
     });
 
     if (active) {
-      // Hub widget scope-active
       if (vovaWidget) vovaWidget.classList.add("scope-active");
       if (container) setScopeWidgetHighlight(container, true);
-      // All octahedron vertices
       miniCubeMeshes.forEach((m, id) => highlightMiniShapeNode(id, true));
-      // Graph scope - highlight all nodes in scope AND their neighbors' links
       activateScopeHighlight(scopeIds);
       highlightNodeById(hubId, true);
-      // Refresh graph to update edge rendering
       graph.refresh();
     } else {
-      // Clear hub widget
       if (vovaWidget) vovaWidget.classList.remove("scope-active");
       if (container) setScopeWidgetHighlight(container, false);
-      // Clear all octahedron vertices
       miniCubeMeshes.forEach((m, id) => highlightMiniShapeNode(id, false));
-      // Clear graph scope
       clearScopeHighlight();
       highlightNodeById(hubId, false);
-      // Refresh graph to update edge rendering
       graph.refresh();
     }
   }
@@ -4799,9 +4797,26 @@ function bindHighlightWidgets(container) {
   });
 }
 
-// === Track 6: Expressive Stacks ===
-// Код стеков RadialMorphField и ConstellationField сохранён в components/
-// как примеры реализации. Временно отключен до переосмысления архитектуры.
+// ═══════════════════════════════════════════════════════════════════════════
+// SCOPE HIGHLIGHT — Подсветка корневого виджета
+// ═══════════════════════════════════════════════════════════════════════════
+// 
+// ПРАВИЛО (НЕ ТРОГАТЬ):
+// При hover на корневой виджет (.vova-scope-widget) подсвечивается СУММА
+// подсветок всех виджетов на странице:
+// 1. Все узлы виджетов + их соседи
+// 2. Все рёбра, связанные с этими узлами
+// 3. Все вершины 3D-фигуры
+// 4. Все рамки виджетов
+//
+// Это правило применяется ко ВСЕМ страницам системы:
+// - Character, Workbench, Collab, Domain, Hub, Root
+//
+// Логика реализована в:
+// - bindVovaScopeWidget() — привязка событий hover
+// - HighlightManager.scope() — сбор nodeIds и вызов подсветки
+// - applyScope() в highlightModel.js — вычисление подсветки
+// ═══════════════════════════════════════════════════════════════════════════
 
 function bindVovaScopeWidget(container, node) {
   const scopeWidget = container.querySelector(".vova-scope-widget");
@@ -4811,27 +4826,25 @@ function bindVovaScopeWidget(container, node) {
   const hasWidgetGroups = container.querySelector(".widget-groups-row") !== null;
   
   scopeWidget.addEventListener("mouseenter", () => {
-    // Подсветка рамки корневого виджета при hover
     scopeWidget.classList.add("scope-active");
     if (hasWidgetGroups) {
-      // Страница с группами: подсвечиваем весь scope
+      // Страница с группами: подсвечиваем СУММУ всех виджетов
       HighlightManager.scope(node.id, true);
     } else {
-      // Страница без групп: подсвечиваем только узел с полной яркостью рёбер
+      // Страница без групп: подсвечиваем только узел
       refreshHighlights(node, "hover");
       HighlightManager.node(node.id, true);
       graph.refresh();
     }
   });
+  
   scopeWidget.addEventListener("mouseleave", () => {
-    // Снять подсветку рамки корневого виджета
     scopeWidget.classList.remove("scope-active");
     if (hasWidgetGroups) {
       HighlightManager.scope(node.id, false);
     } else {
       HighlightManager.node(node.id, false);
     }
-    // Возврат к подсветке выделенного узла (полсилы)
     refreshHighlights(currentStep, "selected");
     graph.refresh();
   });
