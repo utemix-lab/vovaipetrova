@@ -78,7 +78,7 @@
 | Переменная | Значение | Назначение |
 |------------|----------|------------|
 | `--font-tech` | `'Orbitron', monospace` | Заголовки, labels, технический текст |
-| `--font-body` | `'Oswald', sans-serif` | Основной текст, описания (condensed, хорошая кириллица) |
+| `--font-body` | `'PT Sans Narrow', sans-serif` | Основной текст, описания (condensed, российский шрифт) |
 
 ### Типографическая шкала (T1-T6)
 
@@ -106,7 +106,7 @@
 ### T2: Node Header Info
 
 ```css
---typo-t2-font: var(--font-body);       /* Oswald */
+--typo-t2-font: var(--font-body);       /* PT Sans Narrow */
 --typo-t2-size: 13px;
 --typo-t2-line-height: 1.15;
 --typo-t2-color: rgba(224, 232, 240, 0.75);
