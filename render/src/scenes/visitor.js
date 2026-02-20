@@ -3799,11 +3799,11 @@ function updateStoryWithHub(panel, node) {
   if (hasWidgets) {
     html += `<div class="widget-groups-row">`;
     
-    // Секция персонажей
+    // Секция персонажей (интервал 12px для растягивания)
     if (characterNodes.length > 0) {
-      html += `<div class="widget-group">`;
+      html += `<div class="widget-group widget-group--wide">`;
       html += `<div class="section-title">${getSectionLabel("character")}</div>`;
-      html += `<div class="domain-widgets inline-widgets">`;
+      html += `<div class="domain-widgets inline-widgets inline-widgets--wide">`;
       
       for (const childNode of characterNodes) {
         html += `
@@ -4789,7 +4789,8 @@ function bindHighlightWidgets(container) {
       const nodeId = el.dataset.nodeId;
       const node = nodesById.get(nodeId);
       if (!node) return;
-      if (node.type === "domain" || node.type === "workbench" || node.type === "collab") {
+      // Переход для всех кликабельных типов узлов
+      if (node.type === "domain" || node.type === "workbench" || node.type === "collab" || node.type === "character" || node.type === "hub" || node.type === "root") {
         registerInteraction();
         motionSound.resumeIfNeeded();
         goToStepById(node.id);
