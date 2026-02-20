@@ -1224,6 +1224,21 @@ body.focus-service #service-panel::before {
   row-gap: 12px; /* Только между рядами */
 }
 
+/* Виджеты доменов на странице Domains — 4 в ряд, центрировано */
+/* Отступ: 12px (край) + 48px (пустота) + 12px = 72px с каждой стороны */
+.domain-widgets-row {
+  display: grid;
+  grid-template-columns: repeat(4, 48px);
+  gap: 12px;
+  justify-content: center;
+  padding: 0 60px; /* ~72px - 12px gap/2 */
+}
+
+/* Спрятать секцию практик (логика остаётся) */
+.practices-section {
+  display: none;
+}
+
 /* Cabin Link Button — Cryptocosm style */
 .cabin-link-section {
   margin-top: 16px;

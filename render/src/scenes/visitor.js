@@ -3815,11 +3815,9 @@ function updateStoryWithHub(panel, node) {
       html += `</div>`;
     }
     
-    // Секция доменов
+    // Секция доменов (без заголовка, центрированная сетка 4 в ряд)
     if (domainNodes.length > 0) {
-      html += `<div class="widget-group">`;
-      html += `<div class="section-title">${getSectionLabel("domain")}</div>`;
-      html += `<div class="domain-widgets inline-widgets">`;
+      html += `<div class="domain-widgets-row">`;
       
       for (const childNode of domainNodes) {
         html += `
@@ -3830,7 +3828,6 @@ function updateStoryWithHub(panel, node) {
           </div>`;
       }
       
-      html += `</div>`;
       html += `</div>`;
     }
     
