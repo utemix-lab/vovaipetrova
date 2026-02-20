@@ -210,7 +210,7 @@ export const VISUAL_CONFIG = {
       workbench: "Воркбенчи",
       collab: "Коллабы",
       hub: "Хабы",
-      root: "Система"
+      root: "Корень"
     },
     // Шаблоны описания узла (3 строки справа от виджета)
     nodeInfo: {
