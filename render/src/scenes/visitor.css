@@ -1214,14 +1214,13 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset-widgets); /* 4px между виджетами в группе */
 }
 
-/* Виджеты персонажей на странице Hub — как флаги */
+/* Виджеты персонажей на странице Hub — 6 в ряд, как флаги */
 .character-widgets-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, 48px);
+  gap: 12px;
   justify-content: space-between;
   width: 100%;
-  gap: 0;
-  row-gap: 12px; /* Только между рядами */
 }
 
 /* Виджеты доменов на странице Domains — 4 в ряд, центрировано */
