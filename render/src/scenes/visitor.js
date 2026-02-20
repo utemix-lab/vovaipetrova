@@ -3799,10 +3799,9 @@ function updateStoryWithHub(panel, node) {
   if (hasWidgets) {
     html += `<div class="widget-groups-row">`;
     
-    // Секция персонажей (без заголовка, растянута на всю ширину)
+    // Секция персонажей (без заголовка, как флаги на VSTablishment)
     if (characterNodes.length > 0) {
-      html += `<div class="widget-group widget-group--full">`;
-      html += `<div class="domain-widgets inline-widgets inline-widgets--grid">`;
+      html += `<div class="character-widgets-row">`;
       
       for (const childNode of characterNodes) {
         html += `
@@ -3813,7 +3812,6 @@ function updateStoryWithHub(panel, node) {
           </div>`;
       }
       
-      html += `</div>`;
       html += `</div>`;
     }
     

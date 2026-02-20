@@ -1214,17 +1214,13 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset-widgets); /* 4px между виджетами в группе */
 }
 
-/* Модификатор для полноширинной группы (персонажи на странице Hub) */
-.widget-group--full {
+/* Виджеты персонажей на странице Hub — как флаги на VSTablishment */
+.character-widgets-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   width: 100%;
-}
-
-.widget-group--full .inline-widgets--grid {
-  display: grid;
-  grid-template-columns: repeat(6, 52px); /* 6 колонок по 52px (размер виджета) */
-  justify-content: space-between; /* Распределить колонки по ширине */
-  width: 100%;
-  row-gap: 12px; /* 12px между рядами */
+  row-gap: 12px;
 }
 
 /* Cabin Link Button — Cryptocosm style */
