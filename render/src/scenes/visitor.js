@@ -172,9 +172,14 @@ const getSectionLabel = (type) => VISUAL_CONFIG.labels?.sections?.[type] || type
 const getNodeInfoHtml = (node) => {
   const templates = VISUAL_CONFIG.labels?.nodeInfo?.[node.type];
   if (!templates) return "";
-  const lines = templates.map(t => t.replace("{label}", node.label || node.id));
+  // Фильтруем пустые строки
+  const lines = templates
+    .map(t => t.replace("{label}", node.label || node.id))
+    .filter(line => line.trim() !== "");
+  // Класс-модификатор: если меньше 3 строк — притягиваем к верху
+  const modifierClass = lines.length < 3 ? "vova-root-info--short" : "";
   return `
-    <div class="vova-root-info">
+    <div class="vova-root-info ${modifierClass}">
       ${lines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
     </div>`;
 };

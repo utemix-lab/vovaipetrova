@@ -86,7 +86,7 @@
 |-----|----------|------------|
 | **T1** | Widget Group Titles | Домены, Воркбенчи, Коллабы, Хабы, Система... |
 | **T2** | Node Header Info | 3 строки справа от корневого виджета |
-| T3 | *(зарезервировано)* | — |
+| **T3** | Panel Headers | Story, Segment, System, Service |
 | T4 | *(зарезервировано)* | — |
 | T5 | *(зарезервировано)* | — |
 | T6 | *(зарезервировано)* | — |
@@ -119,13 +119,27 @@
 - `justify-content: space-between` — равномерное распределение
 - Основные буквы (x-height) выровнены по границам виджета
 - Выносные элементы (р, ф, б, д) выходят за границы
+- **Модификатор `--short`:** если меньше 3 строк — `flex-start` + `gap: 4px`
+
+### T3: Panel Headers
+
+```css
+--typo-t3-font: var(--font-tech);       /* Orbitron */
+--typo-t3-size: 11px;
+--typo-t3-transform: uppercase;
+--typo-t3-spacing: 0.15em;
+--typo-t3-color: var(--accent-cyan);    /* #22d3ee */
+--typo-t3-opacity: 0.7;
+```
+
+**Используется в:** `.panel-3s .panel-header`
 
 ### Размеры шрифтов (legacy)
 
 | Элемент | Размер | Шрифт | Код |
 |---------|--------|-------|-----|
 | Body | `15px` | `--font-body` | — |
-| Panel header | `11px` | `--font-tech` | — |
+| Panel header | `11px` | `--font-tech` | **T3** |
 | Section title | `11px` | `--font-tech` | **T1** |
 | Node info | `13px` | `--font-body` | **T2** |
 | Narrative title | `12px` | `--font-tech` | — |

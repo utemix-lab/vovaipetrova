@@ -39,6 +39,14 @@
   --typo-t2-line-height: 1;
   --typo-t2-color: rgba(224, 232, 240, 0.75);
 
+  /* T3: Panel Headers — Story, Segment, System, Service */
+  --typo-t3-font: var(--font-tech);
+  --typo-t3-size: 11px;
+  --typo-t3-transform: uppercase;
+  --typo-t3-spacing: 0.15em;
+  --typo-t3-color: var(--accent-cyan);
+  --typo-t3-opacity: 0.7;
+
   /* === Semantic Colors (UI states) === */
   --color-semi-active: #22d3ee;
   --color-semi-active-soft: rgba(34, 211, 238, 0.15);
@@ -160,16 +168,17 @@ body.visitor-mode {
 
 /* Заголовки панелей 3S */
 .panel-3s .panel-header {
+  /* T3: Panel Headers */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--font-tech);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--accent-cyan);
+  font-family: var(--typo-t3-font);
+  font-size: var(--typo-t3-size);
+  text-transform: var(--typo-t3-transform);
+  letter-spacing: var(--typo-t3-spacing);
+  color: var(--typo-t3-color);
   padding: var(--panel-inset);
-  opacity: 0.7;
+  opacity: var(--typo-t3-opacity);
 }
 
 .panel-3s .panel-content {
@@ -1356,6 +1365,12 @@ body.focus-service #service-panel::before {
   font-size: var(--typo-t2-size);
   line-height: 1; /* Убираем half-leading для точного выравнивания */
   color: var(--typo-t2-color);
+}
+
+.vova-root-info--short {
+  /* Меньше 3 строк — притягиваем к верху */
+  justify-content: flex-start;
+  gap: 4px;
 }
 
 .node-toc-row {
