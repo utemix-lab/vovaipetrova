@@ -33,6 +33,12 @@
   --typo-t1-spacing: 0.1em;
   --typo-t1-color: var(--text-secondary);
 
+  /* T2: Node Header Info — 3 строки справа от корневого виджета */
+  --typo-t2-font: var(--font-body);
+  --typo-t2-size: 13px;
+  --typo-t2-line-height: 1.15;
+  --typo-t2-color: rgba(224, 232, 240, 0.75);
+
   /* === Semantic Colors (UI states) === */
   --color-semi-active: #22d3ee;
   --color-semi-active-soft: rgba(34, 211, 238, 0.15);
@@ -1340,16 +1346,19 @@ body.focus-service #service-panel::before {
 }
 
 .vova-root-info {
+  /* T2: Node Header Info — 3 строки по высоте виджета */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  max-height: var(--widget-frame-size, 52px);
+  justify-content: space-between;
+  height: var(--widget-frame-size, 52px);
   margin-left: var(--panel-inset-inner);
-  font-family: var(--font-body);
-  font-size: 12px;
-  line-height: 1.25;
-  color: rgba(224, 232, 240, 0.75);
+  font-family: var(--typo-t2-font);
+  font-size: var(--typo-t2-size);
+  line-height: var(--typo-t2-line-height);
+  color: var(--typo-t2-color);
+  /* Компенсация выносных элементов (ascender/descender) */
+  /* Основные буквы (x-height) выровнены по границам виджета */
+  padding: 1px 0;
 }
 
 .node-toc-row {

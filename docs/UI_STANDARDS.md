@@ -85,7 +85,7 @@
 | Код | Название | Применение |
 |-----|----------|------------|
 | **T1** | Widget Group Titles | Домены, Воркбенчи, Коллабы, Хабы, Система... |
-| T2 | *(зарезервировано)* | — |
+| **T2** | Node Header Info | 3 строки справа от корневого виджета |
 | T3 | *(зарезервировано)* | — |
 | T4 | *(зарезервировано)* | — |
 | T5 | *(зарезервировано)* | — |
@@ -103,6 +103,23 @@
 
 **Используется в:** `.section-title`
 
+### T2: Node Header Info
+
+```css
+--typo-t2-font: var(--font-body);       /* Rajdhani */
+--typo-t2-size: 13px;
+--typo-t2-line-height: 1.15;
+--typo-t2-color: rgba(224, 232, 240, 0.75);
+```
+
+**Используется в:** `.vova-root-info`
+
+**Принцип выравнивания:**
+- 3 строки распределены по высоте виджета (52px)
+- `justify-content: space-between` — равномерное распределение
+- Основные буквы (x-height) выровнены по границам виджета
+- Выносные элементы (р, ф, б, д) выходят за границы
+
 ### Размеры шрифтов (legacy)
 
 | Элемент | Размер | Шрифт | Код |
@@ -110,7 +127,7 @@
 | Body | `15px` | `--font-body` | — |
 | Panel header | `11px` | `--font-tech` | — |
 | Section title | `11px` | `--font-tech` | **T1** |
-| Node info | `12px` | `--font-body` | — |
+| Node info | `13px` | `--font-body` | **T2** |
 | Narrative title | `12px` | `--font-tech` | — |
 | Narrative detail | `13px` | `--font-body` | — |
 
