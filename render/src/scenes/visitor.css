@@ -1214,13 +1214,11 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset-widgets); /* 4px между виджетами в группе */
 }
 
-/* Виджеты персонажей на странице Hub — как флаги на VSTablishment */
+/* Виджеты персонажей на странице Hub — 6 в ряд */
 .character-widgets-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  row-gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  gap: 12px;
 }
 
 /* Cabin Link Button — Cryptocosm style */
