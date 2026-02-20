@@ -2948,10 +2948,8 @@ function updatePanels() {
   };
 
   if (!hasReactStory) {
-    // Story панель: домены, практики и персонажи имеют спец. виджеты
-    if (currentStep.id === "domains" && domainWidgets?.widgets?.length) {
-      updateStoryWithDomainWidgets(storyPanel, currentStep.story);
-    } else if (currentStep.id === "practices") {
+    // Story панель: практики имеют спец. виджеты, остальные хабы используют общий шаблон
+    if (currentStep.id === "practices") {
       updateStoryWithPracticeWidgets(storyPanel, currentStep.story);
     } else if (isRootNode(currentStep)) {
       updateStoryWithRoot(storyPanel, currentStep);
