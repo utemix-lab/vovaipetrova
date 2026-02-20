@@ -4632,13 +4632,16 @@ const HighlightManager = {
     const vovaWidget = document.querySelector(`.vova-scope-widget[data-node-id="${hubId}"]`);
     const container = vovaWidget?.closest(".panel-content");
 
-    // Collect ALL related node IDs (not just octahedron vertices)
+    // Collect ALL related node IDs (all neighbor types)
     const scopeIds = new Set([
       hubId,
       ...getRelatedNodeIdsByType(hubId, "domain"),
       ...getRelatedNodeIdsByType(hubId, "practice"),
       ...getRelatedNodeIdsByType(hubId, "workbench"),
-      ...getRelatedNodeIdsByType(hubId, "collab")
+      ...getRelatedNodeIdsByType(hubId, "collab"),
+      ...getRelatedNodeIdsByType(hubId, "character"),
+      ...getRelatedNodeIdsByType(hubId, "hub"),
+      ...getRelatedNodeIdsByType(hubId, "root")
     ]);
 
     if (active) {
