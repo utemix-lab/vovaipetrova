@@ -4632,17 +4632,21 @@ const HighlightManager = {
     const vovaWidget = document.querySelector(`.vova-scope-widget[data-node-id="${hubId}"]`);
     const container = vovaWidget?.closest(".panel-content");
 
-    // Collect ALL related node IDs (all neighbor types)
-    const scopeIds = new Set([
-      hubId,
-      ...getRelatedNodeIdsByType(hubId, "domain"),
-      ...getRelatedNodeIdsByType(hubId, "practice"),
-      ...getRelatedNodeIdsByType(hubId, "workbench"),
-      ...getRelatedNodeIdsByType(hubId, "collab"),
-      ...getRelatedNodeIdsByType(hubId, "character"),
-      ...getRelatedNodeIdsByType(hubId, "hub"),
-      ...getRelatedNodeIdsByType(hubId, "root")
-    ]);
+    // Collect ALL widget node IDs from the page + their neighbors
+    // This sums up the highlight of all individual widgets
+    const scopeIds = new Set([hubId]);
+    
+    // Find all widgets on the page
+    const widgets = container?.querySelectorAll(".highlight-widget[data-node-id]") || [];
+    widgets.forEach(widget => {
+      const nodeId = widget.dataset.nodeId;
+      if (nodeId) {
+        scopeIds.add(nodeId);
+        // Add all neighbors of this widget's node
+        const neighbors = neighborsById.get(nodeId) || [];
+        neighbors.forEach(neighborId => scopeIds.add(neighborId));
+      }
+    });
 
     if (active) {
       // Hub widget scope-active
