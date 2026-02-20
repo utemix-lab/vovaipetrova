@@ -4632,19 +4632,16 @@ const HighlightManager = {
     const vovaWidget = document.querySelector(`.vova-scope-widget[data-node-id="${hubId}"]`);
     const container = vovaWidget?.closest(".panel-content");
 
-    // Collect ALL widget node IDs from the page + their neighbors
-    // This sums up the highlight of all individual widgets
+    // Collect ALL widget node IDs from the page
+    // applyScope in highlightModel.js will highlight their edges and neighbors
     const scopeIds = new Set([hubId]);
     
-    // Find all widgets on the page
+    // Find all widgets on the page and add their node IDs
     const widgets = container?.querySelectorAll(".highlight-widget[data-node-id]") || [];
     widgets.forEach(widget => {
       const nodeId = widget.dataset.nodeId;
       if (nodeId) {
         scopeIds.add(nodeId);
-        // Add all neighbors of this widget's node
-        const neighbors = neighborsById.get(nodeId) || [];
-        neighbors.forEach(neighborId => scopeIds.add(neighborId));
       }
     });
 
