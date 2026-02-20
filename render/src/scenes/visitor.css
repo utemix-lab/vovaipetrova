@@ -36,7 +36,7 @@
   /* T2: Node Header Info — 3 строки справа от корневого виджета */
   --typo-t2-font: var(--font-body);
   --typo-t2-size: 13px;
-  --typo-t2-line-height: 1.15;
+  --typo-t2-line-height: 1;
   --typo-t2-color: rgba(224, 232, 240, 0.75);
 
   /* === Semantic Colors (UI states) === */
@@ -1354,11 +1354,8 @@ body.focus-service #service-panel::before {
   margin-left: var(--panel-inset-inner);
   font-family: var(--typo-t2-font);
   font-size: var(--typo-t2-size);
-  line-height: var(--typo-t2-line-height);
+  line-height: 1; /* Убираем half-leading для точного выравнивания */
   color: var(--typo-t2-color);
-  /* Компенсация выносных элементов (ascender/descender) */
-  /* Основные буквы (x-height) выровнены по границам виджета */
-  padding: 1px 0;
 }
 
 .node-toc-row {

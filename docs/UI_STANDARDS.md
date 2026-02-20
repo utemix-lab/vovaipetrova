@@ -108,7 +108,7 @@
 ```css
 --typo-t2-font: var(--font-body);       /* Tahoma */
 --typo-t2-size: 13px;
---typo-t2-line-height: 1.15;
+--typo-t2-line-height: 1;
 --typo-t2-color: rgba(224, 232, 240, 0.75);
 ```
 
