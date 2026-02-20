@@ -1221,13 +1221,10 @@ body.focus-service #service-panel::before {
 
 .widget-group--full .inline-widgets--grid {
   display: grid !important;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px !important; /* 12px между виджетами как у флагов */
+  grid-template-columns: repeat(6, 52px); /* 6 колонок по 52px (размер виджета) */
+  justify-content: space-between; /* Распределить колонки по ширине */
   width: 100%;
-}
-
-.widget-group--full .inline-widgets--grid .domain-widget {
-  justify-self: center;
+  row-gap: 12px; /* 12px между рядами */
 }
 
 /* Cabin Link Button — Cryptocosm style */
