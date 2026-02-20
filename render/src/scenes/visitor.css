@@ -25,6 +25,14 @@
   --font-tech: 'Orbitron', monospace;
   --font-body: 'Rajdhani', sans-serif;
 
+  /* === Typography Scale (T1-T6) === */
+  /* T1: Widget Group Titles — Домены, Воркбенчи, Коллабы... */
+  --typo-t1-font: var(--font-tech);
+  --typo-t1-size: 11px;
+  --typo-t1-transform: uppercase;
+  --typo-t1-spacing: 0.1em;
+  --typo-t1-color: var(--text-secondary);
+
   /* === Semantic Colors (UI states) === */
   --color-semi-active: #22d3ee;
   --color-semi-active-soft: rgba(34, 211, 238, 0.15);
@@ -1524,11 +1532,12 @@ body.focus-service #service-panel::before {
 }
 
 .section-title {
-  font-family: var(--font-tech);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
+  /* T1: Widget Group Titles */
+  font-family: var(--typo-t1-font);
+  font-size: var(--typo-t1-size);
+  text-transform: var(--typo-t1-transform);
+  letter-spacing: var(--typo-t1-spacing);
+  color: var(--typo-t1-color);
   margin: 0;
 }
 

@@ -80,23 +80,46 @@
 | `--font-tech` | `'Orbitron', monospace` | Заголовки, labels, технический текст |
 | `--font-body` | `'Rajdhani', sans-serif` | Основной текст, описания |
 
-### Размеры шрифтов
+### Типографическая шкала (T1-T6)
 
-| Элемент | Размер | Шрифт |
-|---------|--------|-------|
-| Body | `15px` | `--font-body` |
-| Panel header | `11px` | `--font-tech` |
-| Section title | `11px` | `--font-tech` |
-| Node info | `12px` | `--font-body` |
-| Narrative title | `12px` | `--font-tech` |
-| Narrative detail | `13px` | `--font-body` |
+| Код | Название | Применение |
+|-----|----------|------------|
+| **T1** | Widget Group Titles | Домены, Воркбенчи, Коллабы, Хабы, Система... |
+| T2 | *(зарезервировано)* | — |
+| T3 | *(зарезервировано)* | — |
+| T4 | *(зарезервировано)* | — |
+| T5 | *(зарезервировано)* | — |
+| T6 | *(зарезервировано)* | — |
+
+### T1: Widget Group Titles
+
+```css
+--typo-t1-font: var(--font-tech);      /* Orbitron */
+--typo-t1-size: 11px;
+--typo-t1-transform: uppercase;
+--typo-t1-spacing: 0.1em;
+--typo-t1-color: var(--text-secondary); /* #8899aa */
+```
+
+**Используется в:** `.section-title`
+
+### Размеры шрифтов (legacy)
+
+| Элемент | Размер | Шрифт | Код |
+|---------|--------|-------|-----|
+| Body | `15px` | `--font-body` | — |
+| Panel header | `11px` | `--font-tech` | — |
+| Section title | `11px` | `--font-tech` | **T1** |
+| Node info | `12px` | `--font-body` | — |
+| Narrative title | `12px` | `--font-tech` | — |
+| Narrative detail | `13px` | `--font-body` | — |
 
 ### Стили текста
 
 | Элемент | Стиль |
 |---------|-------|
 | Panel header | `uppercase`, `letter-spacing: 0.15em` |
-| Section title | `uppercase`, `letter-spacing: 0.1em` |
+| Section title (T1) | `uppercase`, `letter-spacing: 0.1em` |
 | Body text | `letter-spacing: 0.02em` |
 
 ---
