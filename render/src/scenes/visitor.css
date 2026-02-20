@@ -1222,7 +1222,7 @@ body.focus-service #service-panel::before {
 .widget-group--full .inline-widgets--grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px !important; /* 8px между виджетами по горизонтали и вертикали */
+  gap: 10px !important; /* 10px между виджетами по горизонтали и вертикали */
   width: 100%;
 }
 
