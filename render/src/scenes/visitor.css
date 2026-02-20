@@ -1219,10 +1219,10 @@ body.focus-service #service-panel::before {
   width: 100%;
 }
 
-.widget-group--full .inline-widgets--grid {
+#story-panel .widget-group--full .inline-widgets--grid {
   display: grid !important;
-  grid-template-columns: repeat(6, 52px); /* 6 колонок по 52px (размер виджета) */
-  justify-content: space-between; /* Распределить колонки по ширине */
+  grid-template-columns: repeat(6, 52px) !important; /* 6 колонок по 52px (размер виджета) */
+  justify-content: space-between !important; /* Распределить колонки по ширине */
   width: 100%;
   row-gap: 12px; /* 12px между рядами */
 }
