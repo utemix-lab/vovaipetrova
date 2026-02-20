@@ -1224,12 +1224,6 @@ body.focus-service #service-panel::before {
   row-gap: 12px; /* Только между рядами */
 }
 
-/* Виджеты персонажей чуть меньше (как флаги 48px) */
-.character-widgets-row .domain-widget .widget-frame {
-  width: 48px;
-  height: 48px;
-}
-
 /* Cabin Link Button — Cryptocosm style */
 .cabin-link-section {
   margin-top: 16px;
@@ -1376,7 +1370,7 @@ body.focus-service #service-panel::before {
   flex-direction: column;
   justify-content: flex-start;
   gap: 4px;
-  height: var(--widget-frame-size, 52px);
+  height: var(--widget-frame-size, 48px);
   margin-left: var(--panel-inset-inner);
   font-family: var(--typo-t2-font);
   font-size: var(--typo-t2-size);
@@ -1413,8 +1407,8 @@ body.focus-service #service-panel::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--widget-frame-size, 52px);
-  height: var(--widget-frame-size, 52px);
+  width: var(--widget-frame-size, 48px);
+  height: var(--widget-frame-size, 48px);
   padding: 0;
   --widget-frame-border-color: rgba(34, 211, 238, 0.2);
   border: 1px solid var(--widget-frame-border-color);
