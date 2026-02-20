@@ -66,6 +66,21 @@
 - **Содержит:** shape-area (3D) + asset-area + dots
 - **Варианты:** Chladni-эффект для VSTablishment
 
+#### 3D-фигуры в Narrative Screen
+
+| Страница | Фигура | Название | Статус |
+|----------|--------|----------|--------|
+| **Characters** | Икосаэдр | `icosa` | ✅ Утверждено |
+| **Domains** | Куб | `cube` | ✅ Утверждено |
+| **Vova (Character)** | Октаэдр | `octa` | ✅ Утверждено |
+| Universe | Октаэдр | `octa` | ⏳ Временно |
+| Cryptocosm | Октаэдр | `octa` | ⏳ Временно |
+| Workbench | Октаэдр | `octa` | ⏳ Временно |
+| Collab | Октаэдр | `octa` | ⏳ Временно |
+| Domain | Октаэдр | `octa` | ⏳ Временно |
+
+**Источник:** `initMiniShape()` в `visitor.js`
+
 ### Блок 3: Widget Groups (widget-groups-row)
 
 ```
