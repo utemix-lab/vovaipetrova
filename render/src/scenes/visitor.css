@@ -582,7 +582,6 @@ body.focus-service #service-panel::before {
   outline: none;
   border: none;
   background: #5b6573;
-  transition: transform 0.25s ease;
   font-weight: 700;
   font-size: 11px;
   line-height: 1;
@@ -663,8 +662,10 @@ body.focus-service #service-panel::before {
 }
 
 .story-screen__detail {
+  font-family: Tahoma, sans-serif;
   font-size: 13px;
   color: var(--text-secondary);
+  margin-top: 8px;
 }
 
 .story-screen[data-index="0"] {
@@ -686,10 +687,6 @@ body.focus-service #service-panel::before {
 
 .story-screen--expanded::before {
   padding-top: 0;
-}
-
-.narrative-dot--toggle {
-  transition: transform 0.25s ease;
 }
 
 .story-screen--expanded .narrative-dot--toggle {
