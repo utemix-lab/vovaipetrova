@@ -420,7 +420,7 @@ function emitPreviewChange() {
 }
 
 function updateWindowDimming() {
-  const storyEl = document.getElementById('story-panel');
+  const storyEl = document.getElementById('scope-panel');
   const systemEl = document.getElementById('system-panel');
   const serviceEl = document.getElementById('service-panel');
   const hasLever = !!activeLeverWidgetId || !!activeRootLever;
@@ -2901,7 +2901,7 @@ function hasPrevStep() {
 function updatePanels() {
   if (!currentStep) return;
 
-  const storyPanel = document.getElementById("story-panel");
+  const storyPanel = document.getElementById("scope-panel");
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
   if (storyPanel) storyPanel.classList.remove("panel-no-dim");
@@ -3715,7 +3715,7 @@ function bindSegmentControls() {
 }
 
 function showSegmentPanel() {
-  const segmentPanel = document.getElementById("segment-panel");
+  const segmentPanel = document.getElementById("storage-panel");
   if (!segmentPanel) return;
   
   segmentPanel.classList.add("segment-visible");
@@ -3743,7 +3743,7 @@ function showSegmentPanel() {
 }
 
 function hideSegmentPanel() {
-  const segmentPanel = document.getElementById("segment-panel");
+  const segmentPanel = document.getElementById("storage-panel");
   if (!segmentPanel) return;
   
   segmentPanel.classList.remove("segment-visible");
@@ -5537,8 +5537,8 @@ function getActionIcon(type) {
 // Panel focus (visual emphasis)
 function setPanelFocus(panelId) {
   document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
-  if (panelId === "story-panel") document.body.classList.add("focus-story");
-  if (panelId === "segment-panel") document.body.classList.add("focus-segment");
+  if (panelId === "scope-panel") document.body.classList.add("focus-story");
+  if (panelId === "storage-panel") document.body.classList.add("focus-segment");
   if (panelId === "system-panel") document.body.classList.add("focus-system");
   if (panelId === "service-panel") document.body.classList.add("focus-service");
   window.dispatchEvent(new CustomEvent("graph-focus-changed", { detail: { panelId } }));
@@ -5590,16 +5590,16 @@ function createUI() {
   const panelsContainer = document.createElement("div");
   panelsContainer.id = "panels-container";
   panelsContainer.innerHTML = `
-    <div id="story-panel" class="panel-3s">
+    <div id="scope-panel" class="panel-3s">
       <div class="panel-inner">
-        <div class="panel-header"><span class="panel-title-text">Story</span><span id="scene-stack" aria-hidden="true"></span></div>
+        <div class="panel-header"><span class="panel-title-text">Scope</span><span id="scene-stack" aria-hidden="true"></span></div>
         <div class="panel-content"></div>
       </div>
     </div>
     <div class="graph-spacer">
-      <div id="segment-panel" class="panel-3s panel-segment">
+      <div id="storage-panel" class="panel-3s panel-segment">
         <div class="panel-inner">
-          <div class="panel-header"><span class="panel-title-text">Segment</span><span id="segment-controls" aria-hidden="true"></span></div>
+          <div class="panel-header"><span class="panel-title-text">Storage</span><span id="segment-controls" aria-hidden="true"></span></div>
           <div class="panel-content"></div>
         </div>
       </div>
@@ -5723,24 +5723,24 @@ function createUI() {
   bindSegmentControls();
 
   // Panel focus behavior (hover to focus, default Story)
-  const storyPanel = document.getElementById("story-panel");
-  const segmentPanel = document.getElementById("segment-panel");
+  const storyPanel = document.getElementById("scope-panel");
+  const segmentPanel = document.getElementById("storage-panel");
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
 
   // Default focus: Story
-  setPanelFocus("story-panel");
+  setPanelFocus("scope-panel");
 
   // Hover focus
-  storyPanel?.addEventListener("mouseenter", () => setPanelFocus("story-panel"));
-  segmentPanel?.addEventListener("mouseenter", () => setPanelFocus("segment-panel"));
+  storyPanel?.addEventListener("mouseenter", () => setPanelFocus("scope-panel"));
+  segmentPanel?.addEventListener("mouseenter", () => setPanelFocus("storage-panel"));
   systemPanel?.addEventListener("mouseenter", () => setPanelFocus("system-panel"));
   servicePanel?.addEventListener("mouseenter", () => setPanelFocus("service-panel"));
 
   // Return to Story on leaving any panel
-  segmentPanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
-  systemPanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
-  servicePanel?.addEventListener("mouseleave", () => setPanelFocus("story-panel"));
+  segmentPanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
+  systemPanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
+  servicePanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
 
 }
 

@@ -195,7 +195,7 @@ body {
   z-index: 5;
 }
 
-.react-story-panel {
+.react-scope-panel {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -208,56 +208,56 @@ body {
   font-size: 12px;
 }
 
-.react-story-panel__label {
+.react-scope-panel__label {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.6;
 }
 
-.react-story-panel__title {
+.react-scope-panel__title {
   font-size: 13px;
   font-weight: 600;
 }
 
-.react-story-panel__subtitle {
+.react-scope-panel__subtitle {
   font-size: 11px;
   opacity: 0.6;
 }
 
-.react-story-panel__body {
+.react-scope-panel__body {
   font-size: 12px;
   line-height: 1.4;
   opacity: 0.75;
 }
 
-.react-story-panel__widgets {
+.react-scope-panel__widgets {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 6px;
 }
 
-.react-story-panel__widget-section {
+.react-scope-panel__widget-section {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.react-story-panel__widget-title {
+.react-scope-panel__widget-title {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.6;
 }
 
-.react-story-panel__widget-items {
+.react-scope-panel__widget-items {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.react-story-panel__widget {
+.react-scope-panel__widget {
   border: 1px solid rgba(148, 163, 184, 0.25);
   background: rgba(15, 23, 42, 0.5);
   color: rgba(224, 232, 240, 0.8);
@@ -268,23 +268,23 @@ body {
   transition: border-color 0.15s ease, color 0.15s ease;
 }
 
-.react-story-panel__widget:hover {
+.react-scope-panel__widget:hover {
   border-color: rgba(125, 211, 252, 0.6);
   color: rgba(224, 232, 240, 0.95);
 }
 
-.react-story-panel__widget--active {
+.react-scope-panel__widget--active {
   border-color: rgba(251, 191, 36, 0.75);
   color: rgba(251, 191, 36, 0.95);
   background: rgba(251, 191, 36, 0.08);
 }
 
-.react-story-panel__widget--active:hover {
+.react-scope-panel__widget--active:hover {
   border-color: rgba(251, 191, 36, 0.95);
   background: rgba(251, 191, 36, 0.18);
 }
 
-.react-story-panel__mini-shape {
+.react-scope-panel__mini-shape {
   width: 220px;
   height: 220px;
   align-self: center;
@@ -292,14 +292,14 @@ body {
   pointer-events: none;
 }
 
-.react-story-panel__refs {
+.react-scope-panel__refs {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-top: 4px;
 }
 
-.react-story-panel__ref {
+.react-scope-panel__ref {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -309,11 +309,11 @@ body {
   transition: opacity 0.15s ease;
 }
 
-.react-story-panel__ref:hover {
+.react-scope-panel__ref:hover {
   opacity: 1;
 }
 
-.react-story-panel__ref-type {
+.react-scope-panel__ref-type {
   text-transform: uppercase;
   font-size: 9px;
   letter-spacing: 0.12em;
@@ -323,7 +323,7 @@ body {
   color: rgba(147, 197, 253, 0.9);
 }
 
-.react-story-panel__ref-label {
+.react-scope-panel__ref-label {
   color: rgba(224, 232, 240, 0.75);
 }
 

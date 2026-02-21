@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArchProto } from "../architecture/dna.ts";
 
 const LABELS = {
-  "story-panel": "Story",
+  "scope-panel": "Story",
   "system-panel": "System",
   "service-panel": "Service"
 };

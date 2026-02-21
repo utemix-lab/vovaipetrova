@@ -35,7 +35,7 @@ describe("UI Components", () => {
   beforeEach(() => {
     // Create mock panel hosts
     const storyPanel = document.createElement("div");
-    storyPanel.id = "story-panel";
+    storyPanel.id = "scope-panel";
     document.body.appendChild(storyPanel);
 
     const systemPanel = document.createElement("div");
@@ -88,9 +88,9 @@ describe("UI Components", () => {
     test("should render focus panel label", async () => {
       const { FocusIndicator } = await import("../ui/focus-indicator.jsx");
 
-      render(<FocusIndicator focus="story-panel" />);
+      render(<FocusIndicator focus="scope-panel" />);
 
-      // Component maps "story-panel" to "Story"
+      // Component maps "scope-panel" to "Story"
       expect(screen.getByText("Story")).toBeDefined();
     });
   });

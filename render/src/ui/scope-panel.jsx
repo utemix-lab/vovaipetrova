@@ -27,7 +27,7 @@ function notifyWidgetLever(item) {
 }
 
 function ensureHost() {
-  const panel = document.getElementById("story-panel");
+  const panel = document.getElementById("scope-panel");
   if (!panel) return null;
   let host = panel.querySelector(".react-story-host");
   if (!host) {
@@ -113,40 +113,40 @@ export function StoryPanel({ step, widgets = [], activeLeverId = null }) {
 
   return createPortal(
     <motion.div
-      className="react-story-panel"
+      className="react-scope-panel"
       data-arch-layer="REFLECTION_LAYER"
-      data-arch-pattern="story-panel-declarative"
+      data-arch-pattern="scope-panel-declarative"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
     >
-      <div className="react-story-panel__label">Story (React)</div>
-      <div className="react-story-panel__title">{payload.title}</div>
-      <div className="react-story-panel__subtitle">{payload.subtitle}</div>
-      {payload.body && <div className="react-story-panel__body">{payload.body}</div>}
+      <div className="react-scope-panel__label">Story (React)</div>
+      <div className="react-scope-panel__title">{payload.title}</div>
+      <div className="react-scope-panel__subtitle">{payload.subtitle}</div>
+      {payload.body && <div className="react-scope-panel__body">{payload.body}</div>}
       {miniShape && (
         <div
-          className="react-story-panel__mini-shape"
+          className="react-scope-panel__mini-shape"
           ref={miniShapeRef}
           aria-hidden="true"
         />
       )}
       {widgets.length > 0 && (
-        <div className="react-story-panel__widgets">
+        <div className="react-scope-panel__widgets">
           {widgets.map((section) => (
             <div
               key={`${section.type}-${section.title}`}
-              className="react-story-panel__widget-section"
+              className="react-scope-panel__widget-section"
             >
-              <div className="react-story-panel__widget-title">{section.title}</div>
-              <div className="react-story-panel__widget-items">
+              <div className="react-scope-panel__widget-title">{section.title}</div>
+              <div className="react-scope-panel__widget-items">
                 {section.items.map((item) => (
                   <button
                     key={item.id}
                     type="button"
-                    className={`react-story-panel__widget${
-                      activeLeverId === item.id ? " react-story-panel__widget--active" : ""
+                    className={`react-scope-panel__widget${
+                      activeLeverId === item.id ? " react-scope-panel__widget--active" : ""
                     }`}
                     data-widget-type={section.type}
                     onClick={(event) => {
@@ -171,14 +171,14 @@ export function StoryPanel({ step, widgets = [], activeLeverId = null }) {
         </div>
       )}
       {payload.refsCount > 0 && (
-        <div className="react-story-panel__meta">Refs: {payload.refsCount}</div>
+        <div className="react-scope-panel__meta">Refs: {payload.refsCount}</div>
       )}
       {payload.refsCount > 0 && (
-        <div className="react-story-panel__refs">
+        <div className="react-scope-panel__refs">
           {payload.refs.map((ref) => (
             <div
               key={`${ref.id || ref.label}-${ref.type || "ref"}`}
-              className="react-story-panel__ref"
+              className="react-scope-panel__ref"
               data-ref-type={ref.type || "ref"}
               role="button"
               tabIndex={0}
@@ -190,8 +190,8 @@ export function StoryPanel({ step, widgets = [], activeLeverId = null }) {
                 }
               }}
             >
-              <span className="react-story-panel__ref-type">{ref.type || "ref"}</span>
-              <span className="react-story-panel__ref-label">{ref.label || ref.id}</span>
+              <span className="react-scope-panel__ref-type">{ref.type || "ref"}</span>
+              <span className="react-scope-panel__ref-label">{ref.label || ref.id}</span>
             </div>
           ))}
         </div>
