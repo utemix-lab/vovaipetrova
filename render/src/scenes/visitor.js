@@ -4051,9 +4051,7 @@ function bindSegmentControls() {
 }
 
 function toggleSegmentExpand() {
-  console.log("[Segment] toggleSegmentExpand called, current state:", segmentExpanded);
   segmentExpanded = !segmentExpanded;
-  console.log("[Segment] new state:", segmentExpanded);
   applySegmentExpand();
 }
 
@@ -4061,8 +4059,6 @@ function applySegmentExpand() {
   const storagePanel = document.getElementById("storage-panel");
   const rightColumn = document.getElementById("right-column");
   const graphSpacer = storagePanel?.closest(".graph-spacer");
-  
-  console.log("[Segment] applySegmentExpand:", { segmentExpanded, storagePanel, graphSpacer, rightColumn });
   
   if (segmentExpanded) {
     // Расширить: сдвинуть spacer вправо, скрыть правую колонку
@@ -4073,8 +4069,6 @@ function applySegmentExpand() {
     graphSpacer?.classList.remove("spacer-expanded");
     rightColumn?.classList.remove("right-column--hidden");
   }
-  
-  console.log("[Segment] graphSpacer classes:", graphSpacer?.classList.toString());
   
   // Перерисовать кнопки (чтобы иконка сменилась)
   renderSegmentControls();
@@ -6192,18 +6186,12 @@ function createUI() {
 
   // Hover focus
   storyPanel?.addEventListener("mouseenter", () => setPanelFocus("scope-panel"));
-  segmentPanel?.addEventListener("mouseenter", () => {
-    console.log("[Focus] segmentPanel mouseenter");
-    setPanelFocus("storage-panel");
-  });
+  segmentPanel?.addEventListener("mouseenter", () => setPanelFocus("storage-panel"));
   systemPanel?.addEventListener("mouseenter", () => setPanelFocus("system-panel"));
   servicePanel?.addEventListener("mouseenter", () => setPanelFocus("service-panel"));
 
   // Return to Story on leaving any panel
-  segmentPanel?.addEventListener("mouseleave", () => {
-    console.log("[Focus] segmentPanel mouseleave");
-    setPanelFocus("scope-panel");
-  });
+  segmentPanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
   systemPanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
   servicePanel?.addEventListener("mouseleave", () => setPanelFocus("scope-panel"));
 
