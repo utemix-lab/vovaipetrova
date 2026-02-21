@@ -3659,6 +3659,7 @@ function renderWindowWidgets() {
         </div>
       </div>
     </div>
+    <!-- @status: experimental | @track: 4 | @expires: 2026-03-21 | @reason: Тестовая группа для проверки закрытия окон -->
     <div class="widget-windows-row widget-windows-row--test">
       <div class="widget-group">
         <div class="section-title">Тест</div>
