@@ -4041,8 +4041,10 @@ function bindSegmentControls() {
     if (action === "segment-expand") {
       toggleSegmentExpand();
     } else if (action === "segment-back") {
+      resetSegmentExpand(); // Сбросить расширение при закрытии
       closeAuxWindow();
     } else if (action === "segment-close") {
+      resetSegmentExpand(); // Сбросить расширение при закрытии
       closeAuxWindow();
     }
   });
