@@ -109,7 +109,8 @@ export class NodeOrbits {
       const fieldGeometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
       const fieldMaterial = new THREE.MeshBasicMaterial({
         color: 0x0a0a0f, // Цвет фона (почти чёрный)
-        transparent: false, // Полностью непрозрачный — скрывает ВСЁ за ним
+        transparent: true,
+        opacity: 0.5, // 50% прозрачность
         side: THREE.DoubleSide,
         depthWrite: true // Записывать в depth buffer
       });
@@ -211,7 +212,8 @@ export class NodeOrbits {
     
     // Подсветить поле орбиты голубым
     const field = this.orbitFields.get(orbitName);
-    field.material.color.setHex(0x0d1a1f); // Тёмно-голубой оттенок
+    field.material.color.setHex(ORBIT_COLOR);
+    field.material.opacity = 0.25;
     
     // Подсветить спутник жёлтым (активное состояние — мы "находимся" в нём)
     const satellite = this.satellites.get(orbitName);
@@ -231,6 +233,7 @@ export class NodeOrbits {
     const field = this.orbitFields.get(this.activeOrbit);
     if (field) {
       field.material.color.setHex(0x0a0a0f);
+      field.material.opacity = 0.5;
     }
     
     // Вернуть спутник в обычное состояние
