@@ -198,10 +198,10 @@ export class NodeOrbits {
     const field = this.orbitFields.get(orbitName);
     field.material.opacity = 0.15;
     
-    // Подсветить спутник голубым (активное состояние)
+    // Подсветить спутник жёлтым (активное состояние — мы "находимся" в нём)
     const satellite = this.satellites.get(orbitName);
-    satellite.material.color.setHex(ORBIT_COLOR);
-    satellite.scale.setScalar(1.3);
+    satellite.material.color.setHex(HIGHLIGHT_COLOR);
+    satellite.scale.setScalar(1.4);
     
     // Усилить орбиту
     const orbit = this.orbits.get(orbitName);

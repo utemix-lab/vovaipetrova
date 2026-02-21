@@ -3340,11 +3340,15 @@ function setupOrbitSatelliteInteraction(container) {
         hoveredSatelliteOrbit = orbitName;
         // Подпрыгивание виджета
         triggerWidgetBounce(container, orbitName);
+        // Подсветка виджета (hover-эффект)
+        clearWidgetHover(container);
+        triggerWidgetHover(container, orbitName);
         // Подсветка спутника
         highlightVSTablishmentOrbit(orbitName);
       }
     } else if (hoveredSatelliteOrbit) {
       hoveredSatelliteOrbit = null;
+      clearWidgetHover(container);
       clearVSTablishmentOrbitHighlight();
     }
   });
@@ -3382,6 +3386,18 @@ function triggerWidgetBounce(container, windowType) {
     widget.offsetHeight; // Trigger reflow
     widget.style.animation = "widget-bounce 0.28s ease-out";
   }
+}
+
+function triggerWidgetHover(container, windowType) {
+  const widget = container.querySelector(`.widget-window[data-window="${windowType}"]`);
+  if (widget) {
+    widget.classList.add("widget-window--hover-from-orbit");
+  }
+}
+
+function clearWidgetHover(container) {
+  const widgets = container.querySelectorAll(".widget-window--hover-from-orbit");
+  widgets.forEach(w => w.classList.remove("widget-window--hover-from-orbit"));
 }
 
 function renderChladniScreen() {

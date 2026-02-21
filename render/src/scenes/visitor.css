@@ -1541,9 +1541,19 @@ body.focus-service #service-panel::before {
 }
 
 /* Hover: жёлтая подсветка (как навигационные виджеты) */
-.widget-window:hover .widget-frame {
+.widget-window:hover .widget-frame,
+.widget-window--hover-from-orbit .widget-frame {
   border-color: var(--accent-yellow);
   background: rgba(251, 191, 36, 0.15);
+}
+
+/* Подмена лого при hover от орбиты */
+.widget-window--hover-from-orbit .widget-image--main {
+  display: none;
+}
+
+.widget-window--hover-from-orbit .widget-image--hover {
+  display: block;
 }
 
 /* Active (после клика): голубая подсветка */
