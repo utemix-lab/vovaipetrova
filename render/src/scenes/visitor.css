@@ -537,6 +537,8 @@ body.focus-service #service-panel::before {
   letter-spacing: var(--typo-t1-spacing);
   color: var(--typo-t1-color);
   pointer-events: none;
+  /* DEBUG: убедиться что label виден */
+  min-height: 1em;
 }
 
 .story-screen__dots {
