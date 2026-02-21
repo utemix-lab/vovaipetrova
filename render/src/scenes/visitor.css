@@ -255,6 +255,8 @@ body.visitor-mode {
 /* Расширенное состояние — spacer сдвигается вправо */
 .graph-spacer.spacer-expanded {
   transform: translateX(calc(100% + var(--gap)));
+  pointer-events: auto; /* Включить события в расширенном состоянии */
+  z-index: 25; /* Поверх скрытой правой колонки */
 }
 
 /* При расширении storage-panel должен сохранять focus-поведение */
