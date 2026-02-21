@@ -3237,21 +3237,27 @@ function createVSTablishmentOrbits() {
   // Уничтожить предыдущие орбиты
   destroyVSTablishmentOrbits();
   
-  // Найти mesh узла VSTablishment (может быть ещё не создан)
-  const mesh = nodeMeshes.get("workbench-vova-vstablishment");
-  if (!mesh) {
-    console.warn("[Orbits] VSTablishment mesh not found, retrying in 500ms...");
-    // Повторить попытку через 500ms
+  // Проверить, что граф и сцена доступны
+  if (!graph || !graph.scene()) {
+    console.warn("[Orbits] Graph scene not available, retrying in 500ms...");
     setTimeout(createVSTablishmentOrbits, 500);
     return;
   }
   
-  // Получить радиус узла
-  const nodeRadius = nodeBaseRadius.get("workbench-vova-vstablishment") || 1;
+  // Найти узел VSTablishment
+  const node = nodesById.get("workbench-vova-vstablishment");
+  if (!node) {
+    console.warn("[Orbits] VSTablishment node not found");
+    return;
+  }
   
-  // Создать орбиты
-  vstablishmentOrbits = new NodeOrbits(mesh, nodeRadius);
-  console.log("[Orbits] Created orbits for VSTablishment, nodeRadius:", nodeRadius);
+  // Создать орбиты в сцене
+  vstablishmentOrbits = new NodeOrbits(graph.scene(), "workbench-vova-vstablishment");
+  
+  // Установить позицию по позиции узла
+  vstablishmentOrbits.setPosition(node.x || 0, node.y || 0, node.z || 0);
+  
+  console.log("[Orbits] Created orbits for VSTablishment at position:", node.x, node.y, node.z);
 }
 
 function destroyVSTablishmentOrbits() {
@@ -6034,6 +6040,11 @@ function tickAnimation() {
   updateNodeGlow(); // Обновление позиции и пульсации свечения
   // Обновление орбит VSTablishment
   if (vstablishmentOrbits) {
+    // Обновить позицию по позиции узла
+    const node = nodesById.get("workbench-vova-vstablishment");
+    if (node) {
+      vstablishmentOrbits.setPosition(node.x || 0, node.y || 0, node.z || 0);
+    }
     vstablishmentOrbits.update(deltaTime);
   }
   controls.update();

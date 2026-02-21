@@ -38,9 +38,9 @@ const ORBIT_CONFIG = {
 };
 
 export class NodeOrbits {
-  constructor(parentMesh, nodeRadius = 1) {
-    this.parentMesh = parentMesh;
-    this.nodeRadius = nodeRadius;
+  constructor(scene, nodeId) {
+    this.scene = scene;
+    this.nodeId = nodeId;
     this.group = new THREE.Group();
     this.orbits = new Map();
     this.satellites = new Map();
@@ -49,13 +49,13 @@ export class NodeOrbits {
     
     this._createOrbits();
     
-    // Компенсировать scale родительского mesh
-    // Орбиты должны быть в мировых координатах, не в локальных
-    const parentScale = parentMesh.scale.x || 1;
-    this.group.scale.setScalar(1 / parentScale);
-    
-    parentMesh.add(this.group);
-    console.log("[NodeOrbits] Created, parentScale:", parentScale);
+    scene.add(this.group);
+    console.log("[NodeOrbits] Created and added to scene for node:", nodeId);
+  }
+  
+  // Обновить позицию орбит по позиции узла
+  setPosition(x, y, z) {
+    this.group.position.set(x, y, z);
   }
   
   _createOrbits() {
@@ -155,9 +155,9 @@ export class NodeOrbits {
   }
   
   dispose() {
-    // Удалить из родителя
-    if (this.parentMesh) {
-      this.parentMesh.remove(this.group);
+    // Удалить из сцены
+    if (this.scene) {
+      this.scene.remove(this.group);
     }
     
     // Очистить геометрии и материалы
