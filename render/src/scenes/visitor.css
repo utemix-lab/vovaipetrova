@@ -531,14 +531,13 @@ body.focus-service #service-panel::before {
 }
 
 .story-screen__label {
-  font-family: var(--typo-t1-font);
-  font-size: var(--typo-t1-size);
-  text-transform: var(--typo-t1-transform);
-  letter-spacing: var(--typo-t1-spacing);
-  color: var(--typo-t1-color);
+  /* T1: Widget Group Titles — как в других окнах */
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(160, 174, 192, 1); /* --text-secondary */
   pointer-events: none;
-  /* DEBUG: убедиться что label виден */
-  min-height: 1em;
 }
 
 .story-screen__dots {

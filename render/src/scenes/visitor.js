@@ -3630,19 +3630,12 @@ function bindStoryScreen(container) {
     
     // Название "Story" только в развернутом состоянии
     if (labelEl) {
-      console.log("[Story] labelEl found, setting to:", expanded ? "Story" : "");
       labelEl.textContent = expanded ? "Story" : "";
-    } else {
-      console.log("[Story] labelEl NOT found!");
     }
     
     // Toggle иконка: плюс или крестик
     if (toggle) {
-      const newIcon = expanded ? iconClose : iconPlus;
-      console.log("[Story] updateControlsState: expanded =", expanded, "newIcon class =", expanded ? "icon--close" : "icon--plus");
-      console.log("[Story] toggle.innerHTML BEFORE:", toggle.innerHTML.substring(0, 50));
-      toggle.innerHTML = newIcon;
-      console.log("[Story] toggle.innerHTML AFTER:", toggle.innerHTML.substring(0, 50));
+      toggle.innerHTML = expanded ? iconClose : iconPlus;
       toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
       toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
     }
