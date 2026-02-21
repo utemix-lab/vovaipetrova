@@ -60,16 +60,17 @@ export class NodeOrbits {
   
   _createOrbits() {
     for (const [name, config] of Object.entries(ORBIT_CONFIG)) {
-      // Орбита (кольцо)
-      const orbitGeometry = new THREE.RingGeometry(
-        config.radius - 0.02,
-        config.radius + 0.02,
-        64
+      // Орбита (кольцо) - используем TorusGeometry для объёмного кольца
+      const orbitGeometry = new THREE.TorusGeometry(
+        config.radius,  // radius
+        0.3,            // tube radius (толщина)
+        8,              // radialSegments
+        64              // tubularSegments
       );
       const orbitMaterial = new THREE.MeshBasicMaterial({
         color: config.color,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0.25,
         side: THREE.DoubleSide
       });
       const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
