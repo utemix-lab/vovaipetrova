@@ -1547,15 +1547,6 @@ body.focus-service #service-panel::before {
   background: rgba(251, 191, 36, 0.15);
 }
 
-/* Подмена лого при hover от орбиты */
-.widget-window--hover-from-orbit .widget-image--main {
-  display: none;
-}
-
-.widget-window--hover-from-orbit .widget-image--hover {
-  display: block;
-}
-
 /* Active (после клика): голубая подсветка */
 .widget-window--active .widget-frame {
   border-color: var(--accent-cyan);
@@ -1563,7 +1554,7 @@ body.focus-service #service-panel::before {
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
 }
 
-/* Подменное лого при hover */
+/* Базовое состояние лого */
 .widget-window .widget-image--main {
   display: block;
 }
@@ -1576,12 +1567,22 @@ body.focus-service #service-panel::before {
   transform: translate(-50%, -50%);
 }
 
+/* Подмена лого при hover (мышь на виджете) */
 .widget-window:hover .widget-image--main {
   display: none;
 }
 
 .widget-window:hover .widget-image--hover {
   display: block;
+}
+
+/* Подмена лого при hover от орбиты (мышь на точке в графе) */
+.widget-window--hover-from-orbit .widget-image--main {
+  display: none !important;
+}
+
+.widget-window--hover-from-orbit .widget-image--hover {
+  display: block !important;
 }
 
 /* Тестовый виджет — пустая рамка */
