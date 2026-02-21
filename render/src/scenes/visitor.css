@@ -531,12 +531,13 @@ body.focus-service #service-panel::before {
 }
 
 .story-screen__label {
-  /* T1: Widget Group Titles — как в других окнах */
-  font-family: monospace;
+  /* T3: Panel Headers — как Scope, System, Service */
+  font-family: var(--font-tech);
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(160, 174, 192, 1); /* --text-secondary */
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  opacity: 0.7;
   pointer-events: none;
 }
 
