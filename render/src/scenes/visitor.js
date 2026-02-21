@@ -341,26 +341,26 @@ const STORY_SLIDES = [
   },
   {
     id: "vova-02",
-    title: "Заголовок 2",
-    detail: "Расширенный текст 2",
+    title: "",
+    detail: "",
     src: buildAssetPath("story/narrative/vova-02.jpg")
   },
   {
     id: "vova-03",
-    title: "Заголовок 3",
-    detail: "Расширенный текст 3",
+    title: "",
+    detail: "",
     src: buildAssetPath("story/narrative/vova-03.jpg")
   },
   {
     id: "vova-04",
-    title: "Заголовок 4",
-    detail: "Расширенный текст 4",
+    title: "",
+    detail: "",
     src: buildAssetPath("story/narrative/vova-04.jpg")
   },
   {
     id: "vova-05",
-    title: "Заголовок 5",
-    detail: "Расширенный текст 5",
+    title: "",
+    detail: "",
     src: buildAssetPath("story/narrative/vova-05.jpg")
   }
 ];

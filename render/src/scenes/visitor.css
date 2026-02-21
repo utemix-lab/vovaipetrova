@@ -688,6 +688,10 @@ body.focus-service #service-panel::before {
   padding-top: 0;
 }
 
+.narrative-dot--toggle {
+  transition: transform 0.25s ease;
+}
+
 .story-screen--expanded .narrative-dot--toggle {
   transform: rotate(45deg);
 }
