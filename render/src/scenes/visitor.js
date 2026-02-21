@@ -3614,18 +3614,29 @@ function isWorkbenchShared(nodeId) {
 // ═══════════════════════════════════════════════════════════════════════════
 // ВИДЖЕТЫ ОКОН (Slate, Storage, Sanctum)
 // ═══════════════════════════════════════════════════════════════════════════
+// @status: canonical
+// @track: 4
+// @since: 2026-02-21
+// @docs: docs/UI_STANDARDS.md#window-widgets
+//
 // Квадратные виджеты 48×48px для вызова дополнительных окон.
 // Расположены на всех страницах воркбенчей (Блок 4).
-// См. docs/UI_STANDARDS.md → "Виджеты окон"
+// Hover: подпрыгивание +6px, подменное лого eye-plug.png
 // ═══════════════════════════════════════════════════════════════════════════
+
+// Текущее открытое вспомогательное окно (slate, storage, sanctum или null)
+let activeAuxWindow = null;
+
 function renderWindowWidgets() {
+  const eyeIcon = buildAssetPath("widgets/eye-plug.png");
   return `
     <div class="widget-windows-row">
       <div class="widget-group">
         <div class="section-title">Slate</div>
         <div class="node-widget widget-window" data-window="slate" title="Slate — Новостная лента">
           <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/slate-plug.png")}" alt="Slate" class="widget-image" />
+            <img src="${buildAssetPath("widgets/slate-plug.png")}" alt="Slate" class="widget-image widget-image--main" />
+            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -3633,7 +3644,8 @@ function renderWindowWidgets() {
         <div class="section-title">Storage</div>
         <div class="node-widget widget-window" data-window="storage" title="Storage — Граф воркбенча">
           <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/storage-plug.png")}" alt="Storage" class="widget-image" />
+            <img src="${buildAssetPath("widgets/storage-plug.png")}" alt="Storage" class="widget-image widget-image--main" />
+            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -3641,8 +3653,17 @@ function renderWindowWidgets() {
         <div class="section-title">Sanctum</div>
         <div class="node-widget widget-window" data-window="sanctum" title="Sanctum — Внутренняя механика">
           <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/sanctum-plug.png")}" alt="Sanctum" class="widget-image" />
+            <img src="${buildAssetPath("widgets/sanctum-plug.png")}" alt="Sanctum" class="widget-image widget-image--main" />
+            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="widget-windows-row widget-windows-row--test">
+      <div class="widget-group">
+        <div class="section-title">Тест</div>
+        <div class="node-widget widget-window widget-window--test" data-window="test" title="Тестовый виджет">
+          <div class="widget-frame widget-frame--empty"></div>
         </div>
       </div>
     </div>
@@ -3654,12 +3675,61 @@ function bindWindowWidgets(container) {
   windowWidgets.forEach(widget => {
     widget.addEventListener("click", () => {
       const windowType = widget.dataset.window;
-      // TODO: Открыть соответствующее окно (Slate, Storage, Sanctum)
-      console.log(`Window widget clicked: ${windowType}`);
-      if (windowType === "storage") {
-        showSegmentPanel();
+      
+      // Тестовый виджет — закрывает любое вспомогательное окно
+      if (windowType === "test") {
+        closeAuxWindow();
+        return;
       }
+      
+      // Клик на тот же виджет — закрыть окно
+      if (activeAuxWindow === windowType) {
+        closeAuxWindow();
+        return;
+      }
+      
+      // Клик на другой виджет группы — закрыть текущее, открыть новое
+      closeAuxWindow();
+      openAuxWindow(windowType);
     });
+  });
+}
+
+function openAuxWindow(windowType) {
+  activeAuxWindow = windowType;
+  
+  if (windowType === "storage") {
+    showStoragePanel();
+  } else if (windowType === "slate") {
+    showSlatePanel();
+  } else if (windowType === "sanctum") {
+    showSanctumPanel();
+  }
+  
+  // Подсветить активный виджет
+  updateActiveWindowWidget();
+}
+
+function closeAuxWindow() {
+  if (!activeAuxWindow) return;
+  
+  if (activeAuxWindow === "storage") {
+    hideStoragePanel();
+  } else if (activeAuxWindow === "slate") {
+    hideSlatePanel();
+  } else if (activeAuxWindow === "sanctum") {
+    hideSanctumPanel();
+  }
+  
+  activeAuxWindow = null;
+  updateActiveWindowWidget();
+}
+
+function updateActiveWindowWidget() {
+  const widgets = document.querySelectorAll(".widget-window[data-window]");
+  widgets.forEach(w => {
+    const isActive = w.dataset.window === activeAuxWindow;
+    w.classList.toggle("widget-window--active", isActive);
   });
 }
 
@@ -3757,47 +3827,235 @@ function bindSegmentControls() {
     if (!btn) return;
     const action = btn.dataset.action;
     if (action === "segment-back") {
-      // TODO: навигация назад в истории Segment
-      hideSegmentPanel();
+      closeAuxWindow();
     } else if (action === "segment-close") {
-      hideSegmentPanel();
+      closeAuxWindow();
     }
   });
 }
 
-function showSegmentPanel() {
-  const segmentPanel = document.getElementById("storage-panel");
-  if (!segmentPanel) return;
+// ═══════════════════════════════════════════════════════════════════════════
+// ВСПОМОГАТЕЛЬНЫЕ ОКНА (Slate, Storage, Sanctum)
+// ═══════════════════════════════════════════════════════════════════════════
+// @status: canonical
+// @track: 4
+// @since: 2026-02-21
+// @docs: docs/UI_STANDARDS.md#aux-windows
+//
+// Окна открываются по клику на виджеты в Scope.
+// Закрываются: крестиком, кликом на другой виджет группы, шагом Назад.
+// Структура: корневой виджет + Story внутри с логикой состояний.
+// ═══════════════════════════════════════════════════════════════════════════
+
+function renderAuxWindowContent(windowType) {
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconNext = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconPlus = `
+    <svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
+  const iconClose = `
+    <svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
   
-  segmentPanel.classList.add("segment-visible");
+  const widgetIcon = buildAssetPath(`widgets/${windowType}-plug.png`);
+  const titles = {
+    storage: "Storage",
+    slate: "Slate", 
+    sanctum: "Sanctum"
+  };
   
-  // Рендерим точки управления
-  renderSegmentControls();
-  
-  // Заполняем содержимое
-  const content = segmentPanel.querySelector(".panel-content");
-  if (content) {
-    content.innerHTML = `
-      <div class="node-toc">
-        <div class="segment-widget-placeholder"></div>
-        <div class="vova-root-info">
-          <div>Текст</div>
-          <div>Текст</div>
-          <div>Текст</div>
+  return `
+    <div class="aux-window-layout">
+      <div class="aux-window-toc">
+        <div class="aux-root-widget">
+          <div class="widget-frame">
+            <img src="${widgetIcon}" alt="${titles[windowType]}" class="widget-image" />
+          </div>
+        </div>
+        <div class="aux-window-info">
+          <div class="aux-window-title">${titles[windowType]}</div>
+          <div class="aux-window-desc">Описание окна</div>
         </div>
       </div>
-      <div class="segment-screen">
-        <div class="segment-screen__viewport" style="background-image: url('${buildAssetPath("story/narrative/vova-01.png")}');"></div>
+      <div class="story-screen aux-story-screen" data-expanded="false" data-index="0">
+        <div class="story-screen__hud">
+          <div class="story-screen__label" aria-hidden="true"></div>
+          <div class="story-screen__dots" aria-hidden="true">
+            <button class="narrative-dot narrative-dot--control narrative-dot--hidden" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
+            <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
+            <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--hidden" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
+          </div>
+        </div>
+        <div class="story-screen__shape-area" aria-hidden="true"></div>
+        <div class="story-screen__viewport" aria-hidden="true"></div>
+        <div class="story-screen__text" aria-live="polite">
+          <div class="story-screen__title"></div>
+          <div class="story-screen__detail"></div>
+        </div>
       </div>
-    `;
+    </div>
+  `;
+}
+
+function showStoragePanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
+  
+  panel.classList.add("segment-visible");
+  renderSegmentControls();
+  
+  const content = panel.querySelector(".panel-content");
+  if (content) {
+    content.innerHTML = renderAuxWindowContent("storage");
+    bindAuxStoryScreen(content);
   }
 }
 
-function hideSegmentPanel() {
-  const segmentPanel = document.getElementById("storage-panel");
-  if (!segmentPanel) return;
+function hideStoragePanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
+  panel.classList.remove("segment-visible");
+}
+
+function showSlatePanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
   
-  segmentPanel.classList.remove("segment-visible");
+  panel.classList.add("segment-visible");
+  const titleEl = panel.querySelector(".panel-title-text");
+  if (titleEl) titleEl.textContent = "Slate";
+  renderSegmentControls();
+  
+  const content = panel.querySelector(".panel-content");
+  if (content) {
+    content.innerHTML = renderAuxWindowContent("slate");
+    bindAuxStoryScreen(content);
+  }
+}
+
+function hideSlatePanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
+  panel.classList.remove("segment-visible");
+  const titleEl = panel.querySelector(".panel-title-text");
+  if (titleEl) titleEl.textContent = "Storage";
+}
+
+function showSanctumPanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
+  
+  panel.classList.add("segment-visible");
+  const titleEl = panel.querySelector(".panel-title-text");
+  if (titleEl) titleEl.textContent = "Sanctum";
+  renderSegmentControls();
+  
+  const content = panel.querySelector(".panel-content");
+  if (content) {
+    content.innerHTML = renderAuxWindowContent("sanctum");
+    bindAuxStoryScreen(content);
+  }
+}
+
+function hideSanctumPanel() {
+  const panel = document.getElementById("storage-panel");
+  if (!panel) return;
+  panel.classList.remove("segment-visible");
+  const titleEl = panel.querySelector(".panel-title-text");
+  if (titleEl) titleEl.textContent = "Storage";
+}
+
+function bindAuxStoryScreen(container) {
+  // Логика Story внутри вспомогательных окон — аналогична bindNarrativeScreen
+  const screen = container.querySelector(".aux-story-screen");
+  if (!screen) return;
+  
+  const toggle = screen.querySelector(".narrative-dot--toggle");
+  const prevButton = screen.querySelector(".narrative-dot[data-action='prev']");
+  const nextButton = screen.querySelector(".narrative-dot[data-action='next']");
+  const labelEl = screen.querySelector(".story-screen__label");
+  
+  let slideIndex = 0;
+  let expanded = false;
+  const slides = [
+    { title: "", detail: "" },
+    { title: "Шаг 1", detail: "Описание первого шага" },
+    { title: "Шаг 2", detail: "Описание второго шага" },
+  ];
+  
+  function updateUI() {
+    screen.dataset.index = slideIndex;
+    screen.dataset.expanded = expanded;
+    
+    // Шаг 0: только кнопка Вперед
+    if (slideIndex === 0) {
+      prevButton?.classList.add("narrative-dot--hidden");
+      toggle?.classList.add("narrative-dot--hidden");
+      if (labelEl) labelEl.textContent = "";
+    } else {
+      prevButton?.classList.remove("narrative-dot--hidden");
+      toggle?.classList.remove("narrative-dot--hidden");
+    }
+    
+    // Развернутое состояние
+    if (expanded && labelEl) {
+      labelEl.textContent = "Story";
+    }
+    
+    // Обновить иконку toggle
+    if (toggle) {
+      const iconPlus = `<svg class="icon icon--plus" viewBox="0 0 12 12"><path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>`;
+      const iconClose = `<svg class="icon icon--close" viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>`;
+      toggle.innerHTML = expanded ? iconClose : iconPlus;
+      toggle.title = expanded ? "Свернуть" : "Развернуть";
+    }
+    
+    // Контент слайда
+    const titleEl = screen.querySelector(".story-screen__title");
+    const detailEl = screen.querySelector(".story-screen__detail");
+    if (titleEl) titleEl.textContent = slides[slideIndex]?.title || "";
+    if (detailEl) detailEl.textContent = slides[slideIndex]?.detail || "";
+  }
+  
+  prevButton?.addEventListener("click", () => {
+    if (slideIndex > 0) {
+      slideIndex--;
+      if (slideIndex === 0) {
+        expanded = false;
+      }
+      updateUI();
+    }
+  });
+  
+  nextButton?.addEventListener("click", () => {
+    if (slideIndex < slides.length - 1) {
+      slideIndex++;
+      updateUI();
+    }
+  });
+  
+  toggle?.addEventListener("click", () => {
+    expanded = !expanded;
+    updateUI();
+  });
+  
+  updateUI();
+}
+
+function hideSegmentPanel() {
+  closeAuxWindow();
 }
 
 // === ШАБЛОН СТРАНИЦЫ КОЛЛАБА ===

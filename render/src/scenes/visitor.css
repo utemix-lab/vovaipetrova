@@ -1523,13 +1523,65 @@ body.focus-service #service-panel::before {
 
 .widget-window {
   cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.widget-window:hover {
+  transform: translateY(-6px);
 }
 
 .widget-window:hover .widget-frame {
   border-color: var(--accent-cyan);
   background: rgba(34, 211, 238, 0.1);
+  animation: widget-bounce 0.28s ease-out;
 }
 
+.widget-window--active .widget-frame {
+  border-color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+}
+
+/* Подменное лого при hover */
+.widget-window .widget-image--main {
+  display: block;
+}
+
+.widget-window .widget-image--hover {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.widget-window:hover .widget-image--main {
+  display: none;
+}
+
+.widget-window:hover .widget-image--hover {
+  display: block;
+}
+
+/* Тестовый виджет — пустая рамка */
+.widget-window--test .widget-frame {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.widget-window--test:hover .widget-frame {
+  border-color: var(--accent-cyan);
+  border-style: dashed;
+}
+
+.widget-frame--empty {
+  min-height: 48px;
+}
+
+/* Тестовая группа виджетов */
+.widget-windows-row--test {
+  margin-top: 12px;
+}
 
 .widget-frame img {
   pointer-events: none;
@@ -2095,4 +2147,67 @@ body.focus-service #service-panel::before {
 
 .vst-layer-widget[data-active="true"] .vst-layer-label {
   color: var(--layer-color, rgba(255, 255, 255, 0.9));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ВСПОМОГАТЕЛЬНЫЕ ОКНА (Slate, Storage, Sanctum)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.aux-window-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-inset);
+  height: 100%;
+}
+
+.aux-window-toc {
+  display: flex;
+  align-items: center;
+  gap: var(--panel-inset);
+}
+
+.aux-root-widget {
+  flex-shrink: 0;
+}
+
+.aux-root-widget .widget-frame {
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(34, 211, 238, 0.4);
+  border-radius: 6px;
+  background: rgba(34, 211, 238, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.aux-root-widget .widget-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.aux-window-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aux-window-title {
+  font-family: var(--font-tech);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+}
+
+.aux-window-desc {
+  font-family: var(--font-tech);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.aux-story-screen {
+  flex: 1;
+  min-height: 200px;
 }
