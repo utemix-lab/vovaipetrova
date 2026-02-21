@@ -1578,7 +1578,11 @@ body.focus-service #service-panel::before {
 
 /* Тестовая группа виджетов — отступ 12px (--panel-inset-inner) */
 .widget-windows-row--test {
-  margin-top: calc(var(--panel-inset-inner) + 4px); /* 12px + компенсация -4px от первого ряда = 16px визуально, но 12px между группами */
+  margin-top: calc(var(--panel-inset-inner) + 4px); /* 12px + компенсация -4px от первого ряда */
+}
+
+.widget-windows-row--test .widget-group {
+  gap: var(--panel-inset-dots); /* 6px между названием и виджетом — как у основной группы */
 }
 
 .widget-frame img {
@@ -2202,5 +2206,9 @@ body.focus-service #service-panel::before {
   color: var(--typo-t2-color);
 }
 
-/* Story внутри aux-окон — наследует .story-screen, без дополнительных переопределений */
-/* Класс .story-screen уже задаёт все нужные стили: 16:9, border, background */
+/* Story внутри aux-окон — flex-контекст требует явного aspect-ratio */
+.aux-story-screen {
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
