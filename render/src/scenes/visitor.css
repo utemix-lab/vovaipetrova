@@ -1540,11 +1540,13 @@ body.focus-service #service-panel::before {
   animation: widget-bounce 0.28s ease-out;
 }
 
+/* Hover: жёлтая подсветка (как навигационные виджеты) */
 .widget-window:hover .widget-frame {
-  border-color: var(--accent-cyan);
-  background: rgba(34, 211, 238, 0.1);
+  border-color: var(--accent-yellow);
+  background: rgba(251, 191, 36, 0.15);
 }
 
+/* Active (после клика): голубая подсветка */
 .widget-window--active .widget-frame {
   border-color: var(--accent-cyan);
   background: rgba(34, 211, 238, 0.2);
