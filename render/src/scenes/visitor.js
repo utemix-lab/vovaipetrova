@@ -3812,32 +3812,16 @@ function isWorkbenchShared(nodeId) {
 // Hover: подпрыгивание, индивидуальные подменные лого (*-plug2.png)
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Конфигурация вспомогательных окон — единый источник данных
-// !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ
-const AUX_WINDOWS_CONFIG = {
-  slate: {
-    title: "Slate",
-    hint: "Новостная лента",        // Подсказка (сокращённая)
-    description: "Новостная лента"  // Заголовок в окне (будет расширен)
-  },
-  storage: {
-    title: "Storage",
-    hint: "Граф воркбенча",
-    description: "Граф воркбенча"
-  },
-  sanctum: {
-    title: "Sanctum",
-    hint: "Внутренняя механика",
-    description: "Внутренняя механика"
-  }
-};
+// Конфигурация окон берётся из VISUAL_CONFIG.windows
+// Единый источник данных: render/src/visual/config.js
+// Документация: docs/UI_STANDARDS.md#окна-интерфейса
 
 // Текущее открытое вспомогательное окно (slate, storage, sanctum или null)
 let activeAuxWindow = null;
 
 function renderWindowWidgets() {
   const renderWidget = (windowType) => {
-    const config = AUX_WINDOWS_CONFIG[windowType];
+    const config = VISUAL_CONFIG.windows[windowType];
     return `
       <div class="widget-group">
         <div class="section-title">${config.title}</div>
@@ -4121,7 +4105,7 @@ function resetSegmentExpand() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderAuxWindowContent(windowType) {
-  const config = AUX_WINDOWS_CONFIG[windowType];
+  const config = VISUAL_CONFIG.windows[windowType];
   const widgetIcon = buildAssetPath(`widgets/${windowType}-plug.png`);
   
   return `
