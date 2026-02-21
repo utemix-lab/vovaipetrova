@@ -3630,7 +3630,10 @@ function bindStoryScreen(container) {
     
     // Название "Story" только в развернутом состоянии
     if (labelEl) {
+      console.log("[Story] labelEl found, setting to:", expanded ? "Story" : "");
       labelEl.textContent = expanded ? "Story" : "";
+    } else {
+      console.log("[Story] labelEl NOT found!");
     }
     
     // Toggle иконка: плюс или крестик
