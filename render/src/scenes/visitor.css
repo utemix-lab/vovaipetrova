@@ -1467,7 +1467,7 @@ body.focus-service #service-panel::before {
    ═══════════════════════════════════════════════════════════════════════════
    
    Вертикальная разметка унифицирована с навигационными виджетами:
-   - Story → 16px (--panel-inset) → Названия
+   - Story → 12px (--panel-inset-inner) → Названия
    - Названия → 10px (--panel-inset - 6px) → Виджеты
    
    См. docs/UI_STANDARDS.md → "Блок 4: Widget Groups — Окон"
@@ -1479,7 +1479,7 @@ body.focus-service #service-panel::before {
   flex-direction: row;
   justify-content: flex-start;
   gap: var(--panel-inset); /* 16px между группами — как у навигационных */
-  margin-top: var(--panel-inset); /* 16px от Story — стандартный отступ */
+  margin-top: var(--panel-inset-inner); /* 12px от Story — стандартный отступ */
 }
 
 .widget-windows-row .widget-group {
