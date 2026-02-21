@@ -2902,6 +2902,10 @@ function hasPrevStep() {
 function updatePanels() {
   if (!currentStep) return;
 
+  // Уничтожить орбиты VSTablishment при переходе на любую страницу
+  // (они будут созданы заново, если это страница VSTablishment)
+  destroyVSTablishmentOrbits();
+
   const storyPanel = document.getElementById("scope-panel");
   const systemPanel = document.getElementById("system-panel");
   const servicePanel = document.getElementById("service-panel");
@@ -3970,8 +3974,6 @@ function updateStoryWithWorkbench(panel, node) {
     // Storage панель открывается по клику на виджет, не автоматически
     hideSegmentPanel();
   } else {
-    // Уничтожить орбиты при переходе на другую страницу
-    destroyVSTablishmentOrbits();
     bindStoryScreen(content);
     hideSegmentPanel();
   }
