@@ -1479,7 +1479,9 @@ body.focus-service #service-panel::before {
   flex-direction: row;
   justify-content: flex-start;
   gap: var(--panel-inset); /* 16px между группами — как у навигационных */
-  margin-top: var(--panel-inset-inner); /* 12px от Story — стандартный отступ */
+  /* margin-top НЕ нужен — gap от .panel-content (16px) уже есть */
+  /* Но нам нужно 12px, поэтому компенсируем: */
+  margin-top: calc(var(--panel-inset-inner) - var(--panel-inset)); /* 12px - 16px = -4px */
 }
 
 .widget-windows-row .widget-group {
