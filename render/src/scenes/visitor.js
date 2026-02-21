@@ -3385,6 +3385,10 @@ function triggerWidgetBounce(container, windowType) {
     widget.style.animation = "none";
     widget.offsetHeight; // Trigger reflow
     widget.style.animation = "widget-bounce 0.28s ease-out";
+    // Очистить inline style после анимации, чтобы CSS :hover работал
+    setTimeout(() => {
+      widget.style.animation = "";
+    }, 300);
   }
 }
 

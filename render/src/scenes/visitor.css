@@ -1536,7 +1536,8 @@ body.focus-service #service-panel::before {
   cursor: pointer;
 }
 
-.widget-window:hover {
+.widget-window:hover,
+.widget-window--hover-from-orbit {
   animation: widget-bounce 0.28s ease-out;
 }
 
