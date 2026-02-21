@@ -249,6 +249,12 @@ body.visitor-mode {
   display: flex;
   align-items: stretch; /* Segment панель растягивается на всю высоту */
   justify-content: stretch; /* Segment панель растягивается на всю ширину */
+  transition: transform 0.35s ease;
+}
+
+/* Расширенное состояние — spacer сдвигается вправо */
+.graph-spacer.spacer-expanded {
+  transform: translateX(calc(100% + var(--panel-gap)));
 }
 
 /* Segment Panel — центральная панель (только VSTablishment) */
@@ -268,11 +274,6 @@ body.visitor-mode {
   display: flex;
 }
 
-/* Расширенное состояние — панель сдвигается вправо и занимает место System/Service */
-#storage-panel.segment-expanded {
-  transform: translateX(calc(50% + var(--panel-gap) / 2)) !important;
-  z-index: 20;
-}
 
 /* Скрытие правой колонки при расширении */
 #right-column.right-column--hidden {

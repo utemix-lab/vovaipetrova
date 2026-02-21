@@ -4059,14 +4059,15 @@ function toggleSegmentExpand() {
 function applySegmentExpand() {
   const storagePanel = document.getElementById("storage-panel");
   const rightColumn = document.getElementById("right-column");
+  const graphSpacer = storagePanel?.closest(".graph-spacer");
   
   if (segmentExpanded) {
-    // Расширить: сдвинуть панель вправо, скрыть правую колонку
-    storagePanel?.classList.add("segment-expanded");
+    // Расширить: сдвинуть spacer вправо, скрыть правую колонку
+    graphSpacer?.classList.add("spacer-expanded");
     rightColumn?.classList.add("right-column--hidden");
   } else {
-    // Свернуть: вернуть панель в центр, показать правую колонку
-    storagePanel?.classList.remove("segment-expanded");
+    // Свернуть: вернуть spacer в центр, показать правую колонку
+    graphSpacer?.classList.remove("spacer-expanded");
     rightColumn?.classList.remove("right-column--hidden");
   }
   
