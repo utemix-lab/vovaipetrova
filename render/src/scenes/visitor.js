@@ -3280,6 +3280,18 @@ function clearVSTablishmentOrbitHighlight() {
   }
 }
 
+function activateVSTablishmentOrbit(orbitName) {
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.activate(orbitName);
+  }
+}
+
+function deactivateVSTablishmentOrbit() {
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.deactivate();
+  }
+}
+
 function bindWindowWidgetsToOrbits(container) {
   // Привязать hover на виджеты Slate/Storage/Sanctum к орбитам
   const windowWidgets = container.querySelectorAll(".widget-window[data-window]");
@@ -3295,6 +3307,81 @@ function bindWindowWidgetsToOrbits(container) {
       });
     }
   });
+  
+  // Настроить обратную связь: hover/click на спутники → виджеты
+  setupOrbitSatelliteInteraction(container);
+}
+
+// Raycaster для взаимодействия со спутниками орбит
+const orbitRaycaster = new THREE.Raycaster();
+const orbitMouse = new THREE.Vector2();
+let hoveredSatelliteOrbit = null;
+
+function setupOrbitSatelliteInteraction(container) {
+  if (!vstablishmentOrbits || !graph) return;
+  
+  const canvas = graph.renderer().domElement;
+  
+  // Hover на спутники
+  canvas.addEventListener("mousemove", (e) => {
+    if (!vstablishmentOrbits) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    orbitMouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    orbitMouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    
+    orbitRaycaster.setFromCamera(orbitMouse, graph.camera());
+    const satellites = vstablishmentOrbits.getSatellites();
+    const intersects = orbitRaycaster.intersectObjects(satellites);
+    
+    if (intersects.length > 0) {
+      const orbitName = intersects[0].object.userData.orbitName;
+      if (orbitName !== hoveredSatelliteOrbit) {
+        hoveredSatelliteOrbit = orbitName;
+        // Подпрыгивание виджета
+        triggerWidgetBounce(container, orbitName);
+        // Подсветка спутника
+        highlightVSTablishmentOrbit(orbitName);
+      }
+    } else if (hoveredSatelliteOrbit) {
+      hoveredSatelliteOrbit = null;
+      clearVSTablishmentOrbitHighlight();
+    }
+  });
+  
+  // Click на спутники
+  canvas.addEventListener("click", (e) => {
+    if (!vstablishmentOrbits) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    orbitMouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    orbitMouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    
+    orbitRaycaster.setFromCamera(orbitMouse, graph.camera());
+    const satellites = vstablishmentOrbits.getSatellites();
+    const intersects = orbitRaycaster.intersectObjects(satellites);
+    
+    if (intersects.length > 0) {
+      const orbitName = intersects[0].object.userData.orbitName;
+      // Открыть соответствующее окно
+      if (activeAuxWindow === orbitName) {
+        closeAuxWindow();
+      } else {
+        closeAuxWindow();
+        openAuxWindow(orbitName);
+      }
+    }
+  });
+}
+
+function triggerWidgetBounce(container, windowType) {
+  const widget = container.querySelector(`.widget-window[data-window="${windowType}"]`);
+  if (widget) {
+    // Удалить и добавить анимацию для перезапуска
+    widget.style.animation = "none";
+    widget.offsetHeight; // Trigger reflow
+    widget.style.animation = "widget-bounce 0.28s ease-out";
+  }
 }
 
 function renderChladniScreen() {
@@ -3776,6 +3863,9 @@ function openAuxWindow(windowType) {
   
   // Подсветить активный виджет
   updateActiveWindowWidget();
+  
+  // Активировать поле орбиты (если на странице VSTablishment)
+  activateVSTablishmentOrbit(windowType);
 }
 
 function closeAuxWindow() {
@@ -3791,6 +3881,9 @@ function closeAuxWindow() {
   
   activeAuxWindow = null;
   updateActiveWindowWidget();
+  
+  // Деактивировать поле орбиты
+  deactivateVSTablishmentOrbit();
 }
 
 function updateActiveWindowWidget() {

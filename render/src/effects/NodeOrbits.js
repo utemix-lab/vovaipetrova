@@ -45,8 +45,14 @@ export class NodeOrbits {
     this.group = new THREE.Group();
     this.orbits = new Map();
     this.satellites = new Map();
+    this.orbitFields = new Map(); // Поля орбит (диски/кольца для подсветки при клике)
     this.angles = new Map();
     this.highlightedOrbit = null;
+    this.activeOrbit = null; // Активная орбита (после клика)
+    
+    // Callbacks для обратной связи с виджетами
+    this.onSatelliteHover = null;
+    this.onSatelliteClick = null;
     
     this._createOrbits();
     
@@ -60,7 +66,12 @@ export class NodeOrbits {
   }
   
   _createOrbits() {
-    for (const [name, config] of Object.entries(ORBIT_CONFIG)) {
+    const orbitNames = Object.keys(ORBIT_CONFIG);
+    
+    for (let i = 0; i < orbitNames.length; i++) {
+      const name = orbitNames[i];
+      const config = ORBIT_CONFIG[name];
+      
       // Орбита (тонкое кольцо как рёбра графа)
       const orbitGeometry = new THREE.TorusGeometry(
         config.radius,  // radius
@@ -79,6 +90,26 @@ export class NodeOrbits {
       this.group.add(orbit);
       this.orbits.set(name, orbit);
       
+      // Поле орбиты (кольцо/диск для подсветки при клике)
+      // Slate: от центра до первой орбиты (диск)
+      // Storage: от первой до второй орбиты (кольцо)
+      // Sanctum: от второй до третьей орбиты (кольцо)
+      const innerRadius = i === 0 ? 0 : ORBIT_CONFIG[orbitNames[i - 1]].radius;
+      const outerRadius = config.radius;
+      
+      const fieldGeometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
+      const fieldMaterial = new THREE.MeshBasicMaterial({
+        color: ORBIT_COLOR,
+        transparent: true,
+        opacity: 0,
+        side: THREE.DoubleSide
+      });
+      const field = new THREE.Mesh(fieldGeometry, fieldMaterial);
+      field.rotation.x = -Math.PI / 2; // Горизонтальная плоскость
+      field.renderOrder = -1; // За орбитами
+      this.group.add(field);
+      this.orbitFields.set(name, field);
+      
       // Спутник (гладкая сфера, непрозрачная)
       const satelliteGeometry = new THREE.SphereGeometry(config.satelliteSize, 32, 32);
       const satelliteMaterial = new THREE.MeshBasicMaterial({
@@ -86,6 +117,7 @@ export class NodeOrbits {
         transparent: false
       });
       const satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
+      satellite.userData.orbitName = name; // Для raycasting
       this.group.add(satellite);
       this.satellites.set(name, satellite);
       
@@ -154,6 +186,59 @@ export class NodeOrbits {
     this.highlightedOrbit = null;
   }
   
+  // Активировать орбиту (при клике на виджет) — подсветить поле
+  activate(orbitName) {
+    this.deactivate();
+    
+    if (!orbitName || !this.orbitFields.has(orbitName)) return;
+    
+    this.activeOrbit = orbitName;
+    
+    // Подсветить поле орбиты голубым
+    const field = this.orbitFields.get(orbitName);
+    field.material.opacity = 0.15;
+    
+    // Подсветить спутник голубым (активное состояние)
+    const satellite = this.satellites.get(orbitName);
+    satellite.material.color.setHex(ORBIT_COLOR);
+    satellite.scale.setScalar(1.3);
+    
+    // Усилить орбиту
+    const orbit = this.orbits.get(orbitName);
+    orbit.material.opacity = 0.6;
+  }
+  
+  // Деактивировать орбиту
+  deactivate() {
+    if (!this.activeOrbit) return;
+    
+    // Скрыть поле орбиты
+    const field = this.orbitFields.get(this.activeOrbit);
+    if (field) {
+      field.material.opacity = 0;
+    }
+    
+    // Вернуть спутник в обычное состояние
+    const satellite = this.satellites.get(this.activeOrbit);
+    if (satellite) {
+      satellite.material.color.setHex(SATELLITE_COLOR);
+      satellite.scale.setScalar(1.0);
+    }
+    
+    // Вернуть орбиту в обычное состояние
+    const orbit = this.orbits.get(this.activeOrbit);
+    if (orbit) {
+      orbit.material.opacity = 0.3;
+    }
+    
+    this.activeOrbit = null;
+  }
+  
+  // Получить все спутники для raycasting
+  getSatellites() {
+    return Array.from(this.satellites.values());
+  }
+  
   dispose() {
     // Удалить из сцены
     if (this.scene) {
@@ -169,9 +254,14 @@ export class NodeOrbits {
       satellite.geometry.dispose();
       satellite.material.dispose();
     }
+    for (const field of this.orbitFields.values()) {
+      field.geometry.dispose();
+      field.material.dispose();
+    }
     
     this.orbits.clear();
     this.satellites.clear();
+    this.orbitFields.clear();
     this.angles.clear();
   }
 }
