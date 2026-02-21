@@ -3580,16 +3580,18 @@ function renderStoryScreen() {
 
 function bindStoryScreen(container) {
   // === STORY SCREEN BINDING ===
+  // !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ
   // @status: canonical
   // @track: 4
   // @since: 2026-02-21
+  // @approved: 2026-02-21
   // @docs: docs/UI_STANDARDS.md#story-screen
   // @implements: story-screen
   //
   // Логика состояний:
   // - Шаг 0: только кнопка "Вперед", без названия, навигационный режим
   // - Шаг 1+: три кнопки (Назад, Вперед, Развернуть), можно развернуть
-  // - Развернутое: три кнопки + название "Story", кнопка с крестиком
+  // - Развернутое: три кнопки + название "Story", кнопка с крестиком (X)
   // - Переход на шаг 0 = автосворачивание
   const screen = container.querySelector(".story-screen");
   if (!screen) return;
@@ -3981,6 +3983,18 @@ function updateStoryWithWorkbench(panel, node) {
 }
 
 // === SEGMENT PANEL (центральная панель для VSTablishment) ===
+// !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ
+// @status: canonical
+// @track: 4
+// @since: 2026-02-21
+// @approved: 2026-02-21
+//
+// Логика поведения:
+// - Три кнопки: Перемотка (>>|<<), Назад, Закрыть
+// - Перемотка: сдвигает панель вправо, скрывая System/Service
+// - Переключение виджетов НЕ сбрасывает положение панели
+// - Закрытие (Назад/Закрыть) сбрасывает положение панели
+// - Focus поведение (scale, opacity) работает в любом положении
 let segmentExpanded = false; // Состояние расширения панели
 
 function renderSegmentControls() {
