@@ -689,9 +689,6 @@ body.focus-service #service-panel::before {
   padding-top: 0;
 }
 
-.story-screen--expanded .narrative-dot--toggle {
-  transform: rotate(45deg);
-}
 
 .query-tags-block {
   display: flex;
