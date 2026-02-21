@@ -505,11 +505,20 @@ body.focus-service #service-panel::before {
   right: var(--panel-inset-inner);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0;
   gap: var(--panel-inset-dots);
   z-index: 2;
   pointer-events: auto;
+}
+
+.story-screen__label {
+  font-family: var(--typo-t1-font);
+  font-size: var(--typo-t1-size);
+  text-transform: var(--typo-t1-transform);
+  letter-spacing: var(--typo-t1-spacing);
+  color: var(--typo-t1-color);
+  pointer-events: none;
 }
 
 .story-screen__dots {
@@ -546,6 +555,10 @@ body.focus-service #service-panel::before {
   cursor: default;
 }
 
+.narrative-dot--hidden {
+  display: none !important;
+}
+
 .narrative-dot--toggle {
   position: relative;
   outline: none;
@@ -580,6 +593,18 @@ body.focus-service #service-panel::before {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* Контейнер для увеличенной 3D-фигуры на страницах хабов (без Story) */
+.hub-shape-container {
+  width: 100%;
+  height: 440px; /* 220px * 2 = 440px для увеличенной фигуры */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Canvas в hub-shape-container центрируется автоматически через flex родителя */
 
 .story-screen__viewport {
   position: absolute;

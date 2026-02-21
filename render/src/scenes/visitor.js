@@ -3230,16 +3230,16 @@ let chladniSimulation = null;
 let ChladniSimulationClass = null;
 
 function renderChladniScreen() {
-  // Используем тот же layout как story-screen на странице Вовы
-  // Левая часть — canvas с Chladni, правая — фоновый ассет
-  const iconPrev = `
-    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
-      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  `;
+  // Chladni screen для VSTablishment — визуальный эффект вместо 3D-фигуры
+  // Логика кнопок такая же как у Story: на шаге 0 только Вперед
   const iconNext = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
       <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   `;
   const iconPlus = `
@@ -3247,13 +3247,15 @@ function renderChladniScreen() {
       <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
     </svg>
   `;
+  // Шаг 0: только кнопка Вперед, Назад и Развернуть скрыты
   return `
     <div class="story-screen chladni-screen" data-expanded="false" data-index="0">
       <div class="story-screen__hud">
+        <div class="story-screen__label" aria-hidden="true"></div>
         <div class="story-screen__dots" aria-hidden="true">
-          <button class="narrative-dot narrative-dot--control narrative-dot--disabled" type="button" data-action="prev" aria-label="Назад" title="Назад" disabled>${iconPrev}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--hidden" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
           <button class="narrative-dot narrative-dot--control narrative-dot--disabled" type="button" data-action="next" aria-label="Вперед" title="Вперёд" disabled>${iconNext}</button>
-          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--disabled" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть" disabled>${iconPlus}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--hidden" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
         </div>
       </div>
       <div class="story-screen__shape-area" aria-hidden="true">
@@ -3344,6 +3346,11 @@ function bindPotentialWidgets(container) {
 }
 
 function renderNarrativeScreen() {
+  // === STORY SCREEN LOGIC ===
+  // Шаг 0 (свернутое): только кнопка "Вперед" (крайняя справа)
+  // Шаг 1+: три кнопки — Назад, Вперед, Развернуть
+  // Развернутое: три кнопки + название "Story"
+  // Переход на шаг 0 = автосворачивание
   const iconPrev = `
     <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
       <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -3359,13 +3366,20 @@ function renderNarrativeScreen() {
       <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
     </svg>
   `;
+  const iconClose = `
+    <svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
+  // Порядок кнопок: Назад (скрыта на шаге 0), Вперед, Развернуть (скрыта на шаге 0)
   return `
     <div class="story-screen" data-expanded="false" data-index="0">
       <div class="story-screen__hud">
+        <div class="story-screen__label" aria-hidden="true"></div>
         <div class="story-screen__dots" aria-hidden="true">
-          <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--hidden" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
           <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
-          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--disabled" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть" disabled>${iconPlus}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--hidden" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
         </div>
       </div>
       <div class="story-screen__shape-area" aria-hidden="true"></div>
@@ -3379,41 +3393,64 @@ function renderNarrativeScreen() {
 }
 
 function bindNarrativeScreen(container) {
+  // === STORY SCREEN BINDING ===
+  // Логика состояний:
+  // - Шаг 0: только кнопка "Вперед", без названия, навигационный режим
+  // - Шаг 1+: три кнопки (Назад, Вперед, Развернуть), можно развернуть
+  // - Развернутое: три кнопки + название "Story", кнопка с крестиком
+  // - Переход на шаг 0 = автосворачивание
   const screen = container.querySelector(".story-screen");
   if (!screen) return;
   const toggle = screen.querySelector(".narrative-dot--toggle");
   const prevButton = screen.querySelector(".narrative-dot[data-action='prev']");
   const nextButton = screen.querySelector(".narrative-dot[data-action='next']");
+  const labelEl = screen.querySelector(".story-screen__label");
   const titleEl = screen.querySelector(".story-screen__title");
   const detailEl = screen.querySelector(".story-screen__detail");
   const viewport = screen.querySelector(".story-screen__viewport");
   const shapeArea = screen.querySelector(".story-screen__shape-area");
-  if (!toggle || toggle.dataset.bound) return;
-  toggle.dataset.bound = "true";
+  if (!nextButton || nextButton.dataset.bound) return;
+  nextButton.dataset.bound = "true";
+
+  // Иконки для toggle
+  const iconPlus = `<svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>`;
+  const iconClose = `<svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>`;
 
   function updateControlsState(index) {
     const slide = NARRATIVE_SLIDES[index];
-    const isShapePage = slide?.isShapePage === true;
-    const canGoBack = index > 0;
+    const isStep0 = index === 0;
     const canGoForward = index < NARRATIVE_SLIDES.length - 1;
     const expanded = screen.classList.contains("story-screen--expanded");
     
+    // Шаг 0: скрыть Назад и Развернуть, показать только Вперед
     if (prevButton) {
-      prevButton.classList.toggle("narrative-dot--disabled", !canGoBack);
-      prevButton.disabled = !canGoBack;
+      prevButton.classList.toggle("narrative-dot--hidden", isStep0);
     }
+    if (toggle) {
+      toggle.classList.toggle("narrative-dot--hidden", isStep0);
+    }
+    
+    // Вперед: disabled если нет следующего слайда
     if (nextButton) {
       nextButton.classList.toggle("narrative-dot--disabled", !canGoForward);
       nextButton.disabled = !canGoForward;
     }
-    // Toggle disabled на странице фигур (isShapePage)
-    if (toggle) {
-      toggle.classList.toggle("narrative-dot--disabled", isShapePage);
-      toggle.disabled = isShapePage;
+    
+    // Название "Story" только в развернутом состоянии
+    if (labelEl) {
+      labelEl.textContent = expanded ? "Story" : "";
     }
-    // Показать/скрыть shape area
+    
+    // Toggle иконка: плюс или крестик
+    if (toggle) {
+      toggle.innerHTML = expanded ? iconClose : iconPlus;
+      toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
+      toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
+    }
+    
+    // Показать/скрыть shape area (только на шаге 0 и не развернуто)
     if (shapeArea) {
-      shapeArea.style.display = isShapePage && !expanded ? "block" : "none";
+      shapeArea.style.display = isStep0 && !expanded ? "block" : "none";
     }
   }
 
@@ -3437,19 +3474,19 @@ function bindNarrativeScreen(container) {
   function syncExpandedBounds() {
     if (!screen.classList.contains("story-screen--expanded")) return;
     const overlay = document.getElementById("scene-overlay");
-  const panels = document.getElementById("panels-container");
-  if (!overlay || !panels) return;
+    const panels = document.getElementById("panels-container");
+    if (!overlay || !panels) return;
     const sceneStage = document.getElementById("scene-stage");
     const scaleValue = sceneStage
       ? parseFloat(getComputedStyle(sceneStage).getPropertyValue("--scene-scale"))
       : 1;
     const scale = Number.isFinite(scaleValue) && scaleValue > 0 ? scaleValue : 1;
     const overlayRect = overlay.getBoundingClientRect();
-  const panelsRect = panels.getBoundingClientRect();
-  const left = (panelsRect.left - overlayRect.left) / scale;
-  const top = (panelsRect.top - overlayRect.top) / scale;
-  const width = panelsRect.width / scale;
-  const height = panelsRect.height / scale;
+    const panelsRect = panels.getBoundingClientRect();
+    const left = (panelsRect.left - overlayRect.left) / scale;
+    const top = (panelsRect.top - overlayRect.top) / scale;
+    const width = panelsRect.width / scale;
+    const height = panelsRect.height / scale;
     screen.style.left = `${left}px`;
     screen.style.top = `${top}px`;
     screen.style.width = `${width}px`;
@@ -3461,8 +3498,6 @@ function bindNarrativeScreen(container) {
     const overlay = document.getElementById("scene-overlay");
     screen.classList.remove("story-screen--expanded");
     screen.dataset.expanded = "false";
-    toggle.setAttribute("aria-label", "Развернуть");
-    toggle.setAttribute("title", "Развернуть");
     document.body.classList.remove("narrative-expanded");
     if (overlay) overlay.classList.remove("scene-overlay--active");
     const placeholder = document.querySelector(".story-screen-placeholder");
@@ -3474,37 +3509,22 @@ function bindNarrativeScreen(container) {
     screen.style.top = "";
     screen.style.width = "";
     screen.style.height = "";
+    // Обновить состояние контролов после сворачивания
+    updateControlsState(Number(screen.dataset.index || 0));
   }
 
-  toggle.addEventListener("click", (event) => {
+  toggle?.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
     const overlay = document.getElementById("scene-overlay");
     if (!overlay) return;
     const wasExpanded = screen.classList.contains("story-screen--expanded");
     if (wasExpanded) {
-      // Сворачиваем
-      screen.classList.remove("story-screen--expanded");
-      screen.dataset.expanded = "false";
-      toggle.setAttribute("aria-label", "Развернуть");
-      toggle.setAttribute("title", "Развернуть");
-      document.body.classList.remove("narrative-expanded");
-      overlay.classList.remove("scene-overlay--active");
-      const placeholder = document.querySelector(".story-screen-placeholder");
-      if (placeholder && placeholder.parentElement) {
-        placeholder.parentElement.insertBefore(screen, placeholder);
-        placeholder.remove();
-      }
-      screen.style.left = "";
-      screen.style.top = "";
-      screen.style.width = "";
-      screen.style.height = "";
+      collapseScreen();
     } else {
       // Разворачиваем
       screen.classList.add("story-screen--expanded");
       screen.dataset.expanded = "true";
-      toggle.setAttribute("aria-label", "Свернуть");
-      toggle.setAttribute("title", "Свернуть");
       document.body.classList.add("narrative-expanded");
       document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
       overlay.classList.add("scene-overlay--active");
@@ -3523,11 +3543,9 @@ function bindNarrativeScreen(container) {
     event.stopPropagation();
     const current = Number(screen.dataset.index || 0);
     const nextIndex = current - 1;
-    const nextSlide = NARRATIVE_SLIDES[nextIndex];
-    const expanded = screen.classList.contains("story-screen--expanded");
     
-    // Если переходим на страницу фигур из развёрнутого — сначала сворачиваем
-    if (expanded && nextSlide?.isShapePage) {
+    // Переход на шаг 0 = автосворачивание
+    if (nextIndex === 0) {
       collapseScreen();
     }
     setSlide(nextIndex);
@@ -3812,6 +3830,8 @@ function updateStoryWithCollab(panel, node) {
 // === ШАБЛОН СТРАНИЦЫ ХАБА ===
 // pageTemplate: "hub" в VISUAL_CONFIG.nodeTypes
 // Редактируя эту функцию, изменяешь все страницы хабов (Characters, Domains)
+// ВАЖНО: Хабы НЕ содержат окно Story — это транспортные узлы без повествования
+// Вместо Story показываем увеличенную 3D-фигуру (2x от стандартного размера)
 function updateStoryWithHub(panel, node) {
   const content = panel?.querySelector(".panel-content");
   if (!content) return;
@@ -3843,8 +3863,8 @@ function updateStoryWithHub(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  // Narrative Screen (пока без фигуры)
-  html += renderNarrativeScreen();
+  // Увеличенная 3D-фигура вместо Story (хабы — транспортные узлы)
+  html += `<div class="hub-shape-container" aria-hidden="true"></div>`;
 
   // Виджеты дочерних узлов (из единой карты графа)
   const hasWidgets = characterNodes.length > 0 || domainNodes.length > 0;
@@ -3922,7 +3942,7 @@ function updateStoryWithHub(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  // НЕ вызываем bindNarrativeScreen — на хабах нет Story
   bindEmblemSwap(content);
   hideSegmentPanel();
   
@@ -3932,12 +3952,12 @@ function updateStoryWithHub(panel, node) {
     bindGlowToggleButton(content);
   }
 
-  // Инициализация фигуры в shape area
-  const shapeArea = content.querySelector(".story-screen__shape-area");
+  // Инициализация увеличенной 3D-фигуры (2x от стандартного размера)
+  const shapeContainer = content.querySelector(".hub-shape-container");
   const allChildIds = [...characterNodeIds, ...domainNodeIds];
-  if (shapeArea && allChildIds.length > 0) {
+  if (shapeContainer && allChildIds.length > 0) {
     const shapeType = characterNodes.length > 0 ? "icosa" : "cube";
-    initMiniShape(shapeType, shapeArea, allChildIds, node.id);
+    initMiniShape(shapeType, shapeContainer, allChildIds, node.id, { scale: 2 });
   }
 }
 
@@ -4417,12 +4437,15 @@ function highlightWidgetById(nodeId, highlight) {
 }
 
 // === Mini Shape Functions ===
-function initMiniShape(type, container, nodeIds, hubId) {
+function initMiniShape(type, container, nodeIds, hubId, options = {}) {
   if (!nodeIds || nodeIds.length === 0) return;
 
   miniShapeHubId = hubId;
   // Размер: octa в narrative screen — большой (9:9 область), остальные — 220px
-  const size = type === "octa" ? 230 : 220;
+  // options.scale позволяет увеличить фигуру (для хабов scale=2)
+  const baseSize = type === "octa" ? 230 : 220;
+  const scale = options.scale || 1;
+  const size = baseSize * scale;
   const width = size;
   const height = size;
 
