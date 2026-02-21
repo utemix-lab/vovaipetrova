@@ -1400,6 +1400,17 @@ body.focus-service #service-panel::before {
   filter: none !important;
 }
 
+/* Корневые виджеты aux-окон — квадратные с голубой подсветкой */
+.node-widget.node-widget--aux-root .widget-frame {
+  border-radius: 6px;
+  border-color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.15);
+}
+
+.node-widget.node-widget--aux-root .widget-frame img {
+  filter: none !important;
+}
+
 /* Node TOC widget (non-clickable) */
 /* !CRITICAL: Фиксированная высота для выравнивания мини-окон */
 .node-toc {

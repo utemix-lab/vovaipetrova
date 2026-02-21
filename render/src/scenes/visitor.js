@@ -110,7 +110,7 @@
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │ ┌─────────────────────────────────────────────────────────────────────┐ │
  * │ │ [Корневой виджет] — голубой фон (vova-scope-widget)                │ │
- * │ │ Narrative Screen (мини-окно с кнопками, расширением, пропорциями)  │ │
+ * │ │ Story Screen (мини-окно с кнопками, расширением, пропорциями)      │ │
  * │ └─────────────────────────────────────────────────────────────────────┘ │
  * │ ┌─────────────────────────────────────────────────────────────────────┐ │
  * │ │ ДОМЕНЫ            ВОРКБЕНЧИ         КОЛЛАБЫ                        │ │
@@ -126,7 +126,7 @@
  * │ └─────────────────────────────────────────────────────────────────────┘ │
  * └─────────────────────────────────────────────────────────────────────────┘
  *
- * МИНИ-ОКНО (Narrative Screen):
+ * МИНИ-ОКНО (Story Screen):
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │ • Кнопки управления (закрыть, развернуть)                              │
  * │ • Расширение/сворачивание                                              │
@@ -330,7 +330,7 @@ function getPracticeHintForDomain(domainId) {
   const practice = practices[0];
   return { id: practice.id, label: practice.label };
 }
-const NARRATIVE_SLIDES = [
+const STORY_SLIDES = [
   {
     id: "vova-01",
     title: "",  // Страница 0 — под фигуры, без заголовка
@@ -3076,7 +3076,7 @@ function updatePanels() {
 //   - Корневой виджет (.vova-scope-widget) + текст (nodeInfoHtml)
 //   - При hover на корневой виджет → Scope Highlight (сумма всех виджетов)
 // 
-// БЛОК 2: Narrative Screen (.story-screen)
+// БЛОК 2: Story Screen (.story-screen)
 //   - 3D-фигура (shape-area) + ассет (asset-area) + точки навигации
 // 
 // БЛОК 3: Widget Groups (.widget-groups-row)
@@ -3086,7 +3086,7 @@ function updatePanels() {
 // ОБЯЗАТЕЛЬНЫЕ ВЫЗОВЫ в конце каждой функции:
 //   1. bindHighlightWidgets(content)   — подсветка виджетов
 //   2. bindVovaScopeWidget(content, node) — Scope Highlight корневого виджета
-//   3. bindNarrativeScreen(content)    — интерактивность Narrative Screen
+//   3. bindStoryScreen(content)    — интерактивность Story Screen
 //   4. bindEmblemSwap(content)         — смена эмблем
 //   5. hideSegmentPanel()              — скрыть сегмент-панель
 // 
@@ -3123,7 +3123,7 @@ function updateStoryWithPotential(panel, node) {
         ${nodeInfoHtml}
       </div>`;
   }
-  html += renderNarrativeScreen();
+  html += renderStoryScreen();
 
   // Widget groups in horizontal row
   {
@@ -3192,11 +3192,11 @@ function updateStoryWithPotential(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  bindStoryScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
 
-  // Initialize octahedron in Narrative Screen shape area for ALL characters
+  // Initialize octahedron in Story Screen shape area for ALL characters
   // Количество шаров = количество виджетов на странице персонажа
   const shapeArea = content.querySelector(".story-screen__shape-area");
   if (shapeArea) {
@@ -3345,7 +3345,7 @@ function bindPotentialWidgets(container) {
   });
 }
 
-function renderNarrativeScreen() {
+function renderStoryScreen() {
   // === STORY SCREEN LOGIC ===
   // Шаг 0 (свернутое): только кнопка "Вперед" (крайняя справа)
   // Шаг 1+: три кнопки — Назад, Вперед, Развернуть
@@ -3392,7 +3392,7 @@ function renderNarrativeScreen() {
   `;
 }
 
-function bindNarrativeScreen(container) {
+function bindStoryScreen(container) {
   // === STORY SCREEN BINDING ===
   // @status: canonical
   // @track: 4
@@ -3423,9 +3423,9 @@ function bindNarrativeScreen(container) {
   const iconClose = `<svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>`;
 
   function updateControlsState(index) {
-    const slide = NARRATIVE_SLIDES[index];
+    const slide = STORY_SLIDES[index];
     const isStep0 = index === 0;
-    const canGoForward = index < NARRATIVE_SLIDES.length - 1;
+    const canGoForward = index < STORY_SLIDES.length - 1;
     const expanded = screen.classList.contains("story-screen--expanded");
     
     // Шаг 0: скрыть Назад и Развернуть, показать только Вперед
@@ -3461,8 +3461,8 @@ function bindNarrativeScreen(container) {
   }
 
   function setSlide(index) {
-    const safeIndex = Math.max(0, Math.min(NARRATIVE_SLIDES.length - 1, index));
-    const slide = NARRATIVE_SLIDES[safeIndex];
+    const safeIndex = Math.max(0, Math.min(STORY_SLIDES.length - 1, index));
+    const slide = STORY_SLIDES[safeIndex];
     screen.dataset.index = String(safeIndex);
     if (viewport) {
       viewport.style.backgroundImage = slide ? `url('${slide.src}')` : "";
@@ -3761,7 +3761,7 @@ function updateStoryWithWorkbench(panel, node) {
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
   } else {
-    html += renderNarrativeScreen();
+    html += renderStoryScreen();
   }
 
   // Блок 4: Виджеты окон (Slate, Storage, Sanctum) — на всех воркбенчах
@@ -3778,7 +3778,7 @@ function updateStoryWithWorkbench(panel, node) {
     // Storage панель открывается по клику на виджет, не автоматически
     hideSegmentPanel();
   } else {
-    bindNarrativeScreen(content);
+    bindStoryScreen(content);
     hideSegmentPanel();
   }
   bindEmblemSwap(content);
@@ -3858,7 +3858,7 @@ function renderAuxWindowContent(windowType) {
   
   return `
     <div class="node-toc">
-      <div class="node-widget node-widget--root">
+      <div class="node-widget node-widget--aux-root">
         <div class="widget-frame">
           <img src="${widgetIcon}" alt="${titles[windowType]}" />
         </div>
@@ -3869,7 +3869,7 @@ function renderAuxWindowContent(windowType) {
         <div>Текст</div>
       </div>
     </div>
-    ${renderNarrativeScreen()}
+    ${renderStoryScreen()}
   `;
 }
 
@@ -3883,7 +3883,7 @@ function showStoragePanel() {
   const content = panel.querySelector(".panel-content");
   if (content) {
     content.innerHTML = renderAuxWindowContent("storage");
-    bindNarrativeScreen(content);
+    bindStoryScreen(content);
   }
 }
 
@@ -3905,7 +3905,7 @@ function showSlatePanel() {
   const content = panel.querySelector(".panel-content");
   if (content) {
     content.innerHTML = renderAuxWindowContent("slate");
-    bindNarrativeScreen(content);
+    bindStoryScreen(content);
   }
 }
 
@@ -3929,7 +3929,7 @@ function showSanctumPanel() {
   const content = panel.querySelector(".panel-content");
   if (content) {
     content.innerHTML = renderAuxWindowContent("sanctum");
-    bindNarrativeScreen(content);
+    bindStoryScreen(content);
   }
 }
 
@@ -3968,12 +3968,12 @@ function updateStoryWithCollab(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  html += renderNarrativeScreen();
+  html += renderStoryScreen();
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  bindStoryScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
 }
@@ -4099,7 +4099,7 @@ function updateStoryWithHub(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  // НЕ вызываем bindNarrativeScreen — на хабах нет Story
+  // НЕ вызываем bindStoryScreen — на хабах нет Story
   bindEmblemSwap(content);
   hideSegmentPanel();
   
@@ -4151,8 +4151,8 @@ function updateStoryWithRoot(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  // Narrative Screen
-  html += renderNarrativeScreen();
+  // Story Screen
+  html += renderStoryScreen();
 
   // Виджеты связанных узлов
   const hasWidgets = hubNodes.length > 0 || otherRootNodes.length > 0;
@@ -4203,7 +4203,7 @@ function updateStoryWithRoot(panel, node) {
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  bindStoryScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
 
@@ -4238,12 +4238,12 @@ function updateStoryWithDomainFocus(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  html += renderNarrativeScreen();
+  html += renderStoryScreen();
 
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
-  bindNarrativeScreen(content);
+  bindStoryScreen(content);
   bindEmblemSwap(content);
   hideSegmentPanel();
 }
