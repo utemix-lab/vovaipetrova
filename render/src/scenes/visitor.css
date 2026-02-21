@@ -1462,28 +1462,36 @@ body.focus-service #service-panel::before {
   border-radius: 8px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   ВИДЖЕТЫ ОКОН (Slate, Storage, Sanctum)
+   ═══════════════════════════════════════════════════════════════════════════
+   
+   Вертикальная разметка унифицирована с навигационными виджетами:
+   - Story → 16px (--panel-inset) → Названия
+   - Названия → 10px (--panel-inset - 6px) → Виджеты
+   
+   См. docs/UI_STANDARDS.md → "Блок 4: Widget Groups — Окон"
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 /* Ряд виджетов окон (Slate, Storage, Sanctum) */
 .widget-windows-row {
   display: flex;
-  gap: var(--panel-inset);
-  margin-top: var(--panel-inset);
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--panel-inset); /* 16px между группами — как у навигационных */
+  margin-top: var(--panel-inset); /* 16px от Story — стандартный отступ */
 }
 
 .widget-windows-row .widget-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  align-items: center;
+  align-items: flex-start; /* По левому краю — как у навигационных */
+  gap: calc(var(--panel-inset) - 6px); /* 10px между названием и виджетом — как у навигационных */
 }
 
 .widget-windows-row .section-title {
-  text-align: center;
-  /* Явно указываем шрифт T1 для виджетов окон */
-  font-family: var(--typo-t1-font);
-  font-size: var(--typo-t1-size);
-  text-transform: var(--typo-t1-transform);
-  letter-spacing: var(--typo-t1-spacing);
-  color: var(--typo-t1-color);
+  margin: 0;
+  white-space: nowrap;
 }
 
 .widget-window {
