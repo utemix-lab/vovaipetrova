@@ -152,6 +152,7 @@ import { VISUAL_CONFIG } from "../visual/config.js";
 import { PATHS, buildAssetPath } from "../compat/paths.js";
 import { initRegistry, validateConfigAgainstRules, initToolCatalog, getPracticesByDomain } from "../ontology";
 import { computeHighlight, createContextFromState, INTENSITY } from "../ontology/highlightModel.js";
+import { NodeOrbits } from "../effects/NodeOrbits.js";
 // Track 6: Expressive Stacks - компоненты сохранены как примеры в components/
 // import { RadialMorphField } from "../components/RadialMorphField.js";
 // import { ConstellationField } from "../components/ConstellationField.js";
@@ -3229,6 +3230,65 @@ function updateStoryWithPotential(panel, node) {
 let chladniSimulation = null;
 let ChladniSimulationClass = null;
 
+// === ОРБИТЫ ВОКРУГ УЗЛА VSTablishment ===
+let vstablishmentOrbits = null;
+
+function createVSTablishmentOrbits() {
+  // Уничтожить предыдущие орбиты
+  destroyVSTablishmentOrbits();
+  
+  // Найти mesh узла VSTablishment
+  const mesh = nodeMeshes.get("workbench-vova-vstablishment");
+  if (!mesh) {
+    console.warn("[Orbits] VSTablishment mesh not found");
+    return;
+  }
+  
+  // Получить радиус узла
+  const nodeRadius = nodeBaseRadius.get("workbench-vova-vstablishment") || 1;
+  
+  // Создать орбиты
+  vstablishmentOrbits = new NodeOrbits(mesh, nodeRadius);
+  console.log("[Orbits] Created orbits for VSTablishment");
+}
+
+function destroyVSTablishmentOrbits() {
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.dispose();
+    vstablishmentOrbits = null;
+    console.log("[Orbits] Destroyed VSTablishment orbits");
+  }
+}
+
+function highlightVSTablishmentOrbit(orbitName) {
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.highlight(orbitName);
+  }
+}
+
+function clearVSTablishmentOrbitHighlight() {
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.clearHighlight();
+  }
+}
+
+function bindWindowWidgetsToOrbits(container) {
+  // Привязать hover на виджеты Slate/Storage/Sanctum к орбитам
+  const windowWidgets = container.querySelectorAll(".widget-window[data-window]");
+  windowWidgets.forEach(widget => {
+    const windowType = widget.dataset.window;
+    // Только для Slate, Storage, Sanctum
+    if (windowType === "slate" || windowType === "storage" || windowType === "sanctum") {
+      widget.addEventListener("mouseenter", () => {
+        highlightVSTablishmentOrbit(windowType);
+      });
+      widget.addEventListener("mouseleave", () => {
+        clearVSTablishmentOrbitHighlight();
+      });
+    }
+  });
+}
+
 function renderChladniScreen() {
   // Chladni screen для VSTablishment — визуальный эффект вместо 3D-фигуры
   // Логика кнопок такая же как у Story: на шаге 0 только Вперед
@@ -3775,9 +3835,15 @@ function updateStoryWithWorkbench(panel, node) {
     bindChladniScreen(content);
     bindStoryScreen(content); // Навигация Story работает и на Chladni screen
     bindPotentialWidgets(content);
+    // Создать орбиты вокруг узла в графе
+    createVSTablishmentOrbits();
+    // Привязать hover на виджеты окон к орбитам
+    bindWindowWidgetsToOrbits(content);
     // Storage панель открывается по клику на виджет, не автоматически
     hideSegmentPanel();
   } else {
+    // Уничтожить орбиты при переходе на другую страницу
+    destroyVSTablishmentOrbits();
     bindStoryScreen(content);
     hideSegmentPanel();
   }
@@ -5952,13 +6018,22 @@ function createUI() {
 }
 
 // === Анимация ===
+let lastTickTime = performance.now();
 function tickAnimation() {
-  visualTime = performance.now();
+  const now = performance.now();
+  const deltaTime = (now - lastTickTime) / 1000; // в секундах
+  lastTickTime = now;
+  
+  visualTime = now;
   updateNodeBreathing(visualTime);
   updateAutoRotate(visualTime);
   updatePracticePolygons(); // Обновление позиций полигонов практик
   updateBadgeSprites(); // Обновление позиций и opacity бейджей
   updateNodeGlow(); // Обновление позиции и пульсации свечения
+  // Обновление орбит VSTablishment
+  if (vstablishmentOrbits) {
+    vstablishmentOrbits.update(deltaTime);
+  }
   controls.update();
   requestAnimationFrame(tickAnimation);
 }
