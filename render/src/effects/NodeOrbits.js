@@ -110,7 +110,7 @@ export class NodeOrbits {
       const fieldMaterial = new THREE.MeshBasicMaterial({
         color: 0x0a0a0f, // Цвет фона (почти чёрный)
         transparent: true,
-        opacity: 0.5, // 50% прозрачность
+        opacity: 0.75, // 75% прозрачность
         side: THREE.DoubleSide,
         depthWrite: true // Записывать в depth buffer
       });
@@ -233,7 +233,7 @@ export class NodeOrbits {
     const field = this.orbitFields.get(this.activeOrbit);
     if (field) {
       field.material.color.setHex(0x0a0a0f);
-      field.material.opacity = 0.5;
+      field.material.opacity = 0.75;
     }
     
     // Вернуть спутник в обычное состояние
