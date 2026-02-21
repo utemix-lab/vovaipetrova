@@ -170,6 +170,12 @@ export class NodeOrbits {
   clearHighlight() {
     if (!this.highlightedOrbit) return;
     
+    // Если это активная орбита — не сбрасывать, оставить жёлтой
+    if (this.highlightedOrbit === this.activeOrbit) {
+      this.highlightedOrbit = null;
+      return;
+    }
+    
     // Вернуть спутник в обычное состояние (голубой цвет)
     const satellite = this.satellites.get(this.highlightedOrbit);
     if (satellite) {
