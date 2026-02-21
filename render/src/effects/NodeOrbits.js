@@ -13,26 +13,27 @@
 
 import * as THREE from "three";
 
+const ORBIT_COLOR = 0x22d3ee;
+const SATELLITE_COLOR = 0x22d3ee;
+const HIGHLIGHT_COLOR = 0xfbbf24; // Жёлтый при активации
+
 const ORBIT_CONFIG = {
   slate: {
     radius: 12,
     speed: 0.3,
-    satelliteSize: 1.5,
-    color: 0x22d3ee,
+    satelliteSize: 1.2,
     startAngle: 0
   },
   storage: {
     radius: 18,
     speed: 0.25,
-    satelliteSize: 1.5,
-    color: 0x22d3ee,
+    satelliteSize: 1.2,
     startAngle: (Math.PI * 2) / 3
   },
   sanctum: {
     radius: 24,
     speed: 0.2,
-    satelliteSize: 1.5,
-    color: 0x22d3ee,
+    satelliteSize: 1.2,
     startAngle: (Math.PI * 4) / 3
   }
 };
@@ -60,17 +61,17 @@ export class NodeOrbits {
   
   _createOrbits() {
     for (const [name, config] of Object.entries(ORBIT_CONFIG)) {
-      // Орбита (кольцо) - используем TorusGeometry для объёмного кольца
+      // Орбита (тонкое кольцо как рёбра графа)
       const orbitGeometry = new THREE.TorusGeometry(
         config.radius,  // radius
-        0.3,            // tube radius (толщина)
+        0.08,           // tube radius (тонкое как ребро)
         8,              // radialSegments
         64              // tubularSegments
       );
       const orbitMaterial = new THREE.MeshBasicMaterial({
-        color: config.color,
+        color: ORBIT_COLOR,
         transparent: true,
-        opacity: 0.25,
+        opacity: 0.3,
         side: THREE.DoubleSide
       });
       const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
@@ -78,12 +79,11 @@ export class NodeOrbits {
       this.group.add(orbit);
       this.orbits.set(name, orbit);
       
-      // Спутник (маленькая сфера)
-      const satelliteGeometry = new THREE.SphereGeometry(config.satelliteSize, 16, 16);
+      // Спутник (гладкая сфера, непрозрачная)
+      const satelliteGeometry = new THREE.SphereGeometry(config.satelliteSize, 32, 32);
       const satelliteMaterial = new THREE.MeshBasicMaterial({
-        color: config.color,
-        transparent: true,
-        opacity: 0.4
+        color: SATELLITE_COLOR,
+        transparent: false
       });
       const satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
       this.group.add(satellite);
@@ -125,30 +125,30 @@ export class NodeOrbits {
     
     this.highlightedOrbit = orbitName;
     
-    // Подсветить выбранный спутник
+    // Подсветить выбранный спутник жёлтым
     const satellite = this.satellites.get(orbitName);
-    satellite.material.opacity = 1.0;
-    satellite.scale.setScalar(1.5);
+    satellite.material.color.setHex(HIGHLIGHT_COLOR);
+    satellite.scale.setScalar(1.4);
     
     // Подсветить орбиту
     const orbit = this.orbits.get(orbitName);
-    orbit.material.opacity = 0.4;
+    orbit.material.opacity = 0.5;
   }
   
   clearHighlight() {
     if (!this.highlightedOrbit) return;
     
-    // Вернуть спутник в обычное состояние
+    // Вернуть спутник в обычное состояние (голубой цвет)
     const satellite = this.satellites.get(this.highlightedOrbit);
     if (satellite) {
-      satellite.material.opacity = 0.4;
+      satellite.material.color.setHex(SATELLITE_COLOR);
       satellite.scale.setScalar(1.0);
     }
     
     // Вернуть орбиту в обычное состояние
     const orbit = this.orbits.get(this.highlightedOrbit);
     if (orbit) {
-      orbit.material.opacity = 0.15;
+      orbit.material.opacity = 0.3;
     }
     
     this.highlightedOrbit = null;
