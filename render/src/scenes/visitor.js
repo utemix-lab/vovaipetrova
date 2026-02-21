@@ -4117,6 +4117,11 @@ function renderAuxWindowContent(windowType) {
     slate: "Slate", 
     sanctum: "Sanctum"
   };
+  const descriptions = {
+    storage: "Граф воркбенча",
+    slate: "Новостная лента",
+    sanctum: "Внутренняя механика"
+  };
   
   return `
     <div class="node-toc">
@@ -4126,9 +4131,7 @@ function renderAuxWindowContent(windowType) {
         </div>
       </div>
       <div class="vova-root-info">
-        <div>Текст</div>
-        <div>Текст</div>
-        <div>Текст</div>
+        <div>${descriptions[windowType]}</div>
       </div>
     </div>
     ${renderStoryScreen()}
