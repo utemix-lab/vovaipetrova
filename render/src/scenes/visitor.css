@@ -254,7 +254,7 @@ body.visitor-mode {
 
 /* Расширенное состояние — spacer сдвигается вправо */
 .graph-spacer.spacer-expanded {
-  transform: translateX(calc(100% + var(--panel-gap)));
+  transform: translateX(calc(100% + var(--gap)));
 }
 
 /* Segment Panel — центральная панель (только VSTablishment) */

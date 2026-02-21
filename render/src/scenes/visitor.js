@@ -4061,6 +4061,8 @@ function applySegmentExpand() {
   const rightColumn = document.getElementById("right-column");
   const graphSpacer = storagePanel?.closest(".graph-spacer");
   
+  console.log("[Segment] applySegmentExpand:", { segmentExpanded, storagePanel, graphSpacer, rightColumn });
+  
   if (segmentExpanded) {
     // Расширить: сдвинуть spacer вправо, скрыть правую колонку
     graphSpacer?.classList.add("spacer-expanded");
@@ -4070,6 +4072,8 @@ function applySegmentExpand() {
     graphSpacer?.classList.remove("spacer-expanded");
     rightColumn?.classList.remove("right-column--hidden");
   }
+  
+  console.log("[Segment] graphSpacer classes:", graphSpacer?.classList.toString());
   
   // Перерисовать кнопки (чтобы иконка сменилась)
   renderSegmentControls();
