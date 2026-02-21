@@ -3076,7 +3076,7 @@ function updatePanels() {
 //   - Корневой виджет (.vova-scope-widget) + текст (nodeInfoHtml)
 //   - При hover на корневой виджет → Scope Highlight (сумма всех виджетов)
 // 
-// БЛОК 2: Narrative Screen (.narrative-screen)
+// БЛОК 2: Narrative Screen (.story-screen)
 //   - 3D-фигура (shape-area) + ассет (asset-area) + точки навигации
 // 
 // БЛОК 3: Widget Groups (.widget-groups-row)
@@ -3198,7 +3198,7 @@ function updateStoryWithPotential(panel, node) {
 
   // Initialize octahedron in Narrative Screen shape area for ALL characters
   // Количество шаров = количество виджетов на странице персонажа
-  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  const shapeArea = content.querySelector(".story-screen__shape-area");
   if (shapeArea) {
     // Collect all widget node IDs for octahedron vertices
     // Priority: domains, workbenches, collabs, practices
@@ -3230,20 +3230,20 @@ let chladniSimulation = null;
 let ChladniSimulationClass = null;
 
 function renderChladniScreen() {
-  // Используем тот же layout как narrative-screen на странице Вовы
+  // Используем тот же layout как story-screen на странице Вовы
   // Левая часть — canvas с Chladni, правая — фоновый ассет
   return `
-    <div class="narrative-screen chladni-screen" data-expanded="false" data-index="0">
-      <div class="narrative-screen__hud">
-        <div class="narrative-screen__dots" aria-hidden="true"></div>
+    <div class="story-screen chladni-screen" data-expanded="false" data-index="0">
+      <div class="story-screen__hud">
+        <div class="story-screen__dots" aria-hidden="true"></div>
       </div>
-      <div class="narrative-screen__shape-area" aria-hidden="true">
+      <div class="story-screen__shape-area" aria-hidden="true">
         <canvas class="chladni-canvas"></canvas>
       </div>
-      <div class="narrative-screen__viewport" aria-hidden="true"></div>
-      <div class="narrative-screen__text" aria-live="polite">
-        <div class="narrative-screen__title"></div>
-        <div class="narrative-screen__detail"></div>
+      <div class="story-screen__viewport" aria-hidden="true"></div>
+      <div class="story-screen__text" aria-live="polite">
+        <div class="story-screen__title"></div>
+        <div class="story-screen__detail"></div>
       </div>
     </div>
     <div class="chladni-controls" style="display: none;">
@@ -3260,8 +3260,8 @@ async function bindChladniScreen(container) {
   
   const canvas = screen.querySelector(".chladni-canvas");
   const testBtn = container.querySelector(".chladni-test-btn"); // Кнопка теперь вне screen
-  const viewport = screen.querySelector(".narrative-screen__viewport");
-  const shapeArea = screen.querySelector(".narrative-screen__shape-area");
+  const viewport = screen.querySelector(".story-screen__viewport");
+  const shapeArea = screen.querySelector(".story-screen__shape-area");
   
   if (!testBtn || !canvas) return;
   
@@ -3354,34 +3354,34 @@ function renderNarrativeScreen() {
     </svg>
   `;
   return `
-    <div class="narrative-screen" data-expanded="false" data-index="0">
-      <div class="narrative-screen__hud">
-        <div class="narrative-screen__dots" aria-hidden="true">
+    <div class="story-screen" data-expanded="false" data-index="0">
+      <div class="story-screen__hud">
+        <div class="story-screen__dots" aria-hidden="true">
           <button class="narrative-dot narrative-dot--control" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
           <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
           <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--disabled" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть" disabled>${iconPlus}</button>
         </div>
       </div>
-      <div class="narrative-screen__shape-area" aria-hidden="true"></div>
-      <div class="narrative-screen__viewport" aria-hidden="true"></div>
-      <div class="narrative-screen__text" aria-live="polite">
-        <div class="narrative-screen__title"></div>
-        <div class="narrative-screen__detail"></div>
+      <div class="story-screen__shape-area" aria-hidden="true"></div>
+      <div class="story-screen__viewport" aria-hidden="true"></div>
+      <div class="story-screen__text" aria-live="polite">
+        <div class="story-screen__title"></div>
+        <div class="story-screen__detail"></div>
       </div>
     </div>
   `;
 }
 
 function bindNarrativeScreen(container) {
-  const screen = container.querySelector(".narrative-screen");
+  const screen = container.querySelector(".story-screen");
   if (!screen) return;
   const toggle = screen.querySelector(".narrative-dot--toggle");
   const prevButton = screen.querySelector(".narrative-dot[data-action='prev']");
   const nextButton = screen.querySelector(".narrative-dot[data-action='next']");
-  const titleEl = screen.querySelector(".narrative-screen__title");
-  const detailEl = screen.querySelector(".narrative-screen__detail");
-  const viewport = screen.querySelector(".narrative-screen__viewport");
-  const shapeArea = screen.querySelector(".narrative-screen__shape-area");
+  const titleEl = screen.querySelector(".story-screen__title");
+  const detailEl = screen.querySelector(".story-screen__detail");
+  const viewport = screen.querySelector(".story-screen__viewport");
+  const shapeArea = screen.querySelector(".story-screen__shape-area");
   if (!toggle || toggle.dataset.bound) return;
   toggle.dataset.bound = "true";
 
@@ -3390,7 +3390,7 @@ function bindNarrativeScreen(container) {
     const isShapePage = slide?.isShapePage === true;
     const canGoBack = index > 0;
     const canGoForward = index < NARRATIVE_SLIDES.length - 1;
-    const expanded = screen.classList.contains("narrative-screen--expanded");
+    const expanded = screen.classList.contains("story-screen--expanded");
     
     if (prevButton) {
       prevButton.classList.toggle("narrative-dot--disabled", !canGoBack);
@@ -3422,14 +3422,14 @@ function bindNarrativeScreen(container) {
     }
     if (titleEl) titleEl.textContent = slide?.title || "";
     if (detailEl) {
-      const expanded = screen.classList.contains("narrative-screen--expanded");
+      const expanded = screen.classList.contains("story-screen--expanded");
       detailEl.textContent = expanded ? slide?.detail || "" : "";
     }
     updateControlsState(safeIndex);
   }
 
   function syncExpandedBounds() {
-    if (!screen.classList.contains("narrative-screen--expanded")) return;
+    if (!screen.classList.contains("story-screen--expanded")) return;
     const overlay = document.getElementById("scene-overlay");
   const panels = document.getElementById("panels-container");
   if (!overlay || !panels) return;
@@ -3451,15 +3451,15 @@ function bindNarrativeScreen(container) {
   }
 
   function collapseScreen() {
-    if (!screen.classList.contains("narrative-screen--expanded")) return;
+    if (!screen.classList.contains("story-screen--expanded")) return;
     const overlay = document.getElementById("scene-overlay");
-    screen.classList.remove("narrative-screen--expanded");
+    screen.classList.remove("story-screen--expanded");
     screen.dataset.expanded = "false";
     toggle.setAttribute("aria-label", "Развернуть");
     toggle.setAttribute("title", "Развернуть");
     document.body.classList.remove("narrative-expanded");
     if (overlay) overlay.classList.remove("scene-overlay--active");
-    const placeholder = document.querySelector(".narrative-screen-placeholder");
+    const placeholder = document.querySelector(".story-screen-placeholder");
     if (placeholder && placeholder.parentElement) {
       placeholder.parentElement.insertBefore(screen, placeholder);
       placeholder.remove();
@@ -3475,16 +3475,16 @@ function bindNarrativeScreen(container) {
     event.stopPropagation();
     const overlay = document.getElementById("scene-overlay");
     if (!overlay) return;
-    const wasExpanded = screen.classList.contains("narrative-screen--expanded");
+    const wasExpanded = screen.classList.contains("story-screen--expanded");
     if (wasExpanded) {
       // Сворачиваем
-      screen.classList.remove("narrative-screen--expanded");
+      screen.classList.remove("story-screen--expanded");
       screen.dataset.expanded = "false";
       toggle.setAttribute("aria-label", "Развернуть");
       toggle.setAttribute("title", "Развернуть");
       document.body.classList.remove("narrative-expanded");
       overlay.classList.remove("scene-overlay--active");
-      const placeholder = document.querySelector(".narrative-screen-placeholder");
+      const placeholder = document.querySelector(".story-screen-placeholder");
       if (placeholder && placeholder.parentElement) {
         placeholder.parentElement.insertBefore(screen, placeholder);
         placeholder.remove();
@@ -3495,7 +3495,7 @@ function bindNarrativeScreen(container) {
       screen.style.height = "";
     } else {
       // Разворачиваем
-      screen.classList.add("narrative-screen--expanded");
+      screen.classList.add("story-screen--expanded");
       screen.dataset.expanded = "true";
       toggle.setAttribute("aria-label", "Свернуть");
       toggle.setAttribute("title", "Свернуть");
@@ -3503,7 +3503,7 @@ function bindNarrativeScreen(container) {
       document.body.classList.remove("focus-story", "focus-segment", "focus-system", "focus-service");
       overlay.classList.add("scene-overlay--active");
       const placeholder = document.createElement("div");
-      placeholder.className = "narrative-screen-placeholder";
+      placeholder.className = "story-screen-placeholder";
       screen.dataset.placeholderId = "narrative-placeholder";
       screen.parentElement?.insertBefore(placeholder, screen);
       overlay.appendChild(screen);
@@ -3518,7 +3518,7 @@ function bindNarrativeScreen(container) {
     const current = Number(screen.dataset.index || 0);
     const nextIndex = current - 1;
     const nextSlide = NARRATIVE_SLIDES[nextIndex];
-    const expanded = screen.classList.contains("narrative-screen--expanded");
+    const expanded = screen.classList.contains("story-screen--expanded");
     
     // Если переходим на страницу фигур из развёрнутого — сначала сворачиваем
     if (expanded && nextSlide?.isShapePage) {
@@ -3906,7 +3906,7 @@ function updateStoryWithHub(panel, node) {
   }
 
   // Инициализация фигуры в shape area
-  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  const shapeArea = content.querySelector(".story-screen__shape-area");
   const allChildIds = [...characterNodeIds, ...domainNodeIds];
   if (shapeArea && allChildIds.length > 0) {
     const shapeType = characterNodes.length > 0 ? "icosa" : "cube";
@@ -4004,7 +4004,7 @@ function updateStoryWithRoot(panel, node) {
   hideSegmentPanel();
 
   // Инициализация фигуры в shape area (октаэдр для root)
-  const shapeArea = content.querySelector(".narrative-screen__shape-area");
+  const shapeArea = content.querySelector(".story-screen__shape-area");
   const allChildIds = [...hubNodes.map(n => n.id), ...otherRootNodes.map(n => n.id)];
   if (shapeArea && allChildIds.length > 0) {
     initMiniShape("octa", shapeArea, allChildIds, node.id);

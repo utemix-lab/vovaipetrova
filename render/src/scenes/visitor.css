@@ -276,7 +276,7 @@ body.visitor-mode {
   position: relative;
 }
 
-/* Segment mini-screen (16:9) — должен соответствовать .narrative-screen */
+/* Segment mini-screen (16:9) — должен соответствовать .story-screen */
 .segment-screen {
   position: relative;
   width: 100%;
@@ -459,7 +459,7 @@ body.focus-service #service-panel::before {
   margin-bottom: 8px;
 }
 
-.narrative-screen {
+.story-screen {
   position: relative;
   width: 100%;
   /* margin управляется через gap в .panel-content */
@@ -474,30 +474,30 @@ body.focus-service #service-panel::before {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.3s ease;
 }
 
-.narrative-screen-placeholder {
+.story-screen-placeholder {
   width: 100%;
   /* margin управляется через gap в .panel-content */
   position: relative;
 }
 
-.narrative-screen-placeholder::before {
+.story-screen-placeholder::before {
   content: "";
   display: block;
   padding-top: 56.25%;
 }
 
-.narrative-screen::before {
+.story-screen::before {
   content: "";
   display: block;
   padding-top: 56.25%;
 }
 
-.narrative-screen:hover {
+.story-screen:hover {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 16px var(--panel-glow);
 }
 
-.narrative-screen__hud {
+.story-screen__hud {
   position: absolute;
   top: var(--panel-inset-inner);
   left: var(--panel-inset-inner);
@@ -511,7 +511,7 @@ body.focus-service #service-panel::before {
   pointer-events: auto;
 }
 
-.narrative-screen__dots {
+.story-screen__dots {
   display: inline-flex;
   align-items: center;
   gap: var(--panel-inset-dots);
@@ -562,7 +562,7 @@ body.focus-service #service-panel::before {
   display: block;
 }
 
-.narrative-screen__shape-area {
+.story-screen__shape-area {
   position: absolute;
   left: 0;
   top: 0;
@@ -573,21 +573,21 @@ body.focus-service #service-panel::before {
   pointer-events: auto;
 }
 
-.narrative-screen__shape-area canvas {
+.story-screen__shape-area canvas {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
-.narrative-screen__viewport {
+.story-screen__viewport {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
 }
 
-.narrative-screen__text {
+.story-screen__text {
   position: absolute;
   top: var(--panel-inset-inner);
   left: var(--panel-inset-inner);
@@ -608,7 +608,7 @@ body.focus-service #service-panel::before {
   text-align: left;
 }
 
-.narrative-screen__title {
+.story-screen__title {
   font-family: var(--font-tech);
   font-size: 12px;
   text-transform: uppercase;
@@ -616,20 +616,20 @@ body.focus-service #service-panel::before {
   color: rgba(224, 232, 240, 0.75);
 }
 
-.narrative-screen__detail {
+.story-screen__detail {
   font-size: 13px;
   color: var(--text-secondary);
 }
 
-.narrative-screen[data-index="0"] {
+.story-screen[data-index="0"] {
   background: transparent;
 }
 
-.narrative-screen[data-index="0"] .narrative-screen__viewport {
+.story-screen[data-index="0"] .story-screen__viewport {
   background-color: transparent;
 }
 
-.narrative-screen--expanded {
+.story-screen--expanded {
   position: absolute;
   width: auto;
   height: auto;
@@ -638,11 +638,11 @@ body.focus-service #service-panel::before {
   pointer-events: auto;
 }
 
-.narrative-screen--expanded::before {
+.story-screen--expanded::before {
   padding-top: 0;
 }
 
-.narrative-screen--expanded .narrative-dot--toggle {
+.story-screen--expanded .narrative-dot--toggle {
   transform: rotate(45deg);
 }
 
@@ -1787,7 +1787,7 @@ body.focus-service #service-panel::before {
 
 /* === CHLADNI PATTERN EFFECT === */
 .chladni-canvas {
-  /* Переопределяем стили из .narrative-screen__shape-area canvas */
+  /* Переопределяем стили из .story-screen__shape-area canvas */
   width: 100% !important;
   height: 100% !important;
   left: 0 !important;
