@@ -315,19 +315,30 @@ Canonical Protocol предоставляет LLM:
 
 ---
 
-## Следующие шаги
+## Выполненные шаги
 
-1. **[ ] Создать `scripts/validate-protocol.cjs`** — автоматическая валидация
-2. **[ ] Разметить существующий код** — добавить @status, @track, @docs
-3. **[ ] Создать `mappings.json`** — связи между слоями
-4. **[ ] Интегрировать в CI** — валидация при коммите
-5. **[ ] Обновить LLMReflectionEngine** — использовать протокол
+1. **[x] Создать `scripts/validate-protocol.cjs`** — автоматическая валидация ✅
+2. **[x] Добавить маркеры в ключевые функции** — bindNarrativeScreen, updateStoryWithHub ✅
+
+---
+
+## Перспективные шаги
+
+Эти шаги станут актуальными при масштабировании системы:
+
+| Шаг | Триггер | Описание |
+|-----|---------|----------|
+| Разметить больше функций | По ходу работы | Добавлять @status, @track, @docs при редактировании кода |
+| Создать `mappings.json` | Подключение LLM | Связи между слоями для машинного понимания |
+| Интегрировать в CI | Появление CI/CD | Валидация при коммите |
+| Обновить LLMReflectionEngine | Подключение внешней LLM | Использовать протокол для контекста |
 
 ---
 
 ## Связанные документы
 
 - [`ARCHITECTURE_TRACKS.md`](./ARCHITECTURE_TRACKS.md) — определение Треков
-- [`UI_STANDARDS.md`](./UI_STANDARDS.md) — стандарты Track 4
+- [`UI_STANDARDS.md`](./UI_STANDARDS.md) — технические стандарты Track 4
+- [`UI_NARRATIVE.md`](./UI_NARRATIVE.md) — нарративные описания UI-логик
 - [`EXTENSION_POLICY.md`](../worlds/vovaipetrova/catalogs/EXTENSION_POLICY.md) — политика расширения графа
 - [`STATUS.md`](../STATUS.md) — текущий статус системы
