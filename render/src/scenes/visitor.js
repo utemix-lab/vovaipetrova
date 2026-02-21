@@ -3621,14 +3621,13 @@ function isWorkbenchShared(nodeId) {
 //
 // Квадратные виджеты 48×48px для вызова дополнительных окон.
 // Расположены на всех страницах воркбенчей (Блок 4).
-// Hover: подпрыгивание +6px, подменное лого eye-plug.png
+// Hover: подпрыгивание, индивидуальные подменные лого (*-plug2.png)
 // ═══════════════════════════════════════════════════════════════════════════
 
 // Текущее открытое вспомогательное окно (slate, storage, sanctum или null)
 let activeAuxWindow = null;
 
 function renderWindowWidgets() {
-  const eyeIcon = buildAssetPath("widgets/eye-plug.png");
   return `
     <div class="widget-windows-row">
       <div class="widget-group">
@@ -3636,7 +3635,7 @@ function renderWindowWidgets() {
         <div class="node-widget widget-window" data-window="slate" title="Slate — Новостная лента">
           <div class="widget-frame">
             <img src="${buildAssetPath("widgets/slate-plug.png")}" alt="Slate" class="widget-image widget-image--main" />
-            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
+            <img src="${buildAssetPath("widgets/slate-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -3645,7 +3644,7 @@ function renderWindowWidgets() {
         <div class="node-widget widget-window" data-window="storage" title="Storage — Граф воркбенча">
           <div class="widget-frame">
             <img src="${buildAssetPath("widgets/storage-plug.png")}" alt="Storage" class="widget-image widget-image--main" />
-            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
+            <img src="${buildAssetPath("widgets/storage-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -3654,7 +3653,7 @@ function renderWindowWidgets() {
         <div class="node-widget widget-window" data-window="sanctum" title="Sanctum — Внутренняя механика">
           <div class="widget-frame">
             <img src="${buildAssetPath("widgets/sanctum-plug.png")}" alt="Sanctum" class="widget-image widget-image--main" />
-            <img src="${eyeIcon}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
+            <img src="${buildAssetPath("widgets/sanctum-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
           </div>
         </div>
       </div>
