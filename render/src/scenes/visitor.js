@@ -3231,6 +3231,10 @@ let chladniSimulation = null;
 let ChladniSimulationClass = null;
 
 // === ОРБИТЫ ВОКРУГ УЗЛА VSTablishment ===
+// !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ!
+// Утверждено: 21 февраля 2026
+// Документация: docs/UI_STANDARDS.md → "Механика орбит VSTablishment"
+// Файл логики: render/src/effects/NodeOrbits.js
 let vstablishmentOrbits = null;
 
 function createVSTablishmentOrbits() {

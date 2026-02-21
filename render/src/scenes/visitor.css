@@ -1577,7 +1577,10 @@ body.focus-service #service-panel::before {
   display: block;
 }
 
-/* Подмена лого при hover от орбиты (мышь на точке в графе) */
+/* Подмена лого при hover от орбиты (мышь на точке в графе)
+   !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ!
+   Утверждено: 21 февраля 2026
+   Документация: docs/UI_STANDARDS.md → "Механика орбит VSTablishment" */
 .widget-window--hover-from-orbit .widget-image--main {
   display: none !important;
 }
