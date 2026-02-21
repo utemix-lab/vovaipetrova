@@ -3635,6 +3635,7 @@ function bindStoryScreen(container) {
     
     // Toggle иконка: плюс или крестик
     if (toggle) {
+      console.log("[Story] updateControlsState: expanded =", expanded, "toggle =", toggle);
       toggle.innerHTML = expanded ? iconClose : iconPlus;
       toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
       toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
