@@ -4052,7 +4052,9 @@ function bindSegmentControls() {
 }
 
 function toggleSegmentExpand() {
+  console.log("[Segment] toggleSegmentExpand called, current state:", segmentExpanded);
   segmentExpanded = !segmentExpanded;
+  console.log("[Segment] new state:", segmentExpanded);
   applySegmentExpand();
 }
 

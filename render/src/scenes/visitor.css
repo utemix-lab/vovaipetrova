@@ -257,6 +257,13 @@ body.visitor-mode {
   transform: translateX(calc(100% + var(--gap)));
 }
 
+/* При расширении storage-panel должен сохранять focus-поведение */
+.graph-spacer.spacer-expanded #storage-panel {
+  transform: scale(1.02);
+  opacity: 1;
+  z-index: 20;
+}
+
 /* Segment Panel — центральная панель (только VSTablishment) */
 #storage-panel {
   display: none;
