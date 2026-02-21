@@ -3394,6 +3394,12 @@ function renderNarrativeScreen() {
 
 function bindNarrativeScreen(container) {
   // === STORY SCREEN BINDING ===
+  // @status: canonical
+  // @track: 4
+  // @since: 2026-02-21
+  // @docs: docs/UI_STANDARDS.md#story-screen
+  // @implements: story-screen
+  //
   // Логика состояний:
   // - Шаг 0: только кнопка "Вперед", без названия, навигационный режим
   // - Шаг 1+: три кнопки (Назад, Вперед, Развернуть), можно развернуть
@@ -3828,6 +3834,12 @@ function updateStoryWithCollab(panel, node) {
 }
 
 // === ШАБЛОН СТРАНИЦЫ ХАБА ===
+// @status: canonical
+// @track: 4
+// @since: 2026-02-21
+// @docs: docs/UI_STANDARDS.md#hub-pages
+// @implements: hub-page-template
+//
 // pageTemplate: "hub" в VISUAL_CONFIG.nodeTypes
 // Редактируя эту функцию, изменяешь все страницы хабов (Characters, Domains)
 // ВАЖНО: Хабы НЕ содержат окно Story — это транспортные узлы без повествования
