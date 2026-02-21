@@ -1523,17 +1523,11 @@ body.focus-service #service-panel::before {
 
 .widget-window {
   cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.widget-window:hover {
-  transform: translateY(-6px);
 }
 
 .widget-window:hover .widget-frame {
   border-color: var(--accent-cyan);
   background: rgba(34, 211, 238, 0.1);
-  animation: widget-bounce 0.28s ease-out;
 }
 
 .widget-window--active .widget-frame {
@@ -2166,6 +2160,7 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset);
 }
 
+/* Корневой виджет в aux-окнах — аналогичен Scope */
 .aux-root-widget {
   flex-shrink: 0;
 }
@@ -2173,41 +2168,52 @@ body.focus-service #service-panel::before {
 .aux-root-widget .widget-frame {
   width: 48px;
   height: 48px;
-  border: 2px solid rgba(34, 211, 238, 0.4);
-  border-radius: 6px;
-  background: rgba(34, 211, 238, 0.1);
+  border: 2px solid var(--widget-frame-border-color, rgba(255, 255, 255, 0.2));
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
 }
 
 .aux-root-widget .widget-image {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
+/* Текст справа от корневого виджета — аналогичен Scope */
 .aux-window-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 0;
 }
 
-.aux-window-title {
-  font-family: var(--font-tech);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent-cyan);
-}
-
-.aux-window-desc {
+.aux-window-info div {
   font-family: var(--font-tech);
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
 }
 
+/* Story внутри aux-окон — переопределяем базовые стили */
 .aux-story-screen {
   flex: 1;
   min-height: 200px;
+  position: relative;
+  width: 100%;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 8px;
+  background:
+    var(--panel-story-url) center/cover no-repeat,
+    var(--panel-bg);
+}
+
+.aux-story-screen::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
 }

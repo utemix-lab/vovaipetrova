@@ -3886,8 +3886,9 @@ function renderAuxWindowContent(windowType) {
           </div>
         </div>
         <div class="aux-window-info">
-          <div class="aux-window-title">${titles[windowType]}</div>
-          <div class="aux-window-desc">Описание окна</div>
+          <div>Текст</div>
+          <div>Текст</div>
+          <div>Текст</div>
         </div>
       </div>
       <div class="story-screen aux-story-screen" data-expanded="false" data-index="0">
