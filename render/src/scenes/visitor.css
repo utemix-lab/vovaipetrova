@@ -1513,7 +1513,7 @@ body.focus-service #service-panel::before {
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* По левому краю — как у навигационных */
-  gap: calc(var(--panel-inset) - 6px); /* 10px между названием и виджетом — как у навигационных */
+  gap: var(--panel-inset-dots); /* 6px между названием и виджетом — ближе к названиям */
 }
 
 .widget-windows-row .section-title {
@@ -1523,6 +1523,10 @@ body.focus-service #service-panel::before {
 
 .widget-window {
   cursor: pointer;
+}
+
+.widget-window:hover {
+  animation: widget-bounce 0.28s ease-out;
 }
 
 .widget-window:hover .widget-frame {
@@ -1572,9 +1576,9 @@ body.focus-service #service-panel::before {
   min-height: 48px;
 }
 
-/* Тестовая группа виджетов */
+/* Тестовая группа виджетов — отступ 12px (--panel-inset-inner) */
 .widget-windows-row--test {
-  margin-top: 12px;
+  margin-top: calc(var(--panel-inset-inner) + 4px); /* 12px + компенсация -4px от первого ряда = 16px визуально, но 12px между группами */
 }
 
 .widget-frame img {
@@ -2160,7 +2164,7 @@ body.focus-service #service-panel::before {
   gap: var(--panel-inset);
 }
 
-/* Корневой виджет в aux-окнах — аналогичен Scope */
+/* Корневой виджет в aux-окнах — квадратный, как виджеты окон */
 .aux-root-widget {
   flex-shrink: 0;
 }
@@ -2169,7 +2173,7 @@ body.focus-service #service-panel::before {
   width: 48px;
   height: 48px;
   border: 2px solid var(--widget-frame-border-color, rgba(255, 255, 255, 0.2));
-  border-radius: 50%;
+  border-radius: 6px;
   background: rgba(34, 211, 238, 0.15);
   display: flex;
   align-items: center;
@@ -2184,36 +2188,19 @@ body.focus-service #service-panel::before {
   object-fit: cover;
 }
 
-/* Текст справа от корневого виджета — аналогичен Scope */
+/* Текст справа от корневого виджета — T2 типография как в Scope */
 .aux-window-info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0;
+  gap: 4px;
+  height: var(--widget-frame-size, 48px);
+  margin-left: var(--panel-inset-inner);
+  font-family: var(--typo-t2-font);
+  font-size: var(--typo-t2-size);
+  line-height: 1;
+  color: var(--typo-t2-color);
 }
 
-.aux-window-info div {
-  font-family: var(--font-tech);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.4;
-}
-
-/* Story внутри aux-окон — переопределяем базовые стили */
-.aux-story-screen {
-  flex: 1;
-  min-height: 200px;
-  position: relative;
-  width: 100%;
-  border: 1px solid rgba(34, 211, 238, 0.2);
-  border-radius: 8px;
-  background:
-    var(--panel-story-url) center/cover no-repeat,
-    var(--panel-bg);
-}
-
-.aux-story-screen::before {
-  content: "";
-  display: block;
-  padding-top: 56.25%;
-}
+/* Story внутри aux-окон — наследует .story-screen, без дополнительных переопределений */
+/* Класс .story-screen уже задаёт все нужные стили: 16:9, border, background */
