@@ -3367,6 +3367,7 @@ function setupOrbitSatelliteInteraction(container) {
     
     if (intersects.length > 0) {
       const orbitName = intersects[0].object.userData.orbitName;
+      console.log("[Orbits] Satellite clicked:", orbitName);
       // Открыть соответствующее окно
       if (activeAuxWindow === orbitName) {
         closeAuxWindow();
@@ -3374,6 +3375,8 @@ function setupOrbitSatelliteInteraction(container) {
         closeAuxWindow();
         openAuxWindow(orbitName);
       }
+      // Предотвратить всплытие события к графу
+      e.stopPropagation();
     }
   });
 }
