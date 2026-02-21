@@ -1363,6 +1363,12 @@ body.focus-service #service-panel::before {
   filter: none;
 }
 
+/* Корневые виджеты — круглые (как навигационные) */
+.node-widget.node-widget--root .widget-frame {
+  --widget-frame-radius: 50%;
+  border-radius: 50%;
+}
+
 /* Корневые виджеты показывают цветной лого сразу (без hover) */
 .node-widget.node-widget--root .widget-frame img,
 .node-widget--root.vova-scope-widget .widget-frame img {

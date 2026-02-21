@@ -3232,10 +3232,29 @@ let ChladniSimulationClass = null;
 function renderChladniScreen() {
   // Используем тот же layout как story-screen на странице Вовы
   // Левая часть — canvas с Chladni, правая — фоновый ассет
+  const iconPrev = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconNext = `
+    <svg class="icon icon--arrow" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M4.5 3.25 7.5 6l-3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconPlus = `
+    <svg class="icon icon--plus" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M6 2.75v6.5M2.75 6h6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  `;
   return `
     <div class="story-screen chladni-screen" data-expanded="false" data-index="0">
       <div class="story-screen__hud">
-        <div class="story-screen__dots" aria-hidden="true"></div>
+        <div class="story-screen__dots" aria-hidden="true">
+          <button class="narrative-dot narrative-dot--control narrative-dot--disabled" type="button" data-action="prev" aria-label="Назад" title="Назад" disabled>${iconPrev}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--disabled" type="button" data-action="next" aria-label="Вперед" title="Вперёд" disabled>${iconNext}</button>
+          <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--disabled" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть" disabled>${iconPlus}</button>
+        </div>
       </div>
       <div class="story-screen__shape-area" aria-hidden="true">
         <canvas class="chladni-canvas"></canvas>
@@ -3656,44 +3675,9 @@ function updateStoryWithWorkbench(panel, node) {
       ${nodeInfoHtml}
     </div>`;
 
-  // Специальная обработка для VSTablichment — Chladni-эффект + виджеты потенциала
+  // Специальная обработка для VSTablichment — Chladni-эффект (флаги убраны)
   if (node.id === "workbench-vova-vstablishment") {
     html += renderChladniScreen();
-    // Виджеты потенциала (фильтры, группировки) — 6 флагов равномерно
-    html += `
-      <div class="potential-widgets potential-widgets--flags">
-        <div class="node-widget node-widget--potential" data-potential-id="country-1" title="Страна 1">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 1" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-2" title="Страна 2">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 2" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-3" title="Страна 3">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 3" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-4" title="Страна 4">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 4" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-5" title="Страна 5">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 5" class="widget-image" />
-          </div>
-        </div>
-        <div class="node-widget node-widget--potential" data-potential-id="country-6" title="Страна 6">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("flags/flag-plug.png")}" alt="Страна 6" class="widget-image" />
-          </div>
-        </div>
-      </div>
-    `;
   } else {
     html += renderNarrativeScreen();
   }

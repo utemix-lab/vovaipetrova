@@ -307,7 +307,7 @@
 ### T1: Widget Group Titles
 
 ```css
---typo-t1-font: var(--font-tech);      /* Orbitron */
+--typo-t1-font: monospace;             /* Унифицированный для кириллицы и латиницы */
 --typo-t1-size: 11px;
 --typo-t1-transform: uppercase;
 --typo-t1-spacing: 0.1em;
@@ -319,6 +319,8 @@
 **Примеры:**
 - Навигационные группы: ДОМЕНЫ, ВОРКБЕНЧИ, КОЛЛАБЫ, ХАБЫ, КОРЕНЬ
 - Виджеты окон: SLATE, STORAGE, SANCTUM
+
+**Примечание:** Используем `monospace` вместо `Orbitron`, т.к. Orbitron не поддерживает кириллицу.
 
 ### T2: Node Header Info
 
