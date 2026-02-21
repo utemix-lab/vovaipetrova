@@ -3812,39 +3812,49 @@ function isWorkbenchShared(nodeId) {
 // Hover: подпрыгивание, индивидуальные подменные лого (*-plug2.png)
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Конфигурация вспомогательных окон — единый источник данных
+// !STABLE — НЕ ТРОГАТЬ БЕЗ СОГЛАСОВАНИЯ
+const AUX_WINDOWS_CONFIG = {
+  slate: {
+    title: "Slate",
+    hint: "Новостная лента",        // Подсказка (сокращённая)
+    description: "Новостная лента"  // Заголовок в окне (будет расширен)
+  },
+  storage: {
+    title: "Storage",
+    hint: "Граф воркбенча",
+    description: "Граф воркбенча"
+  },
+  sanctum: {
+    title: "Sanctum",
+    hint: "Внутренняя механика",
+    description: "Внутренняя механика"
+  }
+};
+
 // Текущее открытое вспомогательное окно (slate, storage, sanctum или null)
 let activeAuxWindow = null;
 
 function renderWindowWidgets() {
+  const renderWidget = (windowType) => {
+    const config = AUX_WINDOWS_CONFIG[windowType];
+    return `
+      <div class="widget-group">
+        <div class="section-title">${config.title}</div>
+        <div class="node-widget widget-window" data-window="${windowType}" title="${config.title} — ${config.hint}">
+          <div class="widget-frame">
+            <img src="${buildAssetPath(`widgets/${windowType}-plug.png`)}" alt="${config.title}" class="widget-image widget-image--main" />
+            <img src="${buildAssetPath(`widgets/${windowType}-plug2.png`)}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
+          </div>
+        </div>
+      </div>`;
+  };
+  
   return `
     <div class="widget-windows-row">
-      <div class="widget-group">
-        <div class="section-title">Slate</div>
-        <div class="node-widget widget-window" data-window="slate" title="Slate — Новостная лента">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/slate-plug.png")}" alt="Slate" class="widget-image widget-image--main" />
-            <img src="${buildAssetPath("widgets/slate-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
-      <div class="widget-group">
-        <div class="section-title">Storage</div>
-        <div class="node-widget widget-window" data-window="storage" title="Storage — Граф воркбенча">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/storage-plug.png")}" alt="Storage" class="widget-image widget-image--main" />
-            <img src="${buildAssetPath("widgets/storage-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
-      <div class="widget-group">
-        <div class="section-title">Sanctum</div>
-        <div class="node-widget widget-window" data-window="sanctum" title="Sanctum — Внутренняя механика">
-          <div class="widget-frame">
-            <img src="${buildAssetPath("widgets/sanctum-plug.png")}" alt="Sanctum" class="widget-image widget-image--main" />
-            <img src="${buildAssetPath("widgets/sanctum-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
+      ${renderWidget("slate")}
+      ${renderWidget("storage")}
+      ${renderWidget("sanctum")}
     </div>
     <!-- @status: experimental | @track: 4 | @expires: 2026-03-21 | @reason: Тестовая группа для проверки закрытия окон -->
     <div class="widget-windows-row widget-windows-row--test">
@@ -4111,27 +4121,18 @@ function resetSegmentExpand() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderAuxWindowContent(windowType) {
+  const config = AUX_WINDOWS_CONFIG[windowType];
   const widgetIcon = buildAssetPath(`widgets/${windowType}-plug.png`);
-  const titles = {
-    storage: "Storage",
-    slate: "Slate", 
-    sanctum: "Sanctum"
-  };
-  const descriptions = {
-    storage: "Граф воркбенча",
-    slate: "Новостная лента",
-    sanctum: "Внутренняя механика"
-  };
   
   return `
     <div class="node-toc">
       <div class="node-widget node-widget--aux-root">
         <div class="widget-frame">
-          <img src="${widgetIcon}" alt="${titles[windowType]}" />
+          <img src="${widgetIcon}" alt="${config.title}" />
         </div>
       </div>
       <div class="vova-root-info">
-        <div>${descriptions[windowType]}</div>
+        <div>${config.description}</div>
       </div>
     </div>
     ${renderStoryScreen()}
