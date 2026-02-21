@@ -2936,7 +2936,7 @@ function updatePanels() {
       // Используем allNodesById для отключённых узлов (практики)
       const label = (allNodesById.get(nodeId) || nodesById.get(nodeId))?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget widget-nav " data-node-id="${nodeId}" title="${escapeHtml(label)}">
           <div class="widget-frame">
             ${getWidgetImageHtml(getPracticeWidgetIcon(nodeId), "practice")}
           </div>
@@ -3135,7 +3135,7 @@ function updateStoryWithPotential(panel, node) {
     html += domainNodeIds.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget widget-nav " data-node-id="${nodeId}" title="${escapeHtml(label)}">
           <div class="widget-frame">
             ${getWidgetImageHtml(getDomainWidgetIcon(nodeId), "domain")}
           </div>
@@ -3151,7 +3151,7 @@ function updateStoryWithPotential(panel, node) {
       const label = nodesById.get(nodeId)?.label || nodeId;
       const sharedClass = isWorkbenchShared(nodeId) ? " domain-widget--shared" : "";
       return `
-        <div class="domain-widget highlight-widget ${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget widget-nav ${sharedClass}" data-node-id="${nodeId}" title="${escapeHtml(label)}">
           <div class="widget-frame">
             ${getWidgetImageHtml(getWorkbenchWidgetIcon(nodeId), "workbench")}
           </div>
@@ -3166,7 +3166,7 @@ function updateStoryWithPotential(panel, node) {
     html += collabNodeIds.map((nodeId) => {
       const label = nodesById.get(nodeId)?.label || nodeId;
       return `
-        <div class="domain-widget highlight-widget " data-node-id="${nodeId}" title="${escapeHtml(label)}">
+        <div class="domain-widget highlight-widget widget-nav " data-node-id="${nodeId}" title="${escapeHtml(label)}">
           <div class="widget-frame">
             ${getWidgetImageHtml(getCollabWidgetIcon(nodeId), "collab")}
           </div>
@@ -3581,6 +3581,58 @@ function isWorkbenchShared(nodeId) {
   return getRelatedNodeIdsByType(nodeId, "character").length > 1;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// ВИДЖЕТЫ ОКОН (Slate, Storage, Sanctum)
+// ═══════════════════════════════════════════════════════════════════════════
+// Квадратные виджеты 48×48px для вызова дополнительных окон.
+// Расположены на всех страницах воркбенчей (Блок 4).
+// См. docs/UI_STANDARDS.md → "Виджеты окон"
+// ═══════════════════════════════════════════════════════════════════════════
+function renderWindowWidgets() {
+  return `
+    <div class="widget-windows-row">
+      <div class="widget-group">
+        <div class="section-title">Slate</div>
+        <div class="node-widget widget-window" data-window="slate" title="Slate — Новостная лента">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("widgets/slate-plug.png")}" alt="Slate" class="widget-image" />
+          </div>
+        </div>
+      </div>
+      <div class="widget-group">
+        <div class="section-title">Storage</div>
+        <div class="node-widget widget-window" data-window="storage" title="Storage — Граф воркбенча">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("widgets/storage-plug.png")}" alt="Storage" class="widget-image" />
+          </div>
+        </div>
+      </div>
+      <div class="widget-group">
+        <div class="section-title">Sanctum</div>
+        <div class="node-widget widget-window" data-window="sanctum" title="Sanctum — Внутренняя механика">
+          <div class="widget-frame">
+            <img src="${buildAssetPath("widgets/sanctum-plug.png")}" alt="Sanctum" class="widget-image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function bindWindowWidgets(container) {
+  const windowWidgets = container.querySelectorAll(".widget-window[data-window]");
+  windowWidgets.forEach(widget => {
+    widget.addEventListener("click", () => {
+      const windowType = widget.dataset.window;
+      // TODO: Открыть соответствующее окно (Slate, Storage, Sanctum)
+      console.log(`Window widget clicked: ${windowType}`);
+      if (windowType === "storage") {
+        showSegmentPanel();
+      }
+    });
+  });
+}
+
 // === ШАБЛОН СТРАНИЦЫ ВОРКБЕНЧА ===
 // pageTemplate: "workbench" в VISUAL_CONFIG.nodeTypes
 // Редактируя эту функцию, изменяешь все страницы воркбенчей
@@ -3646,14 +3698,18 @@ function updateStoryWithWorkbench(panel, node) {
     html += renderNarrativeScreen();
   }
 
+  // Блок 4: Виджеты окон (Slate, Storage, Sanctum) — на всех воркбенчах
+  html += renderWindowWidgets();
+
   content.innerHTML = html;
   bindHighlightWidgets(content);
   bindVovaScopeWidget(content, node);
+  bindWindowWidgets(content);
   
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
     bindPotentialWidgets(content);
-    // Segment панель открывается по клику на виджет, не автоматически
+    // Storage панель открывается по клику на виджет, не автоматически
     hideSegmentPanel();
   } else {
     bindNarrativeScreen(content);
@@ -3830,7 +3886,7 @@ function updateStoryWithHub(panel, node) {
       
       for (const childNode of characterNodes) {
         html += `
-          <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
+          <div class="domain-widget highlight-widget widget-nav" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
             <div class="widget-frame">
               ${getWidgetImageHtml(getCharacterWidgetIcon(), "character")}
             </div>
@@ -3846,7 +3902,7 @@ function updateStoryWithHub(panel, node) {
       
       for (const childNode of domainNodes) {
         html += `
-          <div class="domain-widget highlight-widget" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
+          <div class="domain-widget highlight-widget widget-nav" data-node-id="${childNode.id}" title="${escapeHtml(childNode.label || childNode.id)}">
             <div class="widget-frame">
               ${getWidgetImageHtml(getDomainWidgetIcon(childNode.id), "domain")}
             </div>
@@ -3963,7 +4019,7 @@ function updateStoryWithRoot(panel, node) {
       
       for (const hubNode of hubNodes) {
         html += `
-          <div class="domain-widget highlight-widget" data-node-id="${hubNode.id}" title="${escapeHtml(hubNode.label || hubNode.id)}">
+          <div class="domain-widget highlight-widget widget-nav" data-node-id="${hubNode.id}" title="${escapeHtml(hubNode.label || hubNode.id)}">
             <div class="widget-frame">
               ${getWidgetImageHtml(getHubWidgetIcon(hubNode.id), "hub")}
             </div>
@@ -3982,7 +4038,7 @@ function updateStoryWithRoot(panel, node) {
       
       for (const rootNode of otherRootNodes) {
         html += `
-          <div class="domain-widget highlight-widget" data-node-id="${rootNode.id}" title="${escapeHtml(rootNode.label || rootNode.id)}">
+          <div class="domain-widget highlight-widget widget-nav" data-node-id="${rootNode.id}" title="${escapeHtml(rootNode.label || rootNode.id)}">
             <div class="widget-frame">
               ${getWidgetImageHtml(getRootWidgetIcon(rootNode.id), "root")}
             </div>

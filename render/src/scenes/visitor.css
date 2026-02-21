@@ -1432,6 +1432,56 @@ body.focus-service #service-panel::before {
   position: relative;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   КАТЕГОРИИ ВИДЖЕТОВ (S-Naming Convention)
+   ═══════════════════════════════════════════════════════════════════════════
+   
+   1. Навигационные (.widget-nav) — круглые ⌀48px, навигация по графу
+   2. Окон (.widget-window) — квадратные 48×48px, вызов доп. окон
+   3. Практик (.widget-practice) — треугольные 48×48px (будет позже)
+   
+   См. docs/UI_STANDARDS.md → "Категории виджетов"
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Навигационные виджеты — круглые (ассоциация с узлом графа) */
+.widget-nav .widget-frame {
+  --widget-frame-radius: 50%;
+  border-radius: 50%;
+}
+
+/* Виджеты окон — квадратные */
+.widget-window .widget-frame {
+  --widget-frame-radius: 8px;
+  border-radius: 8px;
+}
+
+/* Ряд виджетов окон (Slate, Storage, Sanctum) */
+.widget-windows-row {
+  display: flex;
+  gap: var(--panel-inset);
+  margin-top: var(--panel-inset);
+}
+
+.widget-windows-row .widget-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.widget-windows-row .section-title {
+  text-align: center;
+}
+
+.widget-window {
+  cursor: pointer;
+}
+
+.widget-window:hover .widget-frame {
+  border-color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.1);
+}
+
 
 .widget-frame img {
   pointer-events: none;
