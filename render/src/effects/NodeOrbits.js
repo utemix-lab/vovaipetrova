@@ -15,23 +15,23 @@ import * as THREE from "three";
 
 const ORBIT_CONFIG = {
   slate: {
-    radius: 1.8,
-    speed: 0.5,
-    satelliteSize: 0.15,
+    radius: 12,
+    speed: 0.3,
+    satelliteSize: 1.5,
     color: 0x22d3ee,
     startAngle: 0
   },
   storage: {
-    radius: 2.4,
-    speed: 0.4,
-    satelliteSize: 0.15,
+    radius: 18,
+    speed: 0.25,
+    satelliteSize: 1.5,
     color: 0x22d3ee,
     startAngle: (Math.PI * 2) / 3
   },
   sanctum: {
-    radius: 3.0,
-    speed: 0.3,
-    satelliteSize: 0.15,
+    radius: 24,
+    speed: 0.2,
+    satelliteSize: 1.5,
     color: 0x22d3ee,
     startAngle: (Math.PI * 4) / 3
   }
@@ -48,7 +48,14 @@ export class NodeOrbits {
     this.highlightedOrbit = null;
     
     this._createOrbits();
+    
+    // Компенсировать scale родительского mesh
+    // Орбиты должны быть в мировых координатах, не в локальных
+    const parentScale = parentMesh.scale.x || 1;
+    this.group.scale.setScalar(1 / parentScale);
+    
     parentMesh.add(this.group);
+    console.log("[NodeOrbits] Created, parentScale:", parentScale);
   }
   
   _createOrbits() {

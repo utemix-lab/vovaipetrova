@@ -3237,10 +3237,12 @@ function createVSTablishmentOrbits() {
   // Уничтожить предыдущие орбиты
   destroyVSTablishmentOrbits();
   
-  // Найти mesh узла VSTablishment
+  // Найти mesh узла VSTablishment (может быть ещё не создан)
   const mesh = nodeMeshes.get("workbench-vova-vstablishment");
   if (!mesh) {
-    console.warn("[Orbits] VSTablishment mesh not found");
+    console.warn("[Orbits] VSTablishment mesh not found, retrying in 500ms...");
+    // Повторить попытку через 500ms
+    setTimeout(createVSTablishmentOrbits, 500);
     return;
   }
   
@@ -3249,7 +3251,7 @@ function createVSTablishmentOrbits() {
   
   // Создать орбиты
   vstablishmentOrbits = new NodeOrbits(mesh, nodeRadius);
-  console.log("[Orbits] Created orbits for VSTablishment");
+  console.log("[Orbits] Created orbits for VSTablishment, nodeRadius:", nodeRadius);
 }
 
 function destroyVSTablishmentOrbits() {
