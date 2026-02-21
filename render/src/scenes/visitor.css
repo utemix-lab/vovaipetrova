@@ -1471,6 +1471,12 @@ body.focus-service #service-panel::before {
 
 .widget-windows-row .section-title {
   text-align: center;
+  /* Явно указываем шрифт T1 для виджетов окон */
+  font-family: var(--typo-t1-font);
+  font-size: var(--typo-t1-size);
+  text-transform: var(--typo-t1-transform);
+  letter-spacing: var(--typo-t1-spacing);
+  color: var(--typo-t1-color);
 }
 
 .widget-window {
