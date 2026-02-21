@@ -592,10 +592,12 @@ body.focus-service #service-panel::before {
   line-height: 1;
 }
 
-.narrative-dot .icon {
+.narrative-dot .icon,
+.scene-dot--control .icon {
   width: 10px;
   height: 10px;
   display: block;
+  pointer-events: none; /* Клик должен попадать на кнопку, не на иконку */
 }
 
 .story-screen__shape-area {

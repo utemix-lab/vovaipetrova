@@ -3911,9 +3911,6 @@ function closeAuxWindow() {
   
   // Деактивировать поле орбиты
   deactivateVSTablishmentOrbit();
-  
-  // Сбросить расширение панели
-  resetSegmentExpand();
 }
 
 function updateActiveWindowWidget() {
