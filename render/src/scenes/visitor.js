@@ -3635,8 +3635,11 @@ function bindStoryScreen(container) {
     
     // Toggle иконка: плюс или крестик
     if (toggle) {
-      console.log("[Story] updateControlsState: expanded =", expanded, "toggle =", toggle);
-      toggle.innerHTML = expanded ? iconClose : iconPlus;
+      const newIcon = expanded ? iconClose : iconPlus;
+      console.log("[Story] updateControlsState: expanded =", expanded, "newIcon class =", expanded ? "icon--close" : "icon--plus");
+      console.log("[Story] toggle.innerHTML BEFORE:", toggle.innerHTML.substring(0, 50));
+      toggle.innerHTML = newIcon;
+      console.log("[Story] toggle.innerHTML AFTER:", toggle.innerHTML.substring(0, 50));
       toggle.setAttribute("aria-label", expanded ? "Свернуть" : "Развернуть");
       toggle.setAttribute("title", expanded ? "Свернуть" : "Развернуть");
     }
