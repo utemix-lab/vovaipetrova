@@ -3893,9 +3893,6 @@ function openAuxWindow(windowType) {
   
   // Активировать поле орбиты (если на странице VSTablishment)
   activateVSTablishmentOrbit(windowType);
-  
-  // Установить focus на segment панель (увеличение, непрозрачность)
-  setPanelFocus("storage-panel");
 }
 
 function closeAuxWindow() {
