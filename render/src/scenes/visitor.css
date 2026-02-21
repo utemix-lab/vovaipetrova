@@ -26,8 +26,9 @@
   --font-body: Tahoma, sans-serif;
 
   /* === Typography Scale (T1-T6) === */
-  /* T1: Widget Group Titles — Домены, Воркбенчи, Коллабы... */
-  --typo-t1-font: var(--font-tech);
+  /* T1: Widget Group Titles — Домены, Воркбенчи, Коллабы, Slate, Storage, Sanctum */
+  /* Используем monospace для унификации кириллицы и латиницы */
+  --typo-t1-font: monospace;
   --typo-t1-size: 11px;
   --typo-t1-transform: uppercase;
   --typo-t1-spacing: 0.1em;
