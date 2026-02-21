@@ -3265,11 +3265,6 @@ function renderChladniScreen() {
         <div class="story-screen__detail"></div>
       </div>
     </div>
-    <div class="chladni-controls" style="display: none;">
-        <button class="chladni-test-btn" type="button">
-          Резонанс
-        </button>
-    </div>
   `;
 }
 
@@ -3278,11 +3273,10 @@ async function bindChladniScreen(container) {
   if (!screen) return;
   
   const canvas = screen.querySelector(".chladni-canvas");
-  const testBtn = container.querySelector(".chladni-test-btn"); // Кнопка теперь вне screen
   const viewport = screen.querySelector(".story-screen__viewport");
   const shapeArea = screen.querySelector(".story-screen__shape-area");
   
-  if (!testBtn || !canvas) return;
+  if (!canvas) return;
   
   // Устанавливаем фоновый ассет (как на странице Вовы)
   if (viewport) {
@@ -3321,13 +3315,6 @@ async function bindChladniScreen(container) {
   
   // Сразу запускаем в режиме idle (облако)
   chladniSimulation.start();
-  
-  // Кнопка запускает формирование паттерна
-  testBtn.addEventListener("click", () => {
-    if (!chladniSimulation) return;
-    chladniSimulation.triggerPattern();
-  });
-  
 }
 
 // === ВИДЖЕТЫ ПОТЕНЦИАЛА (фильтры, группировки) ===

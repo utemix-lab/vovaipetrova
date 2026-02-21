@@ -1867,32 +1867,7 @@ body.focus-service #service-panel::before {
   background: transparent;
 }
 
-.chladni-controls {
-  display: flex;
-  justify-content: center;
-  padding: 12px 0;
-}
-
-.chladni-test-btn {
-  padding: 8px 20px;
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.chladni-test-btn:hover {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(251, 191, 36, 0.15));
-  border-color: rgba(251, 191, 36, 0.5);
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
-}
-
-.chladni-test-btn:active {
-  transform: scale(0.96);
-}
+/* chladni-controls и chladni-test-btn удалены — кнопка резонанса больше не используется */
 
 /* === VST 2D GRAPH === */
 #system-panel:has(.vst-graph-container) .panel-header {
