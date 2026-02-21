@@ -268,6 +268,19 @@ body.visitor-mode {
   display: flex;
 }
 
+/* Расширенное состояние — панель сдвигается вправо и занимает место System/Service */
+#storage-panel.segment-expanded {
+  transform: translateX(calc(50% + var(--panel-gap) / 2)) !important;
+  z-index: 20;
+}
+
+/* Скрытие правой колонки при расширении */
+#right-column.right-column--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(20px);
+}
+
 #storage-panel .panel-content {
   text-align: left;
   align-items: flex-start;
@@ -319,6 +332,7 @@ body.visitor-mode {
   grid-column: 3;
   grid-row: 1;
   display: grid;
+  transition: opacity 0.35s ease, transform 0.35s ease;
   grid-template-rows: 1fr 1fr;
   gap: var(--gap);
   margin-right: 0;

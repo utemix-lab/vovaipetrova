@@ -3911,6 +3911,9 @@ function closeAuxWindow() {
   
   // Деактивировать поле орбиты
   deactivateVSTablishmentOrbit();
+  
+  // Сбросить расширение панели
+  resetSegmentExpand();
 }
 
 function updateActiveWindowWidget() {
@@ -3979,6 +3982,8 @@ function updateStoryWithWorkbench(panel, node) {
 }
 
 // === SEGMENT PANEL (центральная панель для VSTablishment) ===
+let segmentExpanded = false; // Состояние расширения панели
+
 function renderSegmentControls() {
   const el = document.getElementById("segment-controls");
   if (!el) return;
@@ -3988,6 +3993,16 @@ function renderSegmentControls() {
       <path d="M7.5 3.25 4.5 6l3 2.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   `;
+  const iconExpandRight = `
+    <svg class="icon icon--expand" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M3 3.25 5.5 6 3 8.75M6.5 3.25 9 6 6.5 8.75" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+  const iconExpandLeft = `
+    <svg class="icon icon--expand" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M9 3.25 6.5 6 9 8.75M5.5 3.25 3 6 5.5 8.75" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
   const iconClose = `
     <svg class="icon icon--close" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
       <path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -3995,6 +4010,11 @@ function renderSegmentControls() {
   `;
   
   el.innerHTML = [
+    {
+      label: segmentExpanded ? iconExpandLeft : iconExpandRight,
+      action: "segment-expand",
+      title: segmentExpanded ? "Свернуть" : "Развернуть",
+    },
     {
       label: iconPrev,
       action: "segment-back",
@@ -4021,12 +4041,44 @@ function bindSegmentControls() {
     const btn = ev.target.closest("[data-action]");
     if (!btn) return;
     const action = btn.dataset.action;
-    if (action === "segment-back") {
+    if (action === "segment-expand") {
+      toggleSegmentExpand();
+    } else if (action === "segment-back") {
       closeAuxWindow();
     } else if (action === "segment-close") {
       closeAuxWindow();
     }
   });
+}
+
+function toggleSegmentExpand() {
+  segmentExpanded = !segmentExpanded;
+  applySegmentExpand();
+}
+
+function applySegmentExpand() {
+  const storagePanel = document.getElementById("storage-panel");
+  const rightColumn = document.getElementById("right-column");
+  
+  if (segmentExpanded) {
+    // Расширить: сдвинуть панель вправо, скрыть правую колонку
+    storagePanel?.classList.add("segment-expanded");
+    rightColumn?.classList.add("right-column--hidden");
+  } else {
+    // Свернуть: вернуть панель в центр, показать правую колонку
+    storagePanel?.classList.remove("segment-expanded");
+    rightColumn?.classList.remove("right-column--hidden");
+  }
+  
+  // Перерисовать кнопки (чтобы иконка сменилась)
+  renderSegmentControls();
+}
+
+function resetSegmentExpand() {
+  if (segmentExpanded) {
+    segmentExpanded = false;
+    applySegmentExpand();
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
