@@ -2153,62 +2153,7 @@ body.focus-service #service-panel::before {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ВСПОМОГАТЕЛЬНЫЕ ОКНА (Slate, Storage, Sanctum)
+   ═══════════════════════════════════════════════════════════════════════════
+   Используют стандартные классы: .node-toc, .vova-root-info, .story-screen
+   Код: renderAuxWindowContent() → renderNarrativeScreen()
    ═══════════════════════════════════════════════════════════════════════════ */
-
-.aux-window-layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--panel-inset);
-  height: 100%;
-}
-
-.aux-window-toc {
-  display: flex;
-  align-items: center;
-  gap: var(--panel-inset);
-}
-
-/* Корневой виджет в aux-окнах — квадратный, как виджеты окон */
-.aux-root-widget {
-  flex-shrink: 0;
-}
-
-.aux-root-widget .widget-frame {
-  width: 48px;
-  height: 48px;
-  border: 2px solid var(--widget-frame-border-color, rgba(255, 255, 255, 0.2));
-  border-radius: 6px;
-  background: rgba(34, 211, 238, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.aux-root-widget .widget-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Текст справа от корневого виджета — T2 типография как в Scope */
-.aux-window-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 4px;
-  height: var(--widget-frame-size, 48px);
-  margin-left: var(--panel-inset-inner);
-  font-family: var(--typo-t2-font);
-  font-size: var(--typo-t2-size);
-  line-height: 1;
-  color: var(--typo-t2-color);
-}
-
-/* Story внутри aux-окон — flex-контекст требует явного aspect-ratio */
-.aux-story-screen {
-  flex: 0 0 auto;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
