@@ -493,9 +493,10 @@ body.focus-service #service-panel::before {
   padding-top: 56.25%;
 }
 
-.story-screen:hover {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 16px var(--panel-glow);
+/* Hover на окно Story — подсвечиваем точку "Вперед", не само окно */
+.story-screen:hover .narrative-dot[data-action="next"]:not(.narrative-dot--disabled) {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
 }
 
 .story-screen__hud {

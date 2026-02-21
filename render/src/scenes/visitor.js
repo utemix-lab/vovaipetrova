@@ -3254,7 +3254,7 @@ function renderChladniScreen() {
         <div class="story-screen__label" aria-hidden="true"></div>
         <div class="story-screen__dots" aria-hidden="true">
           <button class="narrative-dot narrative-dot--control narrative-dot--hidden" type="button" data-action="prev" aria-label="Назад" title="Назад">${iconPrev}</button>
-          <button class="narrative-dot narrative-dot--control narrative-dot--disabled" type="button" data-action="next" aria-label="Вперед" title="Вперёд" disabled>${iconNext}</button>
+          <button class="narrative-dot narrative-dot--control" type="button" data-action="next" aria-label="Вперед" title="Вперёд">${iconNext}</button>
           <button class="narrative-dot narrative-dot--control narrative-dot--toggle narrative-dot--hidden" type="button" data-action="toggle" aria-label="Развернуть" title="Развернуть">${iconPlus}</button>
         </div>
       </div>
@@ -3773,6 +3773,7 @@ function updateStoryWithWorkbench(panel, node) {
   
   if (node.id === "workbench-vova-vstablishment") {
     bindChladniScreen(content);
+    bindStoryScreen(content); // Навигация Story работает и на Chladni screen
     bindPotentialWidgets(content);
     // Storage панель открывается по клику на виджет, не автоматически
     hideSegmentPanel();
