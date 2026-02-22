@@ -2237,6 +2237,9 @@ function initPracticePolygons() {
   const practices = VISUAL_CONFIG.practices || [];
 
   practices.forEach(practice => {
+    // Пропускаем скрытые практики
+    if (practice.hidden) return;
+    
     const mesh = createPracticePolygon(practice);
     if (mesh) {
       practicePolygons.set(practice.id, mesh);
