@@ -70,14 +70,11 @@ export const VISUAL_CONFIG = {
   // Вершины: 2=линия, 3=треугольник, 4=четырёхугольник, 5=пентагон
   practices: [
     // ─── ЛИНИИ (2 домена) ───
-    // HIDDEN: Экспериментальное ребро — чёрная линия между AI и Knowledge
-    // Откат: убрать hidden: true
     {
       id: "antitaxonomic-navigation",
       label: "Антитаксономическая навигация",
       domains: ["domain-knowledge", "domain-ai"],
-      color: "#f472b6",
-      hidden: true  // TEMP: скрыто для проверки чёрного ребра
+      color: "#f472b6"
     },
     {
       id: "visual-thinking",

@@ -2287,44 +2287,52 @@ function destroyPracticePolygons() {
 }
 
 /**
- * Привязывает обработчики событий к кнопкам практик
- * @param {HTMLElement} container - контейнер с кнопками
+ * Привязывает обработчики событий к виджетам практик
+ * @param {HTMLElement} container - контейнер с виджетами
  */
 function bindPracticeButtons(container) {
-  const buttons = container.querySelectorAll(".practice-btn");
+  // Поддержка и старых кнопок (.practice-btn) и новых виджетов (.practice-widget)
+  const widgets = container.querySelectorAll(".practice-widget, .practice-btn");
   
-  buttons.forEach(btn => {
-    const practiceId = btn.dataset.practiceId;
+  widgets.forEach(widget => {
+    const practiceId = widget.dataset.practiceId;
     if (!practiceId) return;
     
+    const isWidget = widget.classList.contains("practice-widget");
+    const activeClass = isWidget ? "practice-widget--active" : "practice-btn--active";
+    const hoverClass = isWidget ? "practice-widget--hover" : "practice-btn--hover";
+    
     // Hover: показать полигон временно
-    btn.addEventListener("mouseenter", () => {
+    widget.addEventListener("mouseenter", () => {
       if (practiceId !== activePracticeId) {
         showPracticePolygon(practiceId, false);
       }
-      btn.classList.add("practice-btn--hover");
+      widget.classList.add(hoverClass);
     });
     
     // Mouse leave: скрыть полигон (если не зафиксирован)
-    btn.addEventListener("mouseleave", () => {
+    widget.addEventListener("mouseleave", () => {
       if (practiceId !== activePracticeId) {
         hidePracticePolygon(practiceId);
       }
-      btn.classList.remove("practice-btn--hover");
+      widget.classList.remove(hoverClass);
     });
     
     // Click: зафиксировать/снять фиксацию полигона
-    btn.addEventListener("click", () => {
+    widget.addEventListener("click", () => {
       const wasActive = activePracticeId === practiceId;
       togglePracticePolygon(practiceId);
       
-      // Обновить классы всех кнопок
-      buttons.forEach(b => {
-        b.classList.remove("practice-btn--active");
+      // Обновить классы всех виджетов
+      widgets.forEach(w => {
+        const wActiveClass = w.classList.contains("practice-widget") 
+          ? "practice-widget--active" 
+          : "practice-btn--active";
+        w.classList.remove(wActiveClass);
       });
       
       if (!wasActive) {
-        btn.classList.add("practice-btn--active");
+        widget.classList.add(activeClass);
       }
     });
   });
@@ -4254,6 +4262,12 @@ function updateStoryWithHub(panel, node) {
 
   destroyMiniCube();
   content.classList.remove("story-compact");
+  
+  // Добавляем класс для страницы Domains (уменьшенный куб)
+  content.classList.remove("panel-content--domains");
+  if (node.id === "domains") {
+    content.classList.add("panel-content--domains");
+  }
 
   const widgetIcon = getHubWidgetIcon(node.id);
   const nodeInfoHtml = getNodeInfoHtml(node);
@@ -4322,33 +4336,42 @@ function updateStoryWithHub(panel, node) {
     html += `</div>`;
   }
 
-  // Секция практик (только для страницы Domains)
+  // Секция виджетов практик (только для страницы Domains)
+  // 14 виджетов: 6 + 6 + 2 (центрированные)
   if (node.id === "domains") {
-    const practices = VISUAL_CONFIG.practices || [];
+    const practices = (VISUAL_CONFIG.practices || []).filter(p => !p.hidden);
     if (practices.length > 0) {
-      html += `<div class="practices-section">`;
+      html += `<div class="practice-widgets-section">`;
       html += `<div class="section-title">${getSectionLabel("practice")}</div>`;
-      html += `<div class="practice-buttons">`;
+      html += `<div class="practice-widgets-grid">`;
       
-      for (const practice of practices) {
-        const isActive = activePracticeId === practice.id;
-        html += `
-          <button class="practice-btn${isActive ? " practice-btn--active" : ""}" 
-                  data-practice-id="${practice.id}"
-                  style="--practice-color: ${practice.color}"
-                  title="${escapeHtml(practice.label)}">
-            ${escapeHtml(practice.label)}
-          </button>`;
-      }
+      // Разбиваем на ряды: 6 + 6 + остаток (центрированный)
+      const row1 = practices.slice(0, 6);
+      const row2 = practices.slice(6, 12);
+      const row3 = practices.slice(12);
       
-      // Кнопка "Свечение" для включения glow-эффекта узла-хаба
-      html += `
-        <button class="practice-btn glow-toggle-btn" 
-                data-node-id="${node.id}"
-                style="--practice-color: #fbbf24"
-                title="Включить свечение узла">
-          Свечение
-        </button>`;
+      const renderRow = (items) => {
+        let rowHtml = `<div class="practice-widgets-row">`;
+        for (const practice of items) {
+          const isActive = activePracticeId === practice.id;
+          rowHtml += `
+            <div class="practice-widget${isActive ? " practice-widget--active" : ""}" 
+                 data-practice-id="${practice.id}"
+                 style="--practice-color: ${practice.color}"
+                 title="${escapeHtml(practice.label)}">
+              <div class="widget-frame">
+                <img src="${buildAssetPath("widgets/practice-plug.png")}" alt="${escapeHtml(practice.label)}" class="widget-image widget-image--main" />
+                <img src="${buildAssetPath("widgets/practice-plug2.png")}" alt="" class="widget-image widget-image--hover" aria-hidden="true" />
+              </div>
+            </div>`;
+        }
+        rowHtml += `</div>`;
+        return rowHtml;
+      };
+      
+      if (row1.length > 0) html += renderRow(row1);
+      if (row2.length > 0) html += renderRow(row2);
+      if (row3.length > 0) html += renderRow(row3);
       
       html += `</div>`;
       html += `</div>`;

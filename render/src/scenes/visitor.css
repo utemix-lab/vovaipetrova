@@ -1904,6 +1904,112 @@ body.focus-service #service-panel::before {
   vertical-align: middle;
 }
 
+/* === Виджеты практик (треугольные) === */
+.practice-widgets-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.practice-widgets-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.practice-widgets-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Треугольный виджет практики со скруглёнными углами */
+.practice-widget {
+  --widget-size: 40px;
+  --practice-color: var(--accent-cyan);
+  width: var(--widget-size);
+  height: var(--widget-size);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.practice-widget .widget-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* Треугольная форма через clip-path со скруглением */
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Граница треугольника через псевдоэлемент */
+.practice-widget::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  background: var(--practice-color);
+  opacity: 0.3;
+  z-index: -1;
+  transition: opacity 0.2s ease;
+}
+
+.practice-widget .widget-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.practice-widget .widget-image--hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.practice-widget:hover {
+  transform: scale(1.1);
+}
+
+.practice-widget:hover::before {
+  opacity: 0.6;
+}
+
+.practice-widget:hover .widget-image--main {
+  opacity: 0;
+}
+
+.practice-widget:hover .widget-image--hover {
+  opacity: 1;
+}
+
+.practice-widget--active {
+  transform: scale(1.15);
+}
+
+.practice-widget--active::before {
+  opacity: 0.8;
+}
+
+.practice-widget--active .widget-image--main {
+  opacity: 0;
+}
+
+.practice-widget--active .widget-image--hover {
+  opacity: 1;
+}
+
+/* Уменьшаем высоту hub-shape-container для Domains чтобы влезли практики */
+.panel-content--domains .hub-shape-container {
+  height: 280px;
+}
+
 /* === Context Menu (контекстное меню по правому клику) === */
 .context-menu {
   position: fixed;
