@@ -69,30 +69,26 @@ export const VISUAL_CONFIG = {
   // ═══════════════════════════════════════════════════════════════════════════
   // Вершины: 2=линия, 3=треугольник, 4=четырёхугольник, 5=пентагон
   practices: [
-    // ─── ЛИНИИ (2 домена) ───
+    // ─── ТРЕУГОЛЬНИКИ (3 домена) ───
+    // Все практики расширены до минимум 3 доменов для визуализации полигонами
+    // "Рефлексия и фиксация" удалена как дубликат "Антитаксономическая навигация"
     {
       id: "antitaxonomic-navigation",
       label: "Антитаксономическая навигация",
-      domains: ["domain-knowledge", "domain-ai"],
+      domains: ["domain-knowledge", "domain-ai", "domain-interactive"],
       color: "#f472b6"
     },
     {
       id: "visual-thinking",
       label: "Визуальное мышление",
-      domains: ["domain-visual", "domain-design"],
+      domains: ["domain-visual", "domain-design", "domain-knowledge"],
       color: "#fb923c"
     },
     {
       id: "sound-thinking",
       label: "Звуковое мышление",
-      domains: ["domain-music", "domain-ai"],
+      domains: ["domain-music", "domain-ai", "domain-interactive"],
       color: "#c084fc"
-    },
-    {
-      id: "reflection",
-      label: "Рефлексия и фиксация",
-      domains: ["domain-knowledge", "domain-ai"],
-      color: "#94a3b8"
     },
     // ─── ТРЕУГОЛЬНИКИ (3 домена) ───
     {
