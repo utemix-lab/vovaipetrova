@@ -4101,6 +4101,78 @@ function applySegmentExpand() {
   renderSegmentControls();
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// УПРАВЛЯЮЩИЕ ТОЧКИ SYSTEM И SERVICE
+// ═══════════════════════════════════════════════════════════════════════════
+// @status: experimental
+// @track: 4
+// @reason: Набросок будущего функционала управляющих точек
+
+function renderSystemControls() {
+  const el = document.getElementById("system-controls");
+  if (!el) return;
+  
+  const controls = [
+    { label: "I", action: "system-info", title: "Информация" },
+    { label: "S", action: "system-spec", title: "Спецификация" },
+    { label: "P", action: "system-projection", title: "Проекция" },
+  ];
+  
+  el.innerHTML = controls
+    .map(({ label, action, title }) => {
+      return `<button class="scene-dot scene-dot--control scene-dot--letter" type="button" data-action="${action}" title="${title}">${label}</button>`;
+    })
+    .join("");
+}
+
+function renderServiceControls() {
+  const el = document.getElementById("service-controls");
+  if (!el) return;
+  
+  // Три горизонтальные полоски (аллегория текста/чата)
+  const iconLines = `
+    <svg class="icon icon--lines" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+      <path d="M2 3.5h8M2 6h8M2 8.5h8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+    </svg>
+  `;
+  
+  const controls = [
+    { label: iconLines, action: "service-chat", title: "Чат" },
+  ];
+  
+  el.innerHTML = controls
+    .map(({ label, action, title }) => {
+      return `<button class="scene-dot scene-dot--control" type="button" data-action="${action}" title="${title}">${label}</button>`;
+    })
+    .join("");
+}
+
+function bindSystemControls() {
+  const controlsEl = document.getElementById("system-controls");
+  if (!controlsEl) return;
+  
+  controlsEl.addEventListener("click", (ev) => {
+    const btn = ev.target.closest("[data-action]");
+    if (!btn) return;
+    const action = btn.dataset.action;
+    // TODO: Реализовать функционал управляющих точек
+    console.log("[System Control]", action);
+  });
+}
+
+function bindServiceControls() {
+  const controlsEl = document.getElementById("service-controls");
+  if (!controlsEl) return;
+  
+  controlsEl.addEventListener("click", (ev) => {
+    const btn = ev.target.closest("[data-action]");
+    if (!btn) return;
+    const action = btn.dataset.action;
+    // TODO: Реализовать функционал управляющих точек
+    console.log("[Service Control]", action);
+  });
+}
+
 function resetSegmentExpand() {
   if (segmentExpanded) {
     segmentExpanded = false;
@@ -6096,13 +6168,13 @@ function createUI() {
     <div id="right-column">
       <div id="system-panel" class="panel-3s">
         <div class="panel-inner">
-          <div class="panel-header">System</div>
+          <div class="panel-header"><span class="panel-title-text">System</span><span id="system-controls" aria-hidden="true"></span></div>
           <div class="panel-content"></div>
         </div>
       </div>
       <div id="service-panel" class="panel-3s">
         <div class="panel-inner">
-          <div class="panel-header">Service</div>
+          <div class="panel-header"><span class="panel-title-text">Service</span><span id="service-controls" aria-hidden="true"></span></div>
           <div class="panel-content"></div>
         </div>
       </div>
@@ -6210,6 +6282,12 @@ function createUI() {
 
   // Bind Segment panel controls (back, close)
   bindSegmentControls();
+
+  // Render and bind System/Service control dots
+  renderSystemControls();
+  renderServiceControls();
+  bindSystemControls();
+  bindServiceControls();
 
   // Panel focus behavior (hover to focus, default Story)
   const storyPanel = document.getElementById("scope-panel");

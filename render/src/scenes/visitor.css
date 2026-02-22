@@ -597,6 +597,23 @@ body.focus-service #service-panel::before {
   pointer-events: none; /* Клик должен попадать на кнопку, не на иконку */
 }
 
+/* Управляющие точки с буквами (i, S, P) */
+.scene-dot--letter {
+  font-family: var(--font-tech);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Контейнеры управляющих точек System/Service */
+#system-controls,
+#service-controls {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
 .story-screen__shape-area {
   position: absolute;
   left: 0;
