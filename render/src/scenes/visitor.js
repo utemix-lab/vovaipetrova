@@ -3864,6 +3864,12 @@ function bindWindowWidgets(container) {
         return;
       }
       
+      // Триггер фигуры Хладни на VSTablishment
+      // TODO: Позже привяжем конкретные паттерны и звуки к каждому виджету
+      if (chladniSimulation && ["slate", "storage", "sanctum"].includes(windowType)) {
+        chladniSimulation.triggerFlashPattern(windowType);
+      }
+      
       // Клик на тот же виджет — закрыть окно
       if (activeAuxWindow === windowType) {
         closeAuxWindow();

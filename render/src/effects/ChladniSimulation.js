@@ -291,6 +291,30 @@ export class ChladniSimulation {
     }, this.patternDuration);
   }
   
+  // Мгновенный паттерн: появляется и сразу растворяется
+  // TODO: Позже привяжем конкретные паттерны и звуки к каждому виджету
+  triggerFlashPattern(windowType = null) {
+    // Выбираем случайный паттерн
+    // TODO: windowType будет определять конкретный паттерн (slate, storage, sanctum)
+    const patterns = [
+      [2, 3], [2, 5], [3, 4], [3, 5], [3, 7],
+      [4, 5], [4, 7], [5, 6], [5, 8], [6, 7],
+      [2, 7], [3, 8], [4, 9], [5, 7], [6, 9]
+    ];
+    const [m, n] = patterns[Math.floor(Math.random() * patterns.length)];
+    this.setPattern(m, n);
+    
+    // Переключаемся в режим паттерна
+    this.mode = "pattern";
+    console.log(`[Chladni] Flash pattern: m=${m}, n=${n}, window=${windowType || "random"}`);
+    
+    // Быстро возвращаемся в idle (1.5 секунды)
+    if (this.patternTimer) clearTimeout(this.patternTimer);
+    this.patternTimer = setTimeout(() => {
+      this.mode = "idle";
+    }, 1500);
+  }
+  
   // Для обратной совместимости
   randomPattern() {
     this.triggerPattern();
