@@ -4359,12 +4359,12 @@ function updateStoryWithHub(panel, node) {
     bindGlowToggleButton(content);
   }
 
-  // Инициализация увеличенной 3D-фигуры (2x от стандартного размера)
+  // Инициализация 3D-фигуры (1.33x от стандартного размера, было 2x)
   const shapeContainer = content.querySelector(".hub-shape-container");
   const allChildIds = [...characterNodeIds, ...domainNodeIds];
   if (shapeContainer && allChildIds.length > 0) {
     const shapeType = characterNodes.length > 0 ? "icosa" : "cube";
-    initMiniShape(shapeType, shapeContainer, allChildIds, node.id, { scale: 2 });
+    initMiniShape(shapeType, shapeContainer, allChildIds, node.id, { scale: 1.33 });
   }
 }
 
